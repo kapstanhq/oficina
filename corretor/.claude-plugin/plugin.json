@@ -1,0 +1,22 @@
+{
+  "name": "corretor",
+  "displayName": "Oficina Kapstan · Corretor de imóveis",
+  "version": "0.1.0",
+  "description": "Dez skills para corretor de imóveis, todas em cima de uma carteira de arquivos que mora onde o corretor escolher, no computador dele ou no Google Drive dele: captar e anunciar, atender lead, montar visita, retomar contato, cobrar documento e organizar o que chegou.",
+  "author": {
+    "name": "Kapstan",
+    "url": "https://kapstan.com.br"
+  },
+  "homepage": "https://kapstan.com.br/oficina",
+  "repository": "https://github.com/kapstanhq/oficina",
+  "license": "MIT",
+  "keywords": [
+    "corretor",
+    "imoveis",
+    "imobiliaria",
+    "crm",
+    "whatsapp",
+    "anuncio",
+    "portugues"
+  ]
+}

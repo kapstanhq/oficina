@@ -1,0 +1,14 @@
+{
+  "name": "kapstan-oficina",
+  "owner": {
+    "name": "Kapstan",
+    "url": "https://kapstan.com.br"
+  },
+  "plugins": [
+    {
+      "name": "corretor",
+      "source": "./corretor",
+      "description": "Para corretor de imóveis: monta uma carteira de arquivos no seu computador ou no seu Google Drive e trabalha em cima dela — anúncio, resposta de lead, roteiro de visita, retomada de contato e a lista do dia."
+    }
+  ]
+}
