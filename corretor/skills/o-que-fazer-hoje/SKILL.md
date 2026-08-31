@@ -201,6 +201,28 @@ data escrita: **não vira item de hoje**. Vira `?` e, se o item cairia no topo
 da lista, uma pergunta (seção 5). Calcular o sábado de uma frase ambígua é como
 marcar visita sozinho.
 
+### Dois gatilhos que o conector corrige
+
+Com `WhatsApp: sim` em `## O que está conectado` do `INDICE.md`, confirme estes
+dois antes de escrevê-los — os dois afirmam que **nada chegou**, e a carteira
+só sabe o que alguém anotou:
+
+```
+prometido e não chegou   o cliente pode ter mandado no WhatsApp e ninguém
+                         anotou. Cobrar documento que ele já mandou é o erro
+                         que faz o corretor parar de confiar na lista
+parado tempo demais      ultima_interacao dá a data exata e de quem foi a
+                         última palavra, no lugar da conta por dias sem registro
+```
+
+Chegou e a carteira não sabia? O item **não entra** em `## Prometido e não
+chegou`. Ele vira uma linha em `## Falta saber` dizendo que a conversa tem algo
+que os arquivos não têm — e o conserto é `/corretor:organizar-carteira`, que é
+quem traz conversa para dentro. Esta skill não grava conversa.
+
+Sem conector — o normal —, os dois gatilhos valem como sempre valeram, e a
+lista sai igual. **Nada aqui depende dele.**
+
 ### Passo 4 · A escada da consequência
 
 A ordem não é cronológica. Seis degraus, de cima para baixo:
@@ -501,10 +523,11 @@ de busca: a lista do dia não precisa de dado novo de imóvel, e site que monta 
 página por JavaScript devolveria nada de qualquer jeito. Preço, metragem e
 condomínio saem do arquivo, com a data que está lá.
 
-**Ela não sabe se o cliente respondeu por fora.** Não existe conector de
-WhatsApp, e a última mensagem dele só entra na carteira quando alguém cola a
-conversa. Por isso “parado há 14 dias” quer dizer *quatorze dias sem nada
-escrito* — e ela escreve assim.
+**Sem o conector, ela não sabe se o cliente respondeu por fora.** A última
+mensagem dele só entra na carteira quando alguém cola a conversa, e por isso
+“parado há 14 dias” quer dizer *quatorze dias sem nada escrito* — e ela escreve
+assim. Com `WhatsApp: sim`, o `ultima_interacao` dá a data de verdade, e é o que
+“Dois gatilhos que o conector corrige” manda conferir antes de escrever.
 
 **O silêncio ela mede grosso.** Sete dias em qualquer etapa, e é de propósito:
 quem tem prazo por etapa é `/corretor:retomar-contato`. Um cliente pode aparecer

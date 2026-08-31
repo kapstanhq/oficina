@@ -6,7 +6,7 @@ description: >-
   Drive. Cria as pastas, copia os sete modelos, escreve quem ele é, grava o modo
   — copiloto ou automático — e conecta Google Agenda, Gmail e Drive explicando
   cada botão e TESTANDO o que conectou antes de escrever “sim”. Ensina a
-  exportar uma conversa do WhatsApp, que não tem conector. Termina com a
+  trazer conversa do WhatsApp, que entra colada. Termina com a
   carteira cheia: um imóvel de verdade, vindo de um link, e um cliente de
   verdade, vindo de uma conversa colada. Todo passo é pulável, e se ele fechar
   no meio ela volta de onde parou. Use na primeira vez, sempre, e quando ele
@@ -383,8 +383,8 @@ Grave `sim  ← testado <data>` só depois do teste, e `não` mais a linha em
 
 ### Passo 5 · As conversas do WhatsApp
 
-Comece pela verdade, em uma linha e sem rodeio: **não existe conector de
-WhatsApp**, e a API oficial não resolve o caso dele — ela é para número de
+Comece pela verdade, em uma linha e sem rodeio: **aqui a conversa entra
+colada**, e a API oficial do WhatsApp não resolve o caso dele — ela é para número de
 empresa, e ele atende do número pessoal. A ponte é colar ou exportar, e é isso
 que este passo ensina.
 
@@ -421,8 +421,21 @@ diga o principal: **ele não precisa fazer isso à mão.** Cola aqui, e a skill
 grava com o nome certo. `_bruto/` é a origem, não a verdade: nada lá se corrige,
 se resume ou se apaga.
 
-A linha do WhatsApp no `## O que está conectado` já vem escrita no modelo e
-**não se mexe** nela — ela não é uma conexão que falhou, é como a coisa é.
+A linha do WhatsApp no `## O que está conectado` nasce `não`, e para quase todo
+mundo é assim que ela fica: colar não é conexão que falhou, é como a coisa
+funciona.
+
+**Existe um caminho opcional, e ele não é para todos.** Só vale se ESTE programa
+rodar comandos no computador dele — Claude Code, Codex CLI, Cursor. Nesse caso há
+um conector que lê as conversas direto, sem colar. Custa uma instalação de uns
+quinze minutos, ocupa uma das quatro vagas de dispositivo conectado do WhatsApp
+dele, e não é programa oficial da Meta.
+
+**Ofereça em duas linhas e não venda:** diga que existe, que colar continua
+funcionando igual, e pergunte se ele quer agora, depois, ou não. Se quiser, leia
+`references/conectar-whatsapp.md` e siga a cadeia de lá — ela traz os avisos que
+ele precisa ouvir ANTES de qualquer instalação. Se não quiser, ou se aqui não
+houver linha de comando, siga em frente e não toque mais no assunto.
 
 Este passo é pulável, mas ele emenda no passo 7: se ele já tiver uma conversa à
 mão agora, o passo 7 usa essa mesma.

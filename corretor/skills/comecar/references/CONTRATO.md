@@ -403,7 +403,7 @@ aposentados: 8
 Google Agenda: sim  ← testado 2026-08-19
 Gmail: sim  ← testado 2026-08-19
 Google Drive: não — pulado no começo
-WhatsApp: não tem conector. A conversa entra colada, e vai para _bruto/
+WhatsApp: não
 
 ## Como eu trabalho
 portais onde anuncio: Zap, VivaReal
@@ -750,10 +750,30 @@ quê, em uma linha.
 
 ---
 
-## 7 · Como ler uma conversa colada
+## 7 · Como a conversa entra
 
-Não existe conector de WhatsApp. A ponte é o corretor exportar ou colar a
-conversa, e a skill saber ler os dois formatos que chegam.
+Há dois caminhos, e quem diz qual é a linha `WhatsApp:` do `INDICE.md`
+(seção 4.1). **O padrão é colado**, e é o único que funciona em toda
+ferramenta: o corretor exporta ou cola, e a skill lê os dois formatos que
+chegam. O conector é opcional, não existe em metade dos lugares onde o pack
+roda, e **nenhuma skill o exige** — skill que só funciona com ele quebrou o
+contrato.
+
+O caminho muda; o formato não. Conversa que entrou pelo conector e conversa
+que entrou colada produzem o **mesmo** arquivo em `_bruto/`, com a mesma
+procedência (seção 3). Nenhuma das outras nove precisa saber por onde ela veio,
+e é isso que impede o conector de virar um segundo pack.
+
+| a operação | colado | pelo conector |
+|---|---|---|
+| trazer a conversa de um cliente | o corretor exporta ou cola | achar a conversa pelo telefone do arquivo do cliente e ler o período que interessa |
+| saber quando foi a última mensagem | está no que ele colou | pergunta-se à conversa |
+| guardar em `_bruto/` | igual nos dois | igual nos dois |
+
+**O conector lê. Não manda.** O que sai para o cliente continua saindo como
+bloco pronto para copiar (seção 6), e quem aperta enviar é o corretor. Isso não
+é limitação técnica: é a voz dele que vai na mensagem, e disparo automático é
+onde uma conta de WhatsApp morre.
 
 ### Exportado do aplicativo
 
@@ -989,6 +1009,11 @@ chat do Claude e chat do ChatGPT na web
   não há pasta no computador. Com a carteira no drive, tudo funciona;
   sem ela, funcionam as skills que trabalham com o que for COLADO na
   conversa, e as que dependem de memória não funcionam
+
+o conector de WhatsApp (seção 7)
+  só onde há linha de comando: Claude Code, Codex CLI, Cursor. Nos chats
+  da web não existe, e lá a conversa entra colada como sempre — o que não
+  tira nenhuma skill do ar
 ```
 
 Sem carteira nenhuma, cinco entregam o trabalho e não gravam nada:

@@ -21,8 +21,8 @@ compatibility: >-
   pelo conector — o transporte sai da linha `carteira:` do `INDICE.md`. Sem
   carteira, ainda escreve a mensagem a partir da conversa colada, mas não cruza
   com os imóveis, não abre ficha de cliente e não grava nada: o `## Guardei`
-  vira “nada foi gravado — você está sem carteira aqui”. Não manda mensagem: não
-  há conector de WhatsApp, quem aperta enviar é o corretor.
+  vira “nada foi gravado — você está sem carteira aqui”. Não manda mensagem: o
+  conector de WhatsApp, onde existe, só lê — quem aperta enviar é o corretor.
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -51,7 +51,9 @@ o que não apurou sai como `?`, que é o que a próxima execução vai perguntar
    contrato: a linha `carteira:` diz o transporte, e toda leitura e toda
    gravação desta execução vão por ele. É de lá que saem também o nome do
    corretor — o que diz quem é ele na conversa colada —, o modo, o canal padrão,
-   os portais e o horário de visita que ele costuma oferecer.
+   os portais e o horário de visita que ele costuma oferecer. E a linha
+   `WhatsApp:` de `## O que está conectado`: em `sim`, a conversa pode vir sem
+   ele colar nada (passo 4.1). Em `não`, ou ausente, é colado — o normal.
 3. **Não achou `INDICE.md` em lugar nenhum?** Diga isso em uma linha, sem
    improvisar pasta nem criar carteira:
 
@@ -110,8 +112,23 @@ marcando.
 
 ### 4.1 · Grava o bruto, primeiro de tudo
 
-Antes de extrair um fato sequer. Nome, cabeçalho de três linhas e o texto
-colado sem tocar: contrato, seção 4.7. Se algo der errado no meio, o material
+**De onde vem a conversa.** Colou alguma coisa? É ela, e ponto — o que o
+corretor traz na mão sempre vence. Não colou nada e disse um nome ("responde a
+Joana"), com `WhatsApp: sim` no `INDICE.md`? Aí você pode buscar: ache a
+conversa pelo telefone do arquivo do cliente, ou pelo nome, e leia as últimas
+mensagens. **Mostre o que achou e confirme que é essa pessoa antes de
+escrever** — nome parecido é comum, e responder ao cliente errado é o tipo de
+erro que não tem desfazer.
+
+Sem conector e sem nada colado, é uma pergunta só: peça a conversa.
+
+O que veio do conector vira `_bruto/` do mesmo jeito que o colado: mesmo nome
+de arquivo, mesmo cabeçalho, mesma procedência (contrato, seção 7). **O caminho
+muda, o formato não** — nada em `clientes/` deve deixar rastro de por onde a
+conversa entrou.
+
+Agora grave, antes de extrair um fato sequer. Nome, cabeçalho de três linhas e
+o texto sem tocar: contrato, seção 4.7. Se algo der errado no meio, o material
 do corretor já está salvo. **`_bruto/` não se corrige, não se resume e não se
 apaga.**
 
@@ -354,9 +371,9 @@ mostrar o cliente respondendo.
 - **Imóvel citado que não está na carteira não entra com o que a conversa diz.**
   Pede-se o link, uma vez. Sem link e sem ficha, ele fica de fora e vira linha
   do `## Falta saber`.
-- **Ela não manda a mensagem.** Não existe conector de WhatsApp, e não é por
-  falta de procurar: a API oficial é para número de empresa, e o corretor atende
-  do número pessoal. Quem aperta enviar é ele.
+- **Ela não manda a mensagem.** O conector de WhatsApp, onde existe, só LÊ — e
+  isso não é limitação técnica: a mensagem sai na voz do corretor, e disparo
+  automático é onde uma conta de WhatsApp morre. Quem aperta enviar é ele.
 - **Ela não marca visita em agenda nenhuma.** Propõe o horário que está no
   `INDICE.md` e para aí.
 - **Ela não decide preço, não avalia proposta e não diz se um documento está em

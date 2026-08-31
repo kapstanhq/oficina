@@ -42,7 +42,10 @@ aposentados: 0
 Google Agenda: não
 Gmail: não
 Google Drive: não
-WhatsApp: não tem conector. A conversa entra colada, e vai para _bruto/
+WhatsApp: não
+<!-- não: a conversa entra colada, e vai para _bruto/. É o padrão, e
+     funciona em qualquer ferramenta. sim: há conector, e aí escreva a
+     data do teste — “sim  ← testado AAAA-MM-DD”. Seção 7. -->
 
 ## Como eu trabalho
 <!-- O que a skill segue sem perguntar de novo. -->

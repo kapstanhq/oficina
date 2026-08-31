@@ -484,7 +484,7 @@ Vale saber antes de instalar, e não depois.
 
 | Limite | O que isso significa na prática |
 |---|---|
-| **WhatsApp não conecta** | A API oficial é para número de empresa, e você atende do seu número pessoal. Você exporta ou cola a conversa. É um passo manual, e continua manual. |
+| **WhatsApp não conecta sozinho** | O padrão é você exportar ou colar a conversa, e isso funciona em qualquer lugar. Em programa que roda no seu computador dá para ligar um conector que **lê** as suas conversas — não é da Meta, é instalação à parte de uns quinze minutos, e mesmo com ele quem aperta enviar é você. |
 | **CRM da imobiliária não conecta** | Nenhum conecta sem a imobiliária autorizar. Por isso a carteira é sua, e não do CRM. |
 | **Alguns sites não são lidos** | Quando o link não abrir, ela avisa e pede a ficha colada. Ela não chuta dado de imóvel — preço adivinhado vira mentira no WhatsApp do cliente. |
 | **Ela não manda mensagem** | Escreve o texto. Quem aperta enviar é você. |

@@ -66,9 +66,13 @@ Não achei a carteira, nem no computador nem no seu Drive. Rode
 de verdade lá dentro. Depois isto aqui funciona.
 ```
 
-Do `INDICE.md` você tira quatro coisas: `modo:`, o `nome:` de `## Quem sou` (é
-a voz das mensagens), o `canal padrão com cliente:` e o `horário de visita que
-costumo oferecer:` — este último é o que fecha a mensagem sem inventar agenda.
+Do `INDICE.md` você tira cinco coisas: `modo:`, o `nome:` de `## Quem sou` (é
+a voz das mensagens), o `canal padrão com cliente:`, o `horário de visita que
+costumo oferecer:` — este é o que fecha a mensagem sem inventar agenda — e a
+linha `WhatsApp:` de `## O que está conectado`. Ela diz `sim` só depois de
+testada: aí existe conector, e o passo 1 tem uma fonte a mais. Diz `não`, ou
+não existe: siga sem ela, que é o normal, e **não mencione o conector** — esta
+skill não é lugar de oferecer instalação.
 
 **A data de hoje vem do ambiente, não da carteira.** A última linha do
 `hoje.md` pode ser de duas semanas atrás, e todo o cálculo de silêncio desta
@@ -112,16 +116,29 @@ O que se mede é o **silêncio dele**, não o último toque do corretor. A últi
 vez que o cliente falou está, em ordem de busca:
 
 ```
-1  a última linha de ## Histórico que registra fala ou ato dele
-2  ## Combinado — o que ele marcou ou prometeu, com a data
-3  ## Imóveis mostrados — a última reação registrada (“gostou do pátio”)
-4  a última mensagem dele na conversa em _bruto/ (leia o fim do arquivo)
-5  a coluna último contato do _indice.md — e aí diga que a conta é aproximada,
+1  o conector, quando a linha diz sim: ultima_interacao com o telefone do
+   arquivo do cliente devolve a data E de quem foi a última palavra — que é a
+   pergunta inteira, sem adivinhação
+2  a última linha de ## Histórico que registra fala ou ato dele
+3  ## Combinado — o que ele marcou ou prometeu, com a data
+4  ## Imóveis mostrados — a última reação registrada (“gostou do pátio”)
+5  a última mensagem dele na conversa em _bruto/ (leia o fim do arquivo)
+6  a coluna último contato do _indice.md — e aí diga que a conta é aproximada,
    porque essa coluna não distingue quem falou
 ```
 
-Não deu para saber quem falou por último, em nenhum dos cinco: o cliente entra
+Não deu para saber quem falou por último, em nenhum dos seis: o cliente entra
 na lista com `parado há ?` e vira uma linha em `## Falta saber`. Não estime.
+
+**O conector viu o que a carteira não sabia?** Acontece, e é informação nova,
+não defeito: o cliente respondeu e ninguém anotou. Diga na lista — “respondeu
+dia 19, e a carteira não registrou” — e ponha uma linha em `## Falta saber`.
+**Não grave a conversa aqui**: quem traz conversa para `_bruto/` é
+`/corretor:organizar-carteira`, e uma skill que grava fora do escopo dela é a
+que ninguém desconfia quando o arquivo aparece estranho.
+
+E o contrário também vale: sem telefone no arquivo do cliente, o conector não
+serve para ele — não tem como achar a conversa. Siga pelos outros cinco.
 
 ### Passo 2 · Quando é silêncio, por etapa
 
