@@ -13,6 +13,9 @@ canal: WhatsApp
      em conversa · visita marcada · visitou · proposta · fechado. -->
 etapa: novo lead · desde <AAAA-MM-DD>
 origem:
+<!-- Só existe se ele PEDIU silêncio, e aí vale para todas as skills: nenhuma
+     escreve mensagem para ele, nem para retomar. Seção 7.1 do CONTRATO.md. -->
+não contatar: não
 
 ## O que procura
 faixa: ?

@@ -6,8 +6,11 @@ description: >-
   que traz uma novidade concreta em vez de cobrar resposta. Nunca repete o
   ângulo da última tentativa, deixa em paz quem já foi retomado duas vezes sem
   responder, e grava a tentativa no arquivo do cliente para a próxima execução
-  saber. Use quando o corretor diz “quem sumiu?”, “quem parou de responder”,
-  “preciso dar um toque em alguém”, “semana fraca, quem eu chamo”, “o que eu
+  saber. Com o conector de WhatsApp ligado ela também manda — uma por uma,
+  depois de mostrar na tela para quem vai, o texto inteiro e por que aquela
+  pessoa está na lista. Use quando o corretor diz “quem sumiu?”, “quem parou
+  de responder”, “preciso dar um toque em alguém”, “semana fraca, quem eu
+  chamo”, “o que eu
   mando pra quem visitou e não voltou”, “quero reativar cliente antigo”, “tem
   gente parada há tempo demais aí?” ou pede a mensagem para um cliente
   específico que ficou sem resposta.
@@ -16,8 +19,10 @@ compatibility: >-
   Precisa da carteira, no computador ou no Google Drive — ela conta os dias de
   silêncio de cada cliente e lê as retomadas anteriores no histórico dele. Sem
   carteira, NÃO funciona: não há o que varrer, nem onde gravar a tentativa para
-  a próxima execução não repetir o ângulo. Não abre link e não manda mensagem:
-  escreve o texto e diz onde guardou.
+  a próxima execução não repetir o ângulo. Não abre link. Sem conector de
+  WhatsApp — que é o normal — escreve o texto e para; com o conector ligado,
+  manda uma por vez, e só depois de mostrar na tela o texto inteiro e para
+  quem vai.
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -34,8 +39,13 @@ nome nenhum, varre a carteira inteira.
 
 Ela não escreve mensagem sem novidade (retomada sem novidade é cobrança, e
 cobrança queima o contato), não insiste com quem já foi retomado duas vezes sem
-responder, não manda nada — quem aperta enviar é o corretor —, e não inventa
-imóvel, preço nem prazo para ter o que dizer.
+responder, e não inventa imóvel, preço nem prazo para ter o que dizer.
+
+**Mandar é a segunda saída, e ela só existe com o conector.** Sem ele — o caso
+normal, e o de toda ferramenta de chat na web — ela entrega os blocos prontos
+para copiar e para. Com ele, ela monta a tela do passo 8 e manda o que o
+corretor aprovar, uma mensagem por vez. O bloco não some em nenhum dos dois
+casos: é o padrão, e é o que sobra quando a ponte cai.
 
 ---
 
@@ -66,13 +76,25 @@ Não achei a carteira, nem no computador nem no seu Drive. Rode
 de verdade lá dentro. Depois isto aqui funciona.
 ```
 
-Do `INDICE.md` você tira cinco coisas: `modo:`, o `nome:` de `## Quem sou` (é
+Do `INDICE.md` você tira seis coisas: `modo:`, o `nome:` de `## Quem sou` (é
 a voz das mensagens), o `canal padrão com cliente:`, o `horário de visita que
-costumo oferecer:` — este é o que fecha a mensagem sem inventar agenda — e a
-linha `WhatsApp:` de `## O que está conectado`. Ela diz `sim` só depois de
-testada: aí existe conector, e o passo 1 tem uma fonte a mais. Diz `não`, ou
-não existe: siga sem ela, que é o normal, e **não mencione o conector** — esta
+costumo oferecer:` — este é o que fecha a mensagem sem inventar agenda — e as
+duas linhas de `## O que está conectado`: `WhatsApp:` e `envio:`.
+
+`WhatsApp:` diz `sim` só depois de testada: aí existe conector, e ele dá uma
+fonte a mais no passo 1 e uma saída a mais no passo 8. Diz `não`, ou não
+existe: siga sem ele, que é o normal, e **não mencione o conector** — esta
 skill não é lugar de oferecer instalação.
+
+`envio:` só existe embaixo do `sim`, e é ela que governa o passo 8 (contrato,
+7.1). Linha ausente, ou valor que você não reconhece: **`pergunta sempre`**.
+
+```
+pergunta sempre           mostra a tela e espera a escolha. É o padrão
+responder sem perguntar   não muda nada aqui — retomada não é resposta a
+                          conversa viva, é o corretor começando de novo
+não                       a skill nem oferece: entrega os blocos e para
+```
 
 **A data de hoje vem do ambiente, não da carteira.** A última linha do
 `hoje.md` pode ser de duas semanas atrás, e todo o cálculo de silêncio desta
@@ -91,18 +113,26 @@ Qualquer outro valor, linha ausente ou arquivo ilegível: **copiloto**.
 | quem recebe mensagem | ele escolhe, na UI de perguntas | os cinco primeiros da lista |
 | ângulo de cada mensagem | escolhe sozinha nos dois modos — é o trabalho dela | idem |
 | quem está no limite de duas retomadas | mostra e não escreve | idem |
+| quem recebe o envio | a tela do passo 8 | idem — o automático não pula a tela |
 | fecho | `## Guardei` e `## Falta saber` | mais `## Decidi sozinho` |
 
 Esta skill **não tem exceção ao automático** — a única do pack é
 `/corretor:conferir-matricula`. Se em algum ponto parecer que ela precisa de
 uma, pare e pergunte; não invente a exceção.
 
+**E o `modo:` não governa o envio.** No automático ela escolhe quem recebe e
+qual ângulo usa sem perguntar; mandar continua passando pela tela do passo 8,
+porque quem ligou o automático para o trabalho não ligou para a boca dele
+(contrato, 7.1). Quem manda no envio é a linha `envio:`, e ela não tem valor
+que faça retomada sair sem ser mostrada.
+
 ---
 
 ## 4 · O passo a passo
 
 É tarefa de três ou mais passos demorados — lê a carteira inteira e escreve em
-vários arquivos. **Mostre o TODO na tela** com os passos 1 a 6.
+vários arquivos. **Mostre o TODO na tela** com os passos 1 a 7. O passo 8 entra
+no TODO só quando há conector: sem ele, não existe.
 
 ### Passo 1 · Quem está parado
 
@@ -239,9 +269,12 @@ para ela”.
 
 ### Passo 7 · Escrever
 
-Até **cinco mensagens por execução**. Corretor com pressa não copia quinze, e
-mensagem escrita e não mandada envelhece na tela. O resto fica na lista, com a
-posição, para a próxima rodada.
+Até **cinco mensagens por execução**, e o número é o mesmo com o conector
+ligado. Ele é o tamanho de uma tela que alguém lê inteira antes de aprovar:
+acima disso o corretor rola, para de ler o texto de cada um e aprova no
+atacado — que é exatamente o que esta skill existe para não fazer. Corretor com
+pressa também não copia quinze, e mensagem escrita e não mandada envelhece na
+tela. O resto fica na lista, com a posição, para a próxima rodada.
 
 O formato é o da seção 6 do contrato — WhatsApp ou e-mail conforme o `canal:` do
 arquivo do cliente. O que é próprio da retomada:
@@ -265,6 +298,200 @@ Toda afirmação da mensagem sai de um campo com procedência. Preço com mais d
 preço do V-083 (apto 2 dorm, Menino Deus) é de 12 de julho — confira antes de
 mandar”.
 
+### Passo 8 · A tela do envio
+
+Só existe com `WhatsApp: sim` e `envio:` diferente de `não`. Sem os dois o
+trabalho acabou no passo 7: os blocos estão prontos para copiar, e a skill não
+pede desculpa duas vezes por não mandar.
+
+Comece por `estado_da_ponte`. Não respondeu, ou respondeu desligada: entregue os
+blocos, diga em uma linha que a ponte está fora e siga — nada nesta skill
+depende dela. As ferramentas da ponte não estão em `allowed-tools`, e a primeira
+chamada pede permissão: é normal, e é bom que peça.
+
+**Prepare antes de mostrar.** Um `preparar_envio(conversa, texto)` por pessoa —
+`conversa` é uma só, e é no tipo desse parâmetro que o lote deixa de existir. É
+o `preparar_envio` que responde o teto, e quem for recusado por teto aparece
+entre os que ficaram de fora, com o número e como mudá-lo, **antes** de o
+corretor aprovar. Cinco por execução cabem no teto de partida de seis conversas
+por hora; duas execuções na mesma hora não cabem, e a segunda diz isso na cara
+em vez de falhar no fim.
+
+O par sai por pessoa, sempre nesta ordem, com a tela no meio:
+
+```
+preparar_envio(conversa, texto)             devolve o código da prévia
+<a tela, e a escolha do corretor>
+enviar_mensagem(previa, conversa, texto)    os três, batendo byte a byte
+```
+
+**O que a tela carrega, por pessoa** — e resumo não serve. Nunca “4 mensagens
+aguardando”: o que ele aprova é o texto, não a contagem.
+
+```
+id com apelido      C-017 (Joana Ribeiro), sempre os dois juntos
+etapa e silêncio    visitou · parada há 4 dias
+a última palavra    de quem foi, quando, e o que foi dito
+qual tentativa      retomada 1, ou retomada 2 · a última
+o ângulo            o que esta mensagem traz de novo
+o texto             INTEIRO, do jeito que vai sair, na cerca de código dele
+```
+
+E a tela inteira:
+
+```markdown
+Três para retomar — carteira lida agora, conversas conferidas agora
+
+1 · C-008 (Família Duarte) · proposta · parado há 3 dias
+    ele falou por último, 16/08: “vou conversar em casa e te retorno”
+    retomada 1 · ângulo: o proprietário respondeu sobre o prazo
+
+<o bloco do passo 7, inteiro, na cerca de código dele>
+
+2 · C-017 (Joana Ribeiro) · visitou · parada há 4 dias
+    você falou por último, 15/08 — ela não responde desde a visita
+    retomada 2 · a última · ângulo: o IPTU chegou
+
+<o bloco do passo 7, inteiro, na cerca de código dele>
+
+3 · C-041 (Nara Beltrão) · novo lead · parada há 8 dias
+    ela nunca escreveu nesta conversa — o telefone veio do portal
+    retomada 1 · ângulo: imóvel novo — V-083 (apto 2 dorm, Menino Deus)
+
+<o bloco do passo 7, inteiro, na cerca de código dele>
+
+<quem ficou de fora, com o motivo de cada um — a lista da seção 6>
+
+A Nara nunca te escreveu: aí é você começando a conversa, e é o caso que o
+WhatsApp olha com mais atenção.
+
+  Mando todas      as 3, uma por vez, espaçadas
+  Escolho quais    você me diz os números
+  Uma por uma      mostro cada uma outra vez antes de sair
+  Eu mesmo mando   você copia e cola no WhatsApp
+```
+
+Os quatro rótulos são estes, e não se traduzem para outra coisa. **“Uma por
+uma” é a tela do contrato (7.1) repetida por pessoa** — para, texto, e as três
+saídas `Mando agora · Mudo o texto · Eu mesmo mando`. “Mudo o texto” refaz
+aquela mensagem e volta a mostrá-la: prévia velha não vira mensagem nova, e é
+por isso que trocar o texto obriga a preparar de novo.
+
+**Quem ficou de fora vem antes das saídas**, sempre, e inteiro. Ele decide com
+a lista dos que saem e a dos que não saem na mesma tela — descartar em silêncio
+é o que faz o corretor parar de confiar na lista.
+
+#### 8.1 · Aprovar três de uma vez não é lista de transmissão
+
+A diferença é de forma, não de intenção, e vale escrever:
+
+```
+lista de transmissão   uma mensagem, mesmo texto, muitos destinatários, tudo
+                       junto. Não existe aqui — a ponte aceita UMA conversa
+                       por chamada, e não há como pedir duas
+três aprovadas juntas  três mensagens DIFERENTES, uma por pessoa, com o nome
+                       dela, o imóvel dela e a novidade dela dentro. A ponte
+                       manda uma, espera, manda a outra
+```
+
+O que o corretor aprova de uma vez é a **revisão**, não o disparo. Diga isso na
+tela em poucas palavras — “uma por vez, espaçadas” — e não prometa hora de
+chegada: quem controla o intervalo é a ponte.
+
+#### 8.2 · `ultima_interacao` imediatamente antes de cada envio
+
+A lista foi montada com o que está **escrito na carteira**; a conversa é outra
+coisa e anda sozinha. Entre a leitura e o envio passaram minutos, e é nesses
+minutos que o cliente responde.
+
+Voltou palavra dele depois do que a carteira registra: **a retomada não sai.**
+Ela vira aviso, e o aviso é mais útil que a mensagem seria:
+
+```
+C-017 (Joana Ribeiro) — ela respondeu 14 minutos atrás e a carteira não sabe.
+Não mandei a retomada: retomar quem já voltou é o que queima o contato. A
+conversa está esperando resposta, e quem traz ela para dentro é
+/corretor:organizar-carteira.
+```
+
+A linha entra em `## Falta saber`. **Não grave a conversa aqui** — a regra do
+passo 1 não muda por estarmos perto do envio.
+
+#### 8.3 · As três travas da escrita passam a valer no envio
+
+Nenhuma delas é trava de plataforma. São a razão de a retomada funcionar, e já
+valiam quando a única saída era o bloco:
+
+```
+7 dias de cadência     quem recebeu retomada há menos de uma semana não entra
+                       na lista, e o que não entra na lista não sai
+a terceira não sai     duas retomadas sem resposta e acabou (passo 6). Não se
+                       escreve, então não há o que aprovar
+o mesmo ângulo, não    o mesmo assunto com outras palavras é a mesma mensagem,
+                       e o cliente lê como a mesma mensagem
+```
+
+O que muda com o conector é só o efeito: antes o bloco não escrito era uma
+mensagem a menos para copiar, agora é uma mensagem que não sai. Ele pediu a
+terceira com todas as letras? Diga o motivo em uma linha, uma vez, e não
+escreva — o WhatsApp é dele e a mão também, mas a skill não escreve a mensagem
+que ela acabou de dizer que erra.
+
+#### 8.4 · O risco desta categoria, e ele se diz em uma linha
+
+Retomada é o corretor **começando** a conversa: o destinatário não escreveu
+primeiro, e para o WhatsApp esse é o caso de outra ordem — a punição mais
+provável não é perder a conta, é a ponte parar de parear, sem erro na tela.
+Isso se diz em **uma linha, uma vez por execução**, junto das saídas, como no
+desenho acima. Não repita por item, não repita depois que ele escolheu, e não
+vire parágrafo: o aviso inteiro é do ato de ligar o conector e mora no
+`/corretor:comecar`. Aqui é lembrete, e lembrete que vira sermão é o que faz o
+corretor parar de ler a tela.
+
+Quem decide é ele. A skill informa, mostra e obedece.
+
+#### 8.5 · Quando a ponte recusa
+
+```
+prévia vencida       passou de 10 minutos, ou já foi usada. Prepare de novo e
+                     MOSTRE aquele item outra vez antes de mandar
+mensagem nova por    a prévia morre. Não é erro: é o cliente falando. Volte ao
+cima                 aviso de ultima_interacao, acima
+texto diferente do   é a trava contra mostrar um e mandar outro. Refaça o par
+que a prévia levou   inteiro — preparar e mostrar — nunca só o enviar
+teto da hora         diga o número e como mudá-lo. Quem não saiu fica na lista
+                     com a posição, para a próxima execução
+grupo, canal,        a ponte não manda, e esta skill não tem por que pedir:
+comunidade           retomada é para uma pessoa
+na lista de não      ela pediu silêncio. Isto não se contorna: tire a pessoa da
+contatar             lista desta execução e escreva no arquivo dela, se ainda
+                     não estiver escrito. Não pergunte se ele quer insistir
+```
+
+**Quem tem `não contatar: sim` no arquivo não entra nesta lista, ponto** — e
+não aparece nem em “fora hoje”, porque nomear alguém que pediu silêncio é
+oferecer que se insista. A ponte recusa de novo se passar, mas essa recusa é a
+segunda rede, não a primeira: quem lê a carteira é esta skill.
+
+Recusa que não diz o número nem como mudá-lo está impedindo em vez de informar
+(contrato, 7.1).
+
+#### 8.6 · O que a tela devolve depois
+
+Uma linha por pessoa, com o que aconteceu de verdade. Não é seção do fecho —
+vem antes dele, junto do trabalho:
+
+```
+Saiu
+
+C-008 (Família Duarte)  ok
+C-017 (Joana Ribeiro)   não saiu — ela respondeu 14 minutos atrás
+C-041 (Nara Beltrão)    ok
+```
+
+O que saiu vira linha no `## Histórico` do cliente (seção 7, com o fim de linha
+que o envio muda). O que não saiu **não vira nada**.
+
 ---
 
 ## 5 · O que perguntar, quando, e como
@@ -286,6 +513,10 @@ Quatro clientes parados. Escrevo a mensagem de quem?
 ```
 
 Rótulo de até quatro palavras; a descrição declara o custo, não vende a opção.
+
+**A tela do passo 8 não conta neste teto.** Ela não é pergunta de busca — é a
+confirmação do ato, e sem ela não há envio. Perguntar “mando?” não é gastar uma
+das três; perguntar de novo o que já está escrito na carteira, é.
 
 Pergunte só isto, e só quando faltar de verdade:
 
@@ -322,6 +553,30 @@ Quem parou de responder — carteira lida em 2026-08-19
 Uma linha por cliente, id com apelido sempre, e a coluna `ângulo` já diz quem
 recebe mensagem e quem não recebe.
 
+### Quem ficou de fora
+
+Vem logo depois da lista, e não é opcional. Quem a skill considerou e descartou
+aparece com o motivo em uma linha. Sem isto o corretor não tem como saber que
+faltou alguém — e descarte em silêncio é o que faz ele parar de confiar na
+lista inteira.
+
+```markdown
+Fora da lista
+
+C-036 (Vera Lins)      duas retomadas sem resposta, a última em 05/08 — a
+                       terceira não traz ela de volta
+C-024 (Paulo Menezes)  sem ângulo: o arquivo dele não tem faixa nem bairros,
+                       então não dá para saber o que é novidade para ele
+C-045 (Tiago Ramos)    retomado há 3 dias — a cadência mínima é 7
+C-042 (Bia Nogueira)   parada há 134 dias — é caso de aposentar, e quem faz
+                       isso é /corretor:organizar-carteira
+C-050 (Léo Prates)     sexto da fila — o teto é cinco por execução
+```
+
+Com o conector, esta mesma lista entra na tela do passo 8, antes das saídas, e
+ganha os motivos que só existem lá: sem telefone no arquivo, ou recusado pelo
+teto da hora.
+
 ### Cada mensagem
 
 Bloco sozinho, pronto para copiar, **sem comentário dentro**. O que houver para
@@ -343,6 +598,10 @@ Consigo te mostrar quinta à noite. Prefere 18h ou 19h?
 > Deus) — preço e vaga do link em 2026-08-18, a praça da visita em 2026-08-18.
 > Ângulo da vez anterior: a pergunta que ficou. Este é imóvel novo.
 
+Sem conector o bloco é o fim: ele copia e cola. Com conector, o bloco continua
+igual — o que muda é que embaixo dele existem as saídas do passo 8, e o texto
+que sai é **este**, byte a byte, porque é ele que a prévia carimbou.
+
 ### O fecho
 
 ```markdown
@@ -363,6 +622,10 @@ Consigo te mostrar quinta à noite. Prefere 18h ou 19h?
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**.
+
+Saiu pela ponte, o `## Guardei` diz isso na mesma linha — `— retomada enviada
+14:32, e a linha no histórico`. O que ficou só escrito continua como está: o
+arquivo guarda a tentativa, não o envio que não houve.
 
 Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
 nomeia a pasta e o arquivo — `clientes/C-008-familia-duarte.md, na pasta
@@ -394,12 +657,27 @@ incluída; ele zera quando o cliente responde. O número é para o corretor ler 
 a contagem que governa o passo 5 vem de contar as linhas, não de confiar no
 número escrito.
 
-`mensagem escrita, envio com o corretor` fica porque é o que é verdade: a skill
-não manda. Por isso **não** se escreve `enviado` em `## Imóveis mostrados`
-agora — `enviado` é fato, e o fato ainda não aconteceu. Depois do bloco, uma
-linha só, sem insistir: “mandou? me diga e eu marco o V-083 (apto 2 dorm,
-Menino Deus) como enviado no arquivo dela.” Enquanto ele não disser, a linha do
-histórico já basta para a próxima execução não mandar o mesmo imóvel de novo.
+`mensagem escrita, envio com o corretor` fica porque é o que é verdade quando a
+skill não mandou — e é o caso normal. Por isso **não** se escreve `enviado` em
+`## Imóveis mostrados` agora: `enviado` é fato, e o fato ainda não aconteceu.
+Depois do bloco, uma linha só, sem insistir: “mandou? me diga e eu marco o V-083
+(apto 2 dorm, Menino Deus) como enviado no arquivo dela.” Enquanto ele não
+disser, a linha do histórico já basta para a próxima execução não mandar o mesmo
+imóvel de novo.
+
+**Saiu pela ponte, o fim da linha muda**, porque o fato mudou:
+
+```
+- 2026-08-19 retomada 2 · WhatsApp · ângulo: imóvel novo — V-083 (apto 2 dorm, Menino Deus) · enviado 14:32 pela ponte
+```
+
+E aí, **e só aí**, o imóvel citado vira `enviado` em `## Imóveis mostrados`:
+agora é fato, e não precisa mais perguntar.
+
+Grave depois do `enviar_mensagem` voltar, nunca antes. Recusado — prévia
+vencida, teto da hora, mensagem nova por cima —, **não grave nada**: não houve
+retomada, e uma linha falsa de retomada tranca aquele cliente por sete dias de
+cadência e queima uma das duas tentativas dele.
 
 Confira o teto de **60 linhas** ao gravar. Estourou: condense o `## Histórico`
 pela seção 9 — linhas de mais de 90 dias viram uma por mês. Fato corrente nunca
@@ -450,7 +728,9 @@ respondeu no WhatsApp e a conversa não foi colada, ela vai propor retomar quem
 já voltou — e uma retomada em cima de uma resposta ignorada é pior que
 nenhuma. O sinal é arquivo com muitos `?` e histórico curto; o conserto é colar
 a conversa e rodar `/corretor:organizar-carteira` antes. Na dúvida, ela
-pergunta uma vez, e é a pergunta que mais paga nesta skill.
+pergunta uma vez, e é a pergunta que mais paga nesta skill. Com conector o
+passo 8.2 pega isso no último segundo — mas só de quem ia receber, e só na hora
+do envio: a lista continua sendo a do que está escrito.
 
 **Sem `## O que procura` preenchido, não há novidade computável.** Cliente cujo
 `faixa:` e `bairros:` estão em `?` não recebe imóvel novo, por mais parecido
@@ -478,6 +758,9 @@ telefone.
 a proposta é boa, não promete prazo de banco, de cartório ou de prefeitura, e
 não aposenta ninguém — os 120 dias são de `/corretor:organizar-carteira`.
 
-**E ela não manda.** Escreve, diz onde guardou e para. Quem aperta enviar é o
-corretor, com o nome dele, no WhatsApp dele — e é por isso que a Kapstan não
-aparece em uma sílaba da mensagem.
+**E ela só manda o que o corretor leu.** Sem conector ela escreve, diz onde
+guardou e para. Com conector ela manda uma por vez, depois da tela do passo 8, e
+nunca uma que ele não tenha visto inteira. A mensagem sai do WhatsApp dele, com
+o nome dele, na voz dele — e é por isso que a Kapstan não aparece em uma sílaba
+dela. Retomada que sai sozinha, sem ninguém na frente da tela, não existe em
+modo nenhum.

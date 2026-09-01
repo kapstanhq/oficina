@@ -3,15 +3,17 @@ name: montar-visita
 description: >-
   Monta a saída de visitas — escolhe quais imóveis da carteira mostrar a um
   cliente, propõe a ordem e a hora, e devolve os eventos prontos para a agenda
-  mais a mensagem de confirmação para colar. Cruza o que o cliente procura com o
-  que ele já viu e por que descartou cada um. Lê a agenda do Google quando ela
-  está conectada, e pergunta os horários quando não está. Grava a visita no
-  arquivo do cliente e deixa o lembrete de confirmar na véspera. Use quando o
-  corretor disser “vou levar a Joana para ver umas casas”, “o que eu mostro pra
-  ela”, “monta meu sábado de visitas”, “que horas marco com a C-017 (Joana
-  Ribeiro)”, “quais imóveis levo nessa saída”, “em que ordem eu mostro”, “marca
-  visita com fulano”, “tenho três clientes e uma manhã só”. Também quando ele já
-  escolheu os imóveis e quer só a ordem, o horário e a mensagem de confirmação.
+  mais a mensagem de confirmação para colar — ou para mandar pelo conector do
+  WhatsApp, uma por vez e com o texto e o destinatário na tela antes. Cruza o
+  que o cliente procura com o que ele já viu e por que descartou cada um. Lê a
+  agenda do Google quando ela está conectada, e pergunta os horários quando não
+  está. Grava a visita no arquivo do cliente e deixa o lembrete de confirmar na
+  véspera. Use quando o corretor disser “vou levar a Joana para ver umas
+  casas”, “o que eu mostro pra ela”, “monta meu sábado de visitas”, “que horas
+  marco com a C-017 (Joana Ribeiro)”, “quais imóveis levo nessa saída”, “em que
+  ordem eu mostro”, “marca visita com fulano”, “tenho três clientes e uma manhã
+  só”. Também quando ele já escolheu os imóveis e quer só a ordem, o horário e
+  a mensagem de confirmação.
 license: MIT
 compatibility: >-
   Precisa da carteira, no computador ou no Google Drive — sem ela esta skill não
@@ -27,9 +29,9 @@ Esta skill escolhe quais imóveis da carteira mostrar a um cliente, em que ordem
 e a que horas, e devolve três coisas prontas — a ordem com a razão de cada
 imóvel, os eventos para a agenda e a mensagem de confirmação para colar.
 
-**Ela não cria evento, não manda mensagem e não calcula rota.** Ela ordena o que
-já está apurado na carteira, mostra por que ordenou assim, e diz na cara onde o
-julgamento é do corretor.
+**Ela não cria evento, não calcula rota, e não manda mensagem sem mostrar antes
+o texto e para quem.** Ela ordena o que já está apurado na carteira, mostra por
+que ordenou assim, e diz na cara onde o julgamento é do corretor.
 
 ---
 
@@ -45,8 +47,9 @@ Leia, nesta ordem:
    seções que esta skill mais usa são a 1 (onde a carteira mora, e os dois
    transportes), a 2 (id e apelido), a 4.2 (`hoje.md`), a
    4.4 (arquivo de imóvel), a 4.5 (arquivo de cliente), a 6 (o que sai para o
-   WhatsApp), a 8 (quando perguntar) e a 10 (como termina). **Nenhum gabarito é
-   reescrito aqui** — formato que esta skill inventar quebra as outras nove.
+   WhatsApp), a 7.1 (como a mensagem sai), a 8 (quando perguntar) e a 10 (como
+   termina). **Nenhum gabarito é reescrito aqui** — formato que esta skill
+   inventar quebra as outras nove.
 2. **o `INDICE.md` da carteira**, pela primeira leitura do CONTRATO §1.
 
 Não achou o `INDICE.md` em lugar nenhum? Uma linha, e para:
@@ -54,7 +57,7 @@ Não achou o `INDICE.md` em lugar nenhum? Uma linha, e para:
 > Não achei a sua carteira. Rode `/corretor:comecar` — ele monta a
 > carteira com você e já entra com um imóvel e um cliente de verdade.
 
-Do `INDICE.md`, guarde cinco coisas antes de seguir:
+Do `INDICE.md`, guarde sete coisas antes de seguir:
 
 ```
 carteira:                               o transporte e o lugar — vale para toda
@@ -62,6 +65,9 @@ carteira:                               o transporte e o lugar — vale para tod
 modo:                                   a seção 2 desta skill
 nome:                                   é a voz da mensagem, e é quem assina
 Google Agenda: <sim|não>                decide o passo 4.1
+WhatsApp: <sim|não>                     com sim, o passo 6 tem a segunda saída
+envio:                                  o que ele já autorizou ali — sem a
+                                        linha, é `pergunta sempre`
 horário de visita que costumo oferecer: é a janela padrão dele
 ```
 
@@ -94,7 +100,9 @@ desfazer*.
 **O que o automático NÃO faz aqui, e é a linha que importa:**
 
 - não cria evento na agenda, não edita e não apaga evento nenhum;
-- não manda mensagem;
+- **não manda mensagem por estar em automático.** Envio não se deriva do
+  `modo:` — quem governa é a linha `envio:`, e o automático não a herda
+  (passo 6);
 - **não dá o sim do cliente por dado.** Visita proposta é proposta até ele
   aceitar. O automático escolhe entre caminhos de trabalho; ele não inventa
   fato, e “ela vai topar sábado” é fato inventado.
@@ -372,7 +380,8 @@ O bloco da mensagem sai **sozinho, pronto para copiar, sem comentário dentro**
 (CONTRATO §6). O que você quiser explicar vai fora dele.
 
 **Um bloco de mensagem por cliente.** Três clientes na manhã, três blocos, cada
-um com o nome do cliente no título do bloco.
+um com o nome do cliente no título do bloco — e, com o conector, três
+confirmações separadas: uma tela por mensagem, nunca uma para as três.
 
 **Link na mensagem de confirmação:** por padrão, nenhum. A mensagem de
 confirmação é sobre hora e ponto de encontro, e link no meio dela rouba a
@@ -382,13 +391,73 @@ mandar os outros dois antes? É uma mensagem por imóvel, um link cada, e você
 escreve os blocos separados.
 
 **A mensagem da véspera não se escreve hoje.** Ela depende do que acontecer até
-lá. O que fica hoje é o lembrete, no passo 7.
+lá. O que fica hoje é o lembrete, no passo 7 — e, quando ela sair pelo conector,
+a véspera tem uma leitura a mais, no fim deste passo.
 
 `onde: ?` quando o `endereço:` do imóvel é `?`. Não se completa endereço de
 cabeça, e o `?` vira linha em `## Falta saber`.
 
 E-mail em vez de WhatsApp quando `canal:` disser e-mail — outro gabarito,
 CONTRATO §6, com a assinatura do `INDICE.md`.
+
+### A segunda saída — mandar pelo conector
+
+Só com `WhatsApp: sim` no `INDICE.md`. Sem conector — que é o caso em toda
+ferramenta de chat na web — existe só o bloco, e **ele continua sendo o
+padrão**: entregue e pare, sem pedir desculpa duas vezes.
+
+A forma é a que o passo 8 já dá para criar evento na agenda: **uma por vez, lida
+de volta antes, nunca em lote e nunca no automático.** Uma trava a mais que a
+agenda não precisa — o texto e o destinatário aparecem literais antes de sair,
+porque evento errado se apaga e mensagem enviada, não.
+
+Três chamadas, sempre nesta ordem:
+
+```
+preparar_envio    a conversa e o texto — devolve o código da prévia
+a tela            as três partes abaixo, e ele escolhe uma das três saídas
+enviar_mensagem   a prévia, a MESMA conversa e o MESMO texto, batendo byte a
+                  byte. Mudou uma vírgula depois de mostrar? Prepare de novo
+```
+
+O que a tela mostra, e resumo não serve (CONTRATO §7.1):
+
+```
+para      Joana Ribeiro · C-017 (Joana Ribeiro) · +55 51 99999-0000 · falou
+          por último em 15 de agosto (ultima_interacao)
+texto     a mensagem INTEIRA, do jeito que vai sair — nunca “a confirmação que
+          a gente combinou”
+saídas    Mando agora      sai do seu WhatsApp, na sua voz
+          Mudo o texto     me diga o que trocar
+          Eu mesmo mando   você copia e cola no WhatsApp
+```
+
+Os três rótulos são literais: cada um diz o que a PESSOA vai fazer, não o nome
+interno da peça.
+
+A prévia vale 10 minutos, serve uma vez, e morre se chegar mensagem nova naquela
+conversa — o cliente respondeu pelo celular e a resposta velha ia sair logo
+atrás. Venceu, prepare outra e diga em uma linha por quê; não é erro dele.
+
+**Quem governa aqui é a linha `envio:`, não o `modo:`** (CONTRATO §7.1). Com
+`pergunta sempre` — o padrão, e o que vale se a linha faltar — a tela sai
+sempre. `responder sem perguntar` libera responder conversa viva, e a
+confirmação da saída raramente é isso: ela ABRE assunto, então a tela sai do
+mesmo jeito. Com `não`, nem ofereça.
+
+As ferramentas da ponte não estão em `allowed-tools`, e a primeira chamada pede
+permissão — isso é normal e é bom que peça. Diz `sim` mas a ponte não respondeu?
+Uma linha dizendo o que não abriu, o bloco para copiar, e **não mexa na linha do
+`INDICE.md`**: como no 4.1, o que falhou foi agora.
+
+**A confirmação da véspera pede uma leitura a mais.** Antes de preparar o envio,
+releia a conversa com `listar_mensagens`, do dia em que ficou combinado para cá.
+Desmarcou, adiou ou perguntou alguma coisa no meio-tempo? Não prepare envio
+nenhum: mostre o que ele escreveu, com a data, e trate isso primeiro — confirmar
+visita que o cliente cancelou por escrito é o jeito mais rápido de parecer que
+ninguém leu nada. **E sem hora escrita no `## Combinado` não sai confirmação
+nenhuma**: véspera de visita que ainda espera o sim não é véspera de nada, e o
+que falta ali é a pergunta, não a confirmação.
 
 ---
 
@@ -422,6 +491,11 @@ etapa: visita marcada · desde 2026-08-19
 - **`etapa:` só vira `visita marcada` depois do sim do cliente.** Sem o sim, a
   etapa fica onde está e o `## Combinado` recebe
   `- proposto sábado 2026-08-22, 10h — aguardando o sim  ← corretor, 2026-08-19`.
+- **Ter mandado a mensagem não é o sim.** Enviada pelo conector ou colada por
+  ele, ela continua sendo proposta: o que saiu foi a pergunta, e quem responde é
+  o cliente. A etapa anda com a resposta, nunca com o envio.
+- **Mandou pelo conector?** Uma linha em `## Histórico` com a data e o que saiu:
+  `- 2026-08-19 confirmação da saída de sábado mandada para ela no WhatsApp`.
 - imóvel que já está em `## Imóveis mostrados` **estende a linha existente**, não
   ganha linha nova.
 - as seis etapas são as do CONTRATO §4.3, e nenhuma se inventa.
@@ -499,10 +573,13 @@ na saída em linguagem curta, sem pedido de desculpa.
   está em obra, não sabe que sábado às 11h a avenida trava. **Conferir a rota é
   do corretor**, e é a primeira coisa que ela diz sobre a ordem. Os 20 minutos
   de vão são padrão de agenda, não medição.
-- **Ela não cria o evento e não manda a mensagem.** Entrega os dois prontos e
-  para. Se o corretor pedir com todas as letras para criar um evento, crie **um
-  por vez**, leia de volta título, dia, hora e endereço antes de cada um, e
-  diga o que criou. Nunca em automático, nunca em lote, nunca sem ele pedir.
+- **Ela não cria o evento sozinha, e não manda mensagem sem mostrar.** Entrega
+  os dois prontos e para. Se o corretor pedir com todas as letras para criar um
+  evento, crie **um por vez**, leia de volta título, dia, hora e endereço antes
+  de cada um, e diga o que criou. Nunca em automático, nunca em lote, nunca sem
+  ele pedir. **O envio pelo conector tem exatamente essa forma**, e uma trava a
+  mais: o texto e o destinatário aparecem literais antes de sair, porque evento
+  errado se apaga e mensagem enviada, não (passo 6, a segunda saída).
 - **Da agenda ela só lê, e só enxerga o que está escrito lá.** Compromisso que
   ele não anotou não existe para ela — a janela que ela achou livre pode estar
   ocupada de verdade. Com a agenda desconectada é pior e é honesto dizer: o

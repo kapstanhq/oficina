@@ -215,6 +215,14 @@ Contrato, seção 7, e nada além dela. Para cada bruto não lido:
   automático.
 - **Buraco é buraco.** `<Mídia oculta>`, mensagem apagada, áudio, figurinha: vira
   linha declarada em `## Combinado` ou pergunta ao corretor, nunca palpite.
+- **Pedido de silêncio se lê e se grava, sempre.** “não me manda mais
+  mensagem”, “para de me mandar isso”, “me tira daí”: grave
+  `não contatar: sim  ← _bruto/<arquivo>, <data>` no arquivo do cliente,
+  escreva a linha dele em `nao-contatar.txt` no diretório da ponte se houver
+  conector, e diga no relatório. **Não pergunte se ele quer insistir** — quem
+  pediu silêncio saiu do alcance das dez, e a `/corretor:retomar-contato` para
+  de elegê-lo na próxima execução. É o único fato desta lista que muda o
+  comportamento de outra skill, e por isso ele nunca fica para depois.
 - **Cada campo com `← _bruto/<arquivo>`**, e a data é a do material, não a de
   hoje. Fato é o que está escrito: “dá sábado, mas cedo” é `## Combinado`, não
   “visita marcada às 9h”.

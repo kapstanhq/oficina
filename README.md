@@ -261,7 +261,7 @@ continuam lá e continuam legíveis.
 
 | Não fazem | Por quê |
 |---|---|
-| Enviar mensagem no seu lugar | Elas escrevem o texto. Quem aperta enviar é você. |
+| Mandar em lote, ou mandar sem você ver | Com o conector de WhatsApp ligado elas mandam pelo seu número — uma por vez, com o destinatário e o texto inteiro na sua tela antes. Sem ele, escrevem o texto e quem cola é você. Lista de transmissão não existe. |
 | Inventar informação | O que não foi apurado aparece como `?` e vira pergunta. |
 | Decidir por você | Preço, aceitar proposta, dizer que um documento está em ordem: elas mostram o que olhar e param. |
 

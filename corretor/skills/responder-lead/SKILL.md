@@ -3,26 +3,28 @@ name: responder-lead
 description: >-
   Escreve a resposta pronta para o lead que chegou. O corretor cola a conversa
   ou o e-mail do portal, e ela devolve a mensagem para copiar, os imóveis da
-  carteira que batem com o que o lead pediu — sempre com id e apelido, V-071
-  (casa 3 dorm, Azenha) — e a lista do que ainda falta saber. Grava o material
-  colado em `_bruto/` e o lead em `clientes/`, com a procedência de cada campo.
-  Não manda a mensagem, não cria imóvel que não está na carteira, e não inventa
-  preço, metragem, prazo nem nome de gente. Use quando chega contato novo pelo
-  Zap, VivaReal, WhatsApp, Instagram ou site da imobiliária, e quando quem já
-  está na carteira manda mensagem nova: “chegou um lead agora”, “colei a
-  conversa aqui, o que eu respondo?”, “o que eu mando pra ela?”, “entrou um
-  contato pelo Zap perguntando o preço da casa da Azenha”, “tem gente
-  perguntando do apartamento do Menino Deus”. Não é para quem sumiu há semanas
-  (/corretor:retomar-contato) nem para ordenar os imóveis de uma visita já
-  marcada (/corretor:montar-visita).
+  carteira que batem com o que o lead pediu — com id e apelido, V-071 (casa 3
+  dorm, Azenha) — e a lista do que falta saber. Grava o material colado em
+  `_bruto/` e o lead em `clientes/`, com a procedência de cada campo.
+  Com o conector de WhatsApp, também manda — uma por vez, com o texto e o
+  destinatário na tela antes. Não cria imóvel que não está na carteira, e não
+  inventa preço, metragem, prazo nem nome de gente. Use quando chega contato
+  novo pelo Zap, VivaReal, WhatsApp, Instagram ou site da imobiliária, e quando
+  quem já está na carteira manda mensagem nova: “chegou um lead agora”, “colei
+  a conversa aqui, o que eu respondo?”, “o que eu mando pra ela?”, “entrou um
+  contato pelo Zap perguntando o preço da casa da Azenha”. Não é para quem
+  sumiu há semanas (/corretor:retomar-contato) nem para ordenar os imóveis de
+  uma visita já marcada (/corretor:montar-visita).
 license: MIT
 compatibility: >-
   Funciona inteira com a carteira acessível, no computador ou no Google Drive
   pelo conector — o transporte sai da linha `carteira:` do `INDICE.md`. Sem
   carteira, ainda escreve a mensagem a partir da conversa colada, mas não cruza
   com os imóveis, não abre ficha de cliente e não grava nada: o `## Guardei`
-  vira “nada foi gravado — você está sem carteira aqui”. Não manda mensagem: o
-  conector de WhatsApp, onde existe, só lê — quem aperta enviar é o corretor.
+  vira “nada foi gravado — você está sem carteira aqui”. Manda a mensagem só
+  com o conector de WhatsApp e a linha `envio:` liberada: uma por vez, com o
+  texto e o destinatário na tela antes. Sem conector, entrega o bloco para
+  copiar e para aí — e quem aperta enviar é o corretor.
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -34,9 +36,13 @@ Ela lê o que o corretor colou, cruza o que o lead pediu com os imóveis da
 carteira, e devolve três coisas: a mensagem pronta para copiar, o que ainda não
 se sabe sobre ele, e o lead gravado como cliente em `clientes/`, na carteira.
 
-Ela **não manda** a mensagem, não cria imóvel que não está na carteira, não
-marca visita em agenda nenhuma e não inventa preço, metragem, prazo nem nome —
-o que não apurou sai como `?`, que é o que a próxima execução vai perguntar.
+Com o conector de WhatsApp ligado, ela **manda** também — uma mensagem por vez,
+depois de pôr na tela o texto inteiro e para quem vai (passo 4.6.1). Sem ele, o
+bloco para copiar é a entrega, e é a saída que existe em todo lugar.
+
+Ela **não manda sozinha**, não cria imóvel que não está na carteira, não marca
+visita em agenda nenhuma e não inventa preço, metragem, prazo nem nome — o que
+não apurou sai como `?`, que é o que a próxima execução vai perguntar.
 
 ## 2 · Antes de tudo
 
@@ -45,15 +51,20 @@ o que não apurou sai como `?`, que é o que a próxima execução vai perguntar
    pesam aqui: **1** (onde a carteira mora, e os dois transportes), **2** (id e
    apelido), **3** (as três regras), **4.5** (o arquivo
    de cliente), **4.7** (`_bruto/`), **6** (o que sai para o WhatsApp), **7**
-   (como ler uma conversa colada), **8** (a ordem de busca) e **10** (como se
-   termina). Nada do que está lá se reescreve aqui: divergiu, o contrato vence.
+   (como ler uma conversa colada), **7.1** (como a mensagem sai, quando sai),
+   **8** (a ordem de busca) e **10** (como se termina). Nada do que está lá se
+   reescreve aqui: divergiu, o contrato vence.
 2. **Leia o `INDICE.md` da carteira**, pela primeira leitura da seção 1 do
    contrato: a linha `carteira:` diz o transporte, e toda leitura e toda
    gravação desta execução vão por ele. É de lá que saem também o nome do
    corretor — o que diz quem é ele na conversa colada —, o modo, o canal padrão,
    os portais e o horário de visita que ele costuma oferecer. E a linha
    `WhatsApp:` de `## O que está conectado`: em `sim`, a conversa pode vir sem
-   ele colar nada (passo 4.1). Em `não`, ou ausente, é colado — o normal.
+   ele colar nada (passo 4.1) e a mensagem pode sair por lá (passo 4.6.1). Em
+   `não`, ou ausente, é colado, e a saída é o bloco — o normal.
+   Com `WhatsApp: sim`, leia junto a linha `envio:`, que só existe aí: ela diz
+   se você oferece mandar, e **não se deriva do `modo:`** (contrato, 4.1).
+   Ausente, vale `pergunta sempre`.
 3. **Não achou `INDICE.md` em lugar nenhum?** Diga isso em uma linha, sem
    improvisar pasta nem criar carteira:
 
@@ -103,6 +114,11 @@ gravado e a ficha aberta valem mesmo sem a resposta da pergunta.
 
 Em automático, toda escolha dessas vira uma linha em `## Decidi sozinho` — o
 que fiz, por que, como desfazer.
+
+**Mandar não entra nesta tabela.** O `modo:` governa escolha — qual imóvel
+entra, qual caminho seguir. Envio é ato com terceiro, tem linha própria
+(`envio:`) e é o passo 4.6.1 que a lê. Corretor em `automatico` não herda envio
+automático: quem ligou o automático para o anúncio não ligou para a boca dele.
 
 ## 4 · O passo a passo
 
@@ -188,7 +204,8 @@ máximo três imóveis, sempre com id e apelido.
 estime uma.
 
 **Um link por mensagem** (seção 6), então **um imóvel vai na mensagem**. Os
-outros ficam listados fora do bloco, para o corretor mandar em seguida.
+outros ficam listados fora do bloco, para o corretor mandar em seguida — e, com
+o conector, para saírem numa segunda mensagem, com a confirmação dela (4.6.1).
 
 ### 4.6 · Escreve a mensagem
 
@@ -205,6 +222,101 @@ Três coisas que esta skill decide dentro daquele formato:
 - **Uma pergunta só.** O que mais falta saber vai para `## Falta saber` e espera
   a próxima mensagem.
 
+### 4.6.1 · Manda, quando é para mandar
+
+Isto só existe com `WhatsApp: sim` e o conector no ar. **Sem conector, o bloco
+para copiar é a entrega inteira** — entregue, siga para 4.7 e não peça desculpa
+por não mandar.
+
+A linha `envio:` decide o que fazer com o que você acabou de escrever:
+
+```
+envio: pergunta sempre           o padrão, e o que vale se a linha faltar
+envio: responder sem perguntar   conversa que o lead abriu sai direto, e você
+                                 diz em seguida o que saiu e para quem
+envio: não                       nem ofereça — o bloco, e ponto
+```
+
+Aqui é quase sempre conversa viva: ele escreveu primeiro, agora, e está
+esperando. É o caso de menor risco que existe — e o de maior ganho, porque o
+número chega sem estar salvo, e é procurando o contato na mão que se cola no
+chat errado.
+
+**Lead de portal é começar conversa, não responder.** Ele escreveu no e-mail do
+Zap e nunca falou no WhatsApp do corretor: aí `responder sem perguntar` não
+vale, a tela sai do mesmo jeito, e a ponte avisa que o destinatário nunca
+respondeu. Não é proibição — é o único caso desta skill em que o risco muda de
+ordem, e ele merece a tela.
+
+O par de ferramentas, nesta ordem, e não há outra:
+
+```
+preparar_envio(conversa, texto)            devolve o código da prévia
+enviar_mensagem(previa, conversa, texto)   exige os três batendo byte a byte
+```
+
+Entre as duas, **mostre**. O que vai na tela tem três partes, e resumo não
+serve (contrato, 7.1):
+
+```
+para     o nome como ele conhece a pessoa, o id com apelido, e quando ela
+         falou por último (ultima_interacao)
+texto    INTEIRO, do jeito que vai sair. Nunca “a resposta que combinamos”
+saídas   Mando agora · Mudo o texto · Eu mesmo mando
+```
+
+Os três rótulos são literais: cada um diz o que a PESSOA vai fazer, não o nome
+interno da peça. Eles são botões, pela UI de perguntas da seção 5:
+
+```
+Para: Rafael Prado — C-032 (Rafael Prado), +55 51 99999-4412, número que não
+está salvo no seu telefone. Ele escreveu há 8 minutos.
+
+  Rafael, a casa da Azenha está disponível, sim.
+
+  São 3 dormitórios e 120 m², com pátio nos fundos que pega o sol da tarde
+  inteira. Fica a duas quadras do Colégio Rosário, dentro da faixa que você
+  falou.
+
+  https://fontesimoveis.com.br/imovel/8812
+
+  Consigo te mostrar sábado de manhã. Prefere 10h ou 11h?
+
+  Mando agora       sai do seu WhatsApp, na sua voz
+  Mudo o texto      me diga o que trocar
+  Eu mesmo mando    você copia e cola no WhatsApp
+```
+
+**“Mudo o texto” recomeça o par.** Texto trocado é prévia nova: o
+`enviar_mensagem` compara byte a byte e recusa o que a prévia não carimbou. Não
+é burocracia — é o que garante que o que saiu é o que ele leu.
+
+**A prévia vale 10 minutos, serve uma vez, e morre se chegar mensagem nova
+naquela conversa.** Com lead quente isso acontece: ele escreve de novo enquanto
+você mostra. Recusou, não insista — leia o que ele mandou agora e prepare outra,
+com o texto que vale agora.
+
+**O teto responde no `preparar`**, antes de a tela sair. Bateu? Diga o número e
+como mudá-lo, e entregue o bloco. Partida: 6 conversas diferentes por hora, 30
+envios no total, 5 segundos entre dois quaisquer. A ferramenta informa e ele
+decide; recusa que esconde o número está impedindo em vez de informar.
+
+**Dois imóveis são duas mensagens, e isso não é lote.** Um link por mensagem
+(4.5) vale no envio também: o segundo imóvel sai numa segunda mensagem, para a
+**mesma** pessoa, com a prévia dela e a confirmação dela. Lote é o mesmo texto
+para muita gente de uma vez, e disso a ponte nem tem a forma — `conversa` é uma
+só por chamada. Duas mensagens seguidas para quem acabou de escrever é conversa.
+Espere a primeira sair, respeite os 5 segundos, e mostre a segunda inteira como
+mostrou a primeira. É exatamente aqui que alguém vai achar que está fazendo
+lote: não está.
+
+As ferramentas da ponte não estão em `allowed-tools`, e a primeira chamada pede
+permissão — é normal, e é bom que peça. A linha diz `sim` e a ponte não
+respondeu? Uma linha dizendo o que não abriu, o bloco para copiar, e siga para
+4.7. **Não mexa na linha do `INDICE.md`:** o que falhou foi agora.
+
+Saiu? O fato existe, e 4.7 grava com hora e canal.
+
 ### 4.7 · Grava, e só então fecha
 
 A seção 7 daqui diz o quê e onde. Confira os tetos **ao gravar**: ficha de
@@ -218,7 +330,9 @@ por último pede o documento. Perguntar o que já está escrito na carteira é o
 defeito mais caro do pack.
 
 **Uma pergunta por vez, no máximo três na execução inteira**, cada uma com o
-motivo na mesma frase. As três que costumam valer o gasto aqui, nesta ordem:
+motivo na mesma frase. A tela de confirmação do envio (4.6.1) **não entra na
+conta**: ela não apura dado nenhum — é o ato passando pela vista dele. As três
+que costumam valer o gasto aqui, nesta ordem:
 
 1. o nome, quando o lead chegou sem ele
 2. a faixa de preço, quando ele não disse — sem ela não dá para escolher imóvel
@@ -258,13 +372,33 @@ https://fontesimoveis.com.br/imovel/8812
 Consigo te mostrar sábado de manhã. Prefere 10h ou 11h?
 ```
 
-Bate em parte, se ele abrir o bairro — mande em outra mensagem, porque um link
+Com `WhatsApp: sim` e a linha `envio:` liberada, esse mesmo bloco vira a tela de
+confirmação de 4.6.1: o destinatário em uma linha acima dele, as três saídas
+abaixo. **O bloco não muda** — segue sozinho e sem comentário dentro, porque é
+dele que “Eu mesmo mando” copia:
+
+```
+Para: Rafael Prado — C-032 (Rafael Prado), +55 51 99999-4412, número que não
+está salvo no seu telefone. Ele escreveu há 8 minutos.
+
+<o bloco, igual ao de cima>
+
+  Mando agora       sai do seu WhatsApp, na sua voz
+  Mudo o texto      me diga o que trocar
+  Eu mesmo mando    você copia e cola no WhatsApp
+```
+
+Sem conector, nada disso aparece, e o que sobra está completo: o bloco é a
+saída.
+
+Bate em parte, se ele abrir o bairro — vai em outra mensagem, porque um link
 por mensagem é o que faz a foto aparecer:
 
 - V-052 (apto 3 dorm, Cidade Baixa) · R$ 480.000 · é apto, não casa, e fica
   fora dos dois bairros que ele pediu
 
-Peça e eu escrevo a mensagem desse também.
+Peça e eu escrevo a mensagem desse também — e mando em seguida, se for para
+mandar, com a confirmação dela.
 
 ```markdown
 ## Guardei
@@ -306,7 +440,7 @@ conector (contrato, seção 1).
 | o que ele colou | `~/carteira/_bruto/AAAA-MM-DD-<canal>-<apelido-curto>.md` | seção 4.7 · arquivo novo · nunca mais se toca |
 | lead novo | `~/carteira/clientes/C-0NN-nome-sobrenome.md` | do modelo `references/modelos/cliente.md`, **com os comentários `<!-- MODELO · … -->` apagados** |
 | lead que já existe | a ficha dele | campo por campo, no arquivo que já existe |
-| o imóvel que foi na mensagem | `## Mostrado a` do arquivo do imóvel | uma linha |
+| o imóvel que foi na mensagem | `## Mostrado a` do arquivo do imóvel | uma linha, se a mensagem saiu |
 | a lista | `~/carteira/clientes/_indice.md` | linha nova, ou o último contato de hoje |
 | a etapa | `~/carteira/funil.md` | só se ela mudou |
 | a conta | `~/carteira/INDICE.md` | `clientes ativos:` e `atualizado:`, se entrou cliente |
@@ -339,23 +473,39 @@ já teve ida e volta na conversa colada              em conversa
 dia e hora combinados DENTRO da conversa            visita marcada
 ```
 
-A mensagem que a skill acabou de escrever **não muda etapa**: ela ainda não foi
-mandada. Propor o sábado não é `visita marcada`.
+A mensagem que a skill acabou de escrever **não muda etapa** — nem depois de
+sair. Propor o sábado não é `visita marcada`, e resposta enviada não é resposta
+recebida: quem move a etapa é o que o cliente fizer com ela.
 
 ### A linha do imóvel, e por que ela diz isso
 
-Em `## Mostrado a` do imóvel e em `## Imóveis mostrados` do cliente — e só
-depois que ele disser que mandou. Enquanto não disser, a mensagem escrita é uma
-linha no `## Histórico` do cliente, porque envio é fato e fato não se presume:
+Em `## Mostrado a` do imóvel e em `## Imóveis mostrados` do cliente, no formato
+`C-032 (Rafael Prado) · enviado 2026-08-19`. **Quando ela entra depende de o
+envio ter acontecido** — envio é fato, e fato não se presume.
+
+**Saiu por aqui (4.6.1):** o fato é seu e a hora você viu. A linha do imóvel
+entra na mesma passada, e o `## Histórico` do cliente registra o envio com hora
+e canal:
 
 ```
-- C-032 (Rafael Prado) · enviado 2026-08-19
+- 2026-08-19 14:07 enviado · WhatsApp · V-071 (casa 3 dorm, Azenha)
 ```
 
-O envio é do corretor, então gravar `enviado` seria gravar um fato que não
-aconteceu. Mas não gravar nada faz a próxima skill oferecer o mesmo imóvel de
-novo. A linha fecha quando ele confirmar, ou quando a próxima conversa colada
-mostrar o cliente respondendo.
+É a única linha da carteira que tem hora, e ela tem porque dois envios do mesmo
+dia se distinguem por ela.
+
+**Ele copiou o bloco:** o envio é dele, e gravar `enviado` seria gravar um fato
+que não aconteceu. A linha do imóvel espera, e o `## Histórico` diz o que é
+verdade:
+
+```
+- 2026-08-19 mensagem escrita sobre o V-071 (casa 3 dorm, Azenha) — envio com
+  o corretor
+```
+
+Não gravar nada faria a próxima skill oferecer o mesmo imóvel de novo. Essa
+linha fecha quando ele confirmar, ou quando a próxima conversa colada mostrar o
+cliente respondendo.
 
 ## 8 · Onde ela para
 
@@ -371,9 +521,11 @@ mostrar o cliente respondendo.
 - **Imóvel citado que não está na carteira não entra com o que a conversa diz.**
   Pede-se o link, uma vez. Sem link e sem ficha, ele fica de fora e vira linha
   do `## Falta saber`.
-- **Ela não manda a mensagem.** O conector de WhatsApp, onde existe, só LÊ — e
-  isso não é limitação técnica: a mensagem sai na voz do corretor, e disparo
-  automático é onde uma conta de WhatsApp morre. Quem aperta enviar é ele.
+- **Ela não manda sozinha.** Com o conector, ela manda — uma por vez, e só
+  depois de ele ver o texto inteiro e para quem vai (4.6.1). O que não existe é
+  envio sem essa tela, lote, lista de transmissão e reenvio porque ninguém
+  respondeu: disparo é onde uma conta de WhatsApp morre, e a mensagem sai na voz
+  do corretor. Sem conector, o bloco é a saída e quem aperta enviar é ele.
 - **Ela não marca visita em agenda nenhuma.** Propõe o horário que está no
   `INDICE.md` e para aí.
 - **Ela não decide preço, não avalia proposta e não diz se um documento está em

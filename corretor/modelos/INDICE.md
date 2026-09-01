@@ -46,6 +46,12 @@ WhatsApp: não
 <!-- não: a conversa entra colada, e vai para _bruto/. É o padrão, e
      funciona em qualquer ferramenta. sim: há conector, e aí escreva a
      data do teste — “sim  ← testado AAAA-MM-DD”. Seção 7. -->
+<!-- A linha do envio nasce COMENTADA, e quem a descomenta é o degrau que
+     testa o conector — carteira com WhatsApp: não e envio: escrito é a
+     contradição que sobrevive à primeira distração. Ela diz quanto a skill
+     pergunta antes de mandar, e NÃO se deriva do modo: acima.
+     pergunta sempre · responder sem perguntar · não. Seção 7.1.
+envio: pergunta sempre -->
 
 ## Como eu trabalho
 <!-- O que a skill segue sem perguntar de novo. -->

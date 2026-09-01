@@ -443,6 +443,13 @@ Troque a palavra quando quiser. Começa em `copiloto`.
 `conferir-matricula` é a exceção: ela nunca decide sozinha, nem no modo
 automático.
 
+**Mandar mensagem não entra nesse acordo.** Com o conector de WhatsApp ligado
+aparece uma segunda linha, `envio:`, que governa só isso e começa em `pergunta
+sempre`. Troque para `responder sem perguntar` — responde conversa viva direto,
+e continua perguntando para começar conversa nova — ou para `não`, e aí ela nem
+oferece. O `automatico` não liga o envio: quem ligou o automático para o
+anúncio não ligou para o que sai no seu nome.
+
 ---
 
 ## Em que programas isto roda
@@ -484,10 +491,10 @@ Vale saber antes de instalar, e não depois.
 
 | Limite | O que isso significa na prática |
 |---|---|
-| **WhatsApp não conecta sozinho** | O padrão é você exportar ou colar a conversa, e isso funciona em qualquer lugar. Em programa que roda no seu computador dá para ligar um conector que **lê** as suas conversas — não é da Meta, é instalação à parte de uns quinze minutos, e mesmo com ele quem aperta enviar é você. |
+| **WhatsApp não conecta sozinho** | O padrão é você exportar ou colar a conversa, e isso funciona em qualquer lugar. Em programa que roda no seu computador dá para ligar um conector — não é da Meta, é instalação à parte de uns quinze minutos. Com ele, ela **lê** as suas conversas e **manda uma por vez**: quem vai receber e o texto inteiro aparecem na sua tela antes, e nada sai sem você mandar sair. Lote e lista de transmissão não existem em lugar nenhum do pack. |
 | **CRM da imobiliária não conecta** | Nenhum conecta sem a imobiliária autorizar. Por isso a carteira é sua, e não do CRM. |
 | **Alguns sites não são lidos** | Quando o link não abrir, ela avisa e pede a ficha colada. Ela não chuta dado de imóvel — preço adivinhado vira mentira no WhatsApp do cliente. |
-| **Ela não manda mensagem** | Escreve o texto. Quem aperta enviar é você. |
+| **Ela não manda áudio nem arquivo** | Pelo conector sai texto, e só para uma pessoa. Foto, áudio, documento e grupo saem do seu WhatsApp, na mão. |
 | **Ela não decide o que é seu** | Preço, aceitar proposta, dizer que a documentação está em ordem: ela mostra o que olhar e para. |
 | **Documento é assunto de advogado** | Ela lê a matrícula e lista o que olhar. Não faz as vezes de advogado nem de cartório. |
 

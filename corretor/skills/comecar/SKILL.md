@@ -220,6 +220,12 @@ modelos/_indice-imoveis.md   → ~/carteira/imoveis/_indice.md
 modelos/_indice-clientes.md  → ~/carteira/clientes/_indice.md
 ```
 
+**E a linha `envio:` do modelo sai junto com os comentários.** Ela governa
+quanto a skill pergunta antes de mandar mensagem, e **só existe onde há
+conector** (contrato §7.1). A carteira nasce com `WhatsApp: não`, então ela
+ainda não tem o que governar — quem a escreve é o passo 5, se ele ligar a
+ponte.
+
 `modelos/imovel.md` e `modelos/cliente.md` **não se copiam agora**: eles viram
 arquivo nos passos 6 e 7, um por item, com id e apelido no nome.
 
@@ -423,19 +429,23 @@ se resume ou se apaga.
 
 A linha do WhatsApp no `## O que está conectado` nasce `não`, e para quase todo
 mundo é assim que ela fica: colar não é conexão que falhou, é como a coisa
-funciona.
+funciona. A linha `envio:` não existe ainda — ela nasce com o conector, e quem
+a escreve é a cadeia.
 
 **Existe um caminho opcional, e ele não é para todos.** Só vale se ESTE programa
 rodar comandos no computador dele — Claude Code, Codex CLI, Cursor. Nesse caso há
-um conector que lê as conversas direto, sem colar. Custa uma instalação de uns
-quinze minutos, ocupa uma das quatro vagas de dispositivo conectado do WhatsApp
-dele, e não é programa oficial da Meta.
+um conector que lê as conversas direto, sem colar, **e manda a resposta pelo
+WhatsApp dele — uma por vez, com o texto inteiro e o nome de quem recebe na tela
+antes de sair.** Custa uma instalação de uns quinze minutos, ocupa uma das quatro
+vagas de dispositivo conectado do WhatsApp dele, e não é programa oficial da
+Meta.
 
 **Ofereça em duas linhas e não venda:** diga que existe, que colar continua
-funcionando igual, e pergunte se ele quer agora, depois, ou não. Se quiser, leia
-`references/conectar-whatsapp.md` e siga a cadeia de lá — ela traz os avisos que
-ele precisa ouvir ANTES de qualquer instalação. Se não quiser, ou se aqui não
-houver linha de comando, siga em frente e não toque mais no assunto.
+funcionando igual, e pergunte se ele quer agora, depois, ou não. **Os avisos do
+envio não entram na oferta** — eles são da cadeia, e lá se dizem uma vez, antes
+de qualquer instalação. Se quiser, leia `references/conectar-whatsapp.md` e siga
+a cadeia de lá. Se não quiser, ou se aqui não houver linha de comando, siga em
+frente e não toque mais no assunto.
 
 Este passo é pulável, mas ele emenda no passo 7: se ele já tiver uma conversa à
 mão agora, o passo 7 usa essa mesma.
@@ -665,8 +675,10 @@ arquivo em `_bruto/` e uma linha dizendo que quem lê é
 `/corretor:conferir-matricula` — a única que nunca opera em automático.
 
 **Dos conectores ela só lê, e só no teste.** Não cria evento, não manda e-mail,
-não escreve no Drive. Nenhuma skill do pack manda mensagem: todas escrevem o
-texto, e quem aperta enviar é ele.
+não escreve no Drive, e não manda mensagem no WhatsApp — nem uma de teste para
+provar que a ponte envia. Ela liga a ponte e escreve como o envio vai perguntar;
+quem manda é a skill do dia, com o texto e o destinatário na tela dele antes
+(contrato §7.1). O bloco para copiar segue sendo o padrão do pack.
 
 **Ela não instala nada.** Não roda `/plugin`, não edita configuração do Claude
 Code, não mexe em MCP. No passo 3 ela diz o que digitar; quem digita é ele.

@@ -31,7 +31,7 @@ script — ninguém copia à mão.
 4  os formatos literais dos sete arquivos
 5  os dois modos, e a exceção da matrícula
 6  o que sai para o WhatsApp, e o que sai por e-mail
-7  como ler uma conversa colada, e o que fazer com ela
+7  como a conversa entra, e como a mensagem sai
 8  a ordem de busca, e quando perguntar
 9  os tetos
 10 como uma skill começa e termina
@@ -115,6 +115,12 @@ Transporte, ponto médio, o lugar. O transporte é `local` ou `drive`, e não h�
 terceiro valor. **Linha ausente ou valor desconhecido: o transporte é o lugar
 onde o `INDICE.md` foi encontrado**, e a skill segue sem perguntar — carteira
 montada antes desta linha continua funcionando.
+
+A linha `envio:` só existe quando `WhatsApp: sim`, e ela governa o que a seção
+7.1 faz. Os três valores são `pergunta sempre` (o padrão, e o que vale se a
+linha faltar), `responder sem perguntar` e `não`. Ela **não** se deriva do
+`modo:` — envio é ato com terceiro, e quem ligou o automático para o trabalho
+não ligou para a boca dele.
 
 `carteira: drive` implica `Google Drive: sim` em `## O que está conectado`: é o
 mesmo conector, e a carteira que abriu é o teste.
@@ -393,7 +399,8 @@ aposentados: 8
 Google Agenda: sim  ← testado 2026-08-19
 Gmail: sim  ← testado 2026-08-19
 Google Drive: não — pulado no começo
-WhatsApp: não
+WhatsApp: sim  ← testado 2026-08-31
+envio: pergunta sempre
 
 ## Como eu trabalho
 portais onde anuncio: Zap, VivaReal
@@ -726,6 +733,19 @@ o WhatsApp já dá; e mais de uma pergunta.
 O bloco sai **sozinho, pronto para copiar**, sem comentário dentro dele. O que a
 skill quiser explicar vai fora do bloco, depois.
 
+**O bloco tem duas saídas, e a segunda depende do conector** (seção 7.1). Sem
+conector — que é o caso em toda ferramenta de chat na web — existe só a
+primeira, e ela é o padrão:
+
+```
+Eu mesmo mando     o corretor copia o bloco e cola no WhatsApp dele
+Mando agora        a skill envia, depois de ele ver o texto e o destinatário
+Mudo o texto       ele diz o que trocar, e nada sai agora
+```
+
+O rótulo diz o que a PESSOA vai fazer, nunca o nome interno da peça: “Eu mesmo
+mando” e não “só o bloco”.
+
 ### E-mail é outro tamanho
 
 ```
@@ -760,10 +780,147 @@ e é isso que impede o conector de virar um segundo pack.
 | saber quando foi a última mensagem | está no que ele colou | pergunta-se à conversa |
 | guardar em `_bruto/` | igual nos dois | igual nos dois |
 
-**O conector lê. Não manda.** O que sai para o cliente continua saindo como
-bloco pronto para copiar (seção 6), e quem aperta enviar é o corretor. Isso não
-é limitação técnica: é a voz dele que vai na mensagem, e disparo automático é
-onde uma conta de WhatsApp morre.
+**O conector lê sempre, e manda uma por vez** — nunca em lote, e nunca sem o
+corretor ter visto o texto e o nome de quem recebe. Como isso funciona está em
+7.1. O bloco para copiar **continua sendo o padrão**: é o que funciona em toda
+ferramenta, e onde não há conector ele é a única saída.
+
+## 7.1 · Como a mensagem sai
+
+Isto vale **só com o conector** (`WhatsApp: sim` no `INDICE.md`). Sem ele, a
+skill entrega o bloco e para — e não pede desculpa por isso.
+
+**A regra que governa tudo aqui: a ferramenta informa, e o corretor decide.**
+Ela recusa o que ele não pediu, nunca o que ele pediu. Isso separa três coisas
+que se confundem com facilidade:
+
+```
+escolha dele   usar o envio ou não, mandar para quem não respondeu, dizer ao
+               programa dele para não perguntar mais
+               → avise UMA VEZ, quando ele liga, e obedeça
+
+erro           a skill mostrou um texto e mandou outro; a prévia envelheceu e o
+               cliente já respondeu no meio-tempo
+               → a ponte recusa, porque ninguém escolheu isso
+
+lote           mesma mensagem para vários, lista de transmissão
+               → não existe: a ferramenta aceita UMA conversa por chamada
+```
+
+### O par que sai, sempre nesta ordem
+
+```
+preparar_envio    devolve um código de prévia e o texto exato que vai sair
+enviar_mensagem   exige esse código, a mesma conversa e o mesmo texto
+```
+
+Entre as duas, a skill **mostra ao corretor**, e o que ela mostra tem três
+partes obrigatórias — é o pedido literal, e resumo não serve:
+
+```
+para    o nome como ele conhece a pessoa, o id com apelido, e quando ela
+        falou pela última vez
+texto   INTEIRO, do jeito que vai sair. Nunca “a resposta que combinamos”
+saídas  Mando agora · Mudo o texto · Eu mesmo mando
+```
+
+A prévia vale **10 minutos** e serve **uma vez**. Ela morre se chegar mensagem
+nova naquela conversa depois de criada — senão o corretor responde pelo celular
+e a skill manda a resposta velha logo atrás.
+
+### Várias de uma vez não é lote
+
+Uma skill pode mostrar quatro mensagens e o corretor aprovar as quatro numa
+tela. Isso **não** é lista de transmissão, e a diferença é de forma:
+
+```
+lista de transmissão   uma mensagem, mesmo texto, muitos destinatários, junto
+várias revisadas       N mensagens DIFERENTES, uma por pessoa, com o dado dela
+                       dentro, saindo uma a uma e espaçadas
+```
+
+Quando mostrar várias, mostre **o texto inteiro de cada uma** — nunca “4
+mensagens aguardando” — e o **porquê de cada uma estar ali**. Quem ficou de
+fora aparece com o motivo: descarte em silêncio é o que faz o corretor parar de
+confiar na lista.
+
+Os rótulos da tela de várias são estes quatro, e valem para toda skill que
+mostrar mais de uma — quem inventar um quinto reabre o problema que “Só o
+bloco” criou:
+
+```
+Mando todas      uma por vez, espaçadas, na ordem mostrada
+Escolho quais    ele diz os números que vão
+Uma por uma      cada uma volta a aparecer antes de sair
+Eu mesmo mando   ele copia os textos
+```
+
+### O que a ponte recusa, e o que ela só avisa
+
+```
+recusa    mais de uma conversa por chamada
+          texto ou destinatário diferentes do que a prévia carimbou
+          prévia vencida, usada duas vezes, ou com mensagem nova por cima
+          grupo, canal e comunidade — o destinatário deixa de ser um
+          quem está na lista de não contatar
+avisa     o teto da hora, com o número e como mudá-lo
+          que o destinatário nunca respondeu — é o caso de maior risco
+```
+
+### Quem pediu para não ser contatado
+
+O cliente que diz “não me manda mais mensagem” tem que sair do alcance de todas
+as skills, e não só da que ele respondeu. São **dois lugares, e os dois são
+obrigatórios**:
+
+```
+na carteira   o arquivo do cliente ganha  não contatar: sim  ← origem, data
+              e ele é aposentado com esse motivo (seção 3)
+na ponte      uma linha em nao-contatar.txt, no diretório dela:
+              5551999998888 · pediu em 12/08
+```
+
+A carteira é o que as dez skills leem; a ponte é o que segura o envio mesmo se
+alguém esquecer. **Nenhuma skill escreve mensagem para quem tem `não contatar:
+sim`**, nem para retomar, nem para avisar de imóvel novo, nem para desejar
+feliz aniversário. Não é preferência de canal: é pedido de silêncio.
+
+Quem coloca é o corretor, ou a skill que leu o pedido na conversa — e aí ela
+diz o que fez, em uma linha, porque tirar alguém da carteira é do tamanho de
+aposentar.
+
+Os tetos de partida são 6 conversas diferentes por hora, 30 envios no total e 5
+segundos entre dois quaisquer. **São ajustáveis, e o número certo sai do
+histórico do próprio corretor.** Recusa que não diz o número nem como mudá-lo
+está impedindo em vez de informar.
+
+### Envio não é governado pelo `modo:`
+
+O `modo:` da seção 5 governa **escolha** — qual imóvel entra, qual caminho
+seguir. Envio é ato com terceiro e não se desfaz, então tem linha própria no
+`INDICE.md` (seção 4.1):
+
+```
+envio: pergunta sempre           o padrão, e o que vale se a linha faltar
+envio: responder sem perguntar   responde conversa viva direto; começar
+                                 conversa continua perguntando
+envio: não                       a skill nem oferece
+```
+
+Corretor em `modo: automatico` **não herda** envio automático: quem ligou o
+automático para o anúncio não ligou para a boca dele.
+
+### O que nunca sai por aqui
+
+```
+áudio, foto, documento e anexo    a ponte não os manda
+preço novo, contraproposta,       a skill não decide preço nem avalia proposta
+aceite ou recusa de proposta      (seção 10)
+prazo de banco, cartório          a skill não promete prazo de terceiro
+ou prefeitura
+reenvio porque não respondeu      cadência é decisão, não relógio: o caminho é
+                                  /corretor:retomar-contato, com ângulo novo
+```
 
 ### Exportado do aplicativo
 
@@ -969,7 +1126,9 @@ não conseguiu resolver. É a lista que a próxima skill vai atacar.
 - inventar dado de imóvel, de cliente ou de valor — `?` sempre bate palpite
 - apagar arquivo da carteira, ou editar `_bruto/`
 - criar campo, seção, etapa ou nome de arquivo fora deste contrato
-- mandar mensagem: ela **escreve** o texto, quem manda é o corretor
+- mandar mensagem **sozinha**: sem conector ela escreve e quem manda é o
+  corretor; com conector ela manda uma por vez, e só depois de ele ver o texto
+  e o nome de quem recebe (seção 7.1)
 - falar em nome da Kapstan na mensagem que sai para o cliente
 - decidir preço, decidir se aceita proposta, ou dizer que um documento está em
   ordem — isso é do corretor, e a skill diz o que olhar
@@ -1000,10 +1159,12 @@ chat do Claude e chat do ChatGPT na web
   sem ela, funcionam as skills que trabalham com o que for COLADO na
   conversa, e as que dependem de memória não funcionam
 
-o conector de WhatsApp (seção 7)
+o conector de WhatsApp (seções 7 e 7.1)
   só onde há linha de comando: Claude Code, Codex CLI, Cursor. Nos chats
   da web não existe, e lá a conversa entra colada como sempre — o que não
-  tira nenhuma skill do ar
+  tira nenhuma skill do ar. Ler e ENVIAR andam juntos: onde ele existe, as
+  duas coisas existem; onde não existe, o bloco para copiar é a saída, e é
+  ela que nunca falta
 ```
 
 Sem carteira nenhuma, cinco entregam o trabalho e não gravam nada:

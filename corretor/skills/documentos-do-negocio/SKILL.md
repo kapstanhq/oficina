@@ -20,7 +20,10 @@ compatibility: >-
   Precisa de acesso à carteira, no computador ou no Google Drive — o transporte
   sai da linha carteira: do INDICE.md. Sem carteira, monta o checklist com o
   tipo do negócio que for dito ou colado na conversa, não marca o que já existe
-  e não grava nada: o ## Guardei vira uma linha só.
+  e não grava nada: o ## Guardei vira uma linha só. Com o conector de WhatsApp
+  ligado, a cobrança de quem prometeu documento também sai daqui — uma pessoa
+  por vez, com o texto e o nome na tela antes, e só depois de reler a conversa
+  para não cobrar o que já chegou.
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -49,9 +52,9 @@ Leia, nesta ordem:
    esta skill mais usa são a 1 (onde a carteira mora, e os dois transportes), a
    2 (id e apelido), a 3 (procedência e o `?`), a 4.2 (`hoje.md`), a 4.4
    (arquivo de imóvel), a 4.5 (arquivo de cliente), a 4.7 (`_bruto/`), a 6 (o
-   que sai para o WhatsApp), a 8 (quando perguntar), a 10 (como termina) e a 11
-   (onde ela roda). **Nenhum gabarito é reescrito aqui** — formato que esta
-   skill inventar quebra as outras nove.
+   que sai para o WhatsApp), a 7.1 (como a mensagem sai), a 8 (quando
+   perguntar), a 10 (como termina) e a 11 (onde ela roda). **Nenhum gabarito é
+   reescrito aqui** — formato que esta skill inventar quebra as outras nove.
 2. **O `INDICE.md` da carteira**, pela primeira leitura do CONTRATO §1: procura
    no computador, depois a pasta `carteira` no Drive.
 
@@ -67,13 +70,14 @@ deixar pendente no `hoje.md`, não a lista. Nada é gravado, e o fecho diz isso 
 o `## Guardei` vira uma linha só: `- nada foi gravado — você está sem carteira
 aqui`.
 
-Do `INDICE.md`, guarde cinco coisas antes de seguir:
+Do `INDICE.md`, guarde seis coisas antes de seguir:
 
 ```
 carteira:               o transporte e o lugar — manda em TODA leitura e gravação
 modo:                   a seção 2 desta skill
 nome:                   é a voz da mensagem de cobrança, e é quem assina
 imobiliária:            é o nome do bloco “Da imobiliária”
+WhatsApp: e envio:      se a cobrança pode SAIR daqui, e como — a seção 6.1
 ## Como eu trabalho     o que a imobiliária dele já exige, e não se pergunta de novo
 ```
 
@@ -116,6 +120,11 @@ Esta skill **não tem exceção de modo**. A única exceção escrita do pack é
 `/corretor:conferir-matricula` (CONTRATO §5), e ela é outra conversa: aquela lê
 o documento, esta apenas diz que ele precisa existir.
 
+**E o `modo:` não governa o envio.** Quem diz se a cobrança sai daqui é a linha
+`envio:` do `INDICE.md`, que é outra linha e tem valores próprios (CONTRATO
+§7.1): quem ligou o automático para o trabalho não ligou para a boca dele. Como
+isso funciona está na seção 6.1.
+
 ---
 
 ## 3 · O TODO
@@ -128,7 +137,8 @@ varre `_bruto/` e escreve em dois ou três arquivos.
 1  ler o INDICE, o imóvel e o cliente
 2  ver o que já está em _bruto/
 3  montar a lista do tipo do negócio
-4  gravar as pendências e as caixas do dia
+4  ler a conversa de quem vou cobrar   só com o conector · seção 6.1
+5  gravar as pendências e as caixas do dia
 ```
 
 Pergunta solta — “que documento pede numa venda com FGTS?”, sem imóvel e sem
@@ -614,6 +624,111 @@ cinco dias” promete pelo cartório, e o cartório não assinou nada.
 Na carteira só tem “Sr. Almeida”? Use “Sr. Almeida” — é como ele é chamado, e
 inventar o nome de batismo é inventar dado.
 
+**O bloco tem uma segunda saída, e ela depende do conector.** Onde não há
+conector — que é o caso de toda ferramenta de chat na web — existe só esta, o
+bloco para copiar, e ela é o padrão. A outra é a seção 6.1.
+
+---
+
+## 6.1 · Quando a cobrança sai daqui
+
+**O bloco para copiar é o padrão, e ele não muda.** É a única saída que existe
+em toda ferramenta de chat na web, e é dele que a seção 6 trata. O que vem
+agora é uma segunda saída, e ela só existe com `WhatsApp: sim` no `INDICE.md`
+(CONTRATO §7.1). Sem conector, a skill entrega o bloco e para — e não pede
+desculpa por isso.
+
+Quem diz se ela pode oferecer o envio é a linha `envio:`, e ela não se deriva
+do `modo:`:
+
+```
+envio: pergunta sempre           o padrão, e o que vale se a linha faltar
+envio: responder sem perguntar   responde conversa viva direto; começar
+                                 conversa ainda pergunta
+envio: não                       nem ofereça — entregue o bloco
+```
+
+**Cobrança é quase sempre começar conversa**, mesmo com quem é cliente há
+meses: ela reabre um assunto que parou. Só conta como resposta quando a última
+palavra é dela e é sobre o documento — “peço a certidão amanhã”, e amanhã já
+passou. Na dúvida, pergunta.
+
+### Antes de enviar, leia a conversa
+
+É a trava que mais importa aqui, e ela **não é sobre WhatsApp**: é sobre a
+lista estar certa.
+
+**Leia com `listar_mensagens` a conversa da pessoa que você vai cobrar, antes
+de preparar o envio, sempre.** A carteira só sabe o que alguém anotou nela, e o
+documento pode ter chegado por lá dias atrás.
+
+Chegou, e ninguém anotou? **Não envia.** A cobrança não sai, o item não vira
+caixa no `hoje.md`, e a linha vai para `## Falta saber`: a conversa tem algo
+que os arquivos não têm, e quem conserta é `/corretor:organizar-carteira`, que
+é a skill que traz conversa para dentro. Esta aqui não grava conversa, e a
+marca **não vira `tem`** — vira `?`, porque o papel não está na carteira: está
+no celular dele.
+
+**Cobrar documento que o cliente já mandou é o erro que faz o corretor parar de
+confiar na lista.** E cobrar por engano com o envio ligado é pior que cobrar
+por engano no bloco para copiar: o bloco ainda passa pelos olhos dele antes de
+virar mensagem; o envio já chegou do outro lado quando alguém percebe. A
+leitura é o que separa os dois.
+
+Ela vale também com `envio: responder sem perguntar`, e também com o programa
+dele marcado para não perguntar mais. Não é tutela: ninguém escolheu cobrar o
+que já chegou — a ferramenta recusa o que ele não pediu, nunca o que ele pediu
+(CONTRATO §7.1).
+
+### O par, e o que aparece na tela
+
+```
+preparar_envio(conversa, texto)            devolve o código da prévia
+enviar_mensagem(previa, conversa, texto)   os três batendo byte a byte
+```
+
+Entre uma e outra, mostre. São três partes obrigatórias, e resumo não serve:
+
+```
+para    C-031 (Sr. Almeida), proprietário do V-071 (casa 3 dorm, Azenha) ·
+        falou por último em 12/08 — a data sai do ultima_interacao
+texto   o bloco INTEIRO, do jeito que vai sair. Nunca “a cobrança que montei”
+saídas  Mando agora · Mudo o texto · Eu mesmo mando
+```
+
+```
+Mando agora       sai do seu WhatsApp, na sua voz
+Mudo o texto      me diga o que trocar
+Eu mesmo mando    você copia e cola no WhatsApp
+```
+
+Quem não tem ficha aparece pelo nome e pelo imóvel que o ancora — “Sr. Almeida,
+proprietário do V-071 (casa 3 dorm, Azenha)” —, e a falta da ficha já é a linha
+de `## Falta saber` da seção 4.2.
+
+“Mudo o texto” pede **prévia nova**. A de antes carimbou o texto velho, e é
+esse carimbo que impede a skill de mostrar um texto e mandar outro.
+
+**Duas pendências, duas pessoas, duas telas.** O teto continua sendo duas
+mensagens por execução, e com o envio cada uma tem a sua confirmação. O
+contrato permite mostrar várias e aprovar de uma vez (§7.1); aqui não se faz, e
+a razão é a leitura: cada cobrança depende de uma conversa diferente, lida
+agora, e aprovar as duas juntas é o jeito de a segunda passar sem ninguém ler.
+
+A prévia vale **10 minutos** e serve **uma vez**. Ela morre se chegar mensagem
+nova naquela conversa — e aqui isso não é aborrecimento: a mensagem nova pode
+ser o documento chegando. Prévia morta, releia a conversa antes de preparar
+outra.
+
+Os tetos são 6 conversas por hora, 30 envios no total e 5 segundos entre dois
+quaisquer, e duas cobranças por execução quase nunca esbarram neles. Esbarrou:
+diga o número e como mudá-lo, e entregue o bloco para copiar. Recusa que não
+diz o número está impedindo em vez de informar.
+
+**O documento não sai por aqui.** A ponte não manda anexo, foto nem áudio. O
+que sai é o texto da seção 6, que pede e não promete prazo de cartório, de
+banco nem de prefeitura.
+
 ---
 
 ## 7 · O que gravar, onde, com que procedência
@@ -651,6 +766,10 @@ ela é derivável, e o arquivo do imóvel tem teto de 40 linhas.
 
 É daqui que a próxima execução sabe que já foi pedido — e é o que faz a caixa
 mudar de `## Vence hoje` para `## Prometido e não chegou` quando o prazo passar.
+
+**Saiu pelo conector?** Isso é fato com hora, e a linha diz: `mandei pelo
+WhatsApp` no fim, antes da procedência. “Eu mesmo mando” não vira isso —
+ninguém sabe se ele colou —, e a linha fica como sempre foi.
 
 Não existe ficha do proprietário? **Não abra uma.** Deixe a linha em
 `## Falta saber` e siga.
@@ -766,5 +885,10 @@ diz em uma linha o que não deu e qual é o caminho (CONTRATO §10).
 **9 · O que ela não apurou entra como `?`.** Metragem, valor, prazo, banco, nome
 de gente, número de matrícula: `?` sempre bate palpite, e o `?` é o que a próxima
 execução vai atacar.
+
+**10 · Ela não cobra sem ler a conversa, e não manda documento.** Com o envio
+ligado, a conversa de quem vai ser cobrado é lida antes, e cobrança que já
+chegou não sai (seção 6.1). A ponte não manda anexo. E quem não tem conector
+recebe o bloco para copiar, que é o padrão — não é consolo.
 
 A língua e o fecho são os do CONTRATO §10, e não se reescrevem aqui.

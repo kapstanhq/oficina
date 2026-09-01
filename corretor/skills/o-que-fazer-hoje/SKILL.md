@@ -41,6 +41,11 @@ não inventa compromisso que não está escrito e não toca em nenhum arquivo da
 carteira além do `hoje.md`. Cada item aponta a skill que resolve, e ela oferece
 chamar a primeira.
 
+**Mensagem nenhuma sai daqui.** Com o conector ligado, quatro itens da lista
+terminam em mensagem, e a linha deles diz isso — mas quem mostra o nome de quem
+recebe, o texto inteiro e as três saídas é a skill do item. Esta não tem tool de
+envio e não chega perto de uma: a lista do dia não é fila de aprovação.
+
 ---
 
 ## 2 · Antes de tudo
@@ -54,6 +59,7 @@ e nada de formato se decide aqui. O que esta usa direto:
 2    id e apelido — V-071 (casa 3 dorm, Azenha), sempre os dois juntos
 4.2  hoje.md, que é o arquivo desta skill
 4.3  funil.md e as seis etapas       4.4  o imóvel      4.5  o cliente
+7.1  como a mensagem sai — e por que ela nunca sai desta skill
 8    a ordem de busca, o teto de três perguntas, a UI de escolha
 9    os tetos, e as 15 caixas do hoje.md
 10   como uma skill começa e termina
@@ -72,9 +78,15 @@ onde ela fica e termina com um imóvel e um cliente de verdade lá dentro. Depoi
 isto aqui abre o seu dia em dez segundos.
 ```
 
-Do `INDICE.md` saem mais cinco coisas: `modo:`, o `nome:` de `## Quem sou`, a
-linha `Google Agenda:` de `## O que está conectado`, o `horário de visita que
-costumo oferecer:` e o `canal padrão com cliente:`.
+Do `INDICE.md` saem mais sete coisas: `modo:`, o `nome:` de `## Quem sou`, as
+linhas `Google Agenda:` e `WhatsApp:` de `## O que está conectado`, a linha
+`envio:`, o `horário de visita que costumo oferecer:` e o `canal padrão com
+cliente:`.
+
+A linha `envio:` só existe com `WhatsApp: sim`, **não se deriva do `modo:`**, e
+vale `pergunta sempre` quando falta (contrato, 7.1). Esta skill não a lê para
+mandar nada — lê para saber se a linha de um item pode dizer `sai daqui`, ou se
+cala, que é o caso de `envio: não`.
 
 **A data de hoje vem do ambiente, nunca do título do `hoje.md`.** O arquivo
 pode ser de duas semanas atrás, e a lista inteira desta skill é uma conta de
@@ -106,6 +118,12 @@ Esta skill **não tem exceção ao automático** — a única do pack é
 `/corretor:conferir-matricula`, e é por isso que o automático nunca a chama
 sozinha (passo 6). Se em algum ponto parecer que esta skill precisa de uma
 exceção, pare e pergunte; não invente a exceção.
+
+**O `modo:` não governa envio.** Ele governa escolha — qual caminho seguir, qual
+item vem primeiro —, e mandar mensagem é ato com um terceiro que não se desfaz.
+Quem governa isso é a linha `envio:`, que é outra linha e de outra natureza.
+Corretor em `modo: automatico` **não herda** envio automático: quem ligou o
+automático para o anúncio não ligou para a boca dele.
 
 ---
 
@@ -220,8 +238,38 @@ chegou`. Ele vira uma linha em `## Falta saber` dizendo que a conversa tem algo
 que os arquivos não têm — e o conserto é `/corretor:organizar-carteira`, que é
 quem traz conversa para dentro. Esta skill não grava conversa.
 
+A releitura paga duas vezes: ela tira da lista o item que já se resolveu, e é o
+que entrega à skill dona o texto certo para mostrar. Cobrar documento que já
+chegou é o erro que faz o corretor parar de confiar na lista; **mandar** essa
+cobrança é o mesmo erro, com o cliente de testemunha.
+
 Sem conector — o normal —, os dois gatilhos valem como sempre valeram, e a
 lista sai igual. **Nada aqui depende dele.**
+
+### Quatro que terminam em mensagem
+
+Com `WhatsApp: sim` e a linha `envio:` em qualquer coisa que não seja `não`,
+quatro gatilhos chegam à skill dona com destinatário e texto prontos — e é só
+por isso que a linha deles na lista diz `sai daqui` (seção 6):
+
+```
+confirmação da véspera   /corretor:montar-visita           conversa viva, e a
+                         pergunta é de uma linha
+lead sem resposta        /corretor:responder-lead          ele escreveu antes:
+                         é o caso de menor risco que existe
+prometido e não chegou   /corretor:documentos-do-negocio   só depois de reler a
+                         conversa, senão cobra o que já chegou
+parado tempo demais      /corretor:retomar-contato         com as travas dela:
+                         7 dias de cadência, nunca a terceira, ângulo novo
+```
+
+Os outros não terminam em mensagem, e o motivo é diferente em cada um: **visita
+de hoje** é sair de casa, e a linha que se manda antes já é o gatilho de cima;
+**proposta parada** é decisão de preço, e preço é dele; **exclusividade
+acabando** é conversa dele com o proprietário e não tem skill dona; **papel que
+trava** quem conclui é gente; e **imóvel sem anúncio** não tem para quem mandar.
+Item sem skill dona não ganha `sai daqui`, nem com o conector ligado — inventar
+uma para ele é o lote entrando pela porta dos fundos.
 
 ### Passo 4 · A escada da consequência
 
@@ -278,28 +326,47 @@ porque também havia caixa marcada: um fato, uma linha.
 ### Passo 6 · Oferecer o primeiro item
 
 **No copiloto**, use a UI de perguntas do harness (seção 8 do contrato), com o
-custo escrito em cada opção — inclusive o insumo que só ele tem:
+custo escrito em cada opção — e o custo mudou com o conector: onde era o insumo
+que só ele tem, passa a ser o que a skill do item faz com ele.
 
 ```
 Começo pelo primeiro?
 
-  Responder o Paulo     /corretor:responder-lead · preciso da conversa colada
-  Confirmar a visita    /corretor:montar-visita · pronto agora, sai a mensagem
+  Responder o Paulo     /corretor:responder-lead · leio a conversa e ela te
+                        mostra o texto e o nome antes de sair qualquer coisa
+  Confirmar a visita    /corretor:montar-visita · pronto agora, e a mensagem
+                        sai de lá com você vendo
   Só a lista            nada além do hoje.md, que já está gravado
 ```
 
+Sem conector, ou com `envio: não`, o custo volta a ser o de sempre — “preciso da
+conversa colada” — e o que a skill do item entrega no fim é o bloco para copiar.
+
+**Esta pergunta não aprova envio nenhum.** Ela escolhe por onde o dia começa. A
+de mandar é outra, é da skill do item, e traz o nome de quem recebe, o texto
+inteiro e as três saídas. Juntar as duas faz da lista do dia uma esteira de
+aprovação: ele responde sete vezes e saem sete mensagens que ele não leu. É o
+defeito que a seção 7.1 do contrato existe para impedir.
+
 **No automático**, chame a skill do primeiro item — e só quando **todo o insumo
 dela já estiver na carteira**. Falta conversa colada, link, documento ou
-decisão do corretor: não chame, e a linha do item diz o que falta. Três travas,
-e elas não se negociam:
+decisão do corretor: não chame, e a linha do item diz o que falta. Quatro
+travas, e elas não se negociam:
 
 - **uma por execução.** A lista do dia não vira meia hora de trabalho sem
   ninguém olhando.
 - **nunca `/corretor:conferir-matricula`**, que é a exceção escrita do contrato:
   ela lista o que pode travar a venda e quem conclui é gente.
 - **nunca duas skills encadeadas** a partir do resultado da primeira.
+- **chamar a skill dona não pula a tela dela.** O automático entrega o trabalho,
+  não a decisão: quem diz se a mensagem sai sem perguntar é a linha `envio:` do
+  corretor, e o padrão dela é `pergunta sempre`.
 
-Cada chamada vira uma linha em `## Decidi sozinho`, com como desfazer.
+Cada chamada vira uma linha em `## Decidi sozinho`, com como desfazer. Saiu
+mensagem, porque o `envio:` dele autoriza? A linha diz para quem foi e
+transcreve o que foi, e **não oferece desfazer**: apagar para todos deixa a
+lápide na conversa, e a notificação já entregou o texto na tela de bloqueio. O
+que corrige uma mensagem é a seguinte.
 
 ---
 
@@ -321,8 +388,10 @@ motivo na mesma frase (contrato, seção 8). Só estas três existem aqui:
 - **a bifurcação do passo 6**, na UI de perguntas, com o custo escrito.
 
 Não pergunte: se ele quer a lista; se pode gravar o `hoje.md` (é a vista dela);
-o que já está escrito na carteira; nem gosto que `## Como eu trabalho` já
-decidiu. Em modo automático não se pergunta: escolhe e declara.
+o que já está escrito na carteira; se pode mandar a mensagem, que é pergunta da
+skill do item e aqui seria a mesma pergunta duas vezes; nem gosto que
+`## Como eu trabalho` já decidiu. Em modo automático não se pergunta: escolhe e
+declara.
 
 **Dia vazio** — nenhum item em nenhum degrau. Diga em uma linha, sem sermão:
 que não há nada vencendo, e que carteira sem lead novo há dias é assunto de
@@ -334,10 +403,11 @@ captação, não dia livre. Ofereça `/corretor:retomar-contato` ou
 ## 6 · O formato da saída
 
 O trabalho é a lista na tela — esta skill não produz bloco para colar, e quem
-escreve mensagem é a skill do item. Depois da lista vêm os blocos de fecho do
-contrato (seção 10), nesta ordem e com estes títulos exatos. **A pergunta do
-passo 6 é a última coisa**, depois do fecho: perguntar antes de dizer onde
-guardou faz ele responder sem saber o que já foi feito.
+escreve a mensagem, e quem a manda quando ela sai, é a skill do item. Depois da
+lista vêm os blocos de fecho do contrato (seção 10), nesta ordem e com estes
+títulos exatos. **A pergunta do passo 6 é a última coisa**, depois do fecho:
+perguntar antes de dizer onde guardou faz ele responder sem saber o que já foi
+feito.
 
 ### A lista
 
@@ -358,7 +428,8 @@ outro corretor.
 
 2  C-024 (Paulo Menezes) · entrou ontem, sem resposta
    Responder o que ele perguntou do V-071 (casa 3 dorm, Azenha) pelo Zap.
-   → /corretor:responder-lead — precisa da conversa colada
+   → /corretor:responder-lead · sai daqui
+     Mando agora · Mudo o texto · Eu mesmo mando
 
 3  C-008 (Família Duarte) · proposta parada há 3 dias
    Cobrar do proprietário a resposta dos R$ 480.000 no V-052 (apto 3 dorm,
@@ -370,11 +441,13 @@ outro corretor.
 
 5  C-031 (Sr. Almeida) · prometeu o IPTU em 13 de agosto, seis dias
    Cobrar o IPTU do V-071 (casa 3 dorm, Azenha) por WhatsApp.
-   → /corretor:documentos-do-negocio
+   → /corretor:documentos-do-negocio · sai daqui
+     Mando agora · Mudo o texto · Eu mesmo mando
 
 6  C-019 (Rita Camargo) · parada há 14 dias
    Ela visitou e sumiu. Precisa de uma novidade concreta, não de cobrança.
-   → /corretor:retomar-contato
+   → /corretor:retomar-contato · sai daqui
+     Mando agora · Mudo o texto · Eu mesmo mando
 
 7  A-014 (apto 2 dorm, Menino Deus) · na carteira desde 11 de agosto, sem anúncio
    Escrever o anúncio — sem ele o imóvel não aparece em lugar nenhum.
@@ -390,6 +463,22 @@ dorm, Azenha)” é. O que ela não conseguiu apurar entra como `?` e vira linha
 Item cujo dado depende de campo que está `?` continua na lista, com o `?`
 visível: `parado há ?` é informação, e a lista sem ele seria mentira por
 omissão.
+
+**`sai daqui` é declaração, não botão.** Ele aparece só com `WhatsApp: sim`,
+só com `envio:` diferente de `não`, e só nos quatro gatilhos que terminam em
+mensagem (passo 3). Quer dizer uma coisa: a skill daquele item já chega com o
+destinatário e o texto prontos, e a mensagem pode sair do WhatsApp dele **lá**.
+As três saídas vêm na linha de baixo, com estes rótulos e nesta ordem —
+**Mando agora · Mudo o texto · Eu mesmo mando** —, e quem as mostra, junto do
+nome de quem recebe, de quando essa pessoa falou por último e do texto inteiro,
+é ela. Aqui não há tela de confirmação: repeti-la seria perguntar duas vezes a
+mesma coisa, e a segunda com menos informação que a primeira.
+
+Sem conector, ou com `envio: não`, a linha da skill volta ao custo de sempre —
+`precisa da conversa colada`, `precisa do link da ficha` — e a saída daquela
+skill é o bloco para copiar. **A lista sai igual nos dois casos**: os mesmos
+itens, na mesma ordem, com a mesma razão. O que muda é uma linha de custo, e
+nunca o que entra ou o que sobe.
 
 ### A linha que ela sempre diz
 
@@ -413,7 +502,7 @@ aconteceu para /corretor:organizar-carteira e a lista de amanhã sai certa.
 - o clientes/_indice.md diz 5 de agosto para a C-019 (Rita Camargo) e o arquivo dela tem linha de 12; /corretor:organizar-carteira acerta a vista
 
 ## Decidi sozinho
-- Respondi o C-024 (Paulo Menezes) pelo /corretor:responder-lead, que era o primeiro item e tinha a conversa em _bruto/ — a mensagem está acima, e nada foi enviado. Para não fazer isso, me diga e eu só listo.
+- Respondi o C-024 (Paulo Menezes) pelo /corretor:responder-lead, que era o primeiro item e tinha a conversa em _bruto/ — a mensagem está acima e não saiu: o seu envio: diz pergunta sempre, e ela está esperando você. Para não fazer isso, me diga e eu só listo.
 - Li “sábado de manhã” como 22 de agosto, o sábado mais próximo. Se for o outro, me diga e a confirmação sai da lista de hoje.
 ```
 
@@ -422,7 +511,9 @@ o transporte: no `local`, `~/carteira/hoje.md`; no `drive`, `hoje.md, na pasta
 carteira do seu Drive`. O resto da linha é o mesmo.
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
-— por que — como desfazer**.
+— por que — como desfazer**. A única exceção é a mensagem que saiu: ali não há
+terceiro campo, e a linha transcreve o texto e nomeia quem recebeu, em vez de
+prometer um desfazer que não existe.
 
 ---
 
@@ -449,6 +540,11 @@ skill que, quando erra, erra em cinco arquivos todo dia — e o `hoje.md` é o
 id com apelido e a data do fato — `— combinado em 2026-08-14` —, e é só isso.
 A procedência mora no arquivo dono, e como esta skill não escreve em arquivo
 dono, ela não cria procedência nenhuma.
+
+**Nem `sai daqui`.** Ele é da tela, e o gabarito de 4.2 não o tem: o arquivo
+guarda o que ficou por fazer, e de onde a coisa sai é assunto do momento em que
+ela se faz. Escrito ali, ele viraria uma caixa prometendo amanhã um envio que
+ninguém confirmou hoje.
 
 O formato é o da seção 4.2, e nada além dele:
 
@@ -527,7 +623,9 @@ condomínio saem do arquivo, com a data que está lá.
 mensagem dele só entra na carteira quando alguém cola a conversa, e por isso
 “parado há 14 dias” quer dizer *quatorze dias sem nada escrito* — e ela escreve
 assim. Com `WhatsApp: sim`, o `ultima_interacao` dá a data de verdade, e é o que
-“Dois gatilhos que o conector corrige” manda conferir antes de escrever.
+“Dois gatilhos que o conector corrige” manda conferir antes de escrever — e é a
+mesma leitura que faz quatro itens chegarem à skill dona prontos para sair. O
+que não muda com conector nenhum é quem aperta: você, lá.
 
 **O silêncio ela mede grosso.** Sete dias em qualquer etapa, e é de propósito:
 quem tem prazo por etapa é `/corretor:retomar-contato`. Um cliente pode aparecer
@@ -535,5 +633,7 @@ aqui um dia antes ou um dia depois do que aquela skill diria.
 
 **Ela não decide nada que é seu.** Não diz se a proposta é boa, não sugere
 baixar preço, não promete prazo de banco, de cartório ou de prefeitura, não
-aposenta ninguém e não manda mensagem nenhuma. Ela mostra o dia e aponta a
-porta de cada item; quem entra é você.
+aposenta ninguém e **não manda mensagem nenhuma, nem com o conector ligado**.
+Ela mostra o dia e aponta a porta de cada item; quem entra é você — e onde a
+porta é uma mensagem, quem manda é você também, na tela da skill que a escreveu,
+com o nome de quem recebe e o texto inteiro na frente.

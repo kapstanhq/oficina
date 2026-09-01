@@ -10,14 +10,15 @@ gente cola, e funciona igual".
 
 ---
 
-## Antes de instalar, diga estas quatro coisas
+## Antes de instalar, o que ele tem que ouvir
 
 Não são letra miúda: são o que faz o corretor decidir com o que ele tem, e o
 que evita ele descobrir depois e culpar a ferramenta.
 
 ```
-1  o conector LÊ as suas conversas. Ele não manda mensagem nenhuma — o que
-   sai continua saindo como texto para você copiar e enviar com o seu dedo
+1  o conector LÊ as suas conversas, e MANDA mensagem pelo seu WhatsApp. Uma
+   de cada vez, nunca em lote, nunca sem você ver antes — como o envio
+   funciona está logo abaixo, e é a parte que mais muda para você
 
 2  ele vira um "dispositivo conectado" da sua conta, como o WhatsApp Web.
    São quatro vagas, e ele ocupa uma. Some da lista quando você desconectar
@@ -31,8 +32,32 @@ que evita ele descobrir depois e culpar a ferramenta.
 
 E a que não se omite: **este não é um programa oficial do WhatsApp.** Ele fala
 o mesmo protocolo do WhatsApp Web, e a Meta não aprova esse tipo de acesso.
-Contas são bloqueadas quando disparam mensagem em massa — que é justamente o
-que este conector não faz. O risco é baixo, não é zero, e o número é o seu.
+Contas são bloqueadas quando disparam mensagem em massa — e disparo é o que
+este conector não faz: uma por vez, espaçada, e com você vendo cada uma. O
+risco é baixo, não é zero, e o número é o seu.
+
+### E o envio, que são três coisas
+
+Diga as três **uma vez**, aqui, e siga em frente. Elas não voltam a cada
+mensagem: quem decide o que fazer com o WhatsApp dele é ele, e o que cabe à
+ferramenta é informar.
+
+```
+1  toda mensagem aparece inteira na sua tela antes de sair, com o nome de
+   quem vai receber. Nada sai que você não tenha lido
+
+2  o programa que você está usando vai perguntar se pode enviar, e junto vai
+   oferecer "não perguntar de novo". Se você marcar, as mensagens passam a
+   sair direto. É a sua escolha, e ela se desfaz nas configurações do
+   programa, quando você quiser
+
+3  mandar para quem nunca te respondeu é o que faz uma conta ser RESTRINGIDA
+   — e conta restrita não usa dispositivo conectado, ou seja, é esta ponte
+   aqui que cai. Responder quem te escreveu é a coisa mais segura que existe
+```
+
+Dito isso, **não repita e não faça sermão.** Ele ouviu; daqui para a frente a
+ferramenta obedece.
 
 Se ele hesitar, **pare aqui e não insista**: colar funciona, e é o padrão.
 
@@ -134,14 +159,23 @@ agir        —
 confirmar   as conversas que voltaram são as dele
 ```
 
-**Só agora** escreva no `INDICE.md`:
+**Só agora** escreva no `INDICE.md` — as duas linhas, juntas:
 
 ```
 WhatsApp: sim  ← testado AAAA-MM-DD
+envio: pergunta sempre
 ```
 
 Antes disso, a linha continua `não`. "Conectado" sem prova é o defeito que
 aparece três dias depois, no meio de outra coisa.
+
+A segunda linha não é resultado de teste: é o padrão do contrato (seção 7.1), e
+ela **só existe onde há conector** — por isso nasce colada na primeira, no mesmo
+ato. **Não pergunte agora qual ele quer.** Ele nunca viu o envio funcionar, e
+escolha sem experiência é escolha jogada fora. Diga só que a linha existe e que
+trocar é trocar uma palavra: `responder sem perguntar` responde direto quem
+escreveu para ele — começar conversa continua perguntando —, e `não` faz a skill
+nem oferecer.
 
 ---
 
