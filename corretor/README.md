@@ -1,6 +1,6 @@
 # Pack do corretor de imóveis
 
-**Dez ferramentas de IA, em português, para quem vende e aluga imóvel.**
+**Dez skills de IA, em português, para quem vende e aluga imóvel.**
 
 Elas escrevem o anúncio, respondem o lead, montam a visita, cobram o documento e
 lembram de quem sumiu — usando o que você já contou antes. Você não repete a
@@ -126,11 +126,10 @@ então deixe seguir.
 /corretor:comecar
 ```
 
-Leva cerca de 10 minutos. A primeira pergunta é onde a carteira vai morar — uma
-pasta no seu computador, ou uma pasta no seu Google Drive. Daí em diante ele
-pergunta uma coisa de cada vez, salva conforme avança, e você pode fechar no
-meio e voltar depois. No fim, a sua carteira já tem um imóvel e um cliente de
-verdade dentro.
+Leva cerca de 10 minutos. A primeira pergunta é em que pasta do seu computador a
+carteira vai morar. Daí em diante ele pergunta uma coisa de cada vez, salva
+conforme avança, e você pode fechar no meio e voltar depois. No fim, a sua
+carteira já tem um imóvel e um cliente de verdade dentro.
 
 **Você não precisa saber programar.** É tudo em português.
 
@@ -148,7 +147,7 @@ inteiro de [`PROMPT.md`](PROMPT.md). Cola uma vez e serve para tudo.
 
 | Onde | O que fazer | Quanto leva |
 |---|---|---|
-| **Gemini** | um Gem: o prompt nas instruções e a pasta `carteira` do seu Drive em **Conhecimento** | 3 min |
+| **Gemini** | um Gem: o prompt nas instruções e os arquivos da sua carteira em **Conhecimento** | 3 min |
 | **ChatGPT** na web ou no celular | um Projeto ou um GPT, com o prompt nas **Instruções** | 3 min |
 | **Claude** no navegador | um Projeto, com o prompt nas **Instruções do projeto** | 3 min |
 | **Claude** com plano Pro, Max, Team ou Enterprise | melhor que o prompt: a ferramenta em `.zip`, pelas **Configurações** | 3 min |
@@ -157,9 +156,9 @@ O passo a passo de cada um, com o nome de cada botão, está no
 [README da Oficina](../README.md#porta-2--você-cola-um-prompt).
 
 Duas coisas para saber antes: o `.zip` do Claude exige **execução de código**
-ligada nas configurações, e o Gem do Gemini é o único que lê uma pasta inteira
-do Google Drive — com a carteira lá, ele trabalha com a carteira de verdade.
-Nos outros, o que ele sabe é o que você anexar ou colar.
+ligada nas configurações, e em nenhum dos quatro a carteira mora — no navegador
+não existe pasta do seu computador. O que a ferramenta sabe ali é o que você
+anexar ou colar, e o que ela escreve sai na conversa.
 
 ---
 
@@ -190,8 +189,7 @@ sozinha.
 
 Configura tudo. É a primeira coisa que você roda, e roda uma vez só.
 
-- Pergunta onde a carteira vai morar — pasta no seu computador ou pasta no seu
-  Google Drive — e cria.
+- Pergunta em que pasta do seu computador a carteira vai morar, e cria.
 - Pergunta se você quer que ela pare para perguntar ou decida sozinha.
 - Se você usa Google Agenda, explica como conectar e **testa** — mostra os seus
   compromissos da semana para você confirmar que é a conta certa.
@@ -378,8 +376,7 @@ arquivar é mudar de gaveta.
 
 ## Onde ficam os seus dados
 
-Numa pasta sua: no seu computador, ou no seu Google Drive. Você escolhe no
-`/corretor:comecar`, e os arquivos são os mesmos nos dois casos:
+Numa pasta do seu computador. Você escolhe qual no `/corretor:comecar`:
 
 ```
 carteira/
@@ -400,17 +397,17 @@ A primeira linha do `INDICE.md` diz onde ela mora:
 carteira: local · C:\Users\seu-nome\carteira
 ```
 
-`local` é o seu computador; `drive` é a pasta `carteira` do seu Google Drive.
-Quem escreve essa linha é o `/corretor:comecar`, e as dez ferramentas leem e
-obedecem.
+`local` é o seu computador, e depois do `·` vem a pasta. Quem escreve essa linha
+é o `/corretor:comecar`, e as dez ferramentas leem e obedecem.
 
 São arquivos de texto comuns. Você abre no Bloco de Notas, imprime, copia para
-um pendrive. **Nenhum passa por servidor da Kapstan**: no computador eles não
-saem da máquina, e no Drive vão para a sua conta Google.
+um pendrive. **Nenhum passa por servidor da Kapstan**: eles não saem da sua
+máquina.
 
 **A carteira é sua e vai com você.** Se trocar de imobiliária, ela vai junto. Se
 parar de usar as ferramentas amanhã, os arquivos continuam lá e continuam
-legíveis. E, no Drive, ela está no celular também.
+legíveis. Abri-la no celular ainda não existe: o que resolveria é uma cópia no
+seu Google Drive, gravada a partir do computador, e ela não está pronta.
 
 Cada informação guardada diz **de onde veio**:
 
@@ -459,15 +456,14 @@ ferramentas também carregam no Codex e no ChatGPT do computador
 (`~/.agents/skills`), no Copilot e no Cursor (`.agents/skills`) — e quem
 descobre a pasta e escreve nela é o pedido colado da porta 1.
 
-Com a carteira no computador, tudo funciona nos programas que abrem pasta —
-Claude Code, Codex, Copilot, Cursor, ChatGPT do computador. **No chat da web não
-existe pasta**, então lá a carteira precisa estar no Google Drive; com ela lá,
-tudo funciona igual. No Gemini, quem lê o Drive é o Gem: a pasta `carteira`
-anexada em **Conhecimento**.
+A carteira mora no computador, então tudo funciona nos programas que abrem pasta
+— Claude Code, Codex, Copilot, Cursor, ChatGPT do computador. **No chat da web
+não existe pasta**: lá não há carteira, e o que a ferramenta sabe é o que você
+anexar — no Gemini, os arquivos que você põe em **Conhecimento** do Gem.
 
-Sem carteira nenhuma — chat da web, sem Drive, só o [`PROMPT.md`](PROMPT.md)
-colado — cinco ferramentas continuam entregando o trabalho, com o que você
-colar na conversa:
+Sem carteira nenhuma — chat da web, só o [`PROMPT.md`](PROMPT.md) colado —
+cinco ferramentas continuam entregando o trabalho, com o que você colar na
+conversa:
 
 | Ainda funciona | Com o quê |
 |---|---|

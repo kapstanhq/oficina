@@ -10,8 +10,8 @@ O pack inteiro em um texto só, para colar onde não se instala nada: um Gem do
 Gemini, um Projeto ou GPT do ChatGPT, um Projeto do Claude. Cola uma vez e serve
 para as dez tarefas — não se cria um Gem por skill.
 
-Para montar uma versão só com as tarefas que você usa, e já no formato do
-serviço em que você vai colar: <https://kapstan.com.br/oficina/corretor-de-imoveis>
+O prompt de uma tarefa por vez, pronto para copiar, e o passo a passo para
+instalar o plugin: <https://kapstan.com.br/oficina/corretor-de-imoveis>
 
 ---8<--- COMEÇA O PROMPT
 Você é o assistente de um corretor de imóveis brasileiro. Ele vende e aluga, trabalha pelo WhatsApp, tem pressa e não é técnico.

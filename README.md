@@ -7,8 +7,7 @@ passa a ter comandos prontos para o que você faz todo dia — escrever, respond
 conferir, lembrar.
 
 As ferramentas guardam o que você já contou, em arquivos seus — numa pasta do
-seu computador ou no seu Google Drive. Você não repete a mesma informação duas
-vezes.
+seu computador. Você não repete a mesma informação duas vezes.
 
 ---
 
@@ -102,9 +101,9 @@ então deixe seguir.
 /corretor:comecar
 ```
 
-Leva cerca de 10 minutos. Ele pergunta uma coisa de cada vez — a primeira é onde
-a sua base vai morar —, salva conforme avança e você pode fechar no meio e
-voltar depois.
+Leva cerca de 10 minutos. Ele pergunta uma coisa de cada vez — a primeira é em
+que pasta do seu computador a sua base vai morar —, salva conforme avança e você
+pode fechar no meio e voltar depois.
 
 **Pronto.** A partir daí você digita o que precisa, em português.
 
@@ -127,16 +126,17 @@ abra e copie tudo o que estiver entre as duas marcas `---8<---`. É o pack
 inteiro, com as dez tarefas. Cola uma vez e serve para tudo — não se cria um
 assistente por tarefa.
 
-### No Gemini — grátis, e o único que lê o seu Google Drive
+### No Gemini — grátis
 
 1. Abra <https://gemini.google.com> e clique em **Gems**, no menu da esquerda.
 2. **Novo Gem**: escreva o nome “Corretor” e cole o prompt no campo de
    instruções.
-3. Em **Conhecimento**, anexe a pasta `carteira` do seu Google Drive. Salve.
+3. Em **Conhecimento**, anexe os arquivos da sua carteira. Salve.
 
-O passo 3 é o que quase ninguém percebe: **um Gem lê arquivos do seu Drive**.
-Com a carteira lá, ele para de trabalhar só com o que você cola e passa a
-trabalhar com a sua carteira.
+O passo 3 é o que quase ninguém percebe: **o que você anexa ao Gem ele lê**. Em
+vez de responder só com o que você cola na conversa, ele responde olhando os
+seus imóveis e os seus clientes. O que ele escreve continua saindo na conversa —
+quem leva de volta para os arquivos é você.
 
 ### No ChatGPT da web ou do celular
 
@@ -170,9 +170,10 @@ Leva uns 3 minutos.
 4. No Claude, abra as **Configurações**, vá em **Recursos** e envie o `.zip`.
 5. Repita para cada ferramenta que quiser usar.
 
-> **Duas condições.** Precisa de plano Pro, Max, Team ou Enterprise, com
-> **execução de código** ligada nas configurações. E a sua base precisa ficar no
-> **Google Drive**: no navegador não existe pasta do seu computador.
+> **Uma condição, e um limite.** Precisa de plano Pro, Max, Team ou Enterprise,
+> com **execução de código** ligada nas configurações. E a sua base fica de
+> fora: no navegador não existe pasta do seu computador, então ali a ferramenta
+> trabalha com os arquivos que você anexar.
 
 ### O que a porta 2 não faz
 
@@ -186,8 +187,8 @@ matrícula lida, lista de documentos. O que ele não faz sozinho é **lembrar**.
 | Começar a carteira, e organizá-la | Uma monta e a outra arruma. As duas são a carteira em si, e sem arquivo não há o que montar nem o que arrumar. |
 | O `?` que vira a pergunta de amanhã | Sem arquivo, a procedência vale dentro de uma conversa só, e a sessão seguinte recomeça do zero. |
 
-Anexando arquivos — a pasta do Drive no Gem, os documentos no Projeto —, boa
-parte disso volta.
+Anexando arquivos — os documentos da sua carteira no Gem, no GPT ou no Projeto
+—, boa parte disso volta.
 
 ---
 
@@ -199,13 +200,13 @@ e **onde a sua base pode ficar**.
 
 | Onde você usa IA | Como o pack entra | Onde a base pode ficar |
 |---|---|---|
-| **Claude Code** | marketplace, ou o pedido da porta 1 | computador ou Drive |
-| **Codex**, **ChatGPT do computador** | o pedido da porta 1, em `~/.agents/skills` | computador ou Drive |
-| **Copilot**, **Cursor** | o pedido da porta 1, em `.agents/skills` | computador ou Drive |
-| **Claude no navegador**, com plano pago | `.zip` pelas Configurações | só no Google Drive |
+| **Claude Code** | marketplace, ou o pedido da porta 1 | uma pasta do computador |
+| **Codex**, **ChatGPT do computador** | o pedido da porta 1, em `~/.agents/skills` | uma pasta do computador |
+| **Copilot**, **Cursor** | o pedido da porta 1, em `.agents/skills` | uma pasta do computador |
+| **Claude no navegador**, com plano pago | `.zip` pelas Configurações | os arquivos que você anexar |
 | **Claude no navegador**, sem plano pago | prompt colado num Projeto | os arquivos que você anexar |
 | **ChatGPT na web ou no celular** | prompt colado num Projeto ou GPT | os arquivos que você anexar |
-| **Gemini** | prompt colado num Gem | a pasta do Drive anexada ao Gem |
+| **Gemini** | prompt colado num Gem | os arquivos anexados ao Gem |
 
 O Claude Code é o caminho que testamos. Nos outros, o pedido de instalação
 descobre sozinho onde escrever — e, se a sua ferramenta não estiver na tabela,
@@ -220,21 +221,17 @@ vale o que a documentação dela indicar.
 - **Não precisa de planilha, CRM ou sistema novo.** As ferramentas criam os
   arquivos sozinhas.
 - **Não precisa da autorização da sua empresa.** Os arquivos são seus e ficam
-  com você — na sua máquina ou na sua conta Google.
+  na sua máquina.
 
 ---
 
 ## Onde ficam os seus dados
 
-Numa pasta sua, e você escolhe uma vez qual: uma pasta no seu computador, ou
-uma pasta no seu Google Drive.
+Numa pasta do seu computador, e você escolhe uma vez qual. Os arquivos não saem
+da sua máquina, e o que isso cobra é que as ferramentas só funcionam onde existe
+pasta — no chat da web, não.
 
-| Onde | O que dá | O que cobra |
-|---|---|---|
-| **No computador** | Mais privado: os arquivos não saem da sua máquina | Só funciona onde existe pasta — no chat da web, não |
-| **No Google Drive** | Funciona no chat e no celular: a carteira vai com você | Os arquivos ficam na sua conta Google |
-
-São os mesmos arquivos nos dois casos. No pack do corretor:
+São os mesmos arquivos em todo programa que abre pasta. No pack do corretor:
 
 ```
 carteira/
@@ -250,10 +247,14 @@ carteira/
 São arquivos de texto comuns. Você abre no Bloco de Notas, imprime, copia para
 um pendrive, manda por e-mail.
 
-**A Kapstan não recebe nada, nos dois casos.** Não existe servidor nosso no
-meio: ou os arquivos ficam na sua máquina, ou vão para a nuvem que já é sua. E
-nada fica preso — se você parar de usar as ferramentas amanhã, os arquivos
-continuam lá e continuam legíveis.
+**A Kapstan não recebe nada.** Não existe servidor nosso no meio, e não existe
+conta nossa: os arquivos ficam na sua máquina e pronto. E nada fica preso — se
+você parar de usar as ferramentas amanhã, eles continuam lá e continuam
+legíveis.
+
+Ler a carteira no celular ainda não existe. O que resolveria é uma cópia no seu
+Google Drive, gravada a partir do computador; enquanto ela não estiver pronta,
+não está prometida.
 
 ---
 

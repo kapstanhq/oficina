@@ -47,11 +47,13 @@ WhatsApp: não
      funciona em qualquer ferramenta. sim: há conector, e aí escreva a
      data do teste — “sim  ← testado AAAA-MM-DD”. Seção 7. -->
 <!-- A linha do envio nasce COMENTADA, e quem a descomenta é o degrau que
-     testa o conector — carteira com WhatsApp: não e envio: escrito é a
-     contradição que sobrevive à primeira distração. Ela diz quanto a skill
-     pergunta antes de mandar, e NÃO se deriva do modo: acima.
+     PROVA o envio — uma mensagem para o próprio número, que chegou. Carteira
+     com WhatsApp: não e envio: escrito é a contradição que sobrevive à
+     primeira distração; e envio: escrito sem teste é a mesma promessa vazia
+     que “conectado” sem prova. Ela diz quanto a skill pergunta antes de
+     mandar, e NÃO se deriva do modo: acima.
      pergunta sempre · responder sem perguntar · não. Seção 7.1.
-envio: pergunta sempre -->
+envio: pergunta sempre  ← testado AAAA-MM-DD -->
 
 ## Como eu trabalho
 <!-- O que a skill segue sem perguntar de novo. -->

@@ -16,7 +16,7 @@ description: >-
   específico que ficou sem resposta.
 license: MIT
 compatibility: >-
-  Precisa da carteira, no computador ou no Google Drive — ela conta os dias de
+  Precisa da carteira, numa pasta do computador — ela conta os dias de
   silêncio de cada cliente e lê as retomadas anteriores no histórico dele. Sem
   carteira, NÃO funciona: não há o que varrer, nem onde gravar a tentativa para
   a próxima execução não repetir o ângulo. Não abre link. Sem conector de
@@ -51,8 +51,10 @@ casos: é o padrão, e é o que sobra quando a ponte cai.
 
 ## 2 · Antes de tudo
 
-**Leia `references/CONTRATO.md`.** Ele é o padrão comum das dez
-skills do pack, e nada de formato se decide aqui. O que esta usa direto:
+**Leia o contrato por seção, em `references/contrato/`** — o número da seção
+é o começo do nome do arquivo: `04-5-arquivo-de-cliente.md` é a 4.5. Ele é o
+padrão comum das dez skills do pack, e nada de formato se decide aqui; o
+inteiro está em `references/CONTRATO.md`. O que esta usa direto:
 
 ```
 1    onde a carteira mora — os dois transportes — e a primeira leitura
@@ -63,6 +65,11 @@ skills do pack, e nada de formato se decide aqui. O que esta usa direto:
 8    a ordem de busca, e o teto de três perguntas
 9    os tetos          10   como uma skill começa e termina
 ```
+
+Os arquivos: `01-0-onde-a-carteira-mora.md`, `02-0-id-e-apelido.md`,
+`03-0-as-tres-regras.md`, `04-2-hoje.md`, `04-5-arquivo-de-cliente.md`,
+`04-7-o-bruto.md`, `06-0-o-que-sai.md`, `08-0-quando-perguntar.md`,
+`09-0-os-tetos.md` e `10-0-comeca-e-termina.md`.
 
 Depois leia o **`INDICE.md` da carteira**, pela primeira leitura da seção 1 do
 contrato: procura no computador e, não achando, a pasta `carteira` no Drive. A
@@ -146,7 +153,9 @@ O que se mede é o **silêncio dele**, não o último toque do corretor. A últi
 vez que o cliente falou está, em ordem de busca:
 
 ```
-1  o conector, quando a linha diz sim: ultima_interacao com o telefone do
+1  o conector, quando a linha diz sim: chame `estado_da_ponte` UMA vez, aqui
+   (é o pré-voo do contrato §7 — ponte parada faz esta skill listar quem
+   respondeu ontem), e então ultima_interacao com o telefone do
    arquivo do cliente devolve a data E de quem foi a última palavra — que é a
    pergunta inteira, sem adivinhação
 2  a última linha de ## Histórico que registra fala ou ato dele
@@ -304,10 +313,11 @@ Só existe com `WhatsApp: sim` e `envio:` diferente de `não`. Sem os dois o
 trabalho acabou no passo 7: os blocos estão prontos para copiar, e a skill não
 pede desculpa duas vezes por não mandar.
 
-Comece por `estado_da_ponte`. Não respondeu, ou respondeu desligada: entregue os
-blocos, diga em uma linha que a ponte está fora e siga — nada nesta skill
-depende dela. As ferramentas da ponte não estão em `allowed-tools`, e a primeira
-chamada pede permissão: é normal, e é bom que peça.
+O `estado_da_ponte` já foi chamado no passo 1 — é o pré-voo do contrato §7 —, e
+o que ele disse lá vale aqui. Ponte fora do ar: entregue os blocos, diga em uma
+linha e siga; nada nesta skill depende dela. As ferramentas da ponte não estão em
+`allowed-tools`, e a primeira chamada pede permissão: é normal, e é bom que
+peça.
 
 **Prepare antes de mostrar.** Um `preparar_envio(conversa, texto)` por pessoa —
 `conversa` é uma só, e é no tipo desse parâmetro que o lote deixa de existir. É

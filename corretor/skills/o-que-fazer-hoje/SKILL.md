@@ -5,9 +5,8 @@ description: >-
   véspera, lead que entrou e não teve resposta, proposta parada, quem prometeu
   documento e não mandou, quem está parado tempo demais e imóvel sem anúncio.
   Ordena por consequência, não por data — o que faz perder negócio hoje vem
-  primeiro —, diz a razão da ordem em uma linha, dá o id com o apelido e uma
-  frase acionável em cada item, e oferece executar o primeiro ali mesmo,
-  chamando a skill que resolve. Reescreve o hoje.md da carteira e não escreve em
+  primeiro —, diz a razão da ordem, dá o id com o apelido e uma frase acionável
+  em cada item, e oferece executar o primeiro ali mesmo. Reescreve o hoje.md e
   mais nenhum arquivo. Use de manhã, ou quando o corretor diz “o que eu faço
   hoje?”, “bom dia, o que tem pra hoje”, “por onde eu começo”, “me dá o dia”, “o
   que tá pegando fogo”, “tenho visita hoje?”, “fiquei três dias fora, o que
@@ -17,10 +16,9 @@ description: >-
   /corretor:organizar-carteira.
 license: MIT
 compatibility: >-
-  Precisa da carteira do corretor, no computador ou no Google Drive — ela lê a
+  Precisa da carteira do corretor, numa pasta do computador — ela lê a
   carteira inteira para ordenar o dia. Sem carteira, não funciona; diz isso em
-  uma linha, manda rodar /corretor:comecar e não grava nada. No transporte
-  drive, exige o conector do Google Drive ligado. A agenda é opcional — com o
+  uma linha, manda rodar /corretor:comecar e não grava nada. A agenda é opcional — com o
   conector do Google Agenda ela lê hoje e amanhã; sem ele, a lista sai só da
   carteira, e ela avisa.
 allowed-tools: Read Glob Grep Write Edit
@@ -50,8 +48,10 @@ envio e não chega perto de uma: a lista do dia não é fila de aprovação.
 
 ## 2 · Antes de tudo
 
-**Leia `references/CONTRATO.md`.** Ele é o padrão comum das dez skills do pack,
-e nada de formato se decide aqui. O que esta usa direto:
+**Leia o contrato por seção, em `references/contrato/`** — o número da seção
+é o começo do nome do arquivo: `04-2-hoje.md` é a 4.2. Ele é o padrão comum
+das dez skills do pack, e nada de formato se decide aqui; o inteiro está em
+`references/CONTRATO.md`. O que esta usa direto:
 
 ```
 1    os dois transportes, a primeira leitura — e quem é dono de qual fato,
@@ -64,6 +64,11 @@ e nada de formato se decide aqui. O que esta usa direto:
 9    os tetos, e as 15 caixas do hoje.md
 10   como uma skill começa e termina
 ```
+
+Os arquivos: `01-0-onde-a-carteira-mora.md`, `02-0-id-e-apelido.md`,
+`04-2-hoje.md`, `04-3-funil.md`, `04-4-arquivo-de-imovel.md`,
+`04-5-arquivo-de-cliente.md`, `07-1-a-mensagem-sai.md`,
+`08-0-quando-perguntar.md`, `09-0-os-tetos.md` e `10-0-comeca-e-termina.md`.
 
 Depois ache e leia **o `INDICE.md` da carteira**, pelos seis degraus da primeira
 leitura (contrato, seção 1). A linha `carteira:` dele diz o transporte e o
@@ -313,9 +318,13 @@ não existem em nenhum outro lugar:
   duas vezes no mesmo dia: item que ele marcou de manhã não volta para
   `## Vence hoje` à tarde. Este é o defeito que mais rápido faz o corretor
   parar de marcar caixa.
-- **linha que outra skill acrescentou** — `/corretor:montar-visita` escreve a
-  véspera em `## Vence hoje`, `/corretor:retomar-contato` escreve a sugestão de
-  arquivar em `## Travado`. Reconstrua-a a partir do arquivo dono. Não achou o
+- **linha que outra skill acrescentou** — e são três, não duas:
+  `/corretor:montar-visita` escreve a véspera em `## Vence hoje`,
+  `/corretor:documentos-do-negocio` escreve o que pedir em `## Vence hoje` e o
+  que prometeram em `## Prometido e não chegou`, e
+  `/corretor:retomar-contato` escreve a sugestão de arquivar em `## Travado`.
+  Esta skill reescreve o arquivo INTEIRO, então lista incompleta aqui é linha
+  apagada em silêncio. Reconstrua-a a partir do arquivo dono. Não achou o
   fato em arquivo nenhum? **Carregue a linha como está**, na mesma seção, e
   escreva em `## Falta saber` que ela não sai de nenhum arquivo dono. Linha
   apagada em silêncio é trabalho perdido, e ele nunca vai saber que perdeu.
@@ -626,6 +635,15 @@ assim. Com `WhatsApp: sim`, o `ultima_interacao` dá a data de verdade, e é o q
 “Dois gatilhos que o conector corrige” manda conferir antes de escrever — e é a
 mesma leitura que faz quatro itens chegarem à skill dona prontos para sair. O
 que não muda com conector nenhum é quem aperta: você, lá.
+
+**E o pré-voo, que nesta skill é o que mais importa** (contrato §7): antes do
+primeiro `ultima_interacao`, chame `estado_da_ponte`. Ponte parada devolve o
+retrato do dia em que ela parou, e esta skill é a que transforma esse retrato em
+ordem de trabalho — “ninguém respondeu” vira lista de cobrança para gente que
+respondeu ontem. Parada há mais de um dia: diga há quanto tempo, trate a
+carteira como a única fonte (é o comportamento “sem conector”, que já está
+escrito acima) e siga. **Não pare a skill por isso** — o dia dele continua
+existindo.
 
 **O silêncio ela mede grosso.** Sete dias em qualquer etapa, e é de propósito:
 quem tem prazo por etapa é `/corretor:retomar-contato`. Um cliente pode aparecer

@@ -20,6 +20,13 @@ ferramenta que lê o padrão aberto ele chega como texto literal e o arquivo nã
 abre. `references/` é do padrão, e as cópias são geradas de uma fonte só por um
 script — ninguém copia à mão.
 
+**E este arquivo também é montado.** Ele não se edita: as seções moram
+partidas em dois lugares — `oficina/_motor/` guarda as que valem para qualquer
+profissão (68,8% das linhas), e `oficina/<pack>/contrato/` as que mudam com o
+ofício. `npm run oficina -- --escrever` funde as duas listas pela ordenação do
+nome, e o `npm run conferir` acusa quem escrever aqui em vez de lá. Um pack de
+outra profissão herda o primeiro diretório inteiro e escreve só o segundo.
+
 ---
 
 ## O que está aqui
@@ -53,8 +60,9 @@ script — ninguém copia à mão.
   clientes/
     _indice.md         uma linha por cliente
     C-017-joana-ribeiro.md
-  _bruto/              conversas coladas, fichas, PDFs, links — a ORIGEM
+  _bruto/              conversas coladas, fichas, planilhas, PDFs, links — a ORIGEM
     2026-08-12-whatsapp-joana.md
+    2026-08-19-planilha-imoveis.csv
   arquivo-morto/
     imoveis/
     clientes/
@@ -135,19 +143,27 @@ muda com o programa que executa a skill; o verbo não.**
 | achar o `INDICE.md` | ler `<lugar>/INDICE.md` | procurar a pasta `carteira`, e `INDICE.md` dentro dela |
 | ler um arquivo | leitura de arquivo, caminho absoluto | ler conteúdo, pelo id do arquivo achado na pasta |
 | gravar arquivo que não existe | escrita de arquivo | criar arquivo, com a pasta declarada como pai |
-| gravar arquivo que já existe | edição — troca o trecho, não reescreve tudo | atualizar arquivo, com o conteúdo inteiro |
+| gravar arquivo que já existe | edição — troca o trecho, não reescreve tudo | **não existe** — ver o aviso abaixo |
 | criar pasta | a escrita já cria o caminho | criar pasta, com a pasta pai declarada |
 | listar uma pasta | busca por nome dentro do caminho | procurar com a pasta como pai |
 | guardar um bruto | escrever o `.md` novo em `_bruto/` | criar arquivo `.md` na pasta `_bruto/` |
 
 Duas diferenças mudam o que a skill faz, não só como faz:
 
-- **Atualizar no `drive` reescreve o arquivo inteiro.** Não existe “troque esta
-  linha”. Então **leia o arquivo antes de atualizar, sempre**, e devolva o texto
-  inteiro com a sua mudança dentro. Atualizar sem ler apaga o que as outras nove
-  skills escreveram ali.
+- **No `drive` não se atualiza arquivo — e isto não é limitação da skill, é da
+  ferramenta.** O schema do conector diz, com todas as letras, *"currently only
+  title and parent_id are supported"*: a atualização troca o NOME e a PASTA, e
+  não tem parâmetro de conteúdo. Ela não devolve erro — devolve sucesso e não
+  muda um byte. E a leitura não lista `text/markdown` entre os tipos que suporta:
+  o `.md` que hoje é lido é comportamento não documentado, que já mudou uma vez.
+  **Enquanto isso valer, a carteira no `drive` pode ser criada e não pode ser
+  mantida** — e nove das dez skills existem para mudar arquivo que já existe.
+  Uma skill que precise gravar por cima em `drive` PARA e diz isso ao corretor;
+  não tenta, não contorna com criar-e-substituir (dois arquivos de mesmo título
+  na mesma pasta, e a busca não desempata) e não finge que gravou.
 - **`_bruto/` continua intocável nos dois.** No `drive`, isso quer dizer que o
-  bruto se cria e nunca se atualiza.
+  bruto se cria e nunca se atualiza — e é a única operação que o `drive` faz
+  inteira.
 
 PDF, foto e áudio (seção 4.7) ficam onde estão nos dois: no `local`, o `.md` de
 `_bruto/` aponta o caminho no computador; no `drive`, aponta o nome do arquivo e
@@ -307,6 +323,11 @@ Campo inventado com cara de apurado é pior que campo vazio: o corretor repassa
 para o cliente e descobre na visita. E o `?` é a linha mais útil do arquivo —
 é o que a próxima skill vai perguntar.
 
+**Fato novo que contradiz o gravado:** o novo vale, com a procedência dele, e
+o antigo desce para `## Histórico` com a procedência que tinha — nada se
+apaga. Em copiloto a skill mostra os dois antes de trocar; em automático troca
+e declara (seção 5).
+
 Data sempre em `AAAA-MM-DD`. É a única forma que ordena sozinha e em que
 `12/08` não vira agosto de um lado e dezembro do outro. Ao FALAR com o corretor,
 escreva `12 de agosto`; ao ESCREVER no arquivo, `2026-08-12`.
@@ -360,6 +381,19 @@ modelos/cliente.md            → ~/carteira/clientes/<id>-<apelido>.md  (um por
 Cada modelo abre com um comentário `<!-- MODELO · … -->` explicando o que
 preencher. **Ao gravar de verdade, esses comentários saem** — todos. Modelo que
 chega ao corretor com o próprio manual dentro parece arquivo pela metade.
+
+**E o mesmo vale para o que está entre `<` e `>`.** Os gabaritos marcam assim
+o que se preenche: `<AAAA-MM-DD>`, `<nome do corretor>`, `<V-000 (apelido,
+bairro)>`. **Nenhum `<…>` chega ao corretor.** Ou vira o valor, ou vira `?`
+pela regra do não-apurado (seção 3) — e data nunca vira `?`, porque a data de
+hoje sempre se sabe.
+
+Isto é regra e não zelo: medido montando uma carteira do zero, o `hoje.md`
+nascia com `# Hoje — <AAAA-MM-DD>` e ficava assim, porque nenhum passo o toca
+depois de copiá-lo. Os outros três só escapavam quando o corretor NÃO pulava
+os passos que preenchem as vistas — e esses passos são puláveis. O comentário
+some e o esqueleto do gabarito fica: o arquivo que ele abre todo dia começa
+com um campo de formulário em branco.
 
 ### 4.1 · `INDICE.md`
 
@@ -639,6 +673,17 @@ PDF, foto e áudio ficam onde estão e `_bruto/` guarda um arquivo `.md` que
 aponta o caminho no computador. Áudio não se transcreve de ouvido: se o que
 importa está num áudio, pergunte ao corretor o que ele diz.
 
+**Planilha importada entra inteira, e é o arquivo original.** O nome é
+`AAAA-MM-DD-planilha-<nome-curto>.csv`, sem o cabeçalho de três linhas — ele é
+para texto colado, e aqui o arquivo já diz o que é. O formato é CSV: Excel e
+Google Sheets exportam em dois cliques, e a skill que importa ensina onde. Todo
+campo que sair dela leva `← _bruto/AAAA-MM-DD-planilha-<nome-curto>.csv`,
+que é a regra 2 sem origem nova. Coluna que não tem campo no gabarito não
+inventa campo (seção 4), e linha que a skill não conseguiu ler vira `?` na
+ficha e uma linha em `## Falta saber` — nunca um valor adivinhado. Quem importa
+é `/corretor:comecar`, no primeiro dia, e `/corretor:organizar-carteira`, para
+o `.csv` que apareceu em `_bruto/` depois.
+
 ---
 
 ## 5 · Os dois modos
@@ -785,6 +830,84 @@ corretor ter visto o texto e o nome de quem recebe. Como isso funciona está em
 7.1. O bloco para copiar **continua sendo o padrão**: é o que funciona em toda
 ferramenta, e onde não há conector ele é a única saída.
 
+### O pré-voo, e ele é obrigatório
+
+**A primeira chamada ao conector, em qualquer skill, é `estado_da_ponte`.** Não
+é zelo: a ponte é um programa que fica de pé numa janela, e janela fechada
+congela o histórico no minuto em que ela fechou. Nada avisa. O que se lê depois
+disso é um retrato do passado com cara de presente — e uma skill que ordena o
+dia sobre ele entrega uma lista confiante e errada.
+
+Ela responde em uma linha o que importa, e a ação sai daí:
+
+```
+de pé e conectada          trabalhe, e não diga nada ao corretor
+de pé e desconectada       diga o que ela reporta, em uma linha, e siga com o
+                           que já está guardado — dizendo que é isso que é
+fora do ar, ou parada há   PARE de tratar o conector como fonte. Diga há quanto
+mais de um dia             tempo, que o que passou não volta, e que a janela do
+                           `serve` precisa ser reaberta. Depois ofereça o
+                           caminho colado, que funciona igual
+```
+
+**Silêncio só se justifica quando está tudo certo.** Ponte velha e trabalho
+normal é o único par que o corretor não pode ver, porque é o único em que
+ele acharia que a carteira está em dia.
+
+### Exportado do aplicativo
+
+```
+[12/08/2026 14:32] Joana Ribeiro: oi, vi a casa da Azenha no Zap, ainda tem?
+[12/08/2026 14:40] Marcelo Fontes: tem sim! quer ver no sábado?
+[12/08/2026 14:41] Joana Ribeiro: ‎<Mídia oculta>
+[12/08/2026 14:55] Joana Ribeiro: sábado de manhã dá, mas tem que ser cedo
+```
+
+Aparece também sem colchetes, que é o formato antigo, e vale o mesmo:
+
+```
+12/08/2026 14:32 - Joana Ribeiro: oi, vi a casa da Azenha no Zap
+```
+
+A data é **dd/mm/aaaa** e a hora é de 24 horas — é o padrão brasileiro, e
+`03/08` é 3 de agosto. Ano de dois dígitos (`12/08/26`) é 2026. Ao gravar,
+converta para `2026-08-12`.
+
+**Quem é o corretor na conversa:** é o remetente cujo nome bate com `nome:` do
+`INDICE.md`. Não bateu de jeito nenhum? Uma pergunta, uma vez: “Nessa conversa,
+qual dos dois é você?”. Nunca deduza pelo tom — o risco é gravar a fala do
+cliente como promessa do corretor.
+
+**O que não se lê, não se inventa:** `<Mídia oculta>`, `Esta mensagem foi
+apagada`, áudio e figurinha viram um buraco declarado, não um palpite. Se o
+buraco está no meio do que importa, ele vira uma linha em `## Combinado` ou uma
+pergunta: “Tem um áudio de 12 de agosto no meio da conversa. O que ela disse
+ali?”
+
+### Texto solto
+
+Colagem sem carimbo de data e sem nome — um pedaço de conversa, um anúncio, uma
+ficha, um e-mail encaminhado. Trate assim: o conteúdo é fato do que está
+escrito, a data é a que o corretor disser (ou a de hoje, e a procedência diz
+`← corretor, <hoje>`), e o autor não se adivinha.
+
+### O que fazer com ela depois, sempre nesta ordem
+
+1. **Grava o bruto primeiro**, em `_bruto/AAAA-MM-DD-<canal>-<apelido-curto>.md`, com
+   o cabeçalho de três linhas da seção 4.7 e o texto colado sem tocar. Primeiro
+   porque, se algo der errado no meio, o material do corretor já está salvo.
+2. **Extrai os fatos** para os arquivos donos — cliente e imóvel —, cada campo
+   com `← _bruto/<aquele arquivo>`. Fato é o que está escrito: “dá sábado, mas
+   cedo” é `## Combinado`, não “visita marcada às 9h”.
+3. **Atualiza as vistas** que mudaram: `funil.md` se a etapa mudou,
+   `_indice.md` se entrou item ou mudou o último contato.
+4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.
+
+Conversa que menciona imóvel que não está na carteira: não crie o imóvel com o
+que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, o imóvel não
+entra — dado de imóvel adivinhado vira preço errado na mensagem para o cliente.
+
+---
 ## 7.1 · Como a mensagem sai
 
 Isto vale **só com o conector** (`WhatsApp: sim` no `INDICE.md`). Sem ele, a
@@ -865,7 +988,24 @@ recusa    mais de uma conversa por chamada
           quem está na lista de não contatar
 avisa     o teto da hora, com o número e como mudá-lo
           que o destinatário nunca respondeu — é o caso de maior risco
+          que não existe conversa nenhuma com aquela pessoa — e esse é outro
 ```
+
+### O primeiro contato, que não é escolha de ninguém
+
+Quem **nunca trocou mensagem** com o corretor por ali é o único caso em que
+o envio não sai, e a recusa não é da ferramenta: **desde julho de 2026 o próprio
+WhatsApp recusa**, e salvar o número na agenda não muda nada. Quem abre a
+conversa tem que ser o aplicativo do celular, uma vez; depois disso o conector
+responde como em qualquer outra.
+
+A prévia diz isso **antes**, quando vê que a conversa não existe. Ao ouvir,
+a skill não insiste e não tenta outro caminho: ela entrega o **bloco para
+copiar** — que é o padrão do pack de qualquer forma — e diz, em uma linha, que
+a primeira mensagem sai do celular dele.
+
+Não é raro: é como quase todo cliente novo chega — o que deixou o telefone
+num portal e nunca escreveu.
 
 ### Quem pediu para não ser contatado
 
@@ -876,8 +1016,12 @@ obrigatórios**:
 ```
 na carteira   o arquivo do cliente ganha  não contatar: sim  ← origem, data
               e ele é aposentado com esse motivo (seção 3)
-na ponte      uma linha em nao-contatar.txt, no diretório dela:
-              5551999998888 · pediu em 12/08
+na ponte      um comando, e é ele que escreve o arquivo — o diretório dela
+              não é o da carteira, e a skill não tem como adivinhar onde é:
+
+                  whatsapp-reader nao-contatar 5551999998888 "pediu em 12/08"
+
+              sem argumento ele lista; `--tirar <número>` desfaz
 ```
 
 A carteira é o que as dez skills leem; a ponte é o que segura o envio mesmo se
@@ -922,59 +1066,6 @@ reenvio porque não respondeu      cadência é decisão, não relógio: o camin
                                   /corretor:retomar-contato, com ângulo novo
 ```
 
-### Exportado do aplicativo
-
-```
-[12/08/2026 14:32] Joana Ribeiro: oi, vi a casa da Azenha no Zap, ainda tem?
-[12/08/2026 14:40] Marcelo Fontes: tem sim! quer ver no sábado?
-[12/08/2026 14:41] Joana Ribeiro: ‎<Mídia oculta>
-[12/08/2026 14:55] Joana Ribeiro: sábado de manhã dá, mas tem que ser cedo
-```
-
-Aparece também sem colchetes, que é o formato antigo, e vale o mesmo:
-
-```
-12/08/2026 14:32 - Joana Ribeiro: oi, vi a casa da Azenha no Zap
-```
-
-A data é **dd/mm/aaaa** e a hora é de 24 horas — é o padrão brasileiro, e
-`03/08` é 3 de agosto. Ano de dois dígitos (`12/08/26`) é 2026. Ao gravar,
-converta para `2026-08-12`.
-
-**Quem é o corretor na conversa:** é o remetente cujo nome bate com `nome:` do
-`INDICE.md`. Não bateu de jeito nenhum? Uma pergunta, uma vez: “Nessa conversa,
-qual dos dois é você?”. Nunca deduza pelo tom — o risco é gravar a fala do
-cliente como promessa do corretor.
-
-**O que não se lê, não se inventa:** `<Mídia oculta>`, `Esta mensagem foi
-apagada`, áudio e figurinha viram um buraco declarado, não um palpite. Se o
-buraco está no meio do que importa, ele vira uma linha em `## Combinado` ou uma
-pergunta: “Tem um áudio de 12 de agosto no meio da conversa. O que ela disse
-ali?”
-
-### Texto solto
-
-Colagem sem carimbo de data e sem nome — um pedaço de conversa, um anúncio, uma
-ficha, um e-mail encaminhado. Trate assim: o conteúdo é fato do que está
-escrito, a data é a que o corretor disser (ou a de hoje, e a procedência diz
-`← corretor, <hoje>`), e o autor não se adivinha.
-
-### O que fazer com ela depois, sempre nesta ordem
-
-1. **Grava o bruto primeiro**, em `_bruto/AAAA-MM-DD-<canal>-<apelido-curto>.md`, com
-   o cabeçalho de três linhas da seção 4.7 e o texto colado sem tocar. Primeiro
-   porque, se algo der errado no meio, o material do corretor já está salvo.
-2. **Extrai os fatos** para os arquivos donos — cliente e imóvel —, cada campo
-   com `← _bruto/<aquele arquivo>`. Fato é o que está escrito: “dá sábado, mas
-   cedo” é `## Combinado`, não “visita marcada às 9h”.
-3. **Atualiza as vistas** que mudaram: `funil.md` se a etapa mudou,
-   `_indice.md` se entrou item ou mudou o último contato.
-4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.
-
-Conversa que menciona imóvel que não está na carteira: não crie o imóvel com o
-que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, o imóvel não
-entra — dado de imóvel adivinhado vira preço errado na mensagem para o cliente.
-
 ---
 
 ## 8 · Quando perguntar, e como
@@ -988,7 +1079,7 @@ Só desce um degrau quando o de cima não respondeu:
 
 ```
 1  INDICE.md                 quem ele é, modo, o que está conectado
-2  o _indice.md do tema      imóveis/ ou clientes/ — acha o id e o apelido
+2  o _indice.md do tema      imoveis/ ou clientes/ — acha o id e o apelido
 3  o arquivo do item         é ele o dono do fato
 4  _bruto/                   a conversa ou a ficha de onde o fato veio
 5  o link                    a página do imóvel, quando há link e ela abre
@@ -1083,13 +1174,40 @@ faz toda skill reler 200 linhas para achar um telefone, em toda execução.
 
 ### Termina
 
-Nesta ordem, e só as seções que tiverem conteúdo:
+Nesta ordem. **O `## Guardei` é obrigatório e não some nunca**; as outras duas
+só aparecem se tiverem conteúdo.
 
-**Uma exceção, e ela é escrita porque exceção sem motivo é acidente:** a
-`/corretor:comecar` é a única skill sem bloco para colar — o trabalho dela é a
-configuração. Nela o lugar do bloco é ocupado por `## O que ficou pronto`, e
-ela acrescenta `## Ficou para depois` e `## O que pedir agora` DEPOIS dos três
-títulos fixos. Nenhuma outra skill acrescenta seção ao fecho.
+Não gravou nada — porque não havia o que gravar, porque não há carteira, ou
+porque o que ela ia fazer não deu certo? Então o `## Guardei` traz uma linha
+dizendo isso, com o motivo:
+
+```markdown
+## Guardei
+- nada foi gravado — não havia o que guardar nesta rodada
+```
+
+Omitir a seção é o que faz o corretor achar que ficou guardado, e a regra
+aqui é a mesma do "escreveu, diz onde", virada do avesso: **ele precisa saber
+que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
+`## Nada foi guardado` são títulos inventados, e título inventado é o que a
+seção 4 proíbe. Medido: duas das dez inventaram o próprio na primeira
+execução da prova, as duas por terem feito a coisa certa e nomeado errado.
+
+**Três skills não têm bloco para colar, e a razão é a mesma nas três: o
+trabalho delas não é um texto para o cliente.**
+
+```
+/corretor:comecar              o trabalho é a configuração
+/corretor:o-que-fazer-hoje     o trabalho é a lista do dia
+/corretor:organizar-carteira   o trabalho é o relatório do que mudou
+```
+
+Na `comecar` o lugar do bloco é ocupado por `## O que ficou pronto`, e ela
+acrescenta `## Ficou para depois` e `## O que pedir agora` DEPOIS dos três
+títulos fixos. A `organizar-carteira` acrescenta os títulos do que tocou, que
+são o próprio trabalho. **Fora essas duas, nenhuma skill acrescenta seção ao
+fecho** — e nenhuma das três oferece a segunda saída da seção 7.1, porque não
+há mensagem para mandar.
 
 ```markdown
 <o trabalho — o bloco para colar, sozinho, sem comentário dentro>
@@ -1152,12 +1270,14 @@ muda de uma para outra não é o contrato: é o que existe embaixo dele.
 
 ```
 Claude Code · Codex CLI · app do ChatGPT · Copilot · Cursor
-  tudo funciona, nos dois transportes
+  tudo funciona no transporte `local`, que é o único em que a carteira
+  se MANTÉM. Ver o aviso da seção 1: no `drive` a carteira se cria e
+  não se atualiza
 
 chat do Claude e chat do ChatGPT na web
-  não há pasta no computador. Com a carteira no drive, tudo funciona;
-  sem ela, funcionam as skills que trabalham com o que for COLADO na
-  conversa, e as que dependem de memória não funcionam
+  não há pasta no computador, e o `drive` não substitui uma: funcionam
+  as CINCO skills que trabalham com o que for COLADO na conversa, e as
+  cinco que dependem da carteira não funcionam — nem com Drive ligado
 
 o conector de WhatsApp (seções 7 e 7.1)
   só onde há linha de comando: Claude Code, Codex CLI, Cursor. Nos chats

@@ -4,10 +4,9 @@ description: >-
   Lê a matrícula do imóvel (PDF ou texto colado) e devolve a lista do que consta
   nela — quem aparece como proprietário, a cadeia de transmissões, ônus como
   hipoteca, alienação fiduciária, penhora e usufruto, averbações de construção
-  e, acima de tudo, o que não deu para ler. Explica cada termo em uma linha. Ela
-  lista e não conclui, nunca diz que o imóvel está livre nem que pode ser
-  vendido, e nunca opera em modo automático. Grava a matrícula em _bruto/ e as
-  pendências no arquivo do imóvel. Use quando o corretor disser algo como —
+  e, acima de tudo, o que não deu para ler. Explica cada termo em uma linha.
+  Lista e não conclui: nunca diz que o imóvel está livre nem que pode ser
+  vendido. Use quando o corretor disser algo como —
   chegou a matrícula da casa da Azenha, dá uma olhada · o que tem nessa
   matrícula · esse imóvel tem hipoteca ou financiamento em cima · o proprietário
   é mesmo quem está vendendo · o banco pediu a matrícula, o que pode travar · a
@@ -17,7 +16,7 @@ description: >-
   conversa sem pergunta junto.
 license: MIT
 compatibility: >-
-  Funciona com a carteira no computador ou no Google Drive — o transporte sai da
+  Funciona com a carteira numa pasta do computador — o transporte sai da
   linha carteira do INDICE.md. Sem carteira nenhuma, lê a matrícula colada na
   conversa e entrega a ficha, mas não grava nada, e diz isso. Ler PDF depende de
   a ferramenta abrir o arquivo; escaneado sem camada de texto devolve pouco.
@@ -50,13 +49,14 @@ harness e não entram nessa lista.
 
 ## 2 · Antes de tudo
 
-1. Leia `references/CONTRATO.md`. Ele é a lei do pack e nada aqui o substitui.
-   Nesta skill pesam as seções **1** (onde a carteira mora, e os dois
-   transportes), **2** (id e apelido), **3** (as três regras), **4.4** (o arquivo
-   do imóvel), **4.7** (o que entra em `_bruto/`), **8** (a ordem de busca e o
-   tamanho da pergunta), **9** (os tetos) e **10** (como uma skill começa e
-   termina). Se o contrato não abrir, **pare e diga** — formato inventado aqui
-   quebra as outras nove skills.
+1. O contrato é a lei do pack e nada aqui o substitui. Ele está partido por
+   seção em `references/contrato/`; leia estas: `01-0-onde-a-carteira-mora.md`
+   (os dois transportes), `02-0-id-e-apelido.md`, `03-0-as-tres-regras.md`,
+   `04-4-arquivo-de-imovel.md`, `04-7-o-bruto.md`, `08-0-quando-perguntar.md`
+   (a ordem de busca e o tamanho da pergunta), `09-0-os-tetos.md` e
+   `10-0-comeca-e-termina.md`. O inteiro está em `references/CONTRATO.md`. Se o
+   contrato não abrir, **pare e diga** — formato inventado aqui quebra as outras
+   nove skills.
 2. Ache e leia o `INDICE.md` da carteira pelos degraus da primeira leitura
    (contrato, seção 1). A linha `carteira:` diz o transporte — `local` ou
    `drive` — e o lugar, e **toda leitura e toda gravação desta execução vão por

@@ -14,8 +14,8 @@ description: >-
   ou pede a legenda do vídeo que já tem.
 license: MIT
 compatibility: >-
-  Lê a carteira no computador ou no Google Drive — o transporte sai da linha
-  `carteira:` do INDICE.md. Só lê — nunca grava nada, em nenhum transporte. Sem
+  Lê a carteira numa pasta do computador — o transporte sai da linha
+  `carteira:` do INDICE.md. Só lê — nunca grava nada. Sem
   carteira, monta o roteiro com o imóvel colado na conversa, ficha ou link; o
   que se perde é a voz do corretor e o horário de visita, que moram no
   INDICE.md. Link só abre onde houver acesso à internet.
@@ -38,11 +38,12 @@ não escolhe música e não grava.** Quem segura o celular é o corretor.
 O corretor chega com o id e o apelido do imóvel — `V-071 (casa 3 dorm, Azenha)`
 — ou com o link da ficha. Sem nenhum dos dois, a seção 3 diz por onde procurar.
 
-1. Leia `references/CONTRATO.md`, que está ao lado desta skill. Ele é a lei do
-   pack, e o que vale como formato está lá — não aqui. Interessam agora as
-   seções 1 (onde a carteira mora, e os dois transportes), 2 (id e apelido),
-   4.4 (o arquivo do imóvel), 8 (ordem de busca e perguntas) e 10 (como uma
-   skill começa e termina).
+1. O contrato está ao lado desta skill, partido por seção em
+   `references/contrato/`. Ele é a lei do pack, e o que vale como formato está
+   lá — não aqui. Leia agora: `01-0-onde-a-carteira-mora.md` (os dois
+   transportes), `02-0-id-e-apelido.md`, `04-4-arquivo-de-imovel.md`,
+   `08-0-quando-perguntar.md` e `10-0-comeca-e-termina.md`. O inteiro está em
+   `references/CONTRATO.md`.
 2. Leia o `INDICE.md` da carteira pela primeira leitura do CONTRATO §1. A linha
    `carteira:` diz o transporte — `local` ou `drive` — e **toda leitura desta
    execução vai por ele**. Dali saem quatro coisas: o `modo:`, o nome do

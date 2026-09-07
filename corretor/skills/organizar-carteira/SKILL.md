@@ -3,25 +3,25 @@ name: organizar-carteira
 description: >-
   Faz a manutenção da carteira: lê o que está em `_bruto/` e ainda não virou
   fato — conversa colada, ficha, e-mail —, extrai os campos com procedência e
-  grava nos arquivos donos. Aposenta o cliente parado há mais de 120 dias,
-  aplica os tetos e mostra o que sairia antes de podar. Acha o que só se vê de
-  cima: cliente no funil sem arquivo, imóvel citado que não existe, campo ? que
-  uma conversa já respondeu. Relata cada arquivo que tocou: nada some em
-  silêncio e nada é apagado. Use quando o corretor disser — organiza minha
-  carteira, dá um jeito nessa bagunça, colei um monte de conversa e não sei se
-  entrou, arquiva quem sumiu, tira o que eu já vendi, tem cliente repetido aí, o
-  arquivo do cliente está gigante, faz uma faxina. Também depois de uma semana
-  colando material sem organizar, e quando a lista do dia traz coisa que já
-  morreu. Não escreve a mensagem para quem sumiu (/corretor:retomar-contato),
-  não monta a lista do dia (/corretor:o-que-fazer-hoje) nem lê matrícula
-  (/corretor:conferir-matricula).
+  grava nos arquivos donos, e importa a planilha que estiver em _bruto/.
+  Aposenta quem parou há mais de 120 dias, aplica os tetos e mostra o que
+  sairia antes de podar. Acha o que só se vê de cima: cliente no funil sem
+  arquivo, imóvel citado que não existe, campo ? que uma conversa já
+  respondeu. Relata cada arquivo que tocou: nada some em silêncio. Use quando
+  o corretor disser — organiza minha carteira, dá um jeito nessa bagunça,
+  colei um monte de conversa e não sei se entrou, coloquei a planilha na
+  pasta, arquiva quem sumiu, tira o que eu já vendi, tem cliente repetido aí,
+  o arquivo do cliente está gigante, faz uma faxina. Também depois de uma
+  semana colando material sem organizar. Não escreve a mensagem de quem sumiu
+  (/corretor:retomar-contato), não monta a lista do dia
+  (/corretor:o-que-fazer-hoje) nem lê matrícula (/corretor:conferir-matricula).
 license: MIT
 compatibility: >-
-  Precisa da carteira, no computador ou no Google Drive: ela é a manutenção da
+  Precisa da carteira, numa pasta do computador: ela é a manutenção da
   carteira e não funciona sem uma — diz isso em uma linha e manda rodar
-  /corretor:comecar. No Drive, precisa do conector ligado. Para aposentar,
-  precisa de uma ferramenta que tire o arquivo do lugar; sem ela nada é movido,
-  e a lista do que sairia vai para o relatório.
+  /corretor:comecar. Para aposentar, precisa de uma ferramenta que tire o
+  arquivo do lugar; sem ela nada é movido, e a lista do que sairia vai para o
+  relatório.
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -43,11 +43,12 @@ não lê matrícula, não decide preço e não escolhe entre dois fatos que se
 contradizem — o que ela não apurou sai como `?` e vira linha em `## Falta
 saber`.
 
-**Por que ela tem `Write` e `Edit`.** Ela grava em quatro lugares: arquivo de
-cliente novo, vindo de uma conversa colada que ainda não tinha ficha (`Write`);
-fato extraído para arquivo que já existe (`Edit`); vistas derivadas — `funil.md`,
-os dois `_indice.md`, as contagens do `INDICE.md` (`Edit`); e o arquivo de
-histórico condensado em `_bruto/` (`Write`, arquivo novo). **`Write` só em
+**Por que ela tem `Write` e `Edit`.** Ela grava em quatro lugares: ficha nova
+— cliente vindo de uma conversa colada que ainda não tinha ficha, imóvel vindo
+de uma linha da planilha (`Write`); fato extraído para arquivo que já existe
+(`Edit`); vistas derivadas — `funil.md`, os dois `_indice.md`, as contagens do
+`INDICE.md` (`Edit`); e arquivo novo em `_bruto/` — o histórico condensado, ou
+a planilha que ele colou na conversa (`Write`). **`Write` só em
 arquivo que não existe.** Sobrescrever um arquivo da carteira apaga o que outra
 skill gravou ali, e esta é a skill que mais mexe em arquivo dos outros. No
 `drive` os verbos são outros — criar arquivo e atualizar arquivo —, e a regra é
@@ -61,21 +62,22 @@ da tela são interface do harness e não entram nessa lista.
 
 Leia, nesta ordem:
 
-1. **`references/CONTRATO.md`, inteiro.** Ele é a lei do pack, e
-   **nenhum gabarito é reescrito aqui**. As seções que esta skill mais usa:
-
-```
-1    os dois transportes, e quem é dono de qual fato — a vista nunca vence
-     o arquivo
-2    id e apelido, e por que o nome do arquivo não muda
-3    as três regras, e os quatro passos de aposentar
-4    os sete formatos literais
-7    como ler conversa colada, e o que fazer com ela depois
-8    a ordem de busca e o teto de três perguntas
-9    os tetos e o que fazer quando estouram
-10   como uma skill começa e termina
-11   onde ela roda, e por que ela não funciona sem carteira
-```
+1. **O contrato, por seção.** Ele é a lei do pack, e ler o documento inteiro
+   custa vinte a trinta mil tokens antes da primeira leitura da carteira.
+   Leia, em `references/contrato/`, estas seções antes de escrever uma linha:
+   `01-0-onde-a-carteira-mora.md` (os dois transportes, e quem é dono de qual
+   fato — a vista nunca vence o arquivo), `02-0-id-e-apelido.md` (o id, e por
+   que o nome do arquivo não muda), `03-0-as-tres-regras.md` (as três regras,
+   e os quatro passos de aposentar), `04-0-os-formatos.md` e os sete que o
+   seguem, de `04-1-indice.md` a `04-7-o-bruto.md` (os formatos literais —
+   `04-4-arquivo-de-imovel.md` é o gabarito da ficha que a planilha gera),
+   `07-0-a-conversa-entra.md` (como ler conversa colada, e o que fazer com ela
+   depois), `07-1-a-mensagem-sai.md` (o pedido de silêncio, e a lista da
+   ponte), `08-0-quando-perguntar.md` (a ordem de busca e o teto de três
+   perguntas), `09-0-os-tetos.md` (os tetos e o que fazer quando estouram),
+   `10-0-comeca-e-termina.md` (como uma skill começa e termina) e
+   `11-0-onde-roda.md` (onde ela roda, e por que não funciona sem carteira).
+   Nada do que está lá se reescreve aqui: divergiu, o contrato vence.
 
 2. **o `INDICE.md` da carteira**, pela primeira leitura da seção 1 do contrato:
    procura no computador e, não achando, a pasta `carteira` no Drive. A linha
@@ -189,10 +191,24 @@ texto: a procura é nos arquivos donos que o passo 1 já leu.
 O `arquivo-morto/` entra na busca: bruto de cliente aposentado já foi lido, e
 relê-lo ressuscitaria a ficha.
 
+**Um `.csv` em `_bruto/` é bruto como os outros**, e a marca é a mesma: o nome
+dele como procedência em alguma ficha. Zero ocorrências → é a planilha de
+imóveis dele, e o passo 3 importa. O nome é o que ele deu ao pôr o arquivo
+lá — `_bruto/` não se renomeia, e a procedência cita o nome como está. Veio
+`.xlsx`? Ela não lê: peça o CSV, **uma vez**, e diga onde ele sai — no Excel,
+Arquivo → Salvar como → em “Tipo”, “CSV UTF-8”; no Google Sheets, Arquivo →
+Fazer download → “Valores separados por vírgula (.csv)”. Não há biblioteca nem
+conversor aqui, e não se instala nenhum. Ele pode pôr o `.csv` em `_bruto/` ou
+colar as linhas na conversa: colado vale como CSV, e a skill grava em
+`_bruto/AAAA-MM-DD-planilha-<nome-curto>.csv`, inteiro e **sem o cabeçalho de
+três linhas** da seção 4.7 — um `.csv` com três linhas de texto em cima deixa
+de ser um `.csv`. O `.xlsx` fica onde está, e o relatório diz que não foi lido.
+
 Trate **do mais antigo para o mais novo** — a data está no nome do arquivo. **Até
 dez por execução.** Sobraram? Diga quantos são e que a próxima execução pega:
 uma execução que lê quarenta arquivos e escreve trinta é onde o corretor perde o
-fio do que aconteceu.
+fio do que aconteceu. A planilha conta como um dos dez, e tem teto próprio —
+200 linhas, no passo 3.
 
 ### Passo 3 · Extrair o fato
 
@@ -226,6 +242,49 @@ Contrato, seção 7, e nada além dela. Para cada bruto não lido:
 - **Cada campo com `← _bruto/<arquivo>`**, e a data é a do material, não a de
   hoje. Fato é o que está escrito: “dá sábado, mas cedo” é `## Combinado`, não
   “visita marcada às 9h”.
+
+**A planilha é o bruto que gera mais de uma ficha**, e o desenho é o de
+`/corretor:comecar`: uma ficha por linha, e nada gravado antes de ele confirmar
+o mapeamento. A linha da planilha vale como ficha — é o corretor dizendo o que
+ele tem, e o imóvel entra por ela —, e a procedência de tudo o que sai dela é
+`← _bruto/<o csv>`: não existe origem chamada “planilha”, e a regra 2 já prevê
+o arquivo em `_bruto/`.
+
+1. **Mapeie as colunas** para os campos do gabarito do imóvel (contrato, seção
+   4.4): link, estado, tipo, preço, condomínio, iptu, dormitórios, suíte,
+   vagas, endereço, proprietário, exclusividade. Cabeçalho óbvio se mapeia
+   sozinho — preço, valor, quartos, dorm, bairro, endereço, link, url.
+   Ambiguidade vira **uma pergunta**, com a UI de botões, mostrando o
+   mapeamento inteiro para ele confirmar antes de gravar qualquer ficha.
+   Coluna sem campo no gabarito **não cria campo** (regra zero do contrato):
+   descrição vai para `## O que vende`; o resto fica de fora, e o relatório
+   diz quais colunas ficaram. `estado:` só recebe um dos seis valores da seção
+   4.4: “disponível” vira `à venda` ou `para alugar` conforme o prefixo, e o
+   que não casar entra `?`.
+2. **Linha que já está na carteira atualiza, não duplica.** O `link:` ou o
+   `endereço:` da linha bate com o de uma ficha viva? A ficha é essa, campo a
+   campo: o que estava `?` ganha o valor com `← _bruto/<o csv>`; valor
+   diferente do que a ficha tinha, o novo vale e o antigo desce para
+   `## Histórico`, com a data e a procedência que tinha — nada se perde, e o
+   relatório diz o que mudou. Bate com ficha do `arquivo-morto/`: não
+   ressuscita e não cria segunda; vira linha em `## Não bate`, e quem decide é
+   ele.
+3. **Linha nova vira ficha**, pelo formato da seção 4.4, cada campo com
+   `← _bruto/<o csv>`. O id é o maior do `_indice.md` mais um, contando o
+   `## Arquivo morto`; o prefixo é `V-` ou `A-` conforme a linha diga venda ou
+   aluguel — a planilha não diz? **Uma pergunta para o lote inteiro**, não
+   linha a linha. O apelido é `<tipo> <n> dorm, <bairro>`; sem bairro na linha,
+   use o que houver — tipo e dormitórios — e diga isso. O que a linha não tem
+   entra `?`. Linha vazia não vira ficha, e linha repetida dentro da própria
+   planilha — mesmo link ou mesmo endereço — não vira duas.
+4. **Depois das fichas:** uma linha por imóvel em `imoveis/_indice.md`, o
+   `## Quanto tem` do `INDICE.md` recontado, e em cada ficha nova uma linha no
+   `## Histórico`: `- AAAA-MM-DD entrou na carteira  ← _bruto/AAAA-MM-DD-planilha-<nome>.csv`.
+
+**Teto: 200 linhas por execução.** Passou, pergunte se importa tudo ou só as
+linhas marcadas como disponíveis. Na tela vai **a primeira ficha inteira** e a
+contagem do resto — nunca as duzentas. E as perguntas daqui — o mapeamento, e
+venda ou aluguel se faltar — contam no teto de três da seção 5.
 
 ### Passo 4 · Aposentar (a regra 3)
 
@@ -390,8 +449,8 @@ por último e nesta ordem exata. Seção sem conteúdo não aparece.
 ```markdown
 # Organizei a carteira — 2026-08-19
 
-Li 4 arquivos de _bruto/, movi 1 cliente para arquivo-morto/, podei 1 histórico
-e achei 3 coisas que não batem.
+Li 5 arquivos de _bruto/ — um deles a sua planilha, 20 linhas —, movi 1 cliente
+para arquivo-morto/, podei 1 histórico e achei 3 coisas que não batem.
 
 ## Li o que estava em _bruto/
 - 2026-08-12-whatsapp-joana.md → C-017 (Joana Ribeiro): telefone, faixa até
@@ -402,6 +461,11 @@ e achei 3 coisas que não batem.
   /corretor:conferir-matricula
 - 2026-08-14-whatsapp-desconhecido.md → nada extraído. Fala de um apartamento na
   Cidade Baixa que não está na carteira, e sem link eu não crio imóvel
+- 2026-08-19-planilha-imoveis.csv → 18 fichas novas, de V-072 (casa 2 dorm,
+  Tristeza) a V-089 (apto 1 dorm, Cidade Baixa), e 2 atualizadas: V-071 (casa
+  3 dorm, Azenha) trocou o preço e o antigo desceu para o histórico, A-014
+  (apto 2 dorm, Menino Deus) ganhou o condomínio. Ficaram de fora as colunas
+  “corretor” e “data do anúncio”
 
 ## Movi para arquivo-morto/
 - C-002 (Léo Antunes) · sem responder desde 2026-04-02, 139 dias · de
@@ -432,6 +496,9 @@ e achei 3 coisas que não batem.
 - ~/carteira/clientes/C-017-joana-ribeiro.md — 3 campos novos
 - ~/carteira/clientes/C-024-paulo-menezes.md — criado, quase tudo ?
 - ~/carteira/clientes/C-019-rita-camargo.md — histórico condensado
+- ~/carteira/imoveis/ — 18 fichas criadas, V-072 a V-089
+- ~/carteira/imoveis/V-071-casa-3d-azenha.md · A-014-apto-2d-menino-deus.md — 1 campo cada
+- ~/carteira/imoveis/_indice.md — reescrito, 15 → 33 vivos
 - ~/carteira/_bruto/2026-08-19-historico-rita.md — criado, com o que saiu de lá
 - ~/carteira/arquivo-morto/clientes/C-002-leo-antunes.md — movido de clientes/
 - ~/carteira/clientes/_indice.md — reescrito, 21 → 21 ativos, 1 aposentado novo
@@ -440,6 +507,7 @@ e achei 3 coisas que não batem.
 
 ## Falta saber
 - IPTU do V-071 (casa 3 dorm, Azenha) — o C-031 (Sr. Almeida) manda até sexta
+- o IPTU não está na planilha — ficou ? em 18 fichas
 - de onde veio a área do A-014 (apto 2 dorm, Menino Deus)
 - o link do apartamento da Cidade Baixa que aparece na conversa de 14 de agosto
 

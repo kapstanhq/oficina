@@ -16,9 +16,9 @@ description: >-
   a mensagem de confirmação.
 license: MIT
 compatibility: >-
-  Precisa da carteira, no computador ou no Google Drive — sem ela esta skill não
+  Precisa da carteira, numa pasta do computador — sem ela esta skill não
   funciona, porque o trabalho dela é cruzar o que o cliente já viu com o que ele
-  descartou. Em chat na web sem Drive, ela diz isso em uma linha e para. A
+  descartou. Em chat na web, ela diz isso em uma linha e para. A
   agenda do Google é opcional; sem ela, pergunta os horários.
 allowed-tools: Read Glob Grep Write Edit
 ---
@@ -43,13 +43,14 @@ sete.
 
 Leia, nesta ordem:
 
-1. **`references/CONTRATO.md`, inteiro.** Ele é a lei do pack. As
-   seções que esta skill mais usa são a 1 (onde a carteira mora, e os dois
-   transportes), a 2 (id e apelido), a 4.2 (`hoje.md`), a
-   4.4 (arquivo de imóvel), a 4.5 (arquivo de cliente), a 6 (o que sai para o
-   WhatsApp), a 7.1 (como a mensagem sai), a 8 (quando perguntar) e a 10 (como
-   termina). **Nenhum gabarito é reescrito aqui** — formato que esta skill
-   inventar quebra as outras nove.
+1. **O contrato, por seção, em `references/contrato/`.** Ele é a lei do pack.
+   Leia estas antes de escrever: `01-0-onde-a-carteira-mora.md` (os dois
+   transportes), `02-0-id-e-apelido.md`, `04-2-hoje.md`,
+   `04-4-arquivo-de-imovel.md`, `04-5-arquivo-de-cliente.md`,
+   `06-0-o-que-sai.md`, `07-1-a-mensagem-sai.md`, `08-0-quando-perguntar.md` e
+   `10-0-comeca-e-termina.md`. O inteiro está em `references/CONTRATO.md`.
+   **Nenhum gabarito é reescrito aqui** — formato que esta skill inventar quebra
+   as outras nove.
 2. **o `INDICE.md` da carteira**, pela primeira leitura do CONTRATO §1.
 
 Não achou o `INDICE.md` em lugar nenhum? Uma linha, e para:
@@ -451,7 +452,9 @@ Uma linha dizendo o que não abriu, o bloco para copiar, e **não mexa na linha 
 `INDICE.md`**: como no 4.1, o que falhou foi agora.
 
 **A confirmação da véspera pede uma leitura a mais.** Antes de preparar o envio,
-releia a conversa com `listar_mensagens`, do dia em que ficou combinado para cá.
+releia a conversa com `listar_mensagens`, do dia em que ficou combinado para cá
+— depois do `estado_da_ponte` do contrato §7, porque conversa que a ponte não
+recebeu não está lá e o combinado pode ter mudado justo no que falta.
 Desmarcou, adiou ou perguntou alguma coisa no meio-tempo? Não prepare envio
 nenhum: mostre o que ele escreveu, com a data, e trate isso primeiro — confirmar
 visita que o cliente cancelou por escrito é o jeito mais rápido de parecer que
@@ -551,6 +554,10 @@ Escreveu, diz onde — caminho por caminho, com o que mudou em cada um:
 - ~/carteira/imoveis/V-071-casa-3d-azenha.md — uma linha em Mostrado a
 - ~/carteira/funil.md — a C-017 (Joana Ribeiro) foi para “visita marcada”
 - ~/carteira/hoje.md — não mexi: o arquivo é de 2026-08-15, e quem o refaz é /corretor:o-que-fazer-hoje
+
+## Falta saber
+- se o marido da C-017 (Joana Ribeiro) vem no sábado — ela ia confirmar em 2026-08-16 e não confirmou
+- o condomínio do V-052 (apto 3 dorm, Cidade Baixa) — ela vai perguntar na visita
 ```
 
 No `drive` o bloco é o mesmo, nomeando a pasta em vez do caminho:

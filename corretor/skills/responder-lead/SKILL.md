@@ -4,11 +4,11 @@ description: >-
   Escreve a resposta pronta para o lead que chegou. O corretor cola a conversa
   ou o e-mail do portal, e ela devolve a mensagem para copiar, os imóveis da
   carteira que batem com o que o lead pediu — com id e apelido, V-071 (casa 3
-  dorm, Azenha) — e a lista do que falta saber. Grava o material colado em
-  `_bruto/` e o lead em `clientes/`, com a procedência de cada campo.
-  Com o conector de WhatsApp, também manda — uma por vez, com o texto e o
-  destinatário na tela antes. Não cria imóvel que não está na carteira, e não
-  inventa preço, metragem, prazo nem nome de gente. Use quando chega contato
+  dorm, Azenha) — e a lista do que falta saber. Grava o colado em `_bruto/` e o
+  lead em `clientes/`, com procedência. Com o conector de WhatsApp também manda
+  — uma por vez, com o texto e o destinatário na tela antes. Não cria imóvel
+  fora da carteira nem inventa preço, metragem, prazo ou nome. Use quando chega
+  contato
   novo pelo Zap, VivaReal, WhatsApp, Instagram ou site da imobiliária, e quando
   quem já está na carteira manda mensagem nova: “chegou um lead agora”, “colei
   a conversa aqui, o que eu respondo?”, “o que eu mando pra ela?”, “entrou um
@@ -17,14 +17,12 @@ description: >-
   uma visita já marcada (/corretor:montar-visita).
 license: MIT
 compatibility: >-
-  Funciona inteira com a carteira acessível, no computador ou no Google Drive
-  pelo conector — o transporte sai da linha `carteira:` do `INDICE.md`. Sem
-  carteira, ainda escreve a mensagem a partir da conversa colada, mas não cruza
-  com os imóveis, não abre ficha de cliente e não grava nada: o `## Guardei`
-  vira “nada foi gravado — você está sem carteira aqui”. Manda a mensagem só
-  com o conector de WhatsApp e a linha `envio:` liberada: uma por vez, com o
-  texto e o destinatário na tela antes. Sem conector, entrega o bloco para
-  copiar e para aí — e quem aperta enviar é o corretor.
+  Inteira com a carteira acessível — o transporte sai da linha `carteira:` do
+  `INDICE.md`. Sem carteira, ainda escreve a mensagem a partir da conversa
+  colada, mas não cruza com os imóveis nem grava: o `## Guardei` vira “nada foi
+  gravado”. Manda só com o conector de WhatsApp e a linha `envio:` liberada —
+  uma por vez, com o texto e o destinatário na tela antes. Sem conector,
+  entrega o bloco para copiar, e quem aperta enviar é o corretor.
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -46,14 +44,15 @@ não apurou sai como `?`, que é o que a próxima execução vai perguntar.
 
 ## 2 · Antes de tudo
 
-1. **Leia `references/CONTRATO.md`, inteiro, antes de escrever uma
-   linha.** Ele é a lei do pack e tem os formatos literais. As seções que mais
-   pesam aqui: **1** (onde a carteira mora, e os dois transportes), **2** (id e
-   apelido), **3** (as três regras), **4.5** (o arquivo
-   de cliente), **4.7** (`_bruto/`), **6** (o que sai para o WhatsApp), **7**
-   (como ler uma conversa colada), **7.1** (como a mensagem sai, quando sai),
-   **8** (a ordem de busca) e **10** (como se termina). Nada do que está lá se
-   reescreve aqui: divergiu, o contrato vence.
+1. **Leia o contrato, por seção, antes de escrever uma linha.** Ele é a lei
+   do pack e tem os formatos literais; está partido em `references/contrato/`.
+   As que pesam aqui: `01-0-onde-a-carteira-mora.md` (os dois transportes),
+   `02-0-id-e-apelido.md`, `03-0-as-tres-regras.md`,
+   `04-5-arquivo-de-cliente.md`, `04-7-o-bruto.md`, `06-0-o-que-sai.md`,
+   `07-0-a-conversa-entra.md` (como ler uma conversa colada),
+   `07-1-a-mensagem-sai.md`, `08-0-quando-perguntar.md` e
+   `10-0-comeca-e-termina.md`. O inteiro está em `references/CONTRATO.md`. Nada
+   do que está lá se reescreve aqui: divergiu, o contrato vence.
 2. **Leia o `INDICE.md` da carteira**, pela primeira leitura da seção 1 do
    contrato: a linha `carteira:` diz o transporte, e toda leitura e toda
    gravação desta execução vão por ele. É de lá que saem também o nome do
@@ -68,8 +67,8 @@ não apurou sai como `?`, que é o que a próxima execução vai perguntar.
 3. **Não achou `INDICE.md` em lugar nenhum?** Diga isso em uma linha, sem
    improvisar pasta nem criar carteira:
 
-   > Não achei a sua carteira. Rode `/corretor:comecar` — ele monta
-   > com você e volta aqui com esse lead.
+   > Não achei a sua carteira. Rode `/corretor:comecar`, que monta a
+   > carteira com você — e depois me cole esse lead de novo, que aí eu guardo.
 
    E então **escreva a mensagem assim mesmo**, da conversa colada (contrato
    §11): o que se perde é cruzar com os imóveis da carteira e abrir a ficha do

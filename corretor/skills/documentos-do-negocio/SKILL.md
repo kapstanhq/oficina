@@ -3,21 +3,20 @@ name: documentos-do-negocio
 description: >-
   Monta o checklist de documentos do negócio — o que pedir, de quem, em que
   ordem, e o que trava se faltar —, separado por quem entrega: comprador,
-  vendedor, imóvel e imobiliária. Cobre venda à vista, venda financiada, venda
-  com FGTS, permuta, e locação com fiador, com seguro-fiança ou com caução.
-  Marca o que já está na carteira e o que falta, e deixa os pendentes no hoje.md
-  com o nome de quem tem que providenciar. A lista é ponto de partida: banco,
+  vendedor, imóvel e imobiliária. Cobre venda à vista, financiada e com FGTS,
+  permuta, e locação com fiador, seguro-fiança ou caução.
+  Marca o que já está na carteira e o que falta, e deixa os pendentes no
+  hoje.md com o nome de quem providencia. A lista é ponto de partida: banco,
   cartório e prefeitura mudam a exigência. Use quando o corretor disser “o que
   eu preciso pedir para fechar”, “que documento pede numa venda financiada”, “a
   Joana vai usar FGTS, o que muda”, “que papel pede do fiador”, “o que falta
   para a escritura do V-071 (casa 3 dorm, Azenha)”, “o cliente quer permutar, e
   agora”, “o que a seguradora vai pedir”, “monta a lista de documentos da
   locação”, “o proprietário perguntou o que ele tem que mandar”. Também quando
-  ele já juntou metade da papelada e quer saber o que ainda falta, de quem
-  cobrar e o que cobrar primeiro.
+  ele já juntou metade da papelada e quer saber o que falta e de quem cobrar.
 license: MIT
 compatibility: >-
-  Precisa de acesso à carteira, no computador ou no Google Drive — o transporte
+  Precisa de acesso à carteira, numa pasta do computador — o transporte
   sai da linha carteira: do INDICE.md. Sem carteira, monta o checklist com o
   tipo do negócio que for dito ou colado na conversa, não marca o que já existe
   e não grava nada: o ## Guardei vira uma linha só. Com o conector de WhatsApp
@@ -48,13 +47,15 @@ nada disso, é a seção 5.
 
 Leia, nesta ordem:
 
-1. **`references/CONTRATO.md`, inteiro.** Ele é a lei do pack. As seções que
-   esta skill mais usa são a 1 (onde a carteira mora, e os dois transportes), a
-   2 (id e apelido), a 3 (procedência e o `?`), a 4.2 (`hoje.md`), a 4.4
-   (arquivo de imóvel), a 4.5 (arquivo de cliente), a 4.7 (`_bruto/`), a 6 (o
-   que sai para o WhatsApp), a 7.1 (como a mensagem sai), a 8 (quando
-   perguntar), a 10 (como termina) e a 11 (onde ela roda). **Nenhum gabarito é
-   reescrito aqui** — formato que esta skill inventar quebra as outras nove.
+1. **O contrato, por seção, em `references/contrato/`.** Ele é a lei do pack.
+   Leia estas antes de escrever: `01-0-onde-a-carteira-mora.md` (os dois
+   transportes), `02-0-id-e-apelido.md`, `03-0-as-tres-regras.md` (procedência
+   e o `?`), `04-2-hoje.md`, `04-4-arquivo-de-imovel.md`,
+   `04-5-arquivo-de-cliente.md`, `04-7-o-bruto.md`, `06-0-o-que-sai.md`,
+   `07-1-a-mensagem-sai.md`, `08-0-quando-perguntar.md`,
+   `10-0-comeca-e-termina.md` e `11-0-onde-roda.md`. O inteiro está em
+   `references/CONTRATO.md`. **Nenhum gabarito é reescrito aqui** — formato que
+   esta skill inventar quebra as outras nove.
 2. **O `INDICE.md` da carteira**, pela primeira leitura do CONTRATO §1: procura
    no computador, depois a pasta `carteira` no Drive.
 
@@ -657,6 +658,10 @@ passou. Na dúvida, pergunta.
 
 É a trava que mais importa aqui, e ela **não é sobre WhatsApp**: é sobre a
 lista estar certa.
+
+**Chame `estado_da_ponte` antes da primeira leitura** (contrato §7): cobrar
+documento que já chegou, porque a ponte parou antes de ele chegar, é o erro mais
+caro desta skill — ele custa a confiança de quem já fez a parte dele.
 
 **Leia com `listar_mensagens` a conversa da pessoa que você vai cobrar, antes
 de preparar o envio, sempre.** A carteira só sabe o que alguém anotou nela, e o

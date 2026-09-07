@@ -17,8 +17,8 @@ description: >-
   (/corretor:gravar-video-do-imovel).
 license: MIT
 compatibility: >-
-  Precisa da carteira do corretor, no computador ou no Google Drive — o
-  transporte sai da linha carteira: do INDICE.md. Sem carteira, ela ainda
+  Precisa da carteira do corretor, numa pasta do computador — o transporte
+  sai da linha carteira: do INDICE.md. Sem carteira, ela ainda
   escreve as duas versões do anúncio a partir do link ou da ficha colada, e não
   grava nada: o fecho diz isso em uma linha. Abrir o link precisa de ferramenta
   de web; sem ela, o caminho é a ficha colada.
@@ -38,11 +38,14 @@ inventa dado de imóvel.
 
 Leia, nesta ordem:
 
-1. `references/CONTRATO.md` — é a lei do pack. Esta skill usa as seções 1 (onde
-   a carteira mora, e os dois transportes), 2 (id e apelido), 4.4 (o arquivo de
-   imóvel), 4.6 (o `_indice.md`), 4.7 (`_bruto/`), 6 (o que sai para o
-   WhatsApp), 8 (ordem de busca e perguntas) e 10 (como começa e termina). O que
-   está escrito lá vale aqui; nenhum formato é reescrito neste arquivo.
+1. O contrato é a lei do pack, e está partido por seção em
+   `references/contrato/`. Leia estas, antes de escrever uma linha:
+   `01-0-onde-a-carteira-mora.md` (os dois transportes),
+   `02-0-id-e-apelido.md`, `04-4-arquivo-de-imovel.md`, `04-6-os-dois-indices.md`,
+   `04-7-o-bruto.md`, `06-0-o-que-sai.md` (o que sai para o WhatsApp),
+   `08-0-quando-perguntar.md` e `10-0-comeca-e-termina.md`. O inteiro está em
+   `references/CONTRATO.md`, para quando uma seção citar outra. O que está
+   escrito lá vale aqui; nenhum formato é reescrito neste arquivo.
 2. o `INDICE.md` da carteira — a primeira leitura do contrato §1 acha o arquivo,
    e a linha `carteira:` dele diz o transporte, que vale para toda leitura e
    toda gravação desta execução. De lá saem também quem ele é, a voz, o CRECI, a
@@ -353,6 +356,23 @@ não se corrige e não se apaga, nunca.
 **O texto do anúncio não vira arquivo.** Ele se refaz do arquivo do imóvel em
 qualquer dia, e cópia guardada é a segunda verdade que ninguém atualiza. É a
 regra 1 do contrato.
+
+O fecho, depois dos dois blocos e nesta ordem (contrato §10):
+
+```markdown
+## Guardei
+- ~/carteira/imoveis/V-071-casa-3d-azenha.md — criado, com o link e o preço da página
+- ~/carteira/imoveis/_indice.md — uma linha nova
+- ~/carteira/_bruto/2026-08-12-ficha-8812.md — a ficha, como veio
+- ~/carteira/INDICE.md — imóveis à venda, 11 para 12
+
+## Falta saber
+- o IPTU do V-071 (casa 3 dorm, Azenha) — a página não traz, e é a segunda coisa que perguntam depois do preço
+- se o pátio pega sol da tarde — você viu na visita e eu não tenho isso escrito
+```
+
+Sem carteira, o `## Guardei` vira uma linha só: `- nada foi gravado — você está
+sem carteira aqui`. O anúncio sai igual.
 
 ### A procedência de cada campo
 

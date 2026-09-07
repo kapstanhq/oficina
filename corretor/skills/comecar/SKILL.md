@@ -5,21 +5,21 @@ description: >-
   carteira do corretor do zero, em oito passos, no computador ou no Google
   Drive. Cria as pastas, copia os sete modelos, escreve quem ele é, grava o modo
   — copiloto ou automático — e conecta Google Agenda, Gmail e Drive explicando
-  cada botão e TESTANDO o que conectou antes de escrever “sim”. Ensina a
-  trazer conversa do WhatsApp, que entra colada. Termina com a
-  carteira cheia: um imóvel de verdade, vindo de um link, e um cliente de
-  verdade, vindo de uma conversa colada. Todo passo é pulável, e se ele fechar
-  no meio ela volta de onde parou. Use na primeira vez, sempre, e quando ele
-  disser “instalei, e agora”, “como eu começo”, “configura isso pra mim”, “não
-  tenho carteira nenhuma”, “quero ligar minha agenda”, “parei no meio da
-  configuração”, “pulei o Gmail e quero ligar agora”, “mudei de computador” — e
-  sempre que outra skill disser que não achou o INDICE.md da carteira.
+  cada botão e TESTANDO antes de escrever “sim”. Ensina a trazer conversa do
+  WhatsApp, que entra colada. Termina com a carteira cheia: um imóvel de
+  verdade, vindo de um link — ou a planilha de imóveis inteira, em CSV —, e um
+  cliente, vindo de uma conversa colada. Todo passo é pulável, e se ele fechar
+  no meio ela volta de onde parou. Use na primeira vez, e quando ele disser
+  “instalei, e agora”, “como eu começo”, “configura isso pra mim”, “não tenho
+  carteira nenhuma”, “importa minha planilha”, “tenho tudo numa planilha”,
+  “quero ligar minha agenda”, “parei no meio da configuração”, “pulei o Gmail e
+  quero ligar agora”, “mudei de computador” — e sempre que outra skill disser
+  que não achou o INDICE.md da carteira.
 license: MIT
 compatibility: >-
-  Precisa de um lugar para montar a carteira: uma pasta no computador, com
-  ferramenta de arquivo, ou a pasta carteira no Google Drive, pelo conector. Sem
-  nenhum dos dois — chat na web sem Drive — ela não funciona, e diz isso em uma
-  linha: o trabalho dela é montar a carteira. Google Agenda e Gmail são
+  Precisa de um lugar para montar a carteira, numa pasta do computador, com
+  ferramenta de arquivo. Sem ela — chat na web — ela não funciona, e diz isso
+  em uma linha: o trabalho dela é montar a carteira. Google Agenda e Gmail são
   opcionais; sem eles, os passos 3 e 4 ficam anotados como pulados.
 allowed-tools: Read Glob Grep Write Edit
 ---
@@ -68,19 +68,21 @@ atualizar, sempre — e devolva o texto inteiro com a sua mudança dentro.
 
 Leia, nesta ordem:
 
-1. **`references/CONTRATO.md`, inteiro.** Ele é a lei do pack, e **nenhum
-   gabarito é reescrito aqui**. O que esta skill usa direto:
-
-```
-1    onde a carteira mora — os dois transportes —, e quem é dono de qual fato
-2    id e apelido, e o nome do arquivo
-3    as três regras — procedência é a que mais aparece aqui
-4    os sete formatos literais, e o que fazer com os comentários dos modelos
-5    os dois modos, e a exceção da matrícula
-7    como ler uma conversa colada, e o que fazer com ela depois
-8    o tamanho da pergunta, e a UI de escolha com o custo escrito
-10   como uma skill termina
-```
+1. **O contrato, por seção.** Ele é a lei do pack, e ler o documento inteiro
+   custa vinte a trinta mil tokens antes da primeira pergunta. Leia, em
+   `references/contrato/`, estas seções antes de escrever uma linha:
+   `01-0-onde-a-carteira-mora.md` (os dois transportes, e quem é dono de qual
+   fato), `02-0-id-e-apelido.md` (o id, o apelido e o nome do arquivo),
+   `03-0-as-tres-regras.md` (procedência é a que mais aparece aqui),
+   `04-0-os-formatos.md` e os sete que o seguem, de `04-1-indice.md` a
+   `04-7-o-bruto.md` (os gabaritos, e o que fazer com os comentários dos
+   modelos), `05-0-os-dois-modos.md` (os dois modos, e a exceção da
+   matrícula), `07-0-a-conversa-entra.md` (como ler uma conversa colada, e o
+   que fazer com ela depois), `07-1-a-mensagem-sai.md` (a linha `envio:`, que
+   só existe com conector), `08-0-quando-perguntar.md` (o tamanho da pergunta,
+   e a UI de escolha com o custo escrito) e `10-0-comeca-e-termina.md` (como
+   uma skill termina). Nada do que está lá se reescreve aqui: divergiu, o
+   contrato vence.
 
 2. **`references/modelos/`** — os sete arquivos que ela vai copiar. Leia antes
    de escrever o primeiro: o que vai para a carteira é o que está neles, sem
@@ -123,7 +125,7 @@ enquanto demora. Demorar sem mostrar é onde o leigo acha que travou.
 3  a agenda
 4  e-mail e Drive          opcionais
 5  as conversas do WhatsApp
-6  o primeiro imóvel
+6  o primeiro imóvel, ou a planilha inteira
 7  o primeiro cliente
 8  o que pedir agora
 ```
@@ -185,6 +187,18 @@ os arquivos dele, o nome dele, qual conta do Google, qual imóvel. Automático n
 inventa nenhuma dessas. Se ele escolher automático no passo 2, diga em uma linha
 que aquilo vale da **próxima** skill em diante, e siga perguntando.
 
+**E uma coisa sobre a permissão, porque ela aparece MAIS nesta skill que em
+qualquer outra.** O `allowed-tools` do topo não restringe nada: ele dispensa a
+pergunta de permissão, e **só no turno em que a skill é chamada** — a dispensa
+cai na primeira resposta dele. Como aqui são oito passos com uma pergunta em
+cada, do segundo em diante até gravar arquivo volta a pedir autorização.
+
+Isso não é defeito e não se conserta: diga uma vez, quando a primeira aparecer,
+que é assim que o programa mostra o que está sendo feito, e que aprovar é rápido.
+O que **não** se faz é pedir a ele que desligue as perguntas — a skill está
+escrevendo na carteira dele, e ver isso acontecer na primeira vez é o que
+constrói a confiança que as outras nove vão gastar.
+
 ---
 
 ## 6 · Os oito passos
@@ -207,10 +221,15 @@ Onde eu monto a sua carteira?
 
 Já existe `INDICE.md` lá? **Pare e vá para a seção 4.** Não sobrescreva.
 
-Não existe: crie, copiando de `references/modelos/` para os sete destinos da
-seção 4 do contrato. **Os comentários `<!-- MODELO · … -->` saem —
-todos.** Arquivo que chega ao corretor com o próprio manual dentro parece
-arquivo pela metade.
+Não existe: crie, copiando **cinco** dos sete gabaritos da seção 4 do
+contrato — os outros dois viram arquivo nos passos 6 e 7, um por item.
+
+**Os comentários `<!-- MODELO · … -->` saem — todos.** E **o `<AAAA-MM-DD>` do
+título de `hoje.md`, `funil.md` e dos dois `_indice.md` vira a data de hoje,
+aqui, agora**: nenhum passo posterior os toca, e os passos que tocariam as
+vistas são puláveis. Arquivo que chega ao corretor com o próprio manual dentro
+parece arquivo pela metade — e com `<AAAA-MM-DD>` na primeira linha parece
+formulário em branco.
 
 ```
 modelos/INDICE.md            → ~/carteira/INDICE.md
@@ -450,10 +469,24 @@ frente e não toque mais no assunto.
 Este passo é pulável, mas ele emenda no passo 7: se ele já tiver uma conversa à
 mão agora, o passo 7 usa essa mesma.
 
-### Passo 6 · O primeiro imóvel
+### Passo 6 · O primeiro imóvel, ou a planilha inteira
 
-Peça **um link** — a página de um imóvel que ele tem no site da imobiliária, ou
-o anúncio dele num portal. Uma pergunta:
+Dois caminhos, e a pergunta abre com os dois, com o custo escrito em cada um:
+
+```
+Como você quer pôr imóvel na carteira? É a primeira ficha que você vai ver, e
+é o que as outras nove vão ler quando procurarem um imóvel seu.
+
+  Um link agora            1 minuto, uma ficha · a página de um imóvel seu no
+                           site da imobiliária ou num portal
+  Minha planilha inteira   5 minutos, a carteira cheia · a planilha em que
+                           você controla os imóveis, exportada em CSV
+```
+
+Os dois terminam com ficha gravada, e o que vem depois da gravação é igual nos
+dois — está no fim do passo.
+
+#### O link
 
 > Me manda o link de um imóvel seu. Qualquer um que esteja no ar. É com ele que
 > eu monto a primeira ficha, e você vê como a carteira fica.
@@ -487,13 +520,78 @@ Depois, nesta ordem, e ela importa:
 4. **Uma linha na tabela** de `imoveis/_indice.md`, e o `## Quanto tem` do
    `INDICE.md` recontado.
 
-**Mostre o arquivo na tela, inteiro, e diga onde ele ficou.** É a primeira vez
-que ele vê o formato, e é aqui que ele entende o que comprou: texto, dele, que
-abre em qualquer editor e vai junto se ele trocar de imobiliária.
+#### A planilha
+
+**O formato é CSV**, e os dois programas exportam em dois cliques. Diga onde:
+
+```
+Excel           Arquivo → Salvar como → em “Tipo”, escolha “CSV UTF-8”
+Google Sheets   Arquivo → Fazer download → “Valores separados por vírgula (.csv)”
+```
+
+Veio `.xlsx`? Peça o CSV com essas duas linhas, **uma vez** — não há
+biblioteca nem conversor aqui, e não se instala nenhum. Ele colou as linhas da
+planilha direto na conversa? Vale como CSV colado, e segue igual.
+
+Depois, nesta ordem, e ela importa:
+
+1. **O bruto primeiro, e inteiro.** O arquivo entra em
+   `_bruto/AAAA-MM-DD-planilha-<nome-curto>.csv` sem tocar, e **sem o
+   cabeçalho de três linhas** do contrato §4.7 — um `.csv` com três linhas de
+   texto em cima deixa de ser um `.csv`. O que veio colado na conversa vira
+   esse mesmo arquivo, com as linhas como vieram. A data é a da exportação —
+   hoje, quase sempre. **É daqui que sai toda procedência:**
+   `← _bruto/AAAA-MM-DD-planilha-<nome-curto>.csv`. Não existe origem chamada
+   “planilha”: a origem é o arquivo em `_bruto/`, que a regra 2 já prevê.
+2. **Mapeie as colunas** para os campos do gabarito do imóvel (contrato §4.4):
+   link, estado, tipo, preço, condomínio, iptu, dormitórios, suíte, vagas,
+   endereço, proprietário, exclusividade. Cabeçalho óbvio se mapeia sozinho —
+   preço, valor, quartos, dorm, bairro, endereço, link, url. Ambiguidade vira
+   **uma pergunta**, com a UI de botões, e ela mostra o mapeamento inteiro para
+   ele confirmar **antes de gravar qualquer ficha**:
+
+   ```
+   Li 18 linhas da sua planilha. É isto?
+
+   valor → preço · quartos → dormitórios · rua + bairro → endereço · url → link
+   ficam de fora: “corretor responsável”, “data do anúncio”
+
+     Está certo         eu gravo as 18 fichas agora
+     Mudo uma coluna    você diz qual, e eu mostro de novo antes de gravar
+   ```
+
+   Coluna que não tem campo no gabarito **não cria campo** — regra zero do
+   contrato. É descrição? O texto vai para `## O que vende`. Não é? Fica de
+   fora, e a resposta diz quais colunas ficaram. `estado:` só recebe um dos
+   seis valores do §4.4: “disponível” vira `à venda` ou `para alugar` conforme
+   o prefixo, e o que não casar entra `?`.
+3. **Uma ficha por linha**, pelo gabarito de `modelos/imovel.md`, cada campo
+   com `← _bruto/<o csv>`. O id é sequencial (contrato §2) — `V-001`,
+   `V-002`… numa carteira nova —, e o prefixo é `V-` ou `A-` conforme a linha
+   diga venda ou aluguel. A planilha não diz? **Uma pergunta para o lote
+   inteiro**, não linha a linha. O apelido é `<tipo> <n> dorm, <bairro>`; a
+   linha não tem bairro? Use o que houver — tipo e dormitórios — e diga isso.
+   O que a linha não tem entra `?`. Linha vazia não vira ficha, e linha
+   repetida — mesmo link ou mesmo endereço — não vira duas.
+4. **Uma linha por imóvel** em `imoveis/_indice.md`, o `## Quanto tem` do
+   `INDICE.md` recontado, e em cada ficha uma linha no `## Histórico`:
+   `- AAAA-MM-DD entrou na carteira  ← _bruto/AAAA-MM-DD-planilha-<nome>.csv`.
+
+**Teto: 200 linhas por vez.** Passou disso, pergunte se importa tudo ou só as
+linhas marcadas como disponíveis. E na tela vai **a primeira ficha inteira e a
+contagem do resto** — nunca as duzentas.
+
+#### Nos dois caminhos
+
+**Mostre a ficha na tela, inteira — a única, ou a primeira das dezoito —, e
+diga onde ela ficou.** É a primeira vez que ele vê o formato, e é aqui que ele
+entende o que comprou: texto, dele, que abre em qualquer editor e vai junto se
+ele trocar de imobiliária.
 
 Aponte o `?` que ficou — “o IPTU eu não tenho, e é a segunda coisa que perguntam
-depois do preço” — e diga que o **anúncio** é de `/corretor:anunciar-imovel`.
-Esta aqui só põe o imóvel dentro.
+depois do preço”; na planilha, o `?` que se repete vira uma linha só, “o IPTU
+não está na planilha, ficou ? em 18 fichas” — e diga que o **anúncio** é de
+`/corretor:anunciar-imovel`. Esta aqui só põe o imóvel dentro.
 
 **Se ele quiser pular**, diga o custo em uma linha antes de aceitar: carteira
 vazia não faz ninguém voltar, e as outras nove leem essa pasta. Insistiu: anote
@@ -577,7 +675,7 @@ que ele acredita. Dois caminhos, nesta ordem:
 1. **Onde há ferramenta de arquivo** — as dez moram lado a lado, uma pasta cada:
    um `Glob` em `../*/SKILL.md` a partir da pasta desta.
 2. **Onde não há** — chat da web, com a carteira no Drive: a lista das dez está
-   na seção 11 do `references/CONTRATO.md`, que veio junto com esta skill. Leia
+   em `references/contrato/11-0-onde-roda.md`, que veio junto com esta skill. Leia
    de lá, e leia também a classificação: no chat da web sem carteira, cinco das
    dez não funcionam, e mostrar as dez como se todas funcionassem é a mesma
    promessa quebrada por outro caminho.
@@ -590,8 +688,26 @@ Uma linha: ponha na pasta `_bruto/` da carteira e rode
 
 ## 7 · A saída
 
-O fecho é o do contrato §10, com os títulos exatos, e só as seções com conteúdo.
-Não há bloco para colar nesta skill: o trabalho dela é a carteira.
+O fecho é o do contrato §10, com os títulos exatos. Não há bloco para colar
+nesta skill: o trabalho dela é a carteira.
+
+**O `## Guardei` sai sempre, inclusive quando ela não gravou nada** — e é o
+caso de quem a chama só para retomar um item de `## Pulado no começo` e o
+teste da conexão não passa. Aí o fecho é este, e o título é este:
+
+```markdown
+## Guardei
+- nada foi gravado — o teste do Google Drive não passou, e a linha só vira
+  `sim` depois de uma chamada que voltou (passo 4)
+
+## Ficou para depois
+- ligar o Google Drive — continua em “Pulado no começo”, com a data de lá
+```
+
+`## Não gravei nada` e `## A carteira está como estava` são títulos
+inventados, e a seção 4 do contrato os proíbe: quem lê o fecho procura os três
+títulos fixos, e um quarto nome quebra quem vier atrás. Medido na prova: esta
+skill inventou o próprio na primeira execução, tendo feito a coisa certa.
 
 ```markdown
 # Sua carteira está montada
@@ -625,6 +741,24 @@ Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
 
 ## O que pedir agora
 <os três exemplos e a lista das dez>
+```
+
+Veio da planilha? As linhas do imóvel trocam por estas, e o resto fica:
+
+```markdown
+## O que ficou pronto
+- 18 imóveis, de V-001 (casa 3 dorm, Azenha) a V-018 (apto 1 dorm, Cidade
+  Baixa), da planilha que você importou — duas colunas ficaram de fora,
+  “corretor” e “data do anúncio”
+
+## Guardei
+- ~/carteira/imoveis/ — 18 fichas criadas, V-001 a V-018
+- ~/carteira/imoveis/_indice.md — 18 linhas
+- ~/carteira/_bruto/2026-08-19-planilha-imoveis.csv — a planilha, como veio
+
+## Falta saber
+- o IPTU não está na planilha — ficou ? em 18 fichas
+- o condomínio, nas 11 que são apartamento
 ```
 
 O exemplo acima é o de uma carteira no computador. **No `drive`, o mesmo fecho
