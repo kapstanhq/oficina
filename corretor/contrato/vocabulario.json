@@ -41,6 +41,10 @@
   "origens-do-oficio": "visita            o corretor viu no imóvel\nmatrícula         está na matrícula que está em _bruto/",
   "criterios-de-aposentar": "imóvel vendido, alugado, tirado\ndo mercado ou com exclusividade vencida; cliente que fechou, desistiu por\nescrito, ou está sem responder há **120 dias**",
   "prazo-de-silencio": "120 dias",
+  "_skills-do-motor": "As três marcas abaixo são das skills de oficina/_motor/skills/, que valem para qualquer profissão. Um pack novo que não as declare vê o `conferir` acusar a marca de pé — e é o certo: o prazo de validade de um dado é do ofício, e não existe padrão razoável para herdar.",
+  "validades-do-oficio": "```\npreço e disponibilidade do imóvel   60 dias   o mercado anda, e o valor de março não é o de hoje\nmatrícula, certidão e ônus          90 dias   o cartório emite com validade, e o banco a cobra\ndocumento pedido e não entregue     30 dias   passou disso foi esquecido, não está a caminho\ncondomínio e IPTU                  180 dias   mudam por reajuste anual, e o anúncio erra junto\no que o cliente disse que procura    90 dias   a vida dele muda mais rápido que a carteira\n```",
+  "exemplo-pendencia": "a matrícula do V-071 (casa 3 dorm, Azenha), pedida ao proprietário em 2026-08-13",
+  "exemplo-vista": "o que falta para fechar o negócio — quem entrega cada documento, e o que já chegou",
   "modelos-do-oficio": "modelos/_indice-imoveis.md    → ~/carteira/imoveis/_indice.md\nmodelos/_indice-clientes.md   → ~/carteira/clientes/_indice.md\nmodelos/imovel.md             → ~/carteira/imoveis/<id>-<apelido>.md   (um por imóvel)\nmodelos/cliente.md            → ~/carteira/clientes/<id>-<apelido>.md  (um por cliente)",
   "excecao-de-modo": "**`/corretor:conferir-matricula` nunca opera em automático.** Mesmo com\n`modo: automatico` no `INDICE.md`, ela lista o que pode travar a venda e para;\nquem conclui é gente. Ela diz isso em uma linha, sem pedir desculpa: quem\nescolheu automático escolheu para o anúncio, não para a matrícula.",
   "_proibido-no-motor": [

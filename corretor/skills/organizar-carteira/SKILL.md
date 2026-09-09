@@ -38,6 +38,13 @@ achar o que tinha.
 **O argumento é opcional:** sem nada, ela varre a carteira inteira; com o id de
 um cliente ou de um imóvel, ela trabalha só esse item.
 
+**Quem só OLHA é outra skill.** `/corretor:laudo-da-carteira` lê a carteira e
+não escreve uma linha: ela diz o que está sem procedência, o que venceu, o que
+ficou órfão e o que passou do teto. Esta aqui é a que conserta. A separação é
+de propósito — a régua precisa ser barata o bastante para rodar antes e depois
+de qualquer coisa, e o que escreve nunca é barato. Na dúvida sobre o estado da
+carteira, roda-se o laudo primeiro; ele diz se vale chamar esta.
+
 Ela não apaga nada, não abre link, não escreve mensagem para cliente nenhum,
 não lê matrícula, não decide preço e não escolhe entre dois fatos que se
 contradizem — o que ela não apurou sai como `?` e vira linha em `## Falta

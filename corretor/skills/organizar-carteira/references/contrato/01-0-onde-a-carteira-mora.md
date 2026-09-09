@@ -16,6 +16,8 @@
   _bruto/              conversas coladas, fichas, planilhas, PDFs, links — a ORIGEM
     2026-08-12-whatsapp-joana.md
     2026-08-19-planilha-imoveis.csv
+  vistas/              o pedaço que UMA pessoa de fora pode ver (seção 4.8).
+    C-017-joana-ribeiro.md   Derivado, refeito a cada execução, só de leitura
   arquivo-morto/
     imoveis/
     clientes/

@@ -254,10 +254,11 @@ formato do contrato §1 — `carteira: local · C:\Users\marcelo\carteira` ou
 ler e gravar; sem ela, cada skill vai adivinhar pelo lugar em que o arquivo
 apareceu.
 
-**`_bruto/` e `arquivo-morto/` nascem vazias, e pasta vazia não se cria com
-`Write`.** Elas aparecem quando o primeiro arquivo cai lá — `_bruto/` no passo 5
-ou 6, `arquivo-morto/` só quando algo for aposentado. **Diga isso em uma linha**,
-senão ele abre a carteira, não vê as duas, e acha que faltou. No `drive` dá para
+**`_bruto/`, `arquivo-morto/` e `vistas/` nascem vazias, e pasta vazia não se
+cria com `Write`.** Elas aparecem quando o primeiro arquivo cai lá — `_bruto/`
+no passo 5 ou 6, `arquivo-morto/` só quando algo for aposentado, e `vistas/` na
+primeira vez que ele compartilhar alguma coisa. **Diga isso em uma linha**,
+senão ele abre a carteira, não vê as três, e acha que faltou. No `drive` dá para
 criar pasta vazia, e mesmo assim vale o mesmo: a carteira fica igual nos dois.
 
 **A prova.** Depois de escrever, mostre a lista na tela, com o lugar de verdade:
@@ -412,6 +413,14 @@ Comece pela verdade, em uma linha e sem rodeio: **aqui a conversa entra
 colada**, e a API oficial do WhatsApp não resolve o caso dele — ela é para número de
 empresa, e ele atende do número pessoal. A ponte é colar ou exportar, e é isso
 que este passo ensina.
+
+**E há um terceiro caminho, que só existe com o conector ligado:**
+`/corretor:importar-a-conversa` lê o histórico e enche a carteira de uma vez —
+ela abre só as conversas que parecem de trabalho e escreve no `INDICE.md` o que
+leu e o que não leu. É o que troca a primeira semana de digitação por uma
+execução. Se o Passo 6 tiver ligado o conector, ofereça-a aqui, em uma linha, e
+**siga o passo mesmo assim**: os dois caminhos abaixo continuam sendo os que
+funcionam em toda ferramenta, e são eles que ele vai usar no dia a dia.
 
 Dois caminhos, **o mais barato primeiro**:
 

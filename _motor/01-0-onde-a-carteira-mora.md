@@ -14,6 +14,8 @@
   _bruto/              conversas coladas, fichas, planilhas, PDFs, links — a ORIGEM
     {exemplo-bruto}
     {exemplo-bruto-planilha}
+  vistas/              o pedaço que UMA pessoa de fora pode ver (seção 4.8).
+    {exemplo-pessoa-arquivo}   Derivado, refeito a cada execução, só de leitura
   arquivo-morto/
     {pasta-itens}/
     {pasta-pessoas}/

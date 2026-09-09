@@ -20,6 +20,19 @@ ferramenta que lê o padrão aberto ele chega como texto literal e o arquivo nã
 abre. `references/` é do padrão, e as cópias são geradas de uma fonte só por um
 script — ninguém copia à mão.
 
+**A marca tem gênero, e o texto ao redor dela não pode concordar com ela.**
+`{item}` e `{pessoa}` resolvem para um substantivo masculino num pack e feminino
+no seguinte — quem escolhe é o `vocabulario.json`, e este arquivo não sabe qual
+virá. Escrever `{pessoas} novas` sai errado em metade dos packs, e **nenhum
+alarme pega**: a fonte está correta, o erro nasce na geração.
+
+**Escreva de forma que a concordância não dependa da marca.** Prefira o verbo ao
+adjetivo — `8 {pessoas} entraram` em vez de `8 {pessoas} novas` —, e a pergunta
+ao particípio — `quem entra na carteira` em vez de `que {pessoas} vão ser
+criadas`. Vale para adjetivo, particípio e artigo. É a única regra do motor que
+só se vê depois de gerar, e por isso ela mora aqui: quem a lê está escrevendo a
+fonte, que é onde ela se cumpre.
+
 **E este arquivo também é montado.** Ele não se edita: as seções moram
 partidas em dois lugares — `oficina/_motor/` guarda as que valem para qualquer
 profissão (68,8% das linhas), e `oficina/<pack>/contrato/` as que mudam com o

@@ -32,21 +32,29 @@ que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 seção 4 proíbe. Medido: duas das dez inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
-**Três skills não têm bloco para colar, e a razão é a mesma nas três: o
+**Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o
 trabalho delas não é um texto para o cliente.**
 
 ```
 /corretor:comecar              o trabalho é a configuração
 /corretor:o-que-fazer-hoje     o trabalho é a lista do dia
 /corretor:organizar-carteira   o trabalho é o relatório do que mudou
+/corretor:laudo-da-carteira    o trabalho é o laudo, e ele não sai daqui
+/corretor:importar-a-conversa  o trabalho é o relatório do que entrou
 ```
 
-Na `comecar` o lugar do bloco é ocupado por `## O que ficou pronto`, e ela
-acrescenta `## Ficou para depois` e `## O que pedir agora` DEPOIS dos três
-títulos fixos. A `organizar-carteira` acrescenta os títulos do que tocou, que
-são o próprio trabalho. **Fora essas duas, nenhuma skill acrescenta seção ao
-fecho** — e nenhuma das três oferece a segunda saída da seção 7.1, porque não
-há mensagem para mandar.
+**Quatro delas acrescentam seção ao fecho, e a seção acrescentada É o
+trabalho.** Na `comecar` o lugar do bloco é ocupado por `## O que ficou pronto`,
+mais `## Ficou para depois` e `## O que pedir agora`. A `organizar-carteira`
+traz os títulos do que tocou. O `laudo-da-carteira` traz um título por pergunta
+da régua, e a `importar-a-conversa` um por destino do que leu — inclusive o do
+que ela **não** leu, que é o mais importante dos dela.
+
+**Fora essas quatro, nenhuma skill acrescenta seção ao fecho**, e nenhuma das
+cinco oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
+
+A ordem dos três títulos fixos não muda em nenhuma delas: o que a skill
+acrescenta vem ANTES do `## Guardei`, nunca entre ele e o `## Falta saber`.
 
 ```markdown
 <o trabalho — o bloco para colar, sozinho, sem comentário dentro>

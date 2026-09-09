@@ -20,6 +20,19 @@ ferramenta que lê o padrão aberto ele chega como texto literal e o arquivo nã
 abre. `references/` é do padrão, e as cópias são geradas de uma fonte só por um
 script — ninguém copia à mão.
 
+**A marca tem gênero, e o texto ao redor dela não pode concordar com ela.**
+`imóvel` e `cliente` resolvem para um substantivo masculino num pack e feminino
+no seguinte — quem escolhe é o `vocabulario.json`, e este arquivo não sabe qual
+virá. Escrever `clientes novas` sai errado em metade dos packs, e **nenhum
+alarme pega**: a fonte está correta, o erro nasce na geração.
+
+**Escreva de forma que a concordância não dependa da marca.** Prefira o verbo ao
+adjetivo — `8 clientes entraram` em vez de `8 clientes novas` —, e a pergunta
+ao particípio — `quem entra na carteira` em vez de `que clientes vão ser
+criadas`. Vale para adjetivo, particípio e artigo. É a única regra do motor que
+só se vê depois de gerar, e por isso ela mora aqui: quem a lê está escrevendo a
+fonte, que é onde ela se cumpre.
+
 **E este arquivo também é montado.** Ele não se edita: as seções moram
 partidas em dois lugares — `oficina/_motor/` guarda as que valem para qualquer
 profissão (68,8% das linhas), e `oficina/<pack>/contrato/` as que mudam com o
@@ -63,6 +76,8 @@ outra profissão herda o primeiro diretório inteiro e escreve só o segundo.
   _bruto/              conversas coladas, fichas, planilhas, PDFs, links — a ORIGEM
     2026-08-12-whatsapp-joana.md
     2026-08-19-planilha-imoveis.csv
+  vistas/              o pedaço que UMA pessoa de fora pode ver (seção 4.8).
+    C-017-joana-ribeiro.md   Derivado, refeito a cada execução, só de leitura
   arquivo-morto/
     imoveis/
     clientes/
@@ -686,6 +701,86 @@ o `.csv` que apareceu em `_bruto/` depois.
 
 ---
 
+## 4.8 · A vista, que é a carteira vista de fora
+
+A carteira é do corretor e mora com ele. **A vista é o pedaço dela que uma
+pessoa de fora pode ver** — e é a única coisa da carteira que sai do computador.
+
+```
+~/carteira/
+  vistas/
+    C-017-joana-ribeiro.md      uma vista por cliente, o mesmo id e o mesmo apelido
+```
+
+### Ela é DERIVADA, e é por isso que ela existe
+
+Nada se escreve numa vista à mão. Ela é montada a partir dos arquivos donos, do
+`funil.md` e do `hoje.md`, e é refeita inteira a cada execução — como o
+`_indice.md` e o `funil.md`, e pela mesma razão: **duas fontes divergem na
+primeira correção**, e aqui a divergência seria visível para alguém de fora.
+
+Consequência prática: **apagar a vista não perde nada.** Se ela sumir, a próxima
+execução a refaz. É o que a torna segura de compartilhar.
+
+### O que entra, e o que nunca entra
+
+| entra | nunca entra |
+|---|---|
+| o que está pendente, com dono e data | qualquer coisa de `_bruto/` |
+| o que já foi entregue, com data | o que outra cliente disse ou fez |
+| o que foi combinado, nas palavras do combinado | preço de custo, margem, comissão |
+| o que falta decidir, e de quem é a decisão | o `?` que é dúvida interna do corretor |
+| o link do que já é público | anotação de estratégia, ou de como negociar |
+
+**A regra que resolve o caso duvidoso:** entra o que essa pessoa **já sabe ou já
+deveria saber**. A vista não conta nada de novo — ela organiza o que já foi
+combinado com ela. Se uma linha da vista pode surpreender quem a lê, ela está no
+arquivo errado.
+
+**O `_bruto/` nunca sai, em nenhuma hipótese.** Ele é a conversa inteira, o
+e-mail encaminhado, o documento de terceiro. A vista é derivada dele, e derivar
+é justamente o que separa o que pode sair do que não pode.
+
+### O formato
+
+```markdown
+# o que falta para fechar o negócio — quem entrega cada documento, e o que já chegou
+
+Atualizado em 2026-09-09 por corretor.
+
+## Falta
+
+- [ ] <o quê> — com <quem> — pedido em <data>
+- [x] <o que já chegou> — em <data>
+
+## Combinado
+
+- <uma linha por combinado, com a data em que foi combinado>
+
+## Onde estamos
+
+<uma linha, em português, sem jargão de etapa>
+```
+
+`## Falta` é a única seção obrigatória: uma vista sem pendência é uma vista que
+diz "nada com você agora", e isso também é informação.
+
+**Sem etapa de funil, sem id solto e sem sigla.** `V-071 (casa 3 dorm, Azenha)` vira o
+apelido; a etapa vira uma frase. Quem lê a vista não conhece o vocabulário da
+carteira, e não deveria precisar conhecer.
+
+### Quem escreve, e quem lê
+
+Escreve o corretor, sempre — pela skill. **Quem recebe tem acesso de
+leitura, nunca de escrita.** Duas pessoas escrevendo no mesmo arquivo é o
+momento em que a carteira deixa de ter dono, e o contrato inteiro se apoia em
+ela ter um.
+
+Se a pessoa de fora responder, ela responde pelo canal de sempre — e aquilo
+entra em `_bruto/` como qualquer conversa.
+
+---
+
 ## 5 · Os dois modos
 
 A skill descobre o modo lendo a linha `modo:` do `INDICE.md`. É a segunda coisa
@@ -1193,21 +1288,29 @@ que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 seção 4 proíbe. Medido: duas das dez inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
-**Três skills não têm bloco para colar, e a razão é a mesma nas três: o
+**Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o
 trabalho delas não é um texto para o cliente.**
 
 ```
 /corretor:comecar              o trabalho é a configuração
 /corretor:o-que-fazer-hoje     o trabalho é a lista do dia
 /corretor:organizar-carteira   o trabalho é o relatório do que mudou
+/corretor:laudo-da-carteira    o trabalho é o laudo, e ele não sai daqui
+/corretor:importar-a-conversa  o trabalho é o relatório do que entrou
 ```
 
-Na `comecar` o lugar do bloco é ocupado por `## O que ficou pronto`, e ela
-acrescenta `## Ficou para depois` e `## O que pedir agora` DEPOIS dos três
-títulos fixos. A `organizar-carteira` acrescenta os títulos do que tocou, que
-são o próprio trabalho. **Fora essas duas, nenhuma skill acrescenta seção ao
-fecho** — e nenhuma das três oferece a segunda saída da seção 7.1, porque não
-há mensagem para mandar.
+**Quatro delas acrescentam seção ao fecho, e a seção acrescentada É o
+trabalho.** Na `comecar` o lugar do bloco é ocupado por `## O que ficou pronto`,
+mais `## Ficou para depois` e `## O que pedir agora`. A `organizar-carteira`
+traz os títulos do que tocou. O `laudo-da-carteira` traz um título por pergunta
+da régua, e a `importar-a-conversa` um por destino do que leu — inclusive o do
+que ela **não** leu, que é o mais importante dos dela.
+
+**Fora essas quatro, nenhuma skill acrescenta seção ao fecho**, e nenhuma das
+cinco oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
+
+A ordem dos três títulos fixos não muda em nenhuma delas: o que a skill
+acrescenta vem ANTES do `## Guardei`, nunca entre ele e o `## Falta saber`.
 
 ```markdown
 <o trabalho — o bloco para colar, sozinho, sem comentário dentro>

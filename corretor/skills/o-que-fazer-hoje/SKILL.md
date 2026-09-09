@@ -44,6 +44,13 @@ terminam em mensagem, e a linha deles diz isso — mas quem mostra o nome de que
 recebe, o texto inteiro e as três saídas é a skill do item. Esta não tem tool de
 envio e não chega perto de uma: a lista do dia não é fila de aprovação.
 
+**O que depende de OUTRA PESSOA sai daqui como uma linha só.** Esta lista é o
+que o corretor tem que fazer; o que ele está esperando alguém mandar é de
+`/corretor:cobrar-o-que-falta`, que ordena por quem trava mais e escreve a
+cobrança. Misturar as duas faz a lista do dia abrir com cinco itens que ele não
+pode executar — e uma lista em que o primeiro item não é executável ensina a
+pular a lista.
+
 ---
 
 ## 2 · Antes de tudo
