@@ -9,12 +9,12 @@ contrato.
 
 O caminho muda; o formato não. Conversa que entrou pelo conector e conversa
 que entrou colada produzem o **mesmo** arquivo em `_bruto/`, com a mesma
-procedência (seção 3). Nenhuma das outras nove precisa saber por onde ela veio,
+procedência (seção 3). Nenhuma das outras precisa saber por onde ela veio,
 e é isso que impede o conector de virar um segundo pack.
 
 | a operação | colado | pelo conector |
 |---|---|---|
-| trazer a conversa de um {pessoa} | o {profissional} exporta ou cola | achar a conversa pelo telefone do arquivo do {pessoa} e ler o período que interessa |
+| trazer a conversa de {um-pessoa} | o {profissional} exporta ou cola | achar a conversa pelo telefone do arquivo {do-pessoa} e ler o período que interessa |
 | saber quando foi a última mensagem | está no que ele colou | pergunta-se à conversa |
 | guardar em `_bruto/` | igual nos dois | igual nos dois |
 
@@ -92,8 +92,8 @@ escrito, a data é a que o {profissional} disser (ou a de hoje, e a procedência
    `_indice.md` se entrou item ou mudou o último contato.
 4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.
 
-Conversa que menciona {item} que não está na carteira: não crie o {item} com o
-que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, o {item} não
-entra — dado de {item} adivinhado vira preço errado na mensagem para o {pessoa}.
+Conversa que menciona {item} que não está na carteira: não crie {o-item} com o
+que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, {o-item} não
+entra — dado que se adivinhou vira preço errado na mensagem para {o-pessoa}.
 
 ---

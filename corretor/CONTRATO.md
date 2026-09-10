@@ -1,8 +1,8 @@
 # O contrato da carteira
 
-Este arquivo é o padrão comum das dez skills do pack. Ele não é leitura de
+Este arquivo é o padrão comum das catorze skills do pack. Ele não é leitura de
 apoio: é onde estão os formatos literais, e formato inventado por uma skill
-quebra as outras nove.
+quebra as outras treze.
 
 Quem lê isto é o Claude executando uma skill. Quem lê o que sai dela é um
 corretor de imóveis com pressa, que não é técnico e não vai depurar nada.
@@ -20,18 +20,19 @@ ferramenta que lê o padrão aberto ele chega como texto literal e o arquivo nã
 abre. `references/` é do padrão, e as cópias são geradas de uma fonte só por um
 script — ninguém copia à mão.
 
-**A marca tem gênero, e o texto ao redor dela não pode concordar com ela.**
-`imóvel` e `cliente` resolvem para um substantivo masculino num pack e feminino
-no seguinte — quem escolhe é o `vocabulario.json`, e este arquivo não sabe qual
-virá. Escrever `clientes novas` sai errado em metade dos packs, e **nenhum
-alarme pega**: a fonte está correta, o erro nasce na geração.
+**A marca tem gênero, e o ARTIGO se deriva dele.** `{item}` e `{pessoa}`
+resolvem para um substantivo masculino num pack e feminino no seguinte — quem
+escolhe é o `vocabulario.json`, e este arquivo não sabe qual virá. Por isso o
+pack declara `item-genero` e `pessoa-genero`, e a fonte escreve `{o-item}`,
+`{do-item}`, `{um-item}`, `{dos-itens}` em vez de colar o artigo na
+marca. O nome usa a forma masculina como RÓTULO, não como valor.
 
-**Escreva de forma que a concordância não dependa da marca.** Prefira o verbo ao
-adjetivo — `8 clientes entraram` em vez de `8 clientes novas` —, e a pergunta
-ao particípio — `quem entra na carteira` em vez de `que clientes vão ser
-criadas`. Vale para adjetivo, particípio e artigo. É a única regra do motor que
-só se vê depois de gerar, e por isso ela mora aqui: quem a lê está escrevendo a
-fonte, que é onde ela se cumpre.
+**O adjetivo NÃO se deriva, e por isso se evita.** Prefira o verbo — `8
+{pessoas} entraram` em vez de `8 {pessoas} novas` — e a oração ao
+particípio — `{item} que veio de ficha` em vez de `{item} vindo de ficha`.
+É a única regra do motor que só se vê depois de gerar, e **nenhum alarme
+pega**: a fonte está correta, o erro nasce na geração. Por isso ela mora aqui:
+quem a lê está escrevendo a fonte, que é onde ela se cumpre.
 
 **E este arquivo também é montado.** Ele não se edita: as seções moram
 partidas em dois lugares — `oficina/_motor/` guarda as que valem para qualquer
@@ -172,7 +173,7 @@ Duas diferenças mudam o que a skill faz, não só como faz:
   muda um byte. E a leitura não lista `text/markdown` entre os tipos que suporta:
   o `.md` que hoje é lido é comportamento não documentado, que já mudou uma vez.
   **Enquanto isso valer, a carteira no `drive` pode ser criada e não pode ser
-  mantida** — e nove das dez skills existem para mudar arquivo que já existe.
+  mantida** — e quase toda skill existe para mudar arquivo que já existe.
   Uma skill que precise gravar por cima em `drive` PARA e diz isso ao corretor;
   não tenta, não contorna com criar-e-substituir (dois arquivos de mesmo título
   na mesma pasta, e a busca não desempata) e não finge que gravou.
@@ -325,7 +326,7 @@ matrícula         está na matrícula que está em _bruto/
 ```
 
 **O que não se apurou entra como `?`.** Nunca uma estimativa, nunca “por volta
-de”, nunca um número de imóvel parecido. O `?` pode levar na procedência o que
+de”, nunca um número de imóvel que se pareça. O `?` pode levar na procedência o que
 resolve ele:
 
 ```
@@ -727,7 +728,7 @@ execução a refaz. É o que a torna segura de compartilhar.
 | entra | nunca entra |
 |---|---|
 | o que está pendente, com dono e data | qualquer coisa de `_bruto/` |
-| o que já foi entregue, com data | o que outra cliente disse ou fez |
+| o que já foi entregue, com data | o que outro cliente disse ou fez |
 | o que foi combinado, nas palavras do combinado | preço de custo, margem, comissão |
 | o que falta decidir, e de quem é a decisão | o `?` que é dúvida interna do corretor |
 | o link do que já é público | anotação de estratégia, ou de como negociar |
@@ -911,7 +912,7 @@ contrato.
 
 O caminho muda; o formato não. Conversa que entrou pelo conector e conversa
 que entrou colada produzem o **mesmo** arquivo em `_bruto/`, com a mesma
-procedência (seção 3). Nenhuma das outras nove precisa saber por onde ela veio,
+procedência (seção 3). Nenhuma das outras precisa saber por onde ela veio,
 e é isso que impede o conector de virar um segundo pack.
 
 | a operação | colado | pelo conector |
@@ -1000,7 +1001,7 @@ escrito, a data é a que o corretor disser (ou a de hoje, e a procedência diz
 
 Conversa que menciona imóvel que não está na carteira: não crie o imóvel com o
 que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, o imóvel não
-entra — dado de imóvel adivinhado vira preço errado na mensagem para o cliente.
+entra — dado que se adivinhou vira preço errado na mensagem para o cliente.
 
 ---
 ## 7.1 · Como a mensagem sai
@@ -1099,7 +1100,7 @@ a skill não insiste e não tenta outro caminho: ela entrega o **bloco para
 copiar** — que é o padrão do pack de qualquer forma — e diz, em uma linha, que
 a primeira mensagem sai do celular dele.
 
-Não é raro: é como quase todo cliente novo chega — o que deixou o telefone
+Não é raro: é como quase todo cliente chega da primeira vez — o que deixou o telefone
 num portal e nunca escreveu.
 
 ### Quem pediu para não ser contatado
@@ -1119,9 +1120,9 @@ na ponte      um comando, e é ele que escreve o arquivo — o diretório dela
               sem argumento ele lista; `--tirar <número>` desfaz
 ```
 
-A carteira é o que as dez skills leem; a ponte é o que segura o envio mesmo se
+A carteira é o que as catorze skills leem; a ponte é o que segura o envio mesmo se
 alguém esquecer. **Nenhuma skill escreve mensagem para quem tem `não contatar:
-sim`**, nem para retomar, nem para avisar de imóvel novo, nem para desejar
+sim`**, nem para retomar, nem para avisar do que entrou, nem para desejar
 feliz aniversário. Não é preferência de canal: é pedido de silêncio.
 
 Quem coloca é o corretor, ou a skill que leu o pedido na conversa — e aí ela
@@ -1285,7 +1286,7 @@ Omitir a seção é o que faz o corretor achar que ficou guardado, e a regra
 aqui é a mesma do "escreveu, diz onde", virada do avesso: **ele precisa saber
 que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 `## Nada foi guardado` são títulos inventados, e título inventado é o que a
-seção 4 proíbe. Medido: duas das dez inventaram o próprio na primeira
+seção 4 proíbe. Medido: duas skills inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
 **Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o

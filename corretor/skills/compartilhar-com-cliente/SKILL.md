@@ -103,7 +103,7 @@ permissão tomadas com uma confirmação, e basta uma estar errada.
 
 ### Passo 2 · Derivar
 
-Leia o arquivo do cliente, os imóveis ligados a ele, o `funil.md` e o
+Leia o arquivo do cliente, os imóveis que o histórico dele cita, o `funil.md` e o
 `hoje.md`. Monte as três seções do §4.8 — `## Falta`, `## Combinado`,
 `## Onde estamos`.
 

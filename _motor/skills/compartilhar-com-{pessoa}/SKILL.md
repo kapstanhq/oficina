@@ -1,7 +1,7 @@
 ---
 name: compartilhar-com-{pessoa}
 description: >-
-  Monta uma vista — o pedaço da carteira que um {pessoa} pode ver — e a
+  Monta uma vista — o pedaço da carteira que {um-pessoa} pode ver — e a
   compartilha com ele no Drive, só para leitura. O que falta, de quem, desde
   quando; o que já chegou; o que foi combinado. É derivada da carteira e refeita
   a cada execução, então o {profissional} não mantém dois lugares. Mostra o que
@@ -24,7 +24,7 @@ compatibility: >-
 allowed-tools: Read Glob Grep Write Edit
 ---
 
-# Compartilhar com o {pessoa}
+# Compartilhar com {o-pessoa}
 
 ## 1 · O que ela faz, e o que ela não faz
 
@@ -32,7 +32,7 @@ O {profissional} responde a mesma pergunta toda semana: **"e aí, como está?"**
 Ele responde por mensagem, de memória, e a resposta é diferente a cada vez
 porque a memória é diferente a cada vez.
 
-Esta skill troca isso por **um lugar que o {pessoa} abre sozinho**. Não é um
+Esta skill troca isso por **um lugar que {o-pessoa} abre sozinho**. Não é um
 aplicativo, não é um portal e não é um login: é um arquivo de texto no Drive do
 {profissional}, com permissão de leitura para uma pessoa, refeito a cada
 execução.
@@ -84,7 +84,7 @@ decisão de automático. Vista nova sempre para e pergunta, nos dois modos.
 
 ## 4 · O passo a passo
 
-### Passo 1 · Escolher o {pessoa}, e um só
+### Passo 1 · Escolher {o-pessoa}, e um só
 
 Uma execução, uma pessoa. Sem nome, ela mostra quem tem vista e quem tem
 pendência aberta, e pergunta.
@@ -94,7 +94,7 @@ permissão tomadas com uma confirmação, e basta uma estar errada.
 
 ### Passo 2 · Derivar
 
-Leia o arquivo do {pessoa}, os {itens} ligados a ele, o `funil.md` e o
+Leia o arquivo {do-pessoa}, {os-itens} que o histórico dele cita, o `funil.md` e o
 `hoje.md`. Monte as três seções do §4.8 — `## Falta`, `## Combinado`,
 `## Onde estamos`.
 
@@ -111,7 +111,7 @@ Três coisas na hora de escrever, e as três são de tradução:
 
 ### Passo 3 · A prévia, e ela tem duas metades
 
-A primeira é o **conteúdo**: a vista inteira, como o {pessoa} vai ler.
+A primeira é o **conteúdo**: a vista inteira, como {o-pessoa} vai ler.
 
 A segunda é a **permissão**, e é a que ninguém lembra de mostrar:
 
@@ -133,7 +133,7 @@ compartilha com um estranho, e ninguém descobre.
    é o certo — não versione, não acumule.
 2. **Só então aplique a permissão**, e só a do arquivo. **Nunca a da pasta**: a
    pasta `vistas/` tem a vista de todas as pessoas, e compartilhá-la mostra a de
-   um {pessoa} para outro.
+   {um-pessoa} para outro.
 3. **Confira o que ficou aplicado** e diga em uma linha. "Compartilhei" sem
    conferir é a frase que a pessoa acredita e que não aconteceu.
 
@@ -143,7 +143,7 @@ Se o {profissional} quiser avisar, ela escreve a mensagem — três linhas, com 
 link, dizendo o que a pessoa vai achar lá e que ele continua no WhatsApp de
 sempre.
 
-O aviso **não substitui a conversa**. Quem manda um link e some fez o {pessoa}
+O aviso **não substitui a conversa**. Quem manda um link e some fez {o-pessoa}
 sentir que virou um número, e é o oposto do que a vista existe para fazer.
 
 ## 5 · O que perguntar, e como

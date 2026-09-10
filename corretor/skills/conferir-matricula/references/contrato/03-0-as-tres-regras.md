@@ -39,7 +39,7 @@ matrícula         está na matrícula que está em _bruto/
 ```
 
 **O que não se apurou entra como `?`.** Nunca uma estimativa, nunca “por volta
-de”, nunca um número de imóvel parecido. O `?` pode levar na procedência o que
+de”, nunca um número de imóvel que se pareça. O `?` pode levar na procedência o que
 resolve ele:
 
 ```

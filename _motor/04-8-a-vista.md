@@ -24,7 +24,7 @@ execução a refaz. É o que a torna segura de compartilhar.
 | entra | nunca entra |
 |---|---|
 | o que está pendente, com dono e data | qualquer coisa de `_bruto/` |
-| o que já foi entregue, com data | o que outra {pessoa} disse ou fez |
+| o que já foi entregue, com data | o que {outro-pessoa} disse ou fez |
 | o que foi combinado, nas palavras do combinado | preço de custo, margem, comissão |
 | o que falta decidir, e de quem é a decisão | o `?` que é dúvida interna do {profissional} |
 | o link do que já é público | anotação de estratégia, ou de como negociar |

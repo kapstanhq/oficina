@@ -23,6 +23,15 @@ compatibility: >-
   carteira, e ela avisa.
 allowed-tools: Read Glob Grep Write Edit
 ---
+<!-- CÓPIA GERADA · não edite este arquivo.
+
+     A fonte é oficina/_motor/skills/o-que-fazer-hoje/SKILL.md, e ela vale para
+     QUALQUER profissão: o que muda de ofício está escrito em marcas — {item},
+     {pessoa}, /{plugin}: — resolvidas na geração pelo vocabulario.json do
+     pack. Correção feita aqui é perdida no próximo
+     `npm run oficina -- --escrever`; a correção certa é na fonte, e ela
+     chega a todos os packs de uma vez. -->
+
 
 # O que fazer hoje
 
@@ -155,12 +164,12 @@ mora na caixa do `hoje.md`.
 Nesta ordem, e o arquivo dono sempre vence a vista (contrato, seção 1):
 
 ```
-1  funil.md               etapa, · desde e · próximo: de cada cliente vivo
+1  funil.md               etapa, · desde e · próximo: de cada cliente na carteira
 2  clientes/_indice.md    último contato — dá a fila de quem abrir
 3  cada arquivo de cliente que a fila apontar
                           ## Combinado · ## Histórico · etapa: · canal:
 4  imoveis/_indice.md     estado e atualizado
-5  cada arquivo de imóvel citado por um cliente vivo, mais os que estão
+5  cada arquivo de imóvel que a fila cita, mais os imóveis em
                           à venda ou para alugar
                           link: · exclusividade: · ## Documentos · ## O que vende
 6  o hoje.md de ontem      as caixas marcadas e as linhas que outras skills

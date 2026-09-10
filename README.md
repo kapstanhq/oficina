@@ -16,16 +16,16 @@ seu computador. Você não repete a mesma informação duas vezes.
 | Pack | Para quem | O que faz | Status |
 |---|---|---|---|
 | [**corretor**](corretor/) | Corretor de imóveis | Anúncio, matrícula, resposta de lead, visita, retomada de contato, documentos e a lista do dia | **Disponível** |
-| **contador** | Escritório contábil | Cobrança de documento do cliente, conferência de nota, resumo de mudança na legislação | Em breve |
-| **advogado** | Advogado e escritório | Resumo do andamento em português para o cliente, conferência de prazos, minuta a partir das suas peças | Em breve |
-| **corretor-seguros** | Corretor de seguros | Renovação, cotação comparada, acompanhamento de sinistro | Em breve |
+| [**prospeccao**](prospeccao/) | Quem prospecta o próprio cliente — fundador, consultor, dono de agência | Perfil de cliente, estudo da conta com procedência, abordagem escrita, retomada com gancho novo e a lista do dia | **Disponível** |
+| **médico e clínica** | Consultório e clínica | Paciente no lugar de cliente, a linha de cuidado no lugar do funil. Dado de saúde é sensível, e é o que faz a carteira em arquivo no computador ser a forma certa | Em estudo |
+| **advogado** | Advogado e escritório | O andamento em português para o cliente, o prazo que não se perde, a minuta a partir das peças que já são suas | Em estudo |
 
 ---
 
 ## Como instalar
 
-Duas portas, e a pergunta que decide é uma só: **o programa em que você usa IA
-abre pastas do seu computador?**
+Vale para qualquer pack. Duas portas, e a pergunta que decide é uma só: **o
+programa em que você usa IA abre pastas do seu computador?**
 
 | Onde você usa IA | Por onde entrar |
 |---|---|
@@ -51,10 +51,12 @@ Windows, Mac e Linux.
 ### 2. Copie este pedido e cole no seu agente
 
 Ele faz a instalação sozinho. Você não precisa baixar nem procurar pasta
-nenhuma.
+nenhuma. **Troque `<pack>` pelo nome da pasta do pack que você quer** — hoje
+`corretor` ou `prospeccao`, e é o nome que está na primeira coluna da tabela
+lá em cima.
 
 ```
-Instale o pack do corretor da Oficina Kapstan, que está no repositório público
+Instale o pack <pack> da Oficina Kapstan, que está no repositório público
 https://github.com/kapstanhq/oficina
 
 São arquivos de texto — SKILL.md e referências em markdown. Não há script para
@@ -62,7 +64,7 @@ executar e nada para compilar: a instalação é copiar pastas.
 
 1. Se você for o Claude Code, o caminho curto é o marketplace:
        /plugin marketplace add https://github.com/kapstanhq/oficina.git
-       /plugin install corretor@kapstan-oficina
+       /plugin install <pack>@kapstan-oficina
    A URL inteira, e NÃO o atalho `kapstanhq/oficina`: o atalho clona por SSH
    por padrão e falha em quem não tem chave carregada no ssh-agent.
    Para atualizar depois, o pedido é explícito — marketplace de terceiro não
@@ -78,7 +80,7 @@ executar e nada para compilar: a instalação é copiar pastas.
 
 3. Baixe o repositório para uma pasta temporária.
 
-4. Copie as dez pastas de corretor/skills/ para a pasta de skills, inteiras —
+4. Copie as pastas de <pack>/skills/ para a pasta de skills, inteiras —
    inclusive a subpasta references/, que as skills leem para funcionar.
 
 5. Confira: cada pasta copiada tem um SKILL.md e um references/CONTRATO.md.
@@ -86,7 +88,7 @@ executar e nada para compilar: a instalação é copiar pastas.
 
 6. Apague a pasta temporária.
 
-7. Me diga o comando para montar a carteira: /corretor:comecar, ou /comecar se
+7. Me diga o comando para montar a carteira: /<pack>:comecar, ou /comecar se
    a sua ferramenta não usar prefixo.
 
 Antes de começar, me mostre o que você vai fazer e em que pastas vai escrever.
@@ -98,7 +100,7 @@ então deixe seguir.
 ### 3. Monte a sua base
 
 ```
-/corretor:comecar
+/<pack>:comecar
 ```
 
 Leva cerca de 10 minutos. Ele pergunta uma coisa de cada vez — a primeira é em
@@ -113,30 +115,32 @@ pode fechar no meio e voltar depois.
 
 No chat pelo navegador ou pelo celular não se instala ferramenta: nem o ChatGPT
 da web, nem o Gemini, nem o Claude sem plano pago recebem uma. O que funciona
-ali é **colar um prompt** — o pack inteiro num texto só, que dá conta das dez
+ali é **colar um prompt** — o pack inteiro num texto só, que dá conta de todas as
 tarefas.
 
-**O caminho mais curto é montar o seu em
-<https://kapstan.com.br/oficina/corretor-de-imoveis>.** Ali você escolhe onde
-usa IA, se já tem carteira e quais ferramentas quer, e o texto sai pronto,
-menor e com os passos do seu serviço — tem um botão de copiar.
+**O caminho mais curto é montar o seu na página do pack** —
+[corretor de imóveis](https://kapstan.com.br/oficina/corretor-de-imoveis) ou
+[prospecção B2B](https://kapstan.com.br/oficina/prospeccao-b2b). Ali você
+escolhe onde usa IA, se já tem carteira e quais ferramentas quer, e o texto
+sai pronto, menor e com os passos do seu serviço — tem um botão de copiar.
 
-Prefere o arquivo? Ele está em [`corretor/PROMPT.md`](corretor/PROMPT.md):
-abra e copie tudo o que estiver entre as duas marcas `---8<---`. É o pack
-inteiro, com as dez tarefas. Cola uma vez e serve para tudo — não se cria um
+Prefere o arquivo? Ele está em `<pack>/PROMPT.md` —
+[corretor](corretor/PROMPT.md) · [prospeccao](prospeccao/PROMPT.md). Abra e
+copie tudo o que estiver entre as duas marcas `---8<---`. É o pack inteiro,
+com todas as tarefas. Cola uma vez e serve para tudo — não se cria um
 assistente por tarefa.
 
 ### No Gemini — grátis
 
 1. Abra <https://gemini.google.com> e clique em **Gems**, no menu da esquerda.
-2. **Novo Gem**: escreva o nome “Corretor” e cole o prompt no campo de
-   instruções.
+2. **Novo Gem**: dê o nome do ofício — “Corretor”, “Prospecção” — e cole o
+   prompt no campo de instruções.
 3. Em **Conhecimento**, anexe os arquivos da sua carteira. Salve.
 
 O passo 3 é o que quase ninguém percebe: **o que você anexa ao Gem ele lê**. Em
-vez de responder só com o que você cola na conversa, ele responde olhando os
-seus imóveis e os seus clientes. O que ele escreve continua saindo na conversa —
-quem leva de volta para os arquivos é você.
+vez de responder só com o que você cola na conversa, ele responde olhando a
+sua carteira. O que ele escreve continua saindo na conversa — quem leva de
+volta para os arquivos é você.
 
 ### No ChatGPT da web ou do celular
 
@@ -163,7 +167,7 @@ Leva uns 3 minutos.
 1. Abra <https://github.com/kapstanhq/oficina>, clique no botão verde **Code**
    e depois em **Download ZIP**.
 2. Descompacte o arquivo baixado e entre na pasta
-   `oficina-main` → `corretor` → `skills`.
+   `oficina-main` → `<pack>` → `skills`.
 3. Ali dentro há uma pasta por ferramenta. Clique com o botão direito na que
    você quer e escolha **Enviar para → Pasta compactada** (no Mac:
    **Comprimir**).
@@ -177,13 +181,15 @@ Leva uns 3 minutos.
 
 ### O que a porta 2 não faz
 
-O prompt entrega o texto — anúncio, resposta de lead, roteiro de vídeo,
-matrícula lida, lista de documentos. O que ele não faz sozinho é **lembrar**.
+O prompt entrega o texto — o anúncio e a matrícula lida no pack do corretor, o
+estudo da conta e a abordagem no de prospecção. O que ele não faz sozinho é
+**lembrar**.
 
 | O que se perde sem arquivos | Por quê |
 |---|---|
 | Retomar contato | Ela precisa saber há quantos dias a pessoa não responde e qual ângulo já foi tentado. A segunda retomada não pode repetir a primeira. |
-| A lista do dia e a montagem de visita | As duas leem a carteira inteira de uma vez. Colar o suficiente para reproduzir isso é colar tudo. |
+| Não escrever para quem pediu para parar | No pack de prospecção, a lista de quem pediu silêncio é um arquivo da carteira. Sem ela, a ferramenta escreve e avisa que não conferiu — quem confere é você. |
+| A lista do dia | Ela lê a carteira inteira de uma vez. Colar o suficiente para reproduzir isso é colar tudo. |
 | Começar a carteira, e organizá-la | Uma monta e a outra arruma. As duas são a carteira em si, e sem arquivo não há o que montar nem o que arrumar. |
 | O `?` que vira a pergunta de amanhã | Sem arquivo, a procedência vale dentro de uma conversa só, e a sessão seguinte recomeça do zero. |
 
@@ -231,7 +237,8 @@ Numa pasta do seu computador, e você escolhe uma vez qual. Os arquivos não sae
 da sua máquina, e o que isso cobra é que as ferramentas só funcionam onde existe
 pasta — no chat da web, não.
 
-São os mesmos arquivos em todo programa que abre pasta. No pack do corretor:
+São os mesmos arquivos em todo programa que abre pasta, e a árvore é a mesma
+em qualquer pack — o que muda é o nome das duas pastas. No do corretor:
 
 ```
 carteira/
@@ -243,6 +250,11 @@ carteira/
 ├── hoje.md
 └── funil.md
 ```
+
+E no de prospecção, `contas/` e `contatos/` no lugar das duas, mais dois
+arquivos que só aquele ofício tem: `perfil.md`, que é a régua de quem vale a
+pena, e `nao-perturbe.md`, que toda skill lê antes de escrever qualquer
+mensagem.
 
 São arquivos de texto comuns. Você abre no Bloco de Notas, imprime, copia para
 um pendrive, manda por e-mail.
@@ -275,10 +287,15 @@ escrita antes de instalar e não depois.
 
 | Quando | O que |
 |---|---|
-| Agora | Pack do corretor de imóveis, com 10 ferramentas |
-| Próximo | Pack do contador e pack do advogado |
-| Depois | Pack do corretor de seguros |
+| Agora | Pack do corretor de imóveis e pack de prospecção B2B |
+| Próximo | O ofício que a próxima pesquisa escolher — a régua é o que a pessoa reescreve toda semana, não o tamanho do mercado |
 | Sempre | Novas ferramentas dentro dos packs que já existem |
+
+O que decide o próximo pack não é palpite: é a carteira em arquivo servir ao
+ofício, e a ferramenta não depender de dado comprado. Foi isso que tirou da
+lista o contador, o corretor de seguros e o despachante — os três precisam de
+uma base que ninguém abre de graça, e um pack que promete o que não entrega é
+pior que pack nenhum.
 
 ---
 

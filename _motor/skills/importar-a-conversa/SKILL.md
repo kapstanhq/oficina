@@ -115,7 +115,7 @@ alguém é ler tudo — família, saúde, dinheiro, briga. A regra é uma:
 
 Três grupos, e o terceiro é o que exige julgamento:
 
-**Entra** — a conversa cujo nome bate com um {pessoa} que já está na carteira; a
+**Entra** — a conversa cujo nome bate com {um-pessoa} que já está na carteira; a
 que tem, no que já se sabe dela, palavra do ofício; a que o {profissional}
 nomear.
 
@@ -217,7 +217,7 @@ Período: os últimos 12 meses (padrão).
 
 ## Mencionaram {itens} que não entraram — 3
 
-- uma conversa cita um {item} que não está na carteira e não tem link
+- uma conversa cita {um-item} que não está na carteira e não tem link
   → mande o link, ou ele não entra (contrato §7)
 
 ## Não abri — 25

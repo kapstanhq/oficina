@@ -36,7 +36,7 @@ achado com o arquivo, o motivo e o nome de quem conserta.
 horas importam pela mesma razão: uma carteira pouco aberta desatualiza, e
 carteira desatualizada faz toda skill mentir com confiança. O `?` honesto vira
 frase afirmativa, o preço de março vira o preço de hoje, e o {profissional}
-descobre no pior lugar possível — na frente do {pessoa}.
+descobre no pior lugar possível — na frente {do-pessoa}.
 
 **Ela não conserta nada.** Não move arquivo, não apaga, não reescreve índice,
 não aposenta ninguém. Quem faz isso é `/{plugin}:organizar-carteira`, e a
@@ -206,7 +206,7 @@ Abre pelo veredito em UMA linha, e o veredito é a primeira coisa que se lê:
 - nada foi gravado — este laudo só lê
 
 ## Falta saber
-- o pack não declara prazo de validade para `metragem`; medi como se não vencesse
+- o pack não declara prazo de validade para `{campo-sem-validade}`; medi como se não vencesse
 ```
 
 `## Guardei` é obrigatório e não some nunca (§10). Aqui ele diz sempre a mesma
@@ -230,7 +230,7 @@ antes de chamá-la.
 
 **Ela não julga o conteúdo do ofício.** Ela diz que o campo está sem
 procedência; não diz se o valor está certo. Ela diz que o dado venceu; não diz
-qual é o novo. Julgar o {item} é do {profissional}, e as skills que ajudam nisso
+qual é o novo. Julgar {o-item} é do {profissional}, e as skills que ajudam nisso
 têm nome próprio.
 
 **Ela não abre link e não sai da carteira.** O `?` que um link resolveria é

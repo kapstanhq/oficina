@@ -29,7 +29,7 @@ Omitir a seção é o que faz o corretor achar que ficou guardado, e a regra
 aqui é a mesma do "escreveu, diz onde", virada do avesso: **ele precisa saber
 que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 `## Nada foi guardado` são títulos inventados, e título inventado é o que a
-seção 4 proíbe. Medido: duas das dez inventaram o próprio na primeira
+seção 4 proíbe. Medido: duas skills inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
 **Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o

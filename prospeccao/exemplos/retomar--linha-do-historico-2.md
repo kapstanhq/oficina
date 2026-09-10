@@ -1,0 +1,1 @@
+- 2026-08-19 retomada 2 · WhatsApp · gancho: vaga de controladoria em 15/08 · enviado 14:32 pela ponte

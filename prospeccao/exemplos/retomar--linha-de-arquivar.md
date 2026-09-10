@@ -1,0 +1,1 @@
+- [ ] P-041 (Otávio Prado) — duas retomadas sem resposta desde 2026-08-05; arquivar ou deixar parado

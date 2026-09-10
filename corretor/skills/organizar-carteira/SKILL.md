@@ -6,11 +6,11 @@ description: >-
   grava nos arquivos donos, e importa a planilha que estiver em _bruto/.
   Aposenta quem parou há mais de 120 dias, aplica os tetos e mostra o que
   sairia antes de podar. Acha o que só se vê de cima: cliente no funil sem
-  arquivo, imóvel citado que não existe, campo ? que uma conversa já
+  arquivo, imóvel que se cita e não existe, campo ? que uma conversa já
   respondeu. Relata cada arquivo que tocou: nada some em silêncio. Use quando
   o corretor disser — organiza minha carteira, dá um jeito nessa bagunça,
   colei um monte de conversa e não sei se entrou, coloquei a planilha na
-  pasta, arquiva quem sumiu, tira o que eu já vendi, tem cliente repetido aí,
+  pasta, arquiva quem sumiu, tira o que eu já vendi, tem cliente em dobro aí,
   o arquivo do cliente está gigante, faz uma faxina. Também depois de uma
   semana colando material sem organizar. Não escreve a mensagem de quem sumiu
   (/corretor:retomar-contato), não monta a lista do dia
@@ -24,6 +24,15 @@ compatibility: >-
   relatório.
 allowed-tools: Read Glob Grep Write Edit
 ---
+<!-- CÓPIA GERADA · não edite este arquivo.
+
+     A fonte é oficina/_motor/skills/organizar-carteira/SKILL.md, e ela vale para
+     QUALQUER profissão: o que muda de ofício está escrito em marcas — {item},
+     {pessoa}, /{plugin}: — resolvidas na geração pelo vocabulario.json do
+     pack. Correção feita aqui é perdida no próximo
+     `npm run oficina -- --escrever`; a correção certa é na fonte, e ela
+     chega a todos os packs de uma vez. -->
+
 
 # Organizar a carteira
 
@@ -51,7 +60,7 @@ contradizem — o que ela não apurou sai como `?` e vira linha em `## Falta
 saber`.
 
 **Por que ela tem `Write` e `Edit`.** Ela grava em quatro lugares: ficha nova
-— cliente vindo de uma conversa colada que ainda não tinha ficha, imóvel vindo
+— cliente que veio de uma conversa colada e ainda não tinha ficha, imóvel que veio
 de uma linha da planilha (`Write`); fato extraído para arquivo que já existe
 (`Edit`); vistas derivadas — `funil.md`, os dois `_indice.md`, as contagens do
 `INDICE.md` (`Edit`); e arquivo novo em `_bruto/` — o histórico condensado, ou
@@ -120,7 +129,7 @@ deduz automático por pressa nem porque a escolha parece óbvia.
 copiloto      extrai, reescreve as vistas e recontar é dela — isso é o
               contrato, não é bifurcação. PARA antes de aposentar qualquer
               coisa e antes de podar qualquer histórico, e mostra o que sairia
-automático    aposenta o cliente parado há mais de 120 dias, poda o histórico
+automático    aposenta quem está parado há mais de 120 dias, poda o histórico
               velho, e declara cada uma em ## Decidi sozinho, com como desfazer
 ```
 
@@ -195,7 +204,7 @@ procure   o nome do bruto: 2026-08-12-whatsapp-joana.md
 No `local` é busca de conteúdo, com `Grep`. No `drive` não há busca dentro do
 texto: a procura é nos arquivos donos que o passo 1 já leu.
 
-O `arquivo-morto/` entra na busca: bruto de cliente aposentado já foi lido, e
+O `arquivo-morto/` entra na busca: bruto de quem foi aposentado já foi lido, e
 relê-lo ressuscitaria a ficha.
 
 **Um `.csv` em `_bruto/` é bruto como os outros**, e a marca é a mesma: o nome
@@ -229,7 +238,7 @@ Contrato, seção 7, e nada além dela. Para cada bruto não lido:
   `_indice.md` mais um, **contando o `## Arquivo morto`** — id não se
   reaproveita. Todo o resto entra `?`.
 - **Imóvel que não está na carteira: não crie.** Sem link e sem ficha o imóvel
-  não entra (contrato, seção 7) — dado de imóvel adivinhado vira preço errado no
+  não entra (contrato, seção 7) — dado que se adivinhou vira preço errado no
   WhatsApp do cliente. Vira pergunta, se couber no teto de três, ou linha em
   `## Falta saber`.
 - **Documento — matrícula, escritura, contrato: ela não extrai fato dali.**
@@ -266,7 +275,8 @@ o arquivo em `_bruto/`.
    Coluna sem campo no gabarito **não cria campo** (regra zero do contrato):
    descrição vai para `## O que vende`; o resto fica de fora, e o relatório
    diz quais colunas ficaram. `estado:` só recebe um dos seis valores da seção
-   4.4: “disponível” vira `à venda` ou `para alugar` conforme o prefixo, e o
+   4.4: “disponível” vira `à venda` ou `para alugar` conforme
+   o prefixo, e o
    que não casar entra `?`.
 2. **Linha que já está na carteira atualiza, não duplica.** O `link:` ou o
    `endereço:` da linha bate com o de uma ficha viva? A ficha é essa, campo a
@@ -278,10 +288,10 @@ o arquivo em `_bruto/`.
    ele.
 3. **Linha nova vira ficha**, pelo formato da seção 4.4, cada campo com
    `← _bruto/<o csv>`. O id é o maior do `_indice.md` mais um, contando o
-   `## Arquivo morto`; o prefixo é `V-` ou `A-` conforme a linha diga venda ou
-   aluguel — a planilha não diz? **Uma pergunta para o lote inteiro**, não
-   linha a linha. O apelido é `<tipo> <n> dorm, <bairro>`; sem bairro na linha,
-   use o que houver — tipo e dormitórios — e diga isso. O que a linha não tem
+   `## Arquivo morto`; e o prefixo é `V-` ou `A-` conforme a linha diga venda ou
+   aluguel. A planilha não diz? **Uma pergunta para o lote inteiro**, não linha
+   a linha. O apelido é `<tipo> <n> dorm, <bairro>`; sem bairro na linha, use o
+   que houver — tipo e dormitórios — e diga isso. O que a linha não tem
    entra `?`. Linha vazia não vira ficha, e linha repetida dentro da própria
    planilha — mesmo link ou mesmo endereço — não vira duas.
 4. **Depois das fichas:** uma linha por imóvel em `imoveis/_indice.md`, o
@@ -380,7 +390,7 @@ dois arquivos passam a disputar o mesmo nome.
 | cliente no `funil.md` sem arquivo em `clientes/` | pergunta: criar a ficha com `?` ou tirar a linha. No automático, cria |
 | arquivo de cliente com `etapa:` e sem linha no `funil.md` | reescreve o funil — a vista é derivada, o arquivo é dono |
 | `etapa:` do arquivo diferente da do `funil.md` | o arquivo vence, o funil se reescreve |
-| imóvel citado num cliente que não existe em `imoveis/` | não cria o imóvel. Pede o link, uma vez |
+| imóvel que um cliente cita e não existe em `imoveis/` | não cria o imóvel. Pede o link, uma vez |
 | item no `_indice.md` sem arquivo, ou arquivo sem linha | reescreve o `_indice.md` a partir dos arquivos |
 | aposentado ainda na tabela viva, no funil ou no `hoje.md` | tira das três — ele já tem a linha em `## Arquivo morto` |
 | campo `?` que uma conversa em `_bruto/` já respondeu | grava o valor com `← _bruto/<arquivo>` e diz no relatório |
@@ -416,8 +426,8 @@ os arquivos não têm.
 
 ```
 1  id duplicado no _indice.md            quebra a carteira
-2  aposentadoria que trava outra coisa   o imóvel vendido continua sendo mostrado
-3  imóvel citado que não existe          pede o link, uma vez
+2  aposentadoria que trava outra coisa   o imóvel que morreu e segue na vista
+3  imóvel que se cita e não existe       pede o link, uma vez
 ```
 
 O que não couber nas três **não some**: vira linha em `## Espera você` ou em
@@ -541,7 +551,7 @@ de histórico.
 | o que | onde | procedência |
 |---|---|---|
 | fato de cliente vindo de conversa colada | `clientes/<id>-<apelido>.md` | `← _bruto/<arquivo>` |
-| fato de imóvel vindo de ficha em `_bruto/` | `imoveis/<id>-<apelido>.md` | `← _bruto/<arquivo>` |
+| fato de imóvel que veio de ficha em `_bruto/` | `imoveis/<id>-<apelido>.md` | `← _bruto/<arquivo>` |
 | o que o corretor respondeu agora | o arquivo dono | `← corretor, <hoje>` |
 | a linha do aposentado | abaixo do título, no próprio arquivo | `aposentado: <data> · motivo: <desfecho>` |
 | histórico condensado | `## Histórico` + arquivo novo em `_bruto/` | a linha aponta o arquivo |

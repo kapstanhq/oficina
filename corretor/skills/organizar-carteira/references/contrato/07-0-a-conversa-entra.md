@@ -11,7 +11,7 @@ contrato.
 
 O caminho muda; o formato não. Conversa que entrou pelo conector e conversa
 que entrou colada produzem o **mesmo** arquivo em `_bruto/`, com a mesma
-procedência (seção 3). Nenhuma das outras nove precisa saber por onde ela veio,
+procedência (seção 3). Nenhuma das outras precisa saber por onde ela veio,
 e é isso que impede o conector de virar um segundo pack.
 
 | a operação | colado | pelo conector |
@@ -100,6 +100,6 @@ escrito, a data é a que o corretor disser (ou a de hoje, e a procedência diz
 
 Conversa que menciona imóvel que não está na carteira: não crie o imóvel com o
 que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, o imóvel não
-entra — dado de imóvel adivinhado vira preço errado na mensagem para o cliente.
+entra — dado que se adivinhou vira preço errado na mensagem para o cliente.
 
 ---

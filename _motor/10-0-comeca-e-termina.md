@@ -27,11 +27,11 @@ Omitir a seção é o que faz o {profissional} achar que ficou guardado, e a reg
 aqui é a mesma do "escreveu, diz onde", virada do avesso: **ele precisa saber
 que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 `## Nada foi guardado` são títulos inventados, e título inventado é o que a
-seção 4 proíbe. Medido: duas das dez inventaram o próprio na primeira
+seção 4 proíbe. Medido: duas skills inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
 **Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o
-trabalho delas não é um texto para o {pessoa}.**
+trabalho delas não é um texto para {o-pessoa}.**
 
 ```
 /{plugin}:comecar              o trabalho é a configuração
@@ -71,7 +71,7 @@ acrescenta vem ANTES do `## Guardei`, nunca entre ele e o `## Falta saber`.
 
 **O bloco vai em cerca de código, e NUNCA dentro de moldura desenhada.** Uma
 caixa de `┌─┐` parece organizada na tela e é armadilha: o {profissional} seleciona,
-copia e leva as bordas junto para dentro do WhatsApp do {pessoa}. A cerca de
+copia e leva as bordas junto para dentro do WhatsApp {do-pessoa}. A cerca de
 código dá o botão de copiar e devolve só o texto. Vale para tudo o que existe
 para sair daqui e ir para outro lugar — mensagem, {exemplo-trabalho}, roteiro, legenda,
 título de evento. Nada de traço de enfeite antes ou depois, nada de `>` de
@@ -91,10 +91,10 @@ não conseguiu resolver. É a lista que a próxima skill vai atacar.
 - mandar mensagem **sozinha**: sem conector ela escreve e quem manda é o
   {profissional}; com conector ela manda uma por vez, e só depois de ele ver o texto
   e o nome de quem recebe (seção 7.1)
-- falar em nome da Kapstan na mensagem que sai para o {pessoa}
+- falar em nome da Kapstan na mensagem que sai para {o-pessoa}
 - decidir preço, decidir se aceita proposta, ou dizer que um documento está em
   ordem — isso é do {profissional}, e a skill diz o que olhar
-- prometer prazo de financiamento, de cartório ou de prefeitura
+- prometer prazo {terceiros-de-prazo-longo}
 
 ### A língua
 

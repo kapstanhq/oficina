@@ -1,6 +1,6 @@
 # Pack do corretor de imóveis
 
-**Dez skills de IA, em português, para quem vende e aluga imóvel.**
+**Catorze skills de IA, em português, para quem vende e aluga imóvel.**
 
 Elas escrevem o anúncio, respondem o lead, montam a visita, cobram o documento e
 lembram de quem sumiu — usando o que você já contou antes. Você não repete a
@@ -58,7 +58,7 @@ abre pastas do seu computador?**
 
 | Onde você usa IA | Por onde entrar |
 |---|---|
-| Claude Code, Codex, ChatGPT do computador, Copilot, Cursor | **Porta 1** — o agente instala as dez ferramentas |
+| Claude Code, Codex, ChatGPT do computador, Copilot, Cursor | **Porta 1** — o agente instala as catorze ferramentas |
 | ChatGPT na web ou no celular, Gemini, Claude no navegador | **Porta 2** — você cola um prompt |
 
 ---
@@ -103,7 +103,7 @@ executar e nada para compilar: a instalação é copiar pastas.
 
 3. Baixe o repositório para uma pasta temporária.
 
-4. Copie as dez pastas de corretor/skills/ para a pasta de skills, inteiras —
+4. Copie as catorze pastas de corretor/skills/ para a pasta de skills, inteiras —
    inclusive a subpasta references/, que as skills leem para funcionar.
 
 5. Confira: cada pasta copiada tem um SKILL.md e um references/CONTRATO.md.
@@ -162,11 +162,12 @@ anexar ou colar, e o que ela escreve sai na conversa.
 
 ---
 
-## As dez ferramentas
+## As catorze ferramentas
 
 | Comando | O que faz |
 |---|---|
 | `/corretor:comecar` | Monta a carteira e testa o que está conectado |
+| `/corretor:importar-a-conversa` | Enche a carteira com o que já está no seu WhatsApp |
 | `/corretor:anunciar-imovel` | Escreve o anúncio a partir do link ou da ficha |
 | `/corretor:conferir-matricula` | Lista o que pode travar a venda |
 | `/corretor:gravar-video-do-imovel` | Monta o roteiro do vídeo, plano a plano |
@@ -175,7 +176,10 @@ anexar ou colar, e o que ela escreve sai na conversa.
 | `/corretor:retomar-contato` | Acha quem sumiu e escreve a mensagem de volta |
 | `/corretor:o-que-fazer-hoje` | Monta a lista do dia a partir da sua carteira |
 | `/corretor:documentos-do-negocio` | Diz que papel pedir, de quem e em que ordem |
+| `/corretor:cobrar-o-que-falta` | Cobra quem ficou de mandar e não mandou |
+| `/corretor:compartilhar-com-cliente` | Monta a vista do que o cliente pode ver |
 | `/corretor:organizar-carteira` | Guarda o que chegou e arquiva o que morreu |
+| `/corretor:laudo-da-carteira` | Diz o que está errado na carteira, sem mexer nela |
 
 Você também pode simplesmente escrever o que quer, em português — “escreve o
 anúncio desse imóvel”, “o que eu faço hoje” — e a ferramenta certa é escolhida
@@ -199,6 +203,22 @@ Configura tudo. É a primeira coisa que você roda, e roda uma vez só.
 
 Todo passo pode ser pulado. O que você pular fica anotado, e ele volta a
 oferecer no momento em que fizer falta.
+
+---
+
+### `/corretor:importar-a-conversa`
+
+Traz para a carteira o que já está no seu WhatsApp.
+
+**Você digita:** só o comando — ou cola uma conversa exportada do celular.
+
+**Ela decide pelo nome, antes de abrir.** Passa a lista de conversas, separa o
+que é trabalho do que não é, e **não abre** grupo, banco, entrega nem família.
+Pergunta uma vez se pode ler o histórico, deixa a sua resposta escrita na
+carteira, e mostra a prévia do que vai gravar antes de gravar qualquer coisa.
+
+**Sem conector ela funciona igual:** você exporta a conversa no celular e cola
+aqui. O arquivo que entra em `_bruto/` é o mesmo pelos dois caminhos.
 
 ---
 
@@ -374,6 +394,55 @@ arquivar é mudar de gaveta.
 
 ---
 
+### `/corretor:laudo-da-carteira`
+
+A régua barata: lê a carteira inteira e não escreve uma linha.
+
+**Você digita:** só o comando.
+
+**Ela devolve** o que está errado, ordenado pelo que faz você dizer uma coisa
+errada hoje: campo preenchido sem dizer de onde veio, campo apurado há tempo
+demais, imóvel ou cliente órfão, arquivo acima do teto, e o `?` que está
+esperando há mais tempo. Cada achado aponta quem conserta.
+
+**Ela não arruma nada** — quem arruma é a `/corretor:organizar-carteira`. É
+essa separação que a deixa barata o bastante para rodar antes de mexer na
+carteira e depois de escrever nela. Carteira limpa também é resposta, e ela
+escreve isso.
+
+---
+
+### `/corretor:cobrar-o-que-falta`
+
+O que outra pessoa ficou de mandar e não mandou.
+
+**Você digita:** só o comando, ou de qual negócio.
+
+**Ela lista** o que foi pedido, a quem, quando, e há quantos dias não chega — e
+escreve a mensagem de cada cobrança. **Cobrança boa devolve o caminho, não a
+culpa:** a mensagem diz o que falta e como mandar, sem cobrar explicação.
+
+Ela não cobra o que ainda não venceu, não cobra o que **você** ficou de fazer,
+e grava a cobrança na carteira antes de você mandar.
+
+---
+
+### `/corretor:compartilhar-com-cliente`
+
+O que o cliente pode ver da carteira — sem ver a carteira.
+
+**Você digita:** de quem.
+
+**Ela monta um arquivo à parte** com o que essa pessoa já sabe ou já deveria
+saber: o que falta para fechar, quem entrega cada documento, o que já chegou.
+E escreve, ao lado, o que **não** entrou.
+
+**Ela nunca compartilha a pasta**, nunca dá permissão de escrita e nunca põe
+`_bruto/` no que sai. A régua do caso duvidoso é uma frase: se uma linha da
+vista pode surpreender quem a lê, ela está no arquivo errado.
+
+---
+
 ## Onde ficam os seus dados
 
 Numa pasta do seu computador. Você escolhe qual no `/corretor:comecar`:
@@ -398,7 +467,7 @@ carteira: local · C:\Users\seu-nome\carteira
 ```
 
 `local` é o seu computador, e depois do `·` vem a pasta. Quem escreve essa linha
-é o `/corretor:comecar`, e as dez ferramentas leem e obedecem.
+é o `/corretor:comecar`, e as catorze ferramentas leem e obedecem.
 
 São arquivos de texto comuns. Você abre no Bloco de Notas, imprime, copia para
 um pendrive. **Nenhum passa por servidor da Kapstan**: eles não saem da sua
@@ -451,7 +520,7 @@ anúncio não ligou para o que sai no seu nome.
 
 ## Em que programas isto roda
 
-O passo a passo acima é o do Claude Code, que é o caminho testado. As mesmas dez
+O passo a passo acima é o do Claude Code, que é o caminho testado. As mesmas catorze
 ferramentas também carregam no Codex e no ChatGPT do computador
 (`~/.agents/skills`), no Copilot e no Cursor (`.agents/skills`) — e quem
 descobre a pasta e escreve nela é o pedido colado da porta 1.
@@ -462,7 +531,7 @@ não existe pasta**: lá não há carteira, e o que a ferramenta sabe é o que v
 anexar — no Gemini, os arquivos que você põe em **Conhecimento** do Gem.
 
 Sem carteira nenhuma — chat da web, só o [`PROMPT.md`](PROMPT.md) colado —
-cinco ferramentas continuam entregando o trabalho, com o que você colar na
+cinco ferramentas <!-- de 14 --> continuam entregando o trabalho, com o que você colar na
 conversa:
 
 | Ainda funciona | Com o quê |

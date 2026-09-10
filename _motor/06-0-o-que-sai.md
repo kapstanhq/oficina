@@ -1,6 +1,6 @@
 ## 6 · O que sai para o WhatsApp
 
-O canal está no arquivo do {pessoa} (`canal:`) e **decide o formato**. Na dúvida,
+O canal está no arquivo {do-pessoa} (`canal:`) e **decide o formato**. Na dúvida,
 WhatsApp.
 
 **A voz é a do {profissional}.** A mensagem sai do WhatsApp dele, com o nome dele, e
@@ -11,7 +11,7 @@ falando com outra.
 O formato, e não há variação:
 
 ```
-uma linha curta        até doze palavras, com o primeiro nome do {pessoa}
+uma linha curta        até doze palavras, com o primeiro nome {do-pessoa}
 um parágrafo           duas a três linhas. Um assunto só
 o link sozinho         linha em branco antes e depois, um link por mensagem
 uma pergunta fácil     de sim ou não, ou entre duas opções

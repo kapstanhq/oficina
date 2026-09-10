@@ -3,7 +3,7 @@
 ### Regra 1 · Se dá para derivar, não se duplica
 
 O arquivo guarda **fato**; `_bruto/` guarda a **origem**. A conversa inteira
-nunca entra no arquivo do {pessoa} — entra em `_bruto/`, e o arquivo fica com as
+nunca entra no arquivo {do-pessoa} — entra em `_bruto/`, e o arquivo fica com as
 seis linhas que ela produziu.
 
 Sem isso o arquivo cresce sem fim e a skill relê quarenta quilobytes para achar
@@ -28,7 +28,7 @@ prazo: quer mudar até dezembro  ← {profissional}, 2026-08-19
 As origens possíveis, e não há outras:
 
 ```
-link              a página do {item} que o {profissional} colou (a URL fica no campo link:)
+link              a página {do-item} que o {profissional} colou (a URL fica no campo link:)
 ficha colada      o texto da ficha, quando o site não devolveu nada
 _bruto/<arquivo>  conversa, e-mail ou documento que está em _bruto/
 {profissional}          o próprio {profissional} disse agora, na conversa com a skill
@@ -36,7 +36,7 @@ _bruto/<arquivo>  conversa, e-mail ou documento que está em _bruto/
 ```
 
 **O que não se apurou entra como `?`.** Nunca uma estimativa, nunca “por volta
-de”, nunca um número de {item} parecido. O `?` pode levar na procedência o que
+de”, nunca um número de {item} que se pareça. O `?` pode levar na procedência o que
 resolve ele:
 
 ```
@@ -45,7 +45,7 @@ e-mail: ?
 ```
 
 Campo inventado com cara de apurado é pior que campo vazio: o {profissional} repassa
-para o {pessoa} e descobre {exemplo-onde-descobre}. E o `?` é a linha mais útil do arquivo —
+para {o-pessoa} e descobre {exemplo-onde-descobre}. E o `?` é a linha mais útil do arquivo —
 é o que a próxima skill vai perguntar.
 
 **Fato novo que contradiz o gravado:** o novo vale, com a procedência dele, e

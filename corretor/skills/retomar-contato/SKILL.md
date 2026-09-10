@@ -11,7 +11,7 @@ description: >-
   pessoa está na lista. Use quando o corretor diz “quem sumiu?”, “quem parou
   de responder”, “preciso dar um toque em alguém”, “semana fraca, quem eu
   chamo”, “o que eu
-  mando pra quem visitou e não voltou”, “quero reativar cliente antigo”, “tem
+  mando pra quem visitou e não voltou”, “quero reativar cliente de muito tempo atrás”, “tem
   gente parada há tempo demais aí?” ou pede a mensagem para um cliente
   específico que ficou sem resposta.
 license: MIT
@@ -25,6 +25,15 @@ compatibility: >-
   quem vai.
 allowed-tools: Read Glob Grep Write Edit
 ---
+<!-- CÓPIA GERADA · não edite este arquivo.
+
+     A fonte é oficina/_motor/skills/retomar-contato/SKILL.md, e ela vale para
+     QUALQUER profissão: o que muda de ofício está escrito em marcas — {item},
+     {pessoa}, /{plugin}: — resolvidas na geração pelo vocabulario.json do
+     pack. Correção feita aqui é perdida no próximo
+     `npm run oficina -- --escrever`; a correção certa é na fonte, e ela
+     chega a todos os packs de uma vez. -->
+
 
 # Retomar contato
 
@@ -84,9 +93,10 @@ de verdade lá dentro. Depois isto aqui funciona.
 ```
 
 Do `INDICE.md` você tira seis coisas: `modo:`, o `nome:` de `## Quem sou` (é
-a voz das mensagens), o `canal padrão com cliente:`, o `horário de visita que
-costumo oferecer:` — este é o que fecha a mensagem sem inventar agenda — e as
-duas linhas de `## O que está conectado`: `WhatsApp:` e `envio:`.
+a voz das mensagens), o `canal padrão com cliente:`, o
+`horário de visita que costumo oferecer:` — este é o que fecha a mensagem sem
+inventar agenda — e as duas linhas de `## O que está conectado`:
+`WhatsApp:` e `envio:`.
 
 `WhatsApp:` diz `sim` só depois de testada: aí existe conector, e ele dá uma
 fonte a mais no passo 1 e uma saída a mais no passo 8. Diz `não`, ou não
@@ -144,7 +154,7 @@ no TODO só quando há conector: sem ele, não existe.
 ### Passo 1 · Quem está parado
 
 Leia, nesta ordem: `funil.md` (dá a etapa e o `desde`), `clientes/_indice.md`
-(dá a coluna `último contato`) e depois o arquivo de cada cliente candidato. **O
+(dá a coluna `último contato`) e depois o arquivo de cada cliente da lista. **O
 arquivo vence a vista** — se o `_indice.md` diz 5 de agosto e o histórico do
 cliente tem uma linha de 12, vale a do arquivo, e o `_indice.md` entra na lista
 do que reescrever.
@@ -515,7 +525,7 @@ lista antes de perguntar é o que impede o corretor de esperar por nada. Use a
 UI de perguntas do harness, com o custo escrito em cada opção:
 
 ```
-Quatro clientes parados. Escrevo a mensagem de quem?
+Quatro clientes sem resposta. Escrevo a mensagem de quem?
 
   Os três mais quentes   proposta, visitou e visitou · pronto agora
   Escolher na lista      você diz os nomes · uma volta a mais
@@ -670,8 +680,8 @@ número escrito.
 `mensagem escrita, envio com o corretor` fica porque é o que é verdade quando a
 skill não mandou — e é o caso normal. Por isso **não** se escreve `enviado` em
 `## Imóveis mostrados` agora: `enviado` é fato, e o fato ainda não aconteceu.
-Depois do bloco, uma linha só, sem insistir: “mandou? me diga e eu marco o V-083
-(apto 2 dorm, Menino Deus) como enviado no arquivo dela.” Enquanto ele não
+Depois do bloco, uma linha só, sem insistir: “mandou? me diga e eu marco o
+V-083 (apto 2 dorm, Menino Deus) como enviado no arquivo dela.” Enquanto ele não
 disser, a linha do histórico já basta para a próxima execução não mandar o mesmo
 imóvel de novo.
 
@@ -681,7 +691,7 @@ imóvel de novo.
 - 2026-08-19 retomada 2 · WhatsApp · ângulo: imóvel novo — V-083 (apto 2 dorm, Menino Deus) · enviado 14:32 pela ponte
 ```
 
-E aí, **e só aí**, o imóvel citado vira `enviado` em `## Imóveis mostrados`:
+E aí, **e só aí**, o imóvel que a mensagem cita vira `enviado` em `## Imóveis mostrados`:
 agora é fato, e não precisa mais perguntar.
 
 Grave depois do `enviar_mensagem` voltar, nunca antes. Recusado — prévia
@@ -743,8 +753,8 @@ passo 8.2 pega isso no último segundo — mas só de quem ia receber, e só na 
 do envio: a lista continua sendo a do que está escrito.
 
 **Sem `## O que procura` preenchido, não há novidade computável.** Cliente cujo
-`faixa:` e `bairros:` estão em `?` não recebe imóvel novo, por mais parecido
-que ele pareça. Ela devolve o que falta em vez de chutar — imóvel fora do que a
+`faixa:` e `bairros:` estão em `?` não recebe imóvel que entrou depois, por mais
+que a semelhança convença. Ela devolve o que falta em vez de chutar — imóvel fora do que a
 pessoa quer não retoma o contato, encerra o assunto.
 
 **Ela não abre link nenhum.** Não há ferramenta de web no `allowed-tools` dela,

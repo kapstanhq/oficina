@@ -214,7 +214,7 @@ confirmar   ele diz que ela chegou, no celular dele
 ```
 
 Este degrau existe porque a alternativa é a primeira mensagem da vida daquela
-instalação sair para um {pessoa} de verdade — e porque o mesmo princípio já vale
+instalação sair para {um-pessoa} de verdade — e porque o mesmo princípio já vale
 para a agenda, o Gmail e o Drive nos passos 3 e 4. Não há razão para o envio ser
 o único a ganhar `sim` sem prova.
 
@@ -256,7 +256,7 @@ confirmar   o comando responde, mesmo que a lista esteja vazia
 ```
 
 Não há nada a fazer aqui hoje: o degrau existe para o comando ter sido **visto
-uma vez**. Quando um {pessoa} pedir para não ser contatado, o contrato (seção
+uma vez**. Quando {um-pessoa} pedir para não ser contatado, o contrato (seção
 7.1) manda escrever em dois lugares, e um deles é este — um arquivo no diretório
 da ponte, que a carteira não alcança:
 

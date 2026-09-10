@@ -94,7 +94,7 @@ a skill não insiste e não tenta outro caminho: ela entrega o **bloco para
 copiar** — que é o padrão do pack de qualquer forma — e diz, em uma linha, que
 a primeira mensagem sai do celular dele.
 
-Não é raro: é como quase todo {pessoa} novo chega — o que deixou o telefone
+Não é raro: é como quase {todo-pessoa} chega da primeira vez — o que deixou o telefone
 {exemplo-origem-de-contato} e nunca escreveu.
 
 ### Quem pediu para não ser contatado
@@ -104,7 +104,7 @@ as skills, e não só da que ele respondeu. São **dois lugares, e os dois são
 obrigatórios**:
 
 ```
-na carteira   o arquivo do {pessoa} ganha  não contatar: sim  ← origem, data
+na carteira   o arquivo {do-pessoa} ganha  não contatar: sim  ← origem, data
               e ele é aposentado com esse motivo (seção 3)
 na ponte      um comando, e é ele que escreve o arquivo — o diretório dela
               não é o da carteira, e a skill não tem como adivinhar onde é:
@@ -114,9 +114,9 @@ na ponte      um comando, e é ele que escreve o arquivo — o diretório dela
               sem argumento ele lista; `--tirar <número>` desfaz
 ```
 
-A carteira é o que as dez skills leem; a ponte é o que segura o envio mesmo se
+A carteira é o que as {n-skills} skills leem; a ponte é o que segura o envio mesmo se
 alguém esquecer. **Nenhuma skill escreve mensagem para quem tem `não contatar:
-sim`**, nem para retomar, nem para avisar de {item} novo, nem para desejar
+sim`**, nem para retomar, nem para avisar do que entrou, nem para desejar
 feliz aniversário. Não é preferência de canal: é pedido de silêncio.
 
 Quem coloca é o {profissional}, ou a skill que leu o pedido na conversa — e aí ela
@@ -150,8 +150,7 @@ automático para o {exemplo-trabalho} não ligou para a boca dele.
 áudio, foto, documento e anexo    a ponte não os manda
 preço novo, contraproposta,       a skill não decide preço nem avalia proposta
 aceite ou recusa de proposta      (seção 10)
-prazo de banco, cartório          a skill não promete prazo de terceiro
-ou prefeitura
+{linha-prazo-de-terceiro}
 reenvio porque não respondeu      cadência é decisão, não relógio: o caminho é
                                   /{plugin}:retomar-contato, com ângulo novo
 ```

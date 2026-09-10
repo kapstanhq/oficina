@@ -1,0 +1,1 @@
+- 2026-08-19 retomada 2 · WhatsApp · ângulo: imóvel novo — V-083 (apto 2 dorm, Menino Deus) · mensagem escrita, envio com o corretor

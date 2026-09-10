@@ -96,7 +96,7 @@ a skill não insiste e não tenta outro caminho: ela entrega o **bloco para
 copiar** — que é o padrão do pack de qualquer forma — e diz, em uma linha, que
 a primeira mensagem sai do celular dele.
 
-Não é raro: é como quase todo cliente novo chega — o que deixou o telefone
+Não é raro: é como quase todo cliente chega da primeira vez — o que deixou o telefone
 num portal e nunca escreveu.
 
 ### Quem pediu para não ser contatado
@@ -116,9 +116,9 @@ na ponte      um comando, e é ele que escreve o arquivo — o diretório dela
               sem argumento ele lista; `--tirar <número>` desfaz
 ```
 
-A carteira é o que as dez skills leem; a ponte é o que segura o envio mesmo se
+A carteira é o que as catorze skills leem; a ponte é o que segura o envio mesmo se
 alguém esquecer. **Nenhuma skill escreve mensagem para quem tem `não contatar:
-sim`**, nem para retomar, nem para avisar de imóvel novo, nem para desejar
+sim`**, nem para retomar, nem para avisar do que entrou, nem para desejar
 feliz aniversário. Não é preferência de canal: é pedido de silêncio.
 
 Quem coloca é o corretor, ou a skill que leu o pedido na conversa — e aí ela

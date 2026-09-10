@@ -12,7 +12,7 @@ Só desce um degrau quando o de cima não respondeu:
 2  o _indice.md do tema      {pasta-itens}/ ou {pasta-pessoas}/ — acha o id e o apelido
 3  o arquivo do item         é ele o dono do fato
 4  _bruto/                   a conversa ou a ficha de onde o fato veio
-5  o link                    a página do {item}, quando há link e ela abre
+5  o link                    a página {do-item}, quando há link e ela abre
 6  PERGUNTA ao {profissional}      só o que nenhum dos cinco tinha
 7  PEDE O DOCUMENTO          quando nem ele sabe: {exemplos-de-documento}
 ```
@@ -55,6 +55,6 @@ opção. Mais de quatro caminhos: escolha os três melhores e diga que há outro
   em `## Como eu trabalho`
 - é detalhe que não muda a saída: deixe `?` e siga
 - em modo automático: escolha e declare (seção 5) — a exceção é
-  `conferir-matricula`, que pergunta sempre
+  `{skill-conferir}`, que pergunta sempre
 
 ---

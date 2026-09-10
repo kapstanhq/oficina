@@ -112,7 +112,7 @@ Duas diferenças mudam o que a skill faz, não só como faz:
   muda um byte. E a leitura não lista `text/markdown` entre os tipos que suporta:
   o `.md` que hoje é lido é comportamento não documentado, que já mudou uma vez.
   **Enquanto isso valer, a carteira no `drive` pode ser criada e não pode ser
-  mantida** — e nove das dez skills existem para mudar arquivo que já existe.
+  mantida** — e quase toda skill existe para mudar arquivo que já existe.
   Uma skill que precise gravar por cima em `drive` PARA e diz isso ao corretor;
   não tenta, não contorna com criar-e-substituir (dois arquivos de mesmo título
   na mesma pasta, e a busca não desempata) e não finge que gravou.

@@ -1,0 +1,1 @@
+- [ ] C-019 (Rita Camargo) — duas retomadas sem resposta desde 2026-08-05; arquivar ou deixar parado

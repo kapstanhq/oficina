@@ -7,7 +7,7 @@ description: >-
   — copiloto ou automático — e conecta Google Agenda, Gmail e Drive explicando
   cada botão e TESTANDO antes de escrever “sim”. Ensina a trazer conversa do
   WhatsApp, que entra colada. Termina com a carteira cheia: um imóvel de
-  verdade, vindo de um link — ou a planilha de imóveis inteira, em CSV —, e um
+  verdade, vindo de um link — ou a planilha inteira de imóveis, em CSV —, e um
   cliente, vindo de uma conversa colada. Todo passo é pulável, e se ele fechar
   no meio ela volta de onde parou. Use na primeira vez, e quando ele disser
   “instalei, e agora”, “como eu começo”, “configura isso pra mim”, “não tenho
@@ -23,6 +23,15 @@ compatibility: >-
   opcionais; sem eles, os passos 3 e 4 ficam anotados como pulados.
 allowed-tools: Read Glob Grep Write Edit
 ---
+<!-- CÓPIA GERADA · não edite este arquivo.
+
+     A fonte é oficina/_motor/skills/comecar/SKILL.md, e ela vale para
+     QUALQUER profissão: o que muda de ofício está escrito em marcas — {item},
+     {pessoa}, /{plugin}: — resolvidas na geração pelo vocabulario.json do
+     pack. Correção feita aqui é perdida no próximo
+     `npm run oficina -- --escrever`; a correção certa é na fonte, e ela
+     chega a todos os packs de uma vez. -->
+
 
 # Começar
 
@@ -50,7 +59,7 @@ Google, no navegador dele, e ela não vê nada disso.
 
 **Por que ela tem `Write` e `Edit`.** É a skill que cria a carteira: sete
 arquivos novos a partir de `references/modelos/` (`Write`), mais o arquivo do
-primeiro imóvel, o do primeiro cliente e o primeiro bruto (`Write`), e as vistas
+do primeiro imóvel, o do primeiro cliente e o primeiro bruto (`Write`), e as vistas
 que eles mexem — os dois `_indice.md`, o `funil.md`, o
 `## Quanto tem` e o `## O que está conectado` do `INDICE.md` (`Edit`).
 **`Write` só em arquivo que não existe.** Sobrescrever é o único jeito de esta
@@ -257,9 +266,9 @@ apareceu.
 **`_bruto/`, `arquivo-morto/` e `vistas/` nascem vazias, e pasta vazia não se
 cria com `Write`.** Elas aparecem quando o primeiro arquivo cai lá — `_bruto/`
 no passo 5 ou 6, `arquivo-morto/` só quando algo for aposentado, e `vistas/` na
-primeira vez que ele compartilhar alguma coisa. **Diga isso em uma linha**,
-senão ele abre a carteira, não vê as três, e acha que faltou. No `drive` dá para
-criar pasta vazia, e mesmo assim vale o mesmo: a carteira fica igual nos dois.
+primeira vez que ele compartilhar alguma coisa. **Diga isso em uma linha**, senão ele abre a
+carteira, não as vê, e acha que faltou. No `drive` dá para criar pasta vazia, e
+mesmo assim vale o mesmo: a carteira fica igual nos dois.
 
 **A prova.** Depois de escrever, mostre a lista na tela, com o lugar de verdade:
 no `local`, um `Glob` em `~/carteira/**/*.md`; no `drive`, liste a pasta
@@ -276,8 +285,9 @@ O nome é a única coisa obrigatória do passo. Escreva `nome:` e o título
 
 **Depois, o resto da identidade — uma pergunta só, em texto livre, e pulável:**
 
-> Me diga o que souber de cabeça: CRECI, imobiliária e os bairros onde você
-> trabalha. Serve para o anúncio e para a assinatura de e-mail. Pode pular.
+> Me diga o que souber de cabeça: CRECI, imobiliária e
+> os bairros onde você trabalha. Serve para o anúncio e para a
+> assinatura de e-mail. Pode pular.
 
 `assinatura de e-mail:` **não se pergunta** — deriva de nome, CRECI e
 imobiliária (regra 1). O que ele não disser fica em branco e volta quando fizer
@@ -576,10 +586,10 @@ Depois, nesta ordem, e ela importa:
    o prefixo, e o que não casar entra `?`.
 3. **Uma ficha por linha**, pelo gabarito de `modelos/imovel.md`, cada campo
    com `← _bruto/<o csv>`. O id é sequencial (contrato §2) — `V-001`,
-   `V-002`… numa carteira nova —, e o prefixo é `V-` ou `A-` conforme a linha
-   diga venda ou aluguel. A planilha não diz? **Uma pergunta para o lote
-   inteiro**, não linha a linha. O apelido é `<tipo> <n> dorm, <bairro>`; a
-   linha não tem bairro? Use o que houver — tipo e dormitórios — e diga isso.
+   `V-002`… numa carteira nova —, e o prefixo é `V-` ou `A-` conforme a linha diga venda ou
+   aluguel. A planilha não diz? **Uma pergunta para o lote inteiro**, não linha
+   a linha. O apelido é `<tipo> <n> dorm, <bairro>`; sem bairro na linha, use o
+   que houver — tipo e dormitórios — e diga isso.
    O que a linha não tem entra `?`. Linha vazia não vira ficha, e linha
    repetida — mesmo link ou mesmo endereço — não vira duas.
 4. **Uma linha por imóvel** em `imoveis/_indice.md`, o `## Quanto tem` do

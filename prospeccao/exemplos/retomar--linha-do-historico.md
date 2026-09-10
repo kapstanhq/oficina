@@ -1,0 +1,1 @@
+- 2026-08-19 retomada 2 · e-mail · gancho: vaga de controladoria em 15/08 · mensagem escrita, envio com o prospector

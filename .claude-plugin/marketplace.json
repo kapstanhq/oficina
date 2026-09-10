@@ -9,6 +9,11 @@
       "name": "corretor",
       "source": "./corretor",
       "description": "Para corretor de imóveis: monta uma carteira de arquivos numa pasta do seu computador e trabalha em cima dela — anúncio, resposta de lead, roteiro de visita, retomada de contato e a lista do dia."
+    },
+    {
+      "name": "prospeccao",
+      "source": "./prospeccao",
+      "description": "Para quem prospecta para si — fundador, consultor, dono de agência: monta uma carteira de contas e contatos numa pasta do seu computador, estuda o que é público com procedência, escreve a abordagem e não escreve para quem pediu silêncio."
     }
   ]
 }

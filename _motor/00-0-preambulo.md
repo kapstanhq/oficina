@@ -1,8 +1,8 @@
 # O contrato da carteira
 
-Este arquivo é o padrão comum das dez skills do pack. Ele não é leitura de
+Este arquivo é o padrão comum das {n-skills} skills do pack. Ele não é leitura de
 apoio: é onde estão os formatos literais, e formato inventado por uma skill
-quebra as outras nove.
+quebra as outras {n-skills-1}.
 
 Quem lê isto é o Claude executando uma skill. Quem lê o que sai dela é um
 {oficio} com pressa, que não é técnico e não vai depurar nada.
@@ -20,18 +20,19 @@ ferramenta que lê o padrão aberto ele chega como texto literal e o arquivo nã
 abre. `references/` é do padrão, e as cópias são geradas de uma fonte só por um
 script — ninguém copia à mão.
 
-**A marca tem gênero, e o texto ao redor dela não pode concordar com ela.**
-`{item}` e `{pessoa}` resolvem para um substantivo masculino num pack e feminino
-no seguinte — quem escolhe é o `vocabulario.json`, e este arquivo não sabe qual
-virá. Escrever `{pessoas} novas` sai errado em metade dos packs, e **nenhum
-alarme pega**: a fonte está correta, o erro nasce na geração.
+**A marca tem gênero, e o ARTIGO se deriva dele.** `{{item}}` e `{{pessoa}}`
+resolvem para um substantivo masculino num pack e feminino no seguinte — quem
+escolhe é o `vocabulario.json`, e este arquivo não sabe qual virá. Por isso o
+pack declara `item-genero` e `pessoa-genero`, e a fonte escreve `{{o-item}}`,
+`{{do-item}}`, `{{um-item}}`, `{{dos-itens}}` em vez de colar o artigo na
+marca. O nome usa a forma masculina como RÓTULO, não como valor.
 
-**Escreva de forma que a concordância não dependa da marca.** Prefira o verbo ao
-adjetivo — `8 {pessoas} entraram` em vez de `8 {pessoas} novas` —, e a pergunta
-ao particípio — `quem entra na carteira` em vez de `que {pessoas} vão ser
-criadas`. Vale para adjetivo, particípio e artigo. É a única regra do motor que
-só se vê depois de gerar, e por isso ela mora aqui: quem a lê está escrevendo a
-fonte, que é onde ela se cumpre.
+**O adjetivo NÃO se deriva, e por isso se evita.** Prefira o verbo — `8
+{{pessoas}} entraram` em vez de `8 {{pessoas}} novas` — e a oração ao
+particípio — `{{item}} que veio de ficha` em vez de `{{item}} vindo de ficha`.
+É a única regra do motor que só se vê depois de gerar, e **nenhum alarme
+pega**: a fonte está correta, o erro nasce na geração. Por isso ela mora aqui:
+quem a lê está escrevendo a fonte, que é onde ela se cumpre.
 
 **E este arquivo também é montado.** Ele não se edita: as seções moram
 partidas em dois lugares — `oficina/_motor/` guarda as que valem para qualquer

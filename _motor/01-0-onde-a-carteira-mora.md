@@ -110,7 +110,7 @@ Duas diferenças mudam o que a skill faz, não só como faz:
   muda um byte. E a leitura não lista `text/markdown` entre os tipos que suporta:
   o `.md` que hoje é lido é comportamento não documentado, que já mudou uma vez.
   **Enquanto isso valer, a carteira no `drive` pode ser criada e não pode ser
-  mantida** — e nove das dez skills existem para mudar arquivo que já existe.
+  mantida** — e quase toda skill existe para mudar arquivo que já existe.
   Uma skill que precise gravar por cima em `drive` PARA e diz isso ao {profissional};
   não tenta, não contorna com criar-e-substituir (dois arquivos de mesmo título
   na mesma pasta, e a busca não desempata) e não finge que gravou.
@@ -167,8 +167,8 @@ Um fato tem um dono, e só o dono é editado à mão:
 
 | arquivo | é | quem manda |
 |---|---|---|
-| arquivo do {item} | **dono** dos fatos do {item} | ele |
-| arquivo do {pessoa} | **dono** dos fatos do {pessoa}, inclusive `etapa:` | ele |
+| arquivo {do-item} | **dono** dos fatos {do-item} | ele |
+| arquivo {do-pessoa} | **dono** dos fatos {do-pessoa}, inclusive `etapa:` | ele |
 | `_indice.md` | vista derivada | reescrito a partir dos arquivos |
 | `funil.md` | vista derivada | reescrito a partir dos `etapa:` |
 | `hoje.md` | vista derivada, com caixas de marcar | reescrito a cada dia |
