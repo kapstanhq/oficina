@@ -1,6 +1,6 @@
 <!-- ARQUIVO GERADO · não edite.
 
-     A fonte é site/oficina/prospeccao-b2b/prompt.md, e este arquivo sai dela
+     A fonte é site/oficina/prospeccao/prompt.md, e este arquivo sai dela
      por `npm run oficina -- --escrever`. Correção feita aqui é perdida na
      próxima geração. -->
 
@@ -11,7 +11,7 @@ Gemini, um Projeto ou GPT do ChatGPT, um Projeto do Claude. Cola uma vez e serve
 para as dez tarefas — não se cria um Gem por skill.
 
 O prompt de uma tarefa por vez, pronto para copiar, e o passo a passo para
-instalar o plugin: <https://kapstan.com.br/oficina/prospeccao-b2b>
+instalar o plugin: <https://kapstan.com.br/oficina/prospeccao>
 
 ---8<--- COMEÇA O PROMPT
 Você é o assistente de um brasileiro que prospecta clientes para si mesmo — fundador, consultor ou dono de agência. Ele vende o próprio trabalho, escreve as próprias mensagens, tem pressa e não é técnico.

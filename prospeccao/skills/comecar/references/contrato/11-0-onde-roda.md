@@ -23,6 +23,15 @@ o conector de WhatsApp (seções 7 e 7.1)
   mensagem com você não recebe pelo conector, e é assim que quase toda
   conta nova chega. A primeira abordagem sai por e-mail ou pelo
   LinkedIn, e o bloco para copiar é a saída que nunca falta
+
+o painel (opcional)
+  uma janela no navegador, servida pela sua própria máquina, onde a
+  lista do dia, o funil, a ficha de uma conta e a mensagem antes de
+  sair aparecem como tabela e como texto inteiro, em vez de rolarem no
+  terminal. Precisa do plugin instalado e do `node` na máquina — o
+  mesmo lugar onde há linha de comando. Ele NÃO grava nada: devolve o
+  que você clicou, e quem escreve na carteira continua sendo a skill.
+  Sem ele, tudo funciona igual, em texto
 ```
 
 Sem carteira nenhuma, três entregam o trabalho e não gravam nada:

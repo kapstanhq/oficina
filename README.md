@@ -120,7 +120,7 @@ tarefas.
 
 **O caminho mais curto é montar o seu na página do pack** —
 [corretor de imóveis](https://kapstan.com.br/oficina/corretor-de-imoveis) ou
-[prospecção B2B](https://kapstan.com.br/oficina/prospeccao-b2b). Ali você
+[prospecção](https://kapstan.com.br/oficina/prospeccao). Ali você
 escolhe onde usa IA, se já tem carteira e quais ferramentas quer, e o texto
 sai pronto, menor e com os passos do seu serviço — tem um botão de copiar.
 

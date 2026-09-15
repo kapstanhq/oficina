@@ -367,6 +367,17 @@ Começo pelo primeiro?
 Sem conector, ou com `envio: não`, o custo volta a ser o de sempre — “preciso da
 conversa colada” — e o que a skill do item entrega no fim é o bloco para copiar.
 
+**Se houver painel, a lista vai para lá.** Uma lista de seis itens com gatilho,
+razão e frase acionável é uma tabela, e tabela no terminal se lê mal. Mostre a
+lista na vista `lista`, agrupada pelas quatro seções do dia, com uma ação por
+item; a pergunta de por onde começar vira os botões do rodapé. O formato está em
+`references/painel.md`.
+
+Duas coisas não mudam por causa dele: a lista sai **igual** — os mesmos itens, na
+mesma ordem, com a mesma razão —, e ela também é dita no terminal, porque é lá
+que o corretor está olhando. O painel não substitui a resposta; ele é onde
+a resposta cabe melhor. Sem painel, ou se ele expirar, siga como sempre foi.
+
 **Esta pergunta não aprova envio nenhum.** Ela escolhe por onde o dia começa. A
 de mandar é outra, é da skill do item, e traz o nome de quem recebe, o texto
 inteiro e as três saídas. Juntar as duas faz da lista do dia uma esteira de

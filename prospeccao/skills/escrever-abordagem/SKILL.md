@@ -243,6 +243,17 @@ Mando agora        eu envio, depois de você ver o texto e o destinatário
 Mudo o texto       você diz o que trocar, e nada sai agora
 ```
 
+**Se houver painel, é aqui que ele mais vale.** Mostre a mensagem na vista
+`texto`, com os três rótulos acima como as ações do rodapé — o formato está em
+`references/painel.md`. A tela do painel deixa ler o texto inteiro sem rolar o
+terminal, e deixa **corrigir ali mesmo**: o que volta em `texto` é o que vai
+sair, corrigido ou não.
+
+Três coisas não mudam por causa dele, e as três são do §7.1: o texto aparece
+**inteiro** antes de sair, o nome de quem recebe vem junto, e os rótulos são
+esses três. O painel não é uma quarta saída — é onde as três cabem. Sem painel,
+ou se ele expirar, o bloco no terminal é a saída de sempre.
+
 ## 5 · O que perguntar, e como
 
 No máximo duas perguntas, e as duas mais úteis são:
