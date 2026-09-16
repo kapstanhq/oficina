@@ -245,8 +245,11 @@ Contrato, seção 7, e nada além dela. Para cada bruto não lido:
   Registra que o documento está em `_bruto/` e manda para
   `/corretor:conferir-matricula`, que é quem lê e é a única que nunca opera em
   automático.
-- **Buraco é buraco.** `<Mídia oculta>`, mensagem apagada, áudio, figurinha: vira
+- **Buraco é buraco.** `<Mídia oculta>`, mensagem apagada, figurinha: vira
   linha declarada em `## Combinado` ou pergunta ao corretor, nunca palpite.
+  **Áudio pelo conector chega transcrito**, e é fato como outro qualquer — mas
+  número, valor e nome próprio saídos dali só viram campo depois de confirmados
+  (contrato, seção 7). Áudio colado continua buraco.
 - **Pedido de silêncio se lê e se grava, sempre.** “não me manda mais
   mensagem”, “para de me mandar isso”, “me tira daí”: grave
   `não contatar: sim  ← _bruto/<arquivo>, <data>` no arquivo do cliente,
@@ -599,9 +602,10 @@ de papel: ela registra que está em `_bruto/` e manda para
 errado no anúncio, e concluir se um documento está em ordem não é dela nem de
 skill nenhuma — é de advogado e de cartório.
 
-**Ela não transcreve áudio de ouvido.** Áudio no meio de uma conversa vira
-pergunta: “Tem um áudio de 12 de agosto no meio dessa conversa. O que ela disse
-ali?”. `<Mídia oculta>` e mensagem apagada viram buraco declarado.
+**Ela não transcreve áudio de ouvido.** Quem transcreve é a ponte, e só o que
+passou por ela. Áudio colado, de grupo ou anterior à ponte vira pergunta: “Tem
+um áudio de 12 de agosto no meio dessa conversa. O que ela disse ali?”.
+`<Mídia oculta>` e mensagem apagada viram buraco declarado.
 
 **Ela não funde duas fichas.** Dois clientes que parecem a mesma pessoa: mostra
 os dois e para. Fundir aposenta um id sem desfecho, e id não se reaproveita —

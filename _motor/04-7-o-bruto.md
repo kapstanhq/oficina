@@ -26,8 +26,10 @@ que está lá está errado, o certo vai para o arquivo dono com procedência
 foi dito, não do que é verdade.
 
 PDF, foto e áudio ficam onde estão e `_bruto/` guarda um arquivo `.md` que
-aponta o caminho no computador. Áudio não se transcreve de ouvido: se o que
-importa está num áudio, pergunte ao {profissional} o que ele diz.
+aponta o caminho no computador. **De ouvido não se transcreve nada.** O que
+existe é a transcrição que o conector já fez, e ela entra no bruto com a marca
+que veio junto — seção 7. Áudio colado, ou que o conector não transcreveu,
+vira pergunta ao {profissional}.
 
 **Planilha importada entra inteira, e é o arquivo original.** O nome é
 `AAAA-MM-DD-planilha-<nome-curto>.csv`, sem o cabeçalho de três linhas — ele é

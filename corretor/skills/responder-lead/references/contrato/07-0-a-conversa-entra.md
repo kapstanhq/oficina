@@ -14,10 +14,15 @@ que entrou colada produzem o **mesmo** arquivo em `_bruto/`, com a mesma
 procedência (seção 3). Nenhuma das outras precisa saber por onde ela veio,
 e é isso que impede o conector de virar um segundo pack.
 
+Uma coisa só é diferente, e ela é do WhatsApp: **a exportação não leva o som.**
+Pelo conector, nota de voz chega transcrita; colada, ela é buraco. Ver
+“Áudio”, abaixo.
+
 | a operação | colado | pelo conector |
 |---|---|---|
 | trazer a conversa de um cliente | o corretor exporta ou cola | achar a conversa pelo telefone do arquivo do cliente e ler o período que interessa |
 | saber quando foi a última mensagem | está no que ele colou | pergunta-se à conversa |
+| saber o que um áudio disse | perguntar ao corretor | vem transcrito, com a marca |
 | guardar em `_bruto/` | igual nos dois | igual nos dois |
 
 **O conector lê sempre, e manda uma por vez** — nunca em lote, e nunca sem o
@@ -74,10 +79,44 @@ qual dos dois é você?”. Nunca deduza pelo tom — o risco é gravar a fala d
 cliente como promessa do corretor.
 
 **O que não se lê, não se inventa:** `<Mídia oculta>`, `Esta mensagem foi
-apagada`, áudio e figurinha viram um buraco declarado, não um palpite. Se o
-buraco está no meio do que importa, ele vira uma linha em `## Combinado` ou uma
-pergunta: “Tem um áudio de 12 de agosto no meio da conversa. O que ela disse
-ali?”
+apagada` e figurinha viram um buraco declarado, não um palpite. Se o buraco
+está no meio do que importa, ele vira uma linha em `## Combinado` ou uma
+pergunta: “Tem uma mídia oculta de 12 de agosto no meio da conversa. O que
+tinha ali?”
+
+### Áudio
+
+Nota de voz que entra **pelo conector** chega transcrita, e a marca vem junto:
+
+```
+[12/08/2026 14:41] Joana: [áudio 0:42 · transcrição] amanhã de manhã eu consigo passar
+```
+
+Grave no `_bruto/` com a marca, como chegou. Ela não é enfeite: **é texto de
+máquina**, e máquina troca nome, número e valor. Daí a regra, e ela tem duas
+partes:
+
+- **O que foi dito é fato**, e entra como qualquer outro. A procedência nomeia
+  o áudio, com a data convertida como toda data de campo:
+  `← _bruto/<arquivo>, áudio de 2026-08-12`. O `12/08` do rótulo é do bruto, e
+  fica lá.
+- **Número, valor, data e nome próprio saídos de transcrição não viram campo
+  sem confirmação.** Campo preenchido não levanta suspeita em ninguém, e um
+  “trezentos e cinquenta” ouvido errado sai no imóvel e na mensagem que vai
+  ao cliente. Pergunte uma vez: “O áudio de 12/08 diz R$ 350 mil. Confere?”
+
+Sem transcrição, o conector diz **por quê** no lugar do texto — e o motivo
+decide o que fazer:
+
+```
+na fila para transcrever      ainda vem: siga, e não pergunte nada
+não baixado: grupo            não vem: buraco declarado
+o arquivo expirou e o
+celular não tem mais          não vem: buraco declarado
+```
+
+**Colado, áudio continua buraco**, e aí vale o parágrafo de cima: vira pergunta
+ao corretor.
 
 ### Texto solto
 

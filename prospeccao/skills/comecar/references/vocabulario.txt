@@ -1,0 +1,44 @@
+# CÓPIA GERADA · não edite este arquivo.
+# A fonte é oficina/prospeccao/vocabulario.txt, e `npm run oficina -- --escrever`
+# refaz a cópia. Correção feita aqui se perde na próxima passada.
+
+# pacote: prospeccao
+#
+# O que um prospector B2B fala num áudio e a transcrição escreve do jeito que
+# ouve. Instalado por quem monta a ponte, no degrau 7.5 da conexão:
+#
+#   whatsapp-reader vocabulario instalar <este arquivo>
+#
+# Formato: a forma certa; depois dos dois-pontos, os erros que o motor já
+# cometeu com ela. Erro só entra quando NÃO é palavra de verdade em outro
+# contexto — "LinkedIn" entra, "ligado" não.
+#
+# A lista nasce curta de propósito: a dica que vai junto com o áudio tem
+# orçamento (uns 600 caracteres), e nome que não se fala não ajuda ninguém. O
+# nome das empresas e das pessoas da carteira mora no vocabulario.txt pessoal.
+
+CNPJ
+LinkedIn: Linked In
+Sales Navigator
+CRM
+HubSpot: Hub Spot
+Pipedrive: Pipe Drive
+RD Station
+pipeline
+follow-up: follow up
+outbound
+inbound
+SDR
+ICP
+MQL
+SQL
+lead
+prospect
+cadência
+ticket médio
+proposta comercial
+onboarding
+churn
+SaaS
+ERP
+NPS

@@ -482,7 +482,8 @@ Meta.
 funcionando igual, e pergunte se ele quer agora, depois, ou não. **Os avisos do
 envio não entram na oferta** — eles são da cadeia, e lá se dizem uma vez, antes
 de qualquer instalação. Se quiser, leia `references/conectar-whatsapp.md` e siga
-a cadeia de lá. Se não quiser, ou se aqui não houver linha de comando, siga em
+a cadeia de lá; o `references/vocabulario.txt` ao lado é o que o degrau 7.5
+manda instalar, e é o que faz a transcrição acertar as palavras do ofício. Se não quiser, ou se aqui não houver linha de comando, siga em
 frente e não toque mais no assunto.
 
 Este passo é pulável, mas ele emenda no passo 7: se ele já tiver uma conversa à
@@ -641,9 +642,9 @@ Três coisas que este passo resolve e que valem uma linha cada:
   `INDICE.md`. Não bateu de jeito nenhum: pergunte uma vez — “Nessa conversa,
   qual dos dois é você?”. Nunca deduza pelo tom; o risco é gravar a fala do
   cliente como promessa dele.
-- **Buraco é buraco.** `<Mídia oculta>`, mensagem apagada, áudio e figurinha
-  viram linha declarada ou pergunta, nunca palpite. Áudio não se transcreve de
-  ouvido.
+- **Buraco é buraco.** `<Mídia oculta>`, mensagem apagada e figurinha viram
+  linha declarada ou pergunta, nunca palpite. De ouvido não se transcreve nada:
+  pelo conector o áudio já vem transcrito, e colado ele vira pergunta.
 - **Se a conversa fala do imóvel do passo 6, ligue os dois** — uma linha em
   `## Imóveis mostrados` no cliente e uma em `## Mostrado a` no imóvel. É a
   primeira vez que a carteira mostra o que ela é, e vale mostrar as duas linhas

@@ -137,7 +137,14 @@ e ela declara o padrão que usou.
 
 Ao ler, valem as regras do contrato §7 sem nenhuma mudança: quem é o
 {profissional} na conversa, as datas em dd/mm/aaaa, e **o que não se lê não se
-inventa** — `<Mídia oculta>`, áudio e mensagem apagada viram buraco declarado.
+inventa** — `<Mídia oculta>` e mensagem apagada viram buraco declarado.
+
+**Áudio antigo quase nunca tem transcrição, e isso não é defeito.** A ponte
+guarda o som do que chegou depois que ela subiu; o que é anterior a ela ficou
+só com o rótulo. Num histórico de doze meses, os áudios das últimas semanas
+vêm com `[áudio 0:42 · transcrição]` e os de meses atrás vêm sem — conte os
+sem transcrição como buraco e escreva a razão **uma vez** no relatório. O
+{profissional} vai reparar na diferença, e ela tem explicação.
 
 Num histórico longo os buracos são muitos. **Não vire uma pergunta cada um**:
 conte-os por conversa e traga o total no relatório. Só vira pergunta o buraco
@@ -229,7 +236,7 @@ Período: os últimos 12 meses (padrão).
 
 ## Buracos no que li — 23
 
-- 18 áudios, 4 mídias ocultas, 1 mensagem apagada
+- 18 áudios sem transcrição (anteriores à ponte), 4 mídias ocultas, 1 apagada
 - 2 estão no meio de um fato que entrou, e viraram `?`
 
 ## Guardei

@@ -1,0 +1,49 @@
+# pacote: corretor
+#
+# O que um corretor de imóveis fala num áudio e a transcrição escreve do jeito
+# que ouve. Instalado por quem monta a ponte, no degrau 7.5 da conexão:
+#
+#   whatsapp-reader vocabulario instalar <este arquivo>
+#
+# Formato: a forma certa; depois dos dois-pontos, os erros que o motor já
+# cometeu com ela. Erro só entra quando NÃO é palavra de verdade em outro
+# contexto — "habitese" entra, "quinto andar" não, porque é o andar do prédio.
+#
+# A lista nasce curta de propósito: a dica que vai junto com o áudio tem
+# orçamento (uns 600 caracteres), e nome que não se fala não ajuda ninguém. O
+# que ele mais erra na prática se acrescenta aqui, ou no vocabulario.txt
+# pessoal, que é onde moram os nomes de cliente, rua e condomínio.
+
+CRECI
+ITBI
+IPTU
+habite-se: habitese
+usucapião
+averbação
+matrícula
+escritura
+certidão negativa
+ônus reais
+Registro de Imóveis
+condomínio
+metragem
+suíte
+sacada
+churrasqueira
+planta baixa
+vaga de garagem
+financiamento
+FGTS
+Minha Casa Minha Vida
+sinal
+arras
+distrato
+permuta
+comissão
+exclusividade
+proprietário
+imobiliária
+ZAP Imóveis
+VivaReal: Viva Real
+Imovelweb
+OLX

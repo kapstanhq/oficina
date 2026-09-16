@@ -546,7 +546,8 @@ Pergunte só isto, e só quando faltar de verdade:
   histórico é curto: “tem resposta dela depois de 5 de agosto que não está aqui?
   Se tiver, eu não retomo quem já voltou”
 - **o que dizer**, quando o ângulo 4 depende de uma pergunta do cliente que
-  ficou num áudio ou num `<Mídia oculta>` — buraco declarado, nunca palpite
+  ficou num `<Mídia oculta>`, ou num áudio que o conector não transcreveu —
+  buraco declarado, nunca palpite
 
 No automático não se pergunta: escolhe e declara em `## Decidi sozinho`.
 

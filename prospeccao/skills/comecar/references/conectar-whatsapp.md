@@ -102,6 +102,12 @@ agir        git clone https://github.com/kapstanhq/whatsapp-reader
 confirmar   os arquivos .go estão lá
 ```
 
+**Há binário pronto** na página de releases do mesmo repositório, um por
+sistema: quem não quiser instalar o Go pula os degraus 1 e 3 e vai direto para
+o 4. O preço é o aviso do Windows sobre programa baixado da internet — que não
+aparece no que foi compilado ali mesmo —, e quem decide se libera é o
+prospector.
+
 ### 3 · Compilada
 
 ```
@@ -155,6 +161,16 @@ Windows   Agendador de Tarefas → Criar Tarefa Básica
 macOS     um .plist em ~/Library/LaunchAgents com KeepAlive true e o mesmo
           caminho; carregar com launchctl load
 ```
+
+**No Windows, o Agendador pode responder "Acesso negado"** — medido em
+16/09/2026 numa máquina de trabalho comum, com `schtasks /create`. Ele quer
+elevação, e o prospector pode não ter. A saída não precisa de nada disso: um
+atalho para o `whatsapp-reader.exe`, com `serve` no campo de argumentos, dentro
+da pasta `shell:startup` (cole isso no Executar). O que abre nela abre no logon.
+
+Depois do agendador, **rodar `serve` na mão passa a recusar**: o daemon já
+está de pé, e a recusa diz isso com o número do processo. É o certo — dois
+`serve` na mesma sessão corrompem a decifragem das mensagens.
 
 Uma coisa que o agendador **não** resolve, e o prospector tem que ouvir: de
 tempos em tempos o WhatsApp repede o QR (item 3 dos avisos). Nesse dia o daemon
@@ -211,6 +227,70 @@ três dias depois, no meio de outra coisa.
 
 **A linha `envio:` ainda não.** Ela é do degrau 8, e pelo mesmo motivo: o que não
 foi testado não se escreve como testado.
+
+### 7.5 · Os áudios, se ele quiser
+
+```
+verificar   whatsapp-reader verificar
+agir        instalar os dois programas, baixar um modelo e instalar o
+            vocabulário do ofício (tudo abaixo)
+confirmar   `verificar` diz "tudo pronto", e `estado_da_ponte` passa a mostrar
+            a linha da transcrição
+```
+
+**Adiável como o 4.5, e pelo mesmo motivo: nada do que já funciona depende
+disto.** Sem ele, nota de voz continua sendo buraco declarado, que é como o
+pack viveu até agora.
+
+O que muda com ele: nota de voz de conversa individual passa a chegar
+transcrita, e o que o contato combinou falando entra na carteira como entra o
+que ele escreveu.
+
+**Nada sai da máquina** — a transcrição roda num programa local, e é o padrão.
+Existe um modo que manda o áudio para um serviço na internet; ele não liga
+sozinho, e não é este degrau. Diga a frase assim mesmo: é a primeira pergunta
+de quem ouve que o computador vai "escutar" as conversas.
+
+São dois programas e um modelo:
+
+```
+Windows   scoop install whisper-cpp ffmpeg
+macOS     brew install whisper-cpp ffmpeg
+Linux     o ffmpeg vem do gerenciador da distribuição; o whisper.cpp se
+          compila de github.com/ggml-org/whisper.cpp
+```
+
+O modelo é um arquivo `.bin` em `modelos/`, no diretório da ponte, baixado de
+huggingface.co/ggerganov/whisper.cpp:
+
+```
+ggml-large-v3-turbo-q5_0.bin   574 MB   o preferido, mais preciso
+ggml-small-q5_1.bin            190 MB   para a máquina que não acompanha
+```
+
+**Qual dos dois é medida, não palpite.** `whatsapp-reader verificar <um
+áudio>` transcreve e cronometra: *"0:42 de áudio em 0:31 (0,7× a duração)"*.
+Abaixo de 1× a fila anda; acima, ela acumula e nunca alcança. Medido numa
+máquina de trabalho comum em 16/09/2026, o `small` deu **0,8×** — ali o grande
+não caberia.
+
+Não precisa reiniciar nada depois de instalar: faltando peça a fila **pausa**,
+e ela volta sozinha em até um minuto. O que a fila não faz é voltar atrás —
+áudio que chegou antes de a ponte existir ficou só com o rótulo, e é por isso
+que este degrau vale mais cedo do que tarde.
+
+**E o vocabulário do ofício, que é uma linha:**
+
+```
+whatsapp-reader vocabulario instalar <o references/vocabulario.txt desta skill>
+```
+
+É a lista das palavras que ele fala todo dia e que a transcrição erra sozinha —
+cargo entre elas — com a correção dos erros que ela já cometeu.
+Sem ele a transcrição funciona; com ele, ela para de trocar o nome das coisas
+do ofício. O arquivo pessoal é o passo seguinte, e é dele: `vocabulario.txt`,
+no diretório da ponte, onde entram os nomes dos contatos e dos lugares que
+só ele fala. `whatsapp-reader vocabulario` mostra o que está valendo.
 
 ### 8 · O envio, provado uma vez
 
@@ -292,6 +372,9 @@ segura o envio se alguém esquecer — e é para isso que os dois lugares existe
 | `estado` diz que outro dispositivo assumiu a sessão | o WhatsApp Web abriu no navegador, ou há um segundo `serve` | fechar o outro e rodar `serve` de novo — esta ponte não volta sozinha |
 | o envio recusa dizendo que não existe conversa | primeiro contato: o WhatsApp recusa desde julho de 2026 | não há contorno pela ponte. Entregue o bloco para ele mandar a primeira do celular |
 | a conta foi restringida | disparo, ou mensagem para quem nunca respondeu | conta restrita não usa dispositivo conectado: a ponte fica fora até passar, e o `estado` diz o prazo |
+| `estado_da_ponte` diz `transcrição: PARADA` | falta o ffmpeg, o whisper ou o modelo — e a fila pausou sem gastar tentativa | `whatsapp-reader verificar` na máquina da ponte diz qual peça, e a fila volta sozinha depois de instalada |
+| `serve` recusa dizendo que já há uma ponte de pé | há outro daemon rodando — em geral o que subiu sozinho com o computador (degrau 4.5) | é o certo: dois `serve` na mesma sessão corrompem a decifragem. Use a janela que existe; se aquele processo morreu agora, um minuto e ele libera |
+| os áudios novos vêm transcritos e os antigos não | a ponte só guarda o som do que chega depois que ela sobe | não tem conserto, e não é defeito: os antigos ficaram com o rótulo. Vale contar isso antes de ele reparar sozinho |
 
 **Falhou em qualquer degrau e você não sabe consertar?** Diga em que degrau
 parou, o que apareceu, e que o caminho colado continua valendo. Não tente

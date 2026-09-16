@@ -632,11 +632,15 @@ Sete limites. Ler os sete custa menos que descobrir um no meio da semana.
 
 **Ela só sabe o que está escrito.** Negócio que você fechou ontem no telefone e
 não anotou continua na lista de hoje como proposta parada — ela vai cobrar, com
-toda a segurança do mundo, uma coisa que já acabou. E o contrário também: o que
-você combinou por áudio não existe para ela. É o limite mais caro do pack, e a
-saída dela diz isso todo dia em uma linha, com o convite de passar o que
-aconteceu para `/prospeccao:organizar-carteira`. A lista de amanhã só é boa se a
-carteira de hoje for.
+toda a segurança do mundo, uma coisa que já acabou. É o limite mais caro do
+pack, e a saída dela diz isso todo dia em uma linha, com o convite de passar o
+que aconteceu para `/prospeccao:organizar-carteira`. A lista de amanhã só é boa
+se a carteira de hoje for.
+
+**O áudio saiu desse limite, e só ele.** Com o conector de pé, nota de voz
+chega transcrita e conta como qualquer mensagem escrita. O que ficou fora
+continua fora: telefone, conversa presencial, áudio de grupo e o que é
+anterior à ponte.
 
 **A escada é escrita, não medida.** Os seis degraus e os cortes de dia vieram
 do que costuma fazer perder negócio, não do seu mês. Dois itens do mesmo degrau
