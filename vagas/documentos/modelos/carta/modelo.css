@@ -1,0 +1,15 @@
+/* ═══ A CARTA (D273) — por cima da página do motor ═══════════════════════
+   O cabeçalho é o do currículo, nas mesmas medidas: os dois vão juntos no
+   formulário e devem parecer da mesma mão. O corpo é prosa, então a letra
+   sobe um pouco e a entrelinha abre — carta se lê de ponta a ponta, e não se
+   varre como o currículo. */
+h1 { font-size: 21pt; letter-spacing: -.2pt; line-height: 1.1; margin-bottom: 3pt; }
+.contato { margin: 0 0 22pt; font-size: 8.8pt; color: #4a4a4f; text-wrap: balance; }
+.contato .pedaco { white-space: nowrap; }
+.contato .sep { color: #9a9aa0; }
+/* o assunto: a vaga, com o nome que o anúncio usa */
+h2 { margin: 0 0 14pt; font-size: 10.5pt; font-weight: 600; color: #2b2b30; }
+p { font-size: 10.6pt; line-height: 1.55; margin: 0 0 9pt; text-wrap: pretty; }
+/* a data e a assinatura: as duas linhas de fórmula, sem o peso do corpo */
+h2 + p { color: #55555b; margin-bottom: 16pt; }
+p:last-child { margin-top: 2pt; font-weight: 600; }

@@ -3,7 +3,8 @@ name: organizar-carteira
 description: >-
   Faz a manutenção da carteira: lê o que está em `_bruto/` e ainda não virou
   fato — conversa colada, ficha, e-mail —, extrai os campos com procedência e
-  grava nos arquivos donos, e importa a planilha que estiver em _bruto/.
+  grava nos arquivos donos, e importa a planilha posta em _bruto/ com a
+  carteira já montada (sem carteira, a planilha é do /prospeccao:comecar).
   Aposenta quem parou há mais de 90 dias, aplica os tetos e mostra o que
   sairia antes de podar. Acha o que só se vê de cima: contato no funil sem
   arquivo, conta que se cita e não existe, campo ? que uma conversa já
@@ -11,10 +12,10 @@ description: >-
   o prospector disser — organiza minha carteira, dá um jeito nessa bagunça,
   colei um monte de conversa e não sei se entrou, coloquei a planilha na
   pasta, arquiva quem sumiu, tira o que eu já vendi, tem contato em dobro aí,
-  o arquivo do contato está gigante, faz uma faxina. Também depois de uma
-  semana colando material sem organizar. Não escreve a mensagem de quem sumiu
-  (/prospeccao:retomar-contato), não monta a lista do dia
-  (/prospeccao:o-que-fazer-hoje) nem lê CNPJ (/prospeccao:estudar-conta).
+  o arquivo do contato está gigante, faz uma faxina. Não escreve a mensagem
+  de quem sumiu (/prospeccao:retomar-contato), não monta a lista do dia
+  (/prospeccao:o-que-fazer-hoje) nem lê CNPJ
+  (/prospeccao:estudar-conta).
 license: MIT
 compatibility: >-
   Precisa da carteira, numa pasta do computador: ela é a manutenção da

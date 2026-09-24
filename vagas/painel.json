@@ -1,0 +1,119 @@
+{
+  "_": "Sobre o que cada skill age, para o painel saber ONDE oferecê-la como botão (D232). `nada` = roda sozinha, sem ninguém dizer mais nada; `item` = age sobre UMA vaga; `pessoa` = sobre UM contato. Skill que não está aqui é CONVERSA (perguntas, texto colado): o painel mostra o comando para copiar e não oferece botão. `comeco` são os passos de quem acabou de instalar, na ordem do ofício: o painel os mostra enquanto a busca não tem vaga nenhuma (D234). `proximo` é o que vem depois, por etapa do funil, na ordem (D235); a entrada pode ser `{ faz, se, porque }`, e o destaque é a primeira cujas condições valem — `faltam`, `sem:<campo>`, `sem-documento:<pasta>`, `nunca:<palavra do histórico>` (D257), `agora:<palavra da última linha do histórico>` (D262); `marcar` é a etapa seguinte e `descartar` é o arquivo-morto. `destaque` são os campos que respondem “cabe para mim?” antes de tudo: a página da vaga os mostra grandes, abaixo do título (D240). `rotulos` é o texto do botão (D242): por etapa de DESTINO do `marcar` e por skill no contexto de um item; sem rótulo, o painel escreve “Mover para …”. `resumo` são as seções que o baralho mostra de cada item, e `motivos` são os descartes de um clique. `inicio` é a ordem dos blocos da página inicial (D244) — o molde; a busca pode ter o próprio `painel.json` por cima. `completar` é a skill que procura o que falta num item: o painel mostra o botão ao lado dos campos em destaque sem resposta (D245). `documentos` liga uma pasta da base a um modelo de documento: a página de um arquivo dali ganha a prévia em PDF e, se já foi gerado, o PDF (D270). `ordens` é a ordem das escalas que não são alfabéticas — encaixe alto antes de baixo —, para a tabela e as listas ordenarem (D274). `esforco` é o `--effort` do assistente chamado pelo painel, por skill: `low` para quem só move dado; skill sem entrada roda no padrão (D263). `fases` são degraus DENTRO de uma etapa, lidos da ficha pelas mesmas condições do `proximo` — o item está no último cujo `se` vale, e ninguém o move: é o pipeline do início e o filtro da tabela (D266). `fim` é o fim BOM: na etapa `de`, um botão próprio, que não é vermelho, aposenta o item com o `motivo` — sai do funil como descarte, e não é descarte.",
+  "inicio": [
+    "comeco",
+    "hoje",
+    "funil",
+    "novidades",
+    "acoes"
+  ],
+  "destaque": [
+    "regime",
+    "contrato",
+    "jornada",
+    "faixa",
+    "idioma",
+    "encaixe"
+  ],
+  "resumo": [
+    "O que pesa a favor",
+    "O que pesa contra",
+    "O que a vaga pede"
+  ],
+  "rotulos": {
+    "salva": "Salvar",
+    "candidatada": "Já me candidatei",
+    "em contato": "Houve contato",
+    "entrevista": "Marcar entrevista",
+    "proposta": "Recebi proposta",
+    "triar-vagas": "Analisar esta vaga",
+    "montar-curriculo": "Currículo e carta",
+    "candidatar": "Candidatar-me",
+    "escrever-ao-contato": "Escrever ao contato",
+    "completar-ficha": "Completar informações"
+  },
+  "motivos": [
+    "Presencial ou híbrida fora da minha cidade",
+    "Salário abaixo do que aceito",
+    "Pede um idioma que não tenho",
+    "Não é o cargo que procuro",
+    "Empresa ou setor que evito"
+  ],
+  "comeco": [
+    "perfil-de-busca",
+    "buscar-vagas",
+    "triar-vagas"
+  ],
+  "fim": { "de": "proposta", "rotulo": "Aceitei a proposta", "motivo": "aceitei" },
+  "proximo": {
+    "nova": [
+      { "faz": "marcar", "porque": "Leia o essencial abaixo. Se cabe, salve: ela segue para completar, analisar e candidatar." },
+      "triar-vagas",
+      "completar-ficha",
+      "descartar"
+    ],
+    "salva": [
+      { "faz": "marcar", "se": ["agora:esperando o seu envio"], "porque": "Preenchida, esperando o seu envio. Se já enviou, marque: o registro está pronto." },
+      { "faz": "completar-ficha", "se": ["faltam", "nunca:completado"], "porque": "Faltam dados que decidem se a vaga cabe, e ninguém foi atrás deles ainda." },
+      { "faz": "triar-vagas", "se": ["sem:encaixe", "nunca:triagem"], "porque": "Os dados estão aqui, mas a vaga ainda não foi comparada com o seu perfil." },
+      { "faz": "descartar", "se": ["sem:encaixe", "ja:proposto baixo"], "porque": "A análise propôs encaixe baixo. Concorda? Descarte. Se não, siga para o currículo." },
+      { "faz": "montar-curriculo", "se": ["sem-documento:curriculos"], "porque": "A análise está feita. Falta o currículo desta vaga, e a carta se o formulário pedir." },
+      "candidatar",
+      "escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "candidatada": [
+      "retomar-contato",
+      "escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "em contato": [
+      "escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "entrevista": [
+      "escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "proposta": [
+      "escrever-ao-contato",
+      "descartar"
+    ]
+  },
+  "sobre": {
+    "buscar-vagas": "nada",
+    "triar-vagas": "item nada",
+    "montar-curriculo": "item nada",
+    "escrever-ao-contato": "item pessoa",
+    "candidatar": "item",
+    "o-que-fazer-hoje": "nada",
+    "retomar-contato": "item nada",
+    "cobrar-o-que-falta": "nada",
+    "organizar-busca": "nada",
+    "laudo-da-busca": "nada",
+    "completar-ficha": "item"
+  },
+  "esforco": {
+    "gravar-o-que-marquei": "low",
+    "organizar-busca": "low",
+    "completar-ficha": "medium"
+  },
+  "completar": "completar-ficha",
+  "documentos": {
+    "curriculos": "curriculo",
+    "cartas": "carta"
+  },
+  "fases": {
+    "salva": [
+      { "nome": "pesquisada", "se": ["ja:completado"] },
+      { "nome": "com currículo", "se": ["com-documento:curriculos"] }
+    ]
+  },
+  "ordens": {
+    "encaixe": ["alto", "médio", "baixo"]
+  }
+}

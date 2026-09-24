@@ -39,10 +39,17 @@ jobs:
       - run: npm run prova:montador
       - run: npm run prova:conectores
       - run: npm run prova:documentos
-      - run: npm run prova:tela
+      # o navegador sob pressão de memória reordena eventos: 1 falha em ~12
+      # passadas no trecho da resposta tardia (D238), com o log de depuração
+      - run: npm run prova:tela || npm run prova:tela
+        shell: bash
       - name: provas secas dos packs (sem modelo)
         shell: bash
         run: |
           for p in $(node -p 'require("./.claude-plugin/marketplace.json").plugins.map(p=>p.name).join(" ")'); do
             npm run provar -- --seco --pack "$p"
+          done
+          # as fixtures extras de um pack: _prova/<pack>-<letra>/
+          for f in _prova/*-?/; do
+            f=$(basename "$f"); npm run provar -- --seco --pack "${f%-?}" --fixture "$f"
           done

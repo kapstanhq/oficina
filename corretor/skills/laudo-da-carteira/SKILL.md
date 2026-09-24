@@ -8,7 +8,8 @@ description: >-
   por pasta. Use antes de mexer na carteira e depois de escrever nela, e quando
   o corretor disser — a carteira está confiável? · dá uma conferida no que
   eu tenho aí · o que está faltando na minha carteira · tem coisa velha aqui? ·
-  o que está desatualizado · isso ainda vale? · antes de eu mandar isso, confere
+  o que está desatualizado · essa informação ainda está certa? · antes de eu
+  mandar isso, confere
   · será que perdi alguma coisa · minha carteira está uma bagunça, o que tem de
   errado. Também depois de importar planilha ou conversa em volume. Ela não
   arruma nada: quem arruma é /corretor:organizar-carteira, e quem cobra o que

@@ -38,9 +38,12 @@ npm run prova:guardas           # as guardas do servidor local do painel
 npm run prova:vigia             # a troca do servidor quando o código muda
 npm run prova:tela              # o painel no navegador, a 1300 e a 390 px
 npm run prova:montador          # o que o montador recusa num painel.json de pack
-npm run prova:conectores
+npm run prova:sempre            # os arquivos de login do Windows, Mac e Linux
+npm run prova:lancar            # o botão que lança o assistente: modelo, pasta, fila
+npm run prova:conectores        # `-- --rede` chama as fontes de verdade
 npm run prova:documentos
 npm run provar -- --seco --pack <pack>
+npm run provar -- --seco --pack <pack> --fixture <pack>-b   # a segunda fixture
 ```
 
 `npm run provar -- --rodar --pack <pack>` executa cada skill de verdade contra a

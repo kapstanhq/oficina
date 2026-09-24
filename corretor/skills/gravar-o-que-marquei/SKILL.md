@@ -165,7 +165,7 @@ decidido, e não um texto para o cliente (contrato §10).
 ## 6 · Onde ela para
 
 **Ela não julga.** Fila vazia não vira sugestão do que marcar — julgar é
-conversa, e acontece no painel ou na skill de triagem do pack.
+conversa, e acontece no painel ou em `/corretor:montar-visita`.
 
 **Ela não refaz a lista do dia.** Tira do `hoje.md` o que foi aposentado, e só.
 A lista nova é `/corretor:o-que-fazer-hoje`.

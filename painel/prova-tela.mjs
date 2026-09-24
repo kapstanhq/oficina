@@ -479,7 +479,14 @@ await ir("#/tarefa", "text=Triagem tardia");
 conferir("tardia · a tela diz que o assistente não está mais esperando",
   await tem("text=não está mais esperando esta tela"), true);
 conferir("tardia · e o menu não diz “esperando você”", await tem("text=Uma tela sua está aberta"), true);
-await pagina.locator(".c-chip[aria-pressed]").filter({ hasText: "Sim" }).first().click();
+/* o chip é clicado até ficar marcado: logo depois de abrir, a tela ainda se
+   redesenha, e o clique no nó velho se perdia — 1 em ~8 passadas, com a
+   resposta saindo sem a marca */
+const sim = pagina.locator(".c-chip[aria-pressed]").filter({ hasText: "Sim" }).first();
+for (let i = 0; i < 10 && (await sim.getAttribute("aria-pressed")) !== "true"; i++) {
+  await sim.click();
+  await dormir(100);
+}
 await pagina.getByRole("button", { name: "Está bom" }).click();
 await pagina.waitForSelector("text=Guardado.", { timeout: 5000 });
 conferir("tardia · a tela diz que guardou", await tem("text=Guardado."), true);
@@ -492,6 +499,7 @@ await capturar("1300-tardia");
 await chamar("painel_mostrar", TRIAGEM);                      // o agente reabre a mesma pilha
 const tardia = await chamar("painel_esperar", { segundos: 5 });
 conferir("tardia · ao reabrir a pilha, painel_esperar devolve a resposta na hora", tardia.tardia, true);
+if (tardia.tardia !== true) console.log("  DEPURA veio:", JSON.stringify(tardia).slice(0, 400), "· guardadas:", JSON.stringify((await pagina.evaluate(() => fetch("/fila").then((r) => r.json()))).respostas).slice(0, 400));
 conferir("tardia · com a decisão marcada dentro", tardia.decisoes?.["X-002"], "sim");
 conferir("tardia · e ela sai da guarda", (await pagina.evaluate(() => fetch("/fila").then((r) => r.json()))).respostas.length, 0);
 await chamar("painel_fila", { gravadas: ["X-002"] });         // limpa a fila para o resto da prova

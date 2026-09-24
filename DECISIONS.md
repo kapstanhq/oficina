@@ -44,7 +44,7 @@ ele diz quem mexeu nela.
 | D259 | Toda tela que espera resposta tem um recado geral, e o campo ou item pode ter o seu |  |
 | D260 | A Gupy entra nas sessões salvas, e a candidatura pede o login pela tela de Integrações |  |
 | D262 | O que espera a pessoa fica gravado antes da espera, e o botão que ela aperta depois vira decisão |  |
-| D263 | O modelo continua Opus; o esforço é por skill, declarado pelo pack e medido no livro |  |
+| D263 | O modelo continua Opus; o esforço é por skill, declarado pelo pack e medido no livro | emendada por D277 |
 | D264 | O início é uma fila de passos: um item por linha, com o botão, e a pilha a julgar à parte |  |
 | D265 | A tela de tarefa lê como as outras: a origem atrás do interruptor, e o documento como documento |  |
 | D266 | Entre salva e candidatada, duas fases que se leem da ficha: pesquisada e com currículo |  |
@@ -56,6 +56,7 @@ ele diz quem mexeu nela.
 | D274 | A pasta dos itens abre numa tabela, e uma ordem só vale para as três vistas |  |
 | D275 | A carta encolhe para meia página, e o resumo do currículo não repete a experiência |  |
 | D276 | A candidatura espera o envio com o navegador aberto, e sugere o que só ele decide |  |
+| D277 | O pack de vagas vai a público: qualquer profissão, fontes que os termos permitem, e o painel que o pack configura |  |
 
 ---
 
@@ -1151,6 +1152,8 @@ até o teto de 60 minutos e morreu sem escrever.
 
 `data: 2026-09-23`
 
+`estado: emendada por D277`
+
 - **Opus 5.5 fica.** Preço oficial (23/09): Opus 5.5 US$ 4 / 20 por milhão de
   tokens de entrada / saída, Sonnet 5 US$ 2 / 10 — mas a LEITURA DE CACHE, a
   maior parte de uma execução de skill, custa US$ 0,20 nos dois. A diferença
@@ -1423,3 +1426,44 @@ TERMINOU — e o navegador fechou junto, com o formulário preenchido.
   de faixas — vem PREENCHIDO com a sugestão: a faixa que contém a frase do
   `perfil.md` (nunca abaixo do piso), com a média do `salário relatado` ao lado,
   e o `de` diz `sugestão`. Dado sensível (§3.1) continua sem sugestão.
+
+## D277 · O pack de vagas vai a público: qualquer profissão, fontes que os termos permitem, e o painel que o pack configura
+
+`data: 2026-09-24`
+
+A F3 da D267. O que decidiu cada frente, em uma linha:
+
+- **Para qualquer profissão, no Brasil.** Três personas fictícias nos exemplos
+  (tecnologia, saúde, varejo) e duas fixtures (`_prova/vagas`, `_prova/vagas-b`;
+  `--fixture` escolhe). A vaga ganha `jornada:`, `inglês:` vira `idioma:`, e o
+  `contrato:` é lista aberta (CLT, PJ, estágio, aprendiz, temporário…).
+- **A entrevista abre pela pessoa.** O `perfil-de-busca` começa por por que busca,
+  do que se orgulha e o que desgasta; o material colado confirma. A lacuna se
+  conta, não se esconde. O começo do vagas é pasta → contato → entrevista →
+  buscar → triar; Google, WhatsApp e login em site entram no dia em que fazem
+  falta, com guia de ligar e de revogar.
+- **Fontes: só o que os termos permitem.** Gupy (com cidade, estado e contrato),
+  Sólides e LinkedIn público; a vaga de um link colado é lida pelo `JobPosting`
+  da página (`ler-vaga`). Catho, InfoJobs e Indeed proíbem acesso automatizado
+  nos termos: para eles o conector recusa SEM requisição e pede o texto do
+  anúncio. Adzuna fica para depois (duas credenciais).
+- **A promessa pública diz a verdade:** por padrão não entra em conta e para
+  antes do botão de enviar; login, Google, WhatsApp e envio por você são
+  escolhas, com aviso, e cada envio passa pela aprovação no painel. Sem painel,
+  a skill para antes do botão.
+- **O painel é configurado pelo pack:** vistas próprias em
+  `<pack>/painel/componentes/` (sobem ao comum no segundo uso), textos em
+  `painel.json`, e o `fim` — o botão "Aceitei a proposta", que arquiva sem ser
+  descarte e põe a busca em pausa.
+- **O botão que lança o assistente** roda Opus por padrão (D263) e aceita outro
+  modelo (`KAPSTAN_MODELO` ou `modelo` no `painel.json` da base); `"lancar": false`
+  o desliga. A execução fica presa à pasta da base e trata texto de página como
+  dado — o que é instrução ao modelo, não barreira: a base deve ter backup.
+- **Dado sensível** (autodeclaração para formulário) fica só na base local, e a
+  pessoa apaga a linha quando quiser.
+
+| recusado | por que caiu |
+|---|---|
+| ler a página de qualquer link colado | três grandes classificados proíbem por escrito |
+| seguir só com LinkedIn e Gupy | quem não é de escritório não acha vaga ali |
+| aprovação de envio pelo terminal | a promessa é aprovação na tela, e o terminal não a mostra inteira |

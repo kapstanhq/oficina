@@ -257,8 +257,10 @@ async function lerFunil() {
     return { etapas: secoes.map((s) => s.titulo), etapaAgora };
   } catch { return { etapas: [], etapaAgora: null }; }
 }
-const filaComEstado = async () =>
-  fila.paraOAgente(base.raiz, { etapaAgora: (await lerFunil()).etapaAgora });
+const filaComEstado = async () => {
+  await gravandoTardia;
+  return fila.paraOAgente(base.raiz, { etapaAgora: (await lerFunil()).etapaAgora });
+};
 
 /* ── A RESPOSTA TARDIA (D238) ─────────────────────────────────────────
    Chegou sem ninguém esperando. As marcas cujo `gesto` a skill declarou
@@ -278,10 +280,14 @@ function gestosDoDocumento(doc) {
   }
   return de;
 }
+/* a gravação da resposta tardia corre depois do "guardado" que a tela mostra;
+   quem LÊ as respostas espera a que estiver em curso — senão o agente que
+   reabria a tela logo em seguida não a achava (1 em ~6 na prova de tela) */
+let gravandoTardia = Promise.resolve();
 function guardarTardia(intencao) {
   if (!base.ligada) return false;
   const doc = sessao.documento;
-  (async () => {
+  gravandoTardia = gravandoTardia.then(() => (async () => {
     const gestos = gestosDoDocumento(doc);
     const funil = await lerFunil();
     const naFila = [];
@@ -326,10 +332,10 @@ function guardarTardia(intencao) {
       titulo: String(doc?.titulo || ""), na_fila: naFila,
     });
     registrar(`resposta tardia guardada · “${doc?.titulo || ""}” · ${naFila.length} marca(s) na fila`);
-  })().catch((e) => registrar(`resposta tardia: ${e?.message || e}`));
+  })()).catch((e) => registrar(`resposta tardia: ${e?.message || e}`));
   return true;
 }
-const respostasTardias = async () => base.ligada ? fila.lerRespostas(base.raiz) : [];
+const respostasTardias = async () => { await gravandoTardia; return base.ligada ? fila.lerRespostas(base.raiz) : []; };
 const FACA_DAS_RESPOSTAS = "A pessoa respondeu tela(s) do painel enquanto ninguém esperava (`respostas`). " +
   "As marcas com gesto já estão na fila. O que sobrou é resposta à tela nomeada em `titulo`: " +
   "se você é a skill que a mostrou, trate como a resposta; senão, diga em uma linha o que chegou. " +

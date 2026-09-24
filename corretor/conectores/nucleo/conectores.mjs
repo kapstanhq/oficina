@@ -52,6 +52,7 @@ export function criarConectores({
   catalogo,
   comando,                          // a linha que o HUMANO digita: `node "<caminho>"`
   buscar = fetch,
+  resolver,                         // o DNS, injetável: só `nucleo/pagina.mjs` o usa
   agora = () => Date.now(),
   carregarAdaptador = (caminho) => import(caminho),
   raizDosAdaptadores,               // URL do diretório de `servidor.mjs`
@@ -242,7 +243,7 @@ export function criarConectores({
             throw new Error(`catálogo: o adaptador de ${conector} não tem a operação ${operacao}`);
           }
           saida = await fazer({
-            conector: e.c, op, parametros, chave: e.chave, buscar,
+            conector: e.c, op, parametros, chave: e.chave, buscar, resolver,
             /* o cinto do adaptador pago: quanto AINDA cabe, para ele repassar
                ao serviço como limite da própria corrida */
             resta: e.pago ? arredondar(e.teto - e.gasto) : null,

@@ -165,6 +165,24 @@ export function conferirCatalogo(catalogo) {
 
     if (!c.operacoes || !Object.keys(c.operacoes).length) e("tipo http sem `operacoes`");
     for (const [op, d] of Object.entries(c.operacoes || {})) {
+      /* as regras de parâmetro e de campo de `chamada.mjs` (`traduzirParametros`
+         e `regraDeCampo`): a torta viraria recusa em toda chamada, ou campo
+         sempre nulo, e ninguém saberia por quê */
+      for (const [p, def] of Object.entries(d.parametros || {})) {
+        if (def.valores !== undefined && (typeof def.valores !== "object" || !Object.keys(def.valores).length)) {
+          e(`${op}: \`${p}.valores\` é uma tabela não vazia — como se diz → o que a fonte entende`);
+        }
+        if (def.formato !== undefined) {
+          try { new RegExp(def.formato, "u"); } catch { e(`${op}: \`${p}.formato\` não é regex`); }
+        }
+        if (def.maximo !== undefined && !(Number(def.maximo) > 0)) e(`${op}: \`${p}.maximo\` precisa ser maior que zero`);
+      }
+      for (const [campo, regra] of Object.entries(d.campos || {})) {
+        if (!regra || typeof regra !== "object") continue;
+        if (!regra.de && !regra.primeiro && !regra.molde) {
+          e(`${op}: campo ${campo} sem \`de\` (ou \`primeiro\`/\`molde\`)`);
+        }
+      }
       if (c.adaptador) continue;                   // quem sabe o endereço é o adaptador
       if (!d.url) { e(`${op}: sem \`url\``); continue; }
       try {

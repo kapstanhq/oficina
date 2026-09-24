@@ -1,0 +1,6 @@
+{
+  "_": "O currículo em PDF (D270). `paginas_max` é o teto do contrato: duas páginas. `markdown` diz como ler o arquivo que a /vagas:montar-curriculo escreve — a linha de contato antes do primeiro ##, e o ### `cargo · empresa · período` com o período à direita, em bloco que não se parte.",
+  "titulo": "currículo",
+  "paginas_max": 2,
+  "markdown": { "abertura": "contato", "direita": " · ", "blocos": true }
+}

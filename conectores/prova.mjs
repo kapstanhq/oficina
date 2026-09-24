@@ -33,6 +33,9 @@ import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
+/* o catálogo do pack de vagas é a camada de cima que a prova exercita — o
+   de verdade, e não uma cópia: a cópia que morava em `_prova/` divergiu */
+const DO_PACK = join(AQUI, "..", "vagas", "conectores.json");
 const COM_REDE = process.argv.includes("--rede");
 
 /* o cofre é lido da variável a CADA chamada, então ela pode ser escrita
@@ -60,6 +63,57 @@ const comeca = (texto, chave) => (String(texto).startsWith(chave) ? chave : text
 const titulo = (t) => console.log(`\n── ${t}`);
 
 /* ═══ OS DOIS SERVIDORES FALSOS ═══════════════════════════════════════ */
+
+/* as fontes de vaga do pack, com o formato medido em 24/09/2026. A Gupy só
+   acha a cidade escrita como a vaga a cadastrou; a Sólides devolve `take`
+   itens e manda o `redirectLink` quebrado, como a de verdade */
+function gupyFalsa(url, json) {
+  if (url.searchParams.get("city") === "Sao Paulo") return json(200, { data: [], pagination: { total: 0 } });
+  const vaga = (id, type, workplaceType) => ({ id, name: "Técnico de Enfermagem", careerPageName: "Vértice Saúde",
+    city: "Recife", state: "Pernambuco", isRemoteWork: false, jobUrl: `https://vertice.gupy.example/job/${id}`,
+    publishedDate: "2026-09-20T12:00:00.000Z", applicationDeadline: "2026-10-01", description: "<p>Plantão 12x36</p>",
+    type, workplaceType, disabilities: true });
+  return json(200, { data: [vaga(1, "vacancy_type_effective", "on-site"), vaga(2, "vacancy_type_talent_pool", "hybrid")],
+    pagination: { total: 57 } });
+}
+function solidesFalsa(url, json) {
+  if (url.searchParams.get("locations") === "Sao Paulo - SP") return json(200, { totalPages: 0, count: 0, data: [] });
+  const take = Number(url.searchParams.get("take"));
+  if (take > 20) return json(500, { erro: "take" });
+  const data = Array.from({ length: take }, (_, i) => ({
+    id: i === 1 ? "aB3xY9kLmQ" : i === 2 ? "zZ9yX8wV7u" : 926001 + i,
+    title: "Auxiliar de Limpeza", companyName: "Pátio Varejo", city: { name: "Recife" }, state: { code: "PE" },
+    jobType: "presencial", description: "<p>Limpeza &amp; conserva&ccedil;&atilde;o</p>", createdAt: "2026-09-22",
+    date: { due: "2026-10-05" }, salary: { initialRange: i === 0 ? 1800 : 0, finalRange: 0 },
+    recruitmentContractType: i === 0 ? [{ name: "Jovem Aprendiz" }] : [{ name: "CLT" }],
+    shift: i === 0 ? [{ name: "12x36" }] : [], pcdOnly: false,
+    redirectLink: `https://patiovarejo./vacancies/${926001 + i}?origem=portal`,
+    ...(i === 1 ? { publishers: { rhgestor: { redirectUrl: "https://patio.rhgestor.example/vagas/detalhes/K1" } } } : {}),
+  }));
+  return json(200, { totalPages: 3, currentPage: 1, count: 57, data });
+}
+const JOBPOSTING = { "@context": "https://schema.org", "@graph": [
+  { "@type": "Organization", name: "Vagas Exemplo" },
+  { "@type": "JobPosting", title: "Técnica de Enfermagem — UTI", datePosted: "2026-09-20T09:00:00-03:00",
+    validThrough: "2026-10-20T23:59:00-03:00", employmentType: ["FULL_TIME", "CLT"],
+    description: "&lt;p&gt;Escala 12x36, plant&amp;atilde;o noturno.&lt;/p&gt;",
+    hiringOrganization: { "@type": "Organization", name: "Hospital Boa Vista" },
+    jobLocation: { "@type": "Place", address: { addressLocality: "Recife", addressRegion: "PE" } },
+    baseSalary: { "@type": "MonetaryAmount", currency: "BRL",
+      value: { "@type": "QuantitativeValue", minValue: 3200, maxValue: 3800, unitText: "MONTH" } } },
+] };
+function paginaDeVaga(url, res) {
+  const html = (corpo) => { res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }); res.end(corpo); };
+  const ir = (para) => { res.writeHead(302, { Location: para }); res.end(); };
+  if (url.pathname === "/vaga/com-jsonld") {
+    return html(`<html><head><script type="application/ld+json">${JSON.stringify(JOBPOSTING)}</script></head><body>x</body></html>`);
+  }
+  if (url.pathname === "/vaga/sem-jsonld") return html("<html><head><title>Vaga</title></head><body>Motorista</body></html>");
+  if (url.pathname === "/vaga/para-catho") return ir("https://www.catho.com.br/vagas/motorista/123/");
+  if (url.pathname === "/vaga/para-dentro") return ir("http://10.0.0.8/admin");
+  if (url.pathname === "/vaga/grande") return html("<p>" + "x".repeat(3_500_000) + "</p>");
+  res.writeHead(404); res.end();
+}
 
 const recebidos = [];
 const fonte = createServer((req, res) => {
@@ -92,6 +146,9 @@ const fonte = createServer((req, res) => {
       usageTotalUsd: falha ? 0.02 : 0.123, defaultDatasetId: "d1" } });
   }
   if (url.pathname === "/v2/datasets/d1/items") return json(200, [{ titulo: "item da corrida" }]);
+  if (url.pathname === "/api/v1/jobs") return gupyFalsa(url, json);
+  if (url.pathname === "/api/vacancies") return solidesFalsa(url, json);
+  if (url.pathname.startsWith("/vaga/")) return paginaDeVaga(url, res);
   return json(404, { erro: "rota desconhecida" });
 });
 
@@ -150,9 +207,8 @@ const con = criarConectores({
 titulo("o catálogo");
 conferir("o da prova é válido", conferirCatalogo(catalogo).length, 0);
 {
-  const real = await carregarCatalogo([join(AQUI, "catalogo.json"),
-    join(AQUI, "_prova", "conectores.json")]);
-  conferir("controle · base + vagas fundem sem erro, com dez conectores", Object.keys(real).length, 10);
+  const real = await carregarCatalogo([join(AQUI, "catalogo.json"), DO_PACK]);
+  conferir("controle · base + vagas fundem sem erro, com doze conectores", Object.keys(real).length, 12);
   conferir("nome repetido entre camadas é erro",
     comeca(await recusa(carregarCatalogo([join(AQUI, "catalogo.json"), join(AQUI, "catalogo.json")])), "catálogo"),
     "catálogo");
@@ -229,6 +285,173 @@ titulo("o que volta vem enxuto");
       <time class="job-search-card__listdate--new" datetime="2026-09-14">x</time></div></li>`)[0]),
     JSON.stringify({ id: "42", titulo: "PM & Growth", empresa: "Acme", local: "Porto Alegre", remoto: null,
       link: "https://www.linkedin.com/jobs/view/pm-at-x-42", publicada: "2026-09-14", descricao: null }));
+}
+
+/* ═══ 3b · AS FONTES DE VAGA DO PACK, COM O CATÁLOGO DE VERDADE ═══════
+   As entradas são as de `vagas/conectores.json`, com a ORIGEM trocada pela
+   do servidor falso — o que se prova é o JSON que vai ao ar, e não uma
+   imitação dele. */
+const doPack = await carregarCatalogo([join(AQUI, "catalogo.json"), DO_PACK]);
+const paraOFalso = (c) => ({ ...c, ritmo: { porMinuto: 100 }, operacoes: Object.fromEntries(
+  Object.entries(c.operacoes).map(([n, op]) => [n, { ...op, url: op.url.replace(/^https:\/\/[^/]+/, BASE) }])) });
+const conVagas = criarConectores({
+  catalogo: { gupy: paraOFalso(doPack.gupy), solides: paraOFalso(doPack.solides) },
+  comando: 'node "servidor.mjs"', agora: () => relogio, raizDosAdaptadores: pathToFileURL(AQUI + "/"),
+});
+const consulta = () => Object.fromEntries(new URLSearchParams(recebidos.at(-1).consulta));
+
+titulo("gupy: cidade, estado, contrato e regime");
+{
+  const r = await conVagas.chamar({ conector: "gupy", operacao: "buscar",
+    parametros: { termo: "técnico de enfermagem", cidade: "São Paulo", estado: "sp", contrato: "Estágio", modo: "híbrido", limite: 80 } });
+  const q = consulta();
+  conferir("a cidade chega com acento, como foi escrita", q.city, "São Paulo");
+  conferir("o estado pela sigla, e em minúscula, chega por extenso", q.state, "São Paulo");
+  conferir("`estágio` vira o tipo da Gupy", q.type, "vacancy_type_internship");
+  conferir("`híbrido` vira o regime da Gupy", q.workplaceType, "hybrid");
+  conferir("o limite acima do teto chega cortado a 50", q.limit, "50");
+  conferir("controle · `Bahia` por extenso também passa",
+    (await conVagas.chamar({ conector: "gupy", operacao: "buscar", parametros: { termo: "x", estado: "bahia" } })) && consulta().state, "Bahia");
+  conferir("o tipo volta na palavra do contrato", r.itens[0].contrato, "CLT");
+  conferir("  e o regime também", r.itens[0].regime, "presencial");
+  conferir("banco de talentos não vira contrato, e é dito", `${r.itens[1].contrato} ${r.itens[1].banco_de_talentos}`, "null true");
+  conferir("as inscrições até: AAAA-MM-DD", r.itens[0].inscricoes_ate, "2026-10-01");
+  conferir("os oito campos vêm primeiro, na mesma ordem",
+    Object.keys(r.itens[0]).slice(0, 8).join(), "id,titulo,empresa,local,remoto,link,publicada,descricao");
+  conferir("o total da fonte vem ao lado do da página", `${r.total} de ${r.total_na_fonte}`, "2 de 57");
+
+  const antes = recebidos.length;
+  conferir("contrato que a Gupy não distingue é recusado com a lista",
+    comeca(await recusa(conVagas.chamar({ conector: "gupy", operacao: "buscar", parametros: { termo: "x", contrato: "concurso" } })),
+      "parâmetro recusado"), "parâmetro recusado");
+  conferir("estado que não existe é recusado",
+    comeca(await recusa(conVagas.chamar({ conector: "gupy", operacao: "buscar", parametros: { termo: "x", estado: "XX" } })),
+      "parâmetro recusado"), "parâmetro recusado");
+  conferir("  e nenhuma das duas tocou a rede", recebidos.length, antes);
+  const vazia = await conVagas.chamar({ conector: "gupy", operacao: "buscar", parametros: { termo: "x", cidade: "Sao Paulo" } });
+  conferir("cidade sem acento que volta vazia traz o aviso da grafia", /acento/.test(vazia.aviso || ""), true);
+  conferir("controle · a busca cheia não traz aviso", "aviso" in r, false);
+}
+
+titulo("sólides: o link certo e 20 por página");
+{
+  const r = await conVagas.chamar({ conector: "solides", operacao: "buscar",
+    parametros: { termo: "auxiliar de limpeza", local: "Recife - PE", limite: 50 } });
+  conferir("pediu 50: a fonte recebeu take=20 (acima disso ela dá 500)", consulta().take, "20");
+  conferir("  e voltaram 20", r.itens.length, 20);
+  conferir("o local chega como foi escrito", consulta().locations, "Recife - PE");
+  conferir("id numérico: o link é /vaga/<id>, e não o redirectLink quebrado",
+    r.itens[0].link, "https://vagas.solides.com.br/vaga/926001");
+  conferir("id alfanumérico com RHGestor: o link do RHGestor", r.itens[1].link, "https://patio.rhgestor.example/vagas/detalhes/K1");
+  conferir("id alfanumérico sem RHGestor: link null, não um 404", r.itens[2].link, null);
+  conferir("nenhum link devolvido é o quebrado", r.itens.some((x) => String(x.link).includes("./vacancies")), false);
+  conferir("`Jovem Aprendiz` vira `aprendiz`", r.itens[0].contrato, "aprendiz");
+  conferir("  e `CLT` fica CLT", r.itens[3].contrato, "CLT");
+  conferir("o turno vira a jornada", r.itens[0].jornada, "12x36");
+  conferir("  e turno vazio é null, não texto vazio", r.itens[3].jornada, null);
+  conferir("faixa zero (a empresa não mostra) é null", `${r.itens[0].faixa_de} ${r.itens[0].faixa_ate}`, "1800 null");
+  conferir("regime, publicada e inscrições", `${r.itens[0].regime} ${r.itens[0].publicada} ${r.itens[0].inscricoes_ate}`,
+    "presencial 2026-09-22 2026-10-05");
+  conferir("a descrição sai texto", r.itens[0].descricao, "Limpeza & conservação");
+  conferir("o total da fonte", r.total_na_fonte, 57);
+
+  const antes = recebidos.length;
+  conferir("só o nome da cidade é recusado antes da rede (a fonte devolveria zero)",
+    comeca(await recusa(conVagas.chamar({ conector: "solides", operacao: "buscar", parametros: { termo: "x", local: "Curitiba" } })),
+      "parâmetro recusado"), "parâmetro recusado");
+  conferir("  e não tocou a rede", recebidos.length, antes);
+  conferir("controle · só a UF passa",
+    (await conVagas.chamar({ conector: "solides", operacao: "buscar", parametros: { termo: "x", local: "pe", limite: 2 } })).itens.length, 2);
+  const vazia = await conVagas.chamar({ conector: "solides", operacao: "buscar", parametros: { termo: "x", local: "Sao Paulo - SP" } });
+  conferir("zero com local traz o aviso da grafia", /Cidade - UF/.test(vazia.aviso || ""), true);
+}
+
+/* ═══ 3c · LER A VAGA DE UM LINK COLADO ═══════════════════════════════
+   O único conector em que o host vem da conversa. O `buscar` falso manda
+   todo host ao servidor local e CONTA; o resolvedor falso responde um
+   endereço público, e um privado para `interno.exemplo.test`. Zero pedidos
+   e zero consultas de DNS é o que prova "recusado antes da rede" — e o
+   controle, um domínio permitido, tem de fazer exatamente um. */
+titulo("ler a vaga de um link colado");
+{
+  let pedidos = 0;
+  const hosts = [];
+  const resolvidos = [];
+  const conLer = criarConectores({
+    catalogo: { "ler-vaga": { ...doPack["ler-vaga"], ritmo: { porMinuto: 100 } } },
+    comando: 'node "servidor.mjs"', agora: () => relogio, raizDosAdaptadores: pathToFileURL(AQUI + "/"),
+    buscar: (url, init) => {
+      pedidos++;
+      const u = new URL(url);
+      hosts.push(u.hostname);
+      return fetch(`${BASE}${u.pathname}${u.search}`, init);
+    },
+    resolver: async (host) => {
+      resolvidos.push(host);
+      return [{ address: host === "interno.exemplo.test" ? "192.168.0.10" : "203.0.113.7", family: 4 }];
+    },
+  });
+  const ler = (url) => conLer.chamar({ conector: "ler-vaga", operacao: "ler", parametros: { url } });
+
+  const boa = await ler("https://vagas.exemplo.test/vaga/com-jsonld#topo");
+  conferir("controle · domínio permitido faz UMA requisição", pedidos, 1);
+  const v = boa.itens[0];
+  conferir("o JobPosting dentro de @graph é achado", v.titulo, "Técnica de Enfermagem — UTI");
+  conferir("empresa e local", `${v.empresa} · ${v.local}`, "Hospital Boa Vista · Recife - PE");
+  conferir("`CLT` vai para contrato, `FULL_TIME` para jornada", `${v.contrato} · ${v.jornada}`, "CLT · tempo integral");
+  conferir("a faixa em reais, por mês", v.faixa, "R$ 3.200 a R$ 3.800 por mês");
+  conferir("publicada e inscrições até: AAAA-MM-DD", `${v.publicada} ${v.inscricoes_ate}`, "2026-09-20 2026-10-20");
+  conferir("a descrição escapada duas vezes sai texto", v.descricao, "Escala 12x36, plantão noturno.");
+  conferir("o link é o colado, sem a âncora", v.link, "https://vagas.exemplo.test/vaga/com-jsonld");
+  conferir("a procedência é o site e a data da leitura", /^vagas\.exemplo\.test, \d{4}-\d{2}-\d{2}$/.test(v.procedencia), true);
+  conferir("o bloco não diz remoto: remoto e regime ficam null, não `presencial`", `${v.remoto} ${v.regime}`, "null null");
+
+  pedidos = 0; resolvidos.length = 0;
+  for (const url of [
+    "https://www.catho.com.br/vagas/motorista/123/",
+    "https://br.indeed.com/viewjob?jk=abc",
+    "https://www.indeed.com.br/vaga/1",
+    "https://www.infojobs.com.br/vaga-de-motorista__1.aspx",
+  ]) {
+    const r = await recusa(ler(url));
+    conferir(`recusado sem abrir: ${new URL(url).hostname}`,
+      comeca(r, "recusado · os termos desse site não permitem leitura automática"),
+      "recusado · os termos desse site não permitem leitura automática");
+  }
+  conferir("  e o texto manda colar o anúncio", (await recusa(ler("https://catho.com.br/x"))).includes("cole o texto do anúncio"), true);
+  conferir("  e nenhuma delas fez requisição", pedidos, 0);
+  conferir("  nem consultou o DNS", resolvidos.length, 0);
+  conferir("controle · um domínio que só PARECE (catho.com.br.exemplo.test) não é recusado por nome",
+    comeca(await recusa(ler("https://catho.com.br.exemplo.test/vaga/sem-jsonld")), "a página abriu e não traz"),
+    "a página abriu e não traz");
+  conferir("  e fez a sua requisição", pedidos, 1);
+
+  pedidos = 0;
+  conferir("LinkedIn é encaminhado ao `linkedin-vagas`, sem abrir",
+    comeca(await recusa(ler("https://www.linkedin.com/jobs/view/4000000001")), "encaminhado"), "encaminhado");
+  conferir("Gupy é encaminhada à `gupy`, sem abrir",
+    comeca(await recusa(ler("https://vertice.gupy.io/job/abc")), "encaminhado"), "encaminhado");
+  for (const url of ["http://localhost/", "http://127.0.0.1/", "http://[::1]/", "http://[::ffff:127.0.0.1]/",
+    "http://10.0.0.5/vaga", "http://169.254.169.254/latest/meta-data/", "https://interno.exemplo.test/vaga/1",
+    "https://vagas.exemplo.test:8080/vaga/1", "file:///etc/passwd", "ftp://vagas.exemplo.test/vaga",
+    "https://usuario:senha@vagas.exemplo.test/vaga/1", "http://intranet/vaga"]) {
+    conferir(`recusado antes da rede: ${url}`, comeca(await recusa(ler(url)), "endereço recusado"), "endereço recusado");
+  }
+  conferir("  e nenhum deles fez requisição", pedidos, 0);
+
+  conferir("página sem o bloco: diz que não achou e NÃO adivinha",
+    comeca(await recusa(ler("https://vagas.exemplo.test/vaga/sem-jsonld")), "a página abriu e não traz o bloco"),
+    "a página abriu e não traz o bloco");
+  pedidos = 0; hosts.length = 0;
+  conferir("redirecionamento para site recusado é recusado no salto",
+    comeca(await recusa(ler("https://curto.exemplo.test/vaga/para-catho")), "recusado ·"), "recusado ·");
+  conferir("  com um pedido só — o do encurtador", `${pedidos} ${hosts.join()}`, "1 curto.exemplo.test");
+  pedidos = 0;
+  conferir("redirecionamento para a rede privada é recusado no salto",
+    comeca(await recusa(ler("https://curto.exemplo.test/vaga/para-dentro")), "endereço recusado"), "endereço recusado");
+  conferir("  com um pedido só", pedidos, 1);
+  conferir("página acima do teto de tamanho é lida só até ele",
+    (await recusa(ler("https://vagas.exemplo.test/vaga/grande"))).includes("até onde foi lida"), true);
 }
 
 /* ═══ 4 · O RITMO ═════════════════════════════════════════════════════ */
@@ -346,7 +569,7 @@ titulo("o processo: a CLI do humano e o stdio do agente");
   conferir("  e foi parar no cofre", (await cofre.lerChaves()).apify, "token-pelo-teclado");
   conferir("teto sem valor é recusado", (await rodar(["teto", "apify"])).codigo, 1);
   conferir("teto de conector gratuito é recusado",
-    (await rodar(["--catalogo", join(AQUI, "_prova", "conectores.json"), "teto", "gupy", "5"])).codigo, 1);
+    (await rodar(["--catalogo", DO_PACK, "teto", "gupy", "5"])).codigo, 1);
   const ligou = await rodar(["ligar", "apify"]);
   conferir("`ligar` mostra o aviso no ato", ligou.saida.includes("COBRA por uso"), true);
 
@@ -519,14 +742,18 @@ titulo("o processo: a CLI do humano e o stdio do agente");
 
 if (COM_REDE) {
   titulo("as fontes públicas, de verdade");
-  const real = await carregarCatalogo([join(AQUI, "catalogo.json"),
-    join(AQUI, "_prova", "conectores.json")]);
+  const real = await carregarCatalogo([join(AQUI, "catalogo.json"), DO_PACK]);
   const vivo = criarConectores({ catalogo: real, comando: "node servidor.mjs",
     raizDosAdaptadores: pathToFileURL(AQUI + "/") });
   await cofre.ligar("linkedin-vagas", true);
   const CAMPOS = "id,titulo,empresa,local,remoto,link,publicada,descricao";
   for (const [conector, parametros] of [
     ["gupy", { termo: "product manager", modo: "remote", limite: 3 }],
+    /* as duas de 24/09, com o perfil de quem não é de tecnologia: cidade com
+       acento, estado pela sigla, contrato na palavra do contrato */
+    ["gupy", { termo: "técnico de enfermagem", cidade: "Recife", contrato: "CLT", limite: 3 }],
+    ["gupy", { termo: "motorista", estado: "SP", contrato: "temporário", limite: 3 }],
+    ["solides", { termo: "auxiliar de limpeza", local: "PE", limite: 3 }],
     ["greenhouse", { empresa: "vtex", limite: 3 }],
     ["ashby", { empresa: "ramp", termo: "product", limite: 3 }],
     /* o quadro de demonstração do próprio Lever: nenhuma das empresas-alvo
@@ -537,12 +764,13 @@ if (COM_REDE) {
     try {
       const r = await vivo.chamar({ conector, operacao: "buscar", parametros });
       conferir(`${conector} · respondeu com itens (${r.itens.length} de ${r.total ?? "?"})`, r.itens.length > 0, true);
-      conferir(`${conector} · os oito campos, com os mesmos nomes`,
-        Object.keys(r.itens[0]).filter((k) => k !== "cortado").join(), CAMPOS);
+      conferir(`${conector} · os oito campos primeiro, com os mesmos nomes`,
+        Object.keys(r.itens[0]).filter((k) => k !== "cortado").slice(0, 8).join(), CAMPOS);
       conferir(`${conector} · a data sai AAAA-MM-DD`, /^\d{4}-\d{2}-\d{2}$/.test(r.itens[0].publicada || ""), true);
       for (const it of r.itens) {
         console.log(`    ${it.publicada} · ${it.titulo} — ${it.empresa} · ${it.local}` +
-          ` · remoto:${it.remoto}\n      ${it.link}`);
+          ` · remoto:${it.remoto}` + (it.contrato !== undefined ? ` · ${it.contrato} · ${it.regime} · ${it.jornada ?? "-"}` : "") +
+          `\n      ${it.link}`);
       }
     } catch (e) {
       conferir(`${conector} · respondeu`, e.message, "itens");

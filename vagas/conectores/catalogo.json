@@ -1,0 +1,1119 @@
+{
+  "_": "O catálogo BASE: o que existe para ligar em QUALQUER ofício. O pack acrescenta o dele em <pack>/conectores.json, e nome repetido entre as duas camadas é erro. O formato de uma entrada está em nucleo/catalogo.mjs, que é quem a confere ao subir. Quem tem `aviso` ou `chave` nasce DESLIGADO, e quem liga é a pessoa, pela CLI de servidor.mjs — nunca o agente.",
+  "whatsapp": {
+    "rotulo": "WhatsApp",
+    "para_voce": "Lê as suas conversas e áudios do WhatsApp e manda uma mensagem por vez — sempre mostrando antes para você aprovar.",
+    "tipo": "mcp",
+    "oque": "ler as conversas e os áudios da pessoa no WhatsApp, e mandar uma mensagem por vez, com prévia",
+    "prova": "estado_da_ponte",
+    "guia": "conectar-whatsapp.md — a cadeia inteira está lá, com o que a pessoa precisa ouvir antes de instalar"
+  },
+  "email-do-agente": {
+    "rotulo": "E-mail do assistente",
+    "para_voce": "Uma caixa de e-mail só do assistente, para receber alertas e confirmações de cadastro sem encher a sua.",
+    "tipo": "mcp",
+    "oque": "uma caixa de e-mail que é DO AGENTE (AgentMail): recebe alertas, confirmações de cadastro e boletins que ele mesmo lê. Ele cria a caixa com `create_inbox`",
+    "prova": "list_inboxes",
+    "guia": "Conecte o AgentMail nos conectores da conta (claude.ai → Configurações → Conectores) e reinicie a sessão. A caixa se cria depois, com `create_inbox` — e o endereço dela se mostra à pessoa antes de ser usado em qualquer cadastro"
+  },
+  "email-pessoal": {
+    "rotulo": "Seu e-mail (Gmail)",
+    "para_voce": "Lê o que chegou no seu Gmail e escreve respostas em seu nome — você aprova antes de sair.",
+    "tipo": "mcp",
+    "oque": "o Gmail da própria pessoa: ler o que chegou e escrever em nome dela",
+    "aviso": "O que sai por aqui sai NO SEU NOME, do seu endereço, e fica na sua caixa de enviados. O agente prepara e mostra cada mensagem antes; o programa que você usa vai perguntar se pode enviar, e a opção 'não perguntar de novo' vale para TODAS as seguintes. Ele também passa a poder LER a sua caixa de entrada inteira.",
+    "prova": "list_labels",
+    "guia": "Conecte o Gmail nos conectores da conta (claude.ai → Configurações → Conectores) e reinicie a sessão"
+  },
+  "navegador": {
+    "rotulo": "Navegador",
+    "para_voce": "Deixa o assistente abrir páginas e agir nelas por você, inclusive nas que pedem login. Senha e verificação em duas etapas continuam sendo suas.",
+    "tipo": "mcp",
+    "oque": "agir em páginas da web — inclusive as que exigem login — por um navegador seu, com as sessões que você já tem abertas",
+    "aviso": "O agente passa a agir DENTRO de contas logadas como você: o que ele clicar, clicou você. Sites que proíbem automação em conta logada podem restringir a conta, e conta restrita é caro de recuperar. QUEM DECIDE O QUE ELE PODE APERTAR É VOCÊ, skill a skill: cada uma declara onde para, e a que age em conta sua traz a linha de configuração que muda isso — o padrão é sempre ela preencher e parar antes do botão final. Fechar a janela, ou a aba, corta o acesso na hora.",
+    "prova": "browser_snapshot",
+    "ferramentas": "mcp__playwright",
+    "guia": "O jeito certo é o da SESSÃO SALVA (D272): cada assistente abre o próprio navegador, isolado, já com os logins que a pessoa fez UMA vez pelo painel (Integrações → \"Onde o assistente entra com a sua conta\"). Configure uma vez, no escopo do usuário: `claude mcp add -s user playwright -- npx @playwright/mcp@latest --isolated --storage-state \"<arquivo_das_sessoes>\"` — o caminho vem em `arquivo_das_sessoes` do `conectores_estado`, e o arquivo precisa existir (o painel o cria no primeiro login). Se já houver um `playwright` configurado, remova antes (`claude mcp remove -s user playwright`) e mantenha o comando que a pessoa usa, trocando só os argumentos. Reinicie a sessão. Sem `--storage-state` o navegador abre sem login nenhum; com perfil fixo (sem `--isolated`), dois assistentes ao mesmo tempo não abrem. Alternativa, para usar o navegador que a pessoa já tem aberto: a extensão “Playwright MCP Bridge” e `--extension` — são as abas e os logins todos dela. Em nenhum caso ele digita senha, resolve captcha ou faz verificação em duas etapas: isso é da pessoa, na janela de login do painel.",
+    "sessoes": {
+      "linkedin": {
+        "rotulo": "LinkedIn",
+        "entrar": "https://www.linkedin.com/login",
+        "dominios": [
+          "linkedin.com"
+        ],
+        "sinal": [
+          "li_at"
+        ]
+      },
+      "glassdoor": {
+        "rotulo": "Glassdoor",
+        "entrar": "https://www.glassdoor.com.br/profile/login_input.htm",
+        "dominios": [
+          "glassdoor.com.br",
+          "glassdoor.com"
+        ],
+        "sinal": [
+          "at"
+        ]
+      },
+      "gupy": {
+        "rotulo": "Gupy",
+        "entrar": "https://login.gupy.io/candidates/signin",
+        "dominios": [
+          "gupy.io"
+        ],
+        "sinal": [
+          "candidate_secure_token"
+        ]
+      }
+    }
+  },
+  "apify": {
+    "rotulo": "Apify (coleta paga)",
+    "para_voce": "Serviço pago por uso que coleta dados públicos em volume. Só gasta até o limite que você escrever.",
+    "tipo": "http",
+    "oque": "rodar um ator da Apify — coletores prontos de dado público, pagos por uso. É o conector pago de referência: custo medido pelo próprio serviço",
+    "aviso": "Apify COBRA por uso, na sua conta de lá. Nada roda sem um teto escrito por você, e cada corrida passa por um orçamento que o agente mostra antes. O teto daqui impede de COMEÇAR corrida nova acima dele; para garantir que nenhuma passe, escreva o mesmo limite no console da Apify (Settings → Usage limits). A coleta é de dado público, e os termos de cada site coletado são com você.",
+    "chave": {
+      "nome": "APIFY_TOKEN",
+      "como": "cabecalho Authorization: Bearer <chave>"
+    },
+    "como_obter_chave": [
+      "Entre em apify.com e crie uma conta de graça — não pede cartão",
+      "No site da Apify: Settings → API & Integrations → copie o “Personal API token”",
+      "Se quiser um segundo cinto: Settings → Usage limits, e ponha lá o mesmo teto que você escreveu aqui"
+    ],
+    "teto_sugerido": 5,
+    "teste": {
+      "oque": "pergunta à Apify de quem é esta chave. Não roda ator nenhum e não custa nada",
+      "url": "https://api.apify.com/v2/users/me",
+      "mostra": "data.username"
+    },
+    "custo": {
+      "modelo": "medido",
+      "moeda": "USD",
+      "estimativa": 0.05,
+      "porItem": 0.005
+    },
+    "ritmo": {
+      "porMinuto": 4
+    },
+    "adaptador": "adaptadores/apify.mjs",
+    "operacoes": {
+      "rodar": {
+        "oque": "roda um ator até o fim e devolve o que ele coletou",
+        "parametros": {
+          "ator": {
+            "oque": "o ator, na forma usuario~nome-do-ator",
+            "obrigatorio": true
+          },
+          "entrada": {
+            "oque": "o objeto de entrada do ator, como a página dele documenta"
+          },
+          "limite": {
+            "oque": "quantos itens no máximo — entra na estimativa"
+          }
+        },
+        "limite": 100
+      },
+      "vagas-linkedin": {
+        "usa": "rodar",
+        "oque": "vagas do LinkedIn pela Apify, com filtros e o anúncio inteiro — é a listagem pública, lida sem conta nenhuma. Custa por vaga devolvida",
+        "ator": "bebity~linkedin-jobs-scraper",
+        "custo": {
+          "porItem": 0.0005
+        },
+        "parametros": {
+          "termos": {
+            "oque": "os cargos a procurar, separados por vírgula — cada um vira uma busca",
+            "obrigatorio": true
+          },
+          "locais": {
+            "oque": "onde, separados por vírgula. Padrão: Brazil"
+          },
+          "regime": {
+            "oque": "2 = remoto · 3 = híbrido · 1 = presencial; mais de um separado por vírgula. Sem ele vêm os três"
+          },
+          "periodo": {
+            "oque": "r86400 = último dia · r604800 = última semana (padrão) · r2592000 = último mês"
+          },
+          "simplificada": {
+            "oque": "true para só as de candidatura simplificada"
+          },
+          "limite": {
+            "oque": "quantas vagas POR BUSCA (termo × local), até 100 — é o que decide o custo"
+          }
+        },
+        "entrada": {
+          "titles": [
+            "<termos:lista>"
+          ],
+          "locations": [
+            "<locais:lista|Brazil>"
+          ],
+          "workTypes": [
+            "<regime:lista>"
+          ],
+          "publishedAt": "<periodo|r604800>",
+          "easyApply": "<simplificada>",
+          "rows": "<limite|25>",
+          "companyProfile": false,
+          "enrichCompany": false
+        },
+        "campos": {
+          "id": "id",
+          "titulo": "title",
+          "empresa": "companyName",
+          "local": "location",
+          "remoto": {
+            "de": "workType",
+            "contem": "remote"
+          },
+          "regime": "workType",
+          "contrato": "contractType",
+          "senioridade": "experienceLevel",
+          "faixa": "salary",
+          "candidatos": "applicationsCount",
+          "como_candidatar": "applyType",
+          "link": "jobUrl",
+          "link_de_candidatura": "applyUrl",
+          "publicada": "publishedAt",
+          "quem_publicou": "posterFullName",
+          "descricao": "description"
+        },
+        "corta": {
+          "descricao": 8000
+        },
+        "limite": 100
+      }
+    }
+  },
+  "gupy": {
+    "rotulo": "Gupy",
+    "para_voce": "Vagas publicadas nos portais Gupy, a maior fonte brasileira. É público e gratuito.",
+    "tipo": "http",
+    "oque": "vagas publicadas nos portais Gupy — a maior fonte brasileira —, com busca por palavra em todas as empresas de uma vez, e filtro de cidade, estado, contrato e regime",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 20
+    },
+    "operacoes": {
+      "buscar": {
+        "oque": "busca pelo título, em todas as empresas; `banco_de_talentos: true` não é vaga aberta, é cadastro",
+        "metodo": "GET",
+        "url": "https://employability-portal.gupy.io/api/v1/jobs",
+        "consulta": {
+          "jobName": "<termo>",
+          "city": "<cidade>",
+          "state": "<estado>",
+          "type": "<contrato>",
+          "workplaceType": "<modo>",
+          "limit": "<limite|20>",
+          "offset": "<desde|0>"
+        },
+        "parametros": {
+          "termo": {
+            "oque": "o cargo, como aparece no título da vaga (acento não importa aqui)",
+            "obrigatorio": true
+          },
+          "cidade": {
+            "oque": "a cidade COMO SE ESCREVE, com acento: São Paulo, Maceió, Jaboatão dos Guararapes. Sem acento a fonte devolve zero (medido: “Sao Paulo” 0, “São Paulo” 48)",
+            "se_vazio": "a cidade vai com acento — “São Paulo”, não “Sao Paulo”"
+          },
+          "estado": {
+            "oque": "o estado, pela sigla ou por extenso: BA, Bahia",
+            "valores": {
+              "AC": "Acre",
+              "AL": "Alagoas",
+              "AP": "Amapá",
+              "AM": "Amazonas",
+              "BA": "Bahia",
+              "CE": "Ceará",
+              "DF": "Distrito Federal",
+              "ES": "Espírito Santo",
+              "GO": "Goiás",
+              "MA": "Maranhão",
+              "MT": "Mato Grosso",
+              "MS": "Mato Grosso do Sul",
+              "MG": "Minas Gerais",
+              "PA": "Pará",
+              "PB": "Paraíba",
+              "PR": "Paraná",
+              "PE": "Pernambuco",
+              "PI": "Piauí",
+              "RJ": "Rio de Janeiro",
+              "RN": "Rio Grande do Norte",
+              "RS": "Rio Grande do Sul",
+              "RO": "Rondônia",
+              "RR": "Roraima",
+              "SC": "Santa Catarina",
+              "SP": "São Paulo",
+              "SE": "Sergipe",
+              "TO": "Tocantins"
+            }
+          },
+          "contrato": {
+            "oque": "o vínculo, na palavra do contrato: CLT · PJ · estágio · aprendiz · temporário · autônomo · intermitente · trainee · banco de talentos. A Gupy não distingue cooperado nem concurso",
+            "valores": {
+              "CLT": "vacancy_type_effective",
+              "PJ": "vacancy_legal_entity",
+              "estágio": "vacancy_type_internship",
+              "aprendiz": "vacancy_type_apprentice",
+              "jovem aprendiz": "vacancy_type_apprentice",
+              "temporário": "vacancy_type_temporary",
+              "autônomo": "vacancy_type_autonomous",
+              "intermitente": "vacancy_type_intermittent",
+              "trainee": "vacancy_type_trainee",
+              "banco de talentos": "vacancy_type_talent_pool"
+            }
+          },
+          "modo": {
+            "oque": "remoto · híbrido · presencial. Sem ele vêm os três",
+            "valores": {
+              "remoto": "remote",
+              "híbrido": "hybrid",
+              "presencial": "on-site"
+            }
+          },
+          "limite": {
+            "oque": "quantas por chamada, até 50",
+            "maximo": 50
+          },
+          "desde": {
+            "oque": "de onde continuar, para a página seguinte"
+          }
+        },
+        "lista": "data",
+        "total_em": "pagination.total",
+        "campos": {
+          "id": "id",
+          "titulo": "name",
+          "empresa": "careerPageName",
+          "local": "city",
+          "remoto": "isRemoteWork",
+          "link": "jobUrl",
+          "publicada": "publishedDate",
+          "descricao": "description",
+          "estado": "state",
+          "regime": {
+            "de": "workplaceType",
+            "mapa": {
+              "remote": "remoto",
+              "hybrid": "híbrido",
+              "on-site": "presencial"
+            }
+          },
+          "contrato": {
+            "de": "type",
+            "mapa": {
+              "vacancy_type_effective": "CLT",
+              "vacancy_legal_entity": "PJ",
+              "vacancy_type_internship": "estágio",
+              "vacancy_type_apprentice": "aprendiz",
+              "vacancy_type_temporary": "temporário",
+              "vacancy_type_autonomous": "autônomo",
+              "vacancy_type_intermittent": "intermitente",
+              "vacancy_type_trainee": "trainee",
+              "vacancy_type_freelancer": "autônomo",
+              "vacancy_type_associate": "associado",
+              "vacancy_type_lecturer": "docente",
+              "vacancy_type_outsource": "terceirizado",
+              "vacancy_type_summer": "estágio de verão",
+              "vacancy_type_talent_pool": null
+            }
+          },
+          "banco_de_talentos": {
+            "de": "type",
+            "contem": "talent_pool"
+          },
+          "pcd": "disabilities",
+          "inscricoes_ate": "applicationDeadline"
+        },
+        "datas": [
+          "publicada",
+          "inscricoes_ate"
+        ],
+        "corta": {
+          "descricao": 600
+        },
+        "limite": 50,
+        "html": [
+          "descricao"
+        ]
+      },
+      "detalhe": {
+        "oque": "o anúncio INTEIRO de uma vaga que a busca já achou — passe o título exato em `termo` (e a cidade, se houver homônimas). Até três por chamada",
+        "metodo": "GET",
+        "url": "https://employability-portal.gupy.io/api/v1/jobs",
+        "consulta": {
+          "jobName": "<termo>",
+          "city": "<cidade>",
+          "state": "<estado>",
+          "type": "<contrato>",
+          "workplaceType": "<modo>",
+          "limit": "<limite|3>",
+          "offset": "<desde|0>"
+        },
+        "parametros": {
+          "termo": {
+            "oque": "o cargo, como aparece no título da vaga (acento não importa aqui)",
+            "obrigatorio": true
+          },
+          "cidade": {
+            "oque": "a cidade COMO SE ESCREVE, com acento: São Paulo, Maceió, Jaboatão dos Guararapes. Sem acento a fonte devolve zero (medido: “Sao Paulo” 0, “São Paulo” 48)",
+            "se_vazio": "a cidade vai com acento — “São Paulo”, não “Sao Paulo”"
+          },
+          "estado": {
+            "oque": "o estado, pela sigla ou por extenso: BA, Bahia",
+            "valores": {
+              "AC": "Acre",
+              "AL": "Alagoas",
+              "AP": "Amapá",
+              "AM": "Amazonas",
+              "BA": "Bahia",
+              "CE": "Ceará",
+              "DF": "Distrito Federal",
+              "ES": "Espírito Santo",
+              "GO": "Goiás",
+              "MA": "Maranhão",
+              "MT": "Mato Grosso",
+              "MS": "Mato Grosso do Sul",
+              "MG": "Minas Gerais",
+              "PA": "Pará",
+              "PB": "Paraíba",
+              "PR": "Paraná",
+              "PE": "Pernambuco",
+              "PI": "Piauí",
+              "RJ": "Rio de Janeiro",
+              "RN": "Rio Grande do Norte",
+              "RS": "Rio Grande do Sul",
+              "RO": "Rondônia",
+              "RR": "Roraima",
+              "SC": "Santa Catarina",
+              "SP": "São Paulo",
+              "SE": "Sergipe",
+              "TO": "Tocantins"
+            }
+          },
+          "contrato": {
+            "oque": "o vínculo, na palavra do contrato: CLT · PJ · estágio · aprendiz · temporário · autônomo · intermitente · trainee · banco de talentos. A Gupy não distingue cooperado nem concurso",
+            "valores": {
+              "CLT": "vacancy_type_effective",
+              "PJ": "vacancy_legal_entity",
+              "estágio": "vacancy_type_internship",
+              "aprendiz": "vacancy_type_apprentice",
+              "jovem aprendiz": "vacancy_type_apprentice",
+              "temporário": "vacancy_type_temporary",
+              "autônomo": "vacancy_type_autonomous",
+              "intermitente": "vacancy_type_intermittent",
+              "trainee": "vacancy_type_trainee",
+              "banco de talentos": "vacancy_type_talent_pool"
+            }
+          },
+          "modo": {
+            "oque": "remoto · híbrido · presencial. Sem ele vêm os três",
+            "valores": {
+              "remoto": "remote",
+              "híbrido": "hybrid",
+              "presencial": "on-site"
+            }
+          },
+          "limite": {
+            "oque": "quantas por chamada, até 50",
+            "maximo": 50
+          },
+          "desde": {
+            "oque": "de onde continuar, para a página seguinte"
+          }
+        },
+        "lista": "data",
+        "campos": {
+          "id": "id",
+          "titulo": "name",
+          "empresa": "careerPageName",
+          "local": "city",
+          "remoto": "isRemoteWork",
+          "link": "jobUrl",
+          "publicada": "publishedDate",
+          "descricao": "description",
+          "estado": "state",
+          "regime": {
+            "de": "workplaceType",
+            "mapa": {
+              "remote": "remoto",
+              "hybrid": "híbrido",
+              "on-site": "presencial"
+            }
+          },
+          "contrato": {
+            "de": "type",
+            "mapa": {
+              "vacancy_type_effective": "CLT",
+              "vacancy_legal_entity": "PJ",
+              "vacancy_type_internship": "estágio",
+              "vacancy_type_apprentice": "aprendiz",
+              "vacancy_type_temporary": "temporário",
+              "vacancy_type_autonomous": "autônomo",
+              "vacancy_type_intermittent": "intermitente",
+              "vacancy_type_trainee": "trainee",
+              "vacancy_type_freelancer": "autônomo",
+              "vacancy_type_associate": "associado",
+              "vacancy_type_lecturer": "docente",
+              "vacancy_type_outsource": "terceirizado",
+              "vacancy_type_summer": "estágio de verão",
+              "vacancy_type_talent_pool": null
+            }
+          },
+          "banco_de_talentos": {
+            "de": "type",
+            "contem": "talent_pool"
+          },
+          "pcd": "disabilities",
+          "inscricoes_ate": "applicationDeadline"
+        },
+        "datas": [
+          "publicada",
+          "inscricoes_ate"
+        ],
+        "corta": {
+          "descricao": 8000
+        },
+        "limite": 3,
+        "html": [
+          "descricao"
+        ]
+      }
+    }
+  },
+  "solides": {
+    "_": "Medida em 24/09/2026: a rota é a que o próprio portal chama (não é API documentada), responde sem login, e o robots libera tudo. `take` acima de 20 dá 500, e o `maximo` do parâmetro corta antes. O `redirectLink` da fonte vem QUEBRADO (`https://empresa./vacancies/…`): o link certo é `/vaga/<id>` quando o id é número, e o do RHGestor quando o id é alfanumérico — sem ele, `link` sai null em vez de um 404.",
+    "rotulo": "Sólides Vagas",
+    "para_voce": "Vagas de empresas que contratam pela Sólides — muito comércio, logística, limpeza, indústria e saúde. É público e gratuito.",
+    "tipo": "http",
+    "oque": "o portal de vagas da Sólides: busca por cargo em todas as empresas, com filtro de cidade ou estado. É a fonte que mais traz vaga operacional",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 10
+    },
+    "operacoes": {
+      "buscar": {
+        "oque": "até 20 vagas por página, com o começo do anúncio. A busca é frouxa — traz parecidos (“serviços gerais” para “limpeza”) —, e quem decide é a triagem",
+        "metodo": "GET",
+        "url": "https://vagas.solides.com.br/api/vacancies",
+        "consulta": {
+          "title": "<termo>",
+          "locations": "<local>",
+          "take": "<limite|20>",
+          "page": "<pagina|1>"
+        },
+        "parametros": {
+          "termo": {
+            "oque": "o cargo",
+            "obrigatorio": true
+          },
+          "local": {
+            "oque": "“Cidade - UF” com acento (Recife - PE, São Paulo - SP) ou só a UF (PE). Só o nome da cidade, ou a cidade sem acento, volta vazio",
+            "formato": "^(\\S.* - [A-Za-z]{2}|[A-Za-z]{2})$",
+            "se_vazio": "o local é “Cidade - UF” com acento (São Paulo - SP) ou só a UF"
+          },
+          "limite": {
+            "oque": "quantas por página, até 20 — acima disso a fonte dá erro",
+            "maximo": 20
+          },
+          "pagina": {
+            "oque": "1, 2, 3…"
+          }
+        },
+        "lista": "data",
+        "total_em": "count",
+        "campos": {
+          "id": "id",
+          "titulo": "title",
+          "empresa": "companyName",
+          "local": "city.name",
+          "remoto": {
+            "de": "jobType",
+            "contem": "remot"
+          },
+          "link": {
+            "primeiro": [
+              "publishers.rhgestor.redirectUrl"
+            ],
+            "molde": "https://vagas.solides.com.br/vaga/{id}",
+            "se": {
+              "id": "^\\d+$"
+            }
+          },
+          "publicada": "createdAt",
+          "descricao": "description",
+          "uf": "state.code",
+          "regime": {
+            "de": "jobType",
+            "mapa": {
+              "presencial": "presencial",
+              "remoto": "remoto",
+              "hibrido": "híbrido"
+            }
+          },
+          "contrato": {
+            "de": "recruitmentContractType",
+            "cada": "name",
+            "mapa": {
+              "CLT": "CLT",
+              "efetivo": "CLT",
+              "jovem aprendiz": "aprendiz",
+              "aprendiz": "aprendiz",
+              "estágio": "estágio",
+              "PJ": "PJ",
+              "pessoa jurídica": "PJ",
+              "temporário": "temporário",
+              "autônomo": "autônomo",
+              "cooperado": "cooperado",
+              "intermitente": "intermitente",
+              "freelancer": "autônomo"
+            }
+          },
+          "jornada": {
+            "de": "shift",
+            "cada": "name"
+          },
+          "faixa_de": {
+            "de": "salary.initialRange",
+            "maior_que": 0
+          },
+          "faixa_ate": {
+            "de": "salary.finalRange",
+            "maior_que": 0
+          },
+          "inscricoes_ate": "date.due",
+          "so_pcd": "pcdOnly"
+        },
+        "html": [
+          "descricao"
+        ],
+        "datas": [
+          "publicada",
+          "inscricoes_ate"
+        ],
+        "corta": {
+          "descricao": 600
+        },
+        "limite": 20
+      },
+      "detalhe": {
+        "oque": "o anúncio INTEIRO de uma vaga que a busca já achou — passe o título exato em `termo` e o mesmo `local`. Até três por chamada",
+        "metodo": "GET",
+        "url": "https://vagas.solides.com.br/api/vacancies",
+        "consulta": {
+          "title": "<termo>",
+          "locations": "<local>",
+          "take": "<limite|3>",
+          "page": "<pagina|1>"
+        },
+        "parametros": {
+          "termo": {
+            "oque": "o cargo",
+            "obrigatorio": true
+          },
+          "local": {
+            "oque": "“Cidade - UF” com acento (Recife - PE, São Paulo - SP) ou só a UF (PE). Só o nome da cidade, ou a cidade sem acento, volta vazio",
+            "formato": "^(\\S.* - [A-Za-z]{2}|[A-Za-z]{2})$",
+            "se_vazio": "o local é “Cidade - UF” com acento (São Paulo - SP) ou só a UF"
+          },
+          "limite": {
+            "oque": "quantas por página, até 20 — acima disso a fonte dá erro",
+            "maximo": 20
+          },
+          "pagina": {
+            "oque": "1, 2, 3…"
+          }
+        },
+        "lista": "data",
+        "campos": {
+          "id": "id",
+          "titulo": "title",
+          "empresa": "companyName",
+          "local": "city.name",
+          "remoto": {
+            "de": "jobType",
+            "contem": "remot"
+          },
+          "link": {
+            "primeiro": [
+              "publishers.rhgestor.redirectUrl"
+            ],
+            "molde": "https://vagas.solides.com.br/vaga/{id}",
+            "se": {
+              "id": "^\\d+$"
+            }
+          },
+          "publicada": "createdAt",
+          "descricao": "description",
+          "uf": "state.code",
+          "regime": {
+            "de": "jobType",
+            "mapa": {
+              "presencial": "presencial",
+              "remoto": "remoto",
+              "hibrido": "híbrido"
+            }
+          },
+          "contrato": {
+            "de": "recruitmentContractType",
+            "cada": "name",
+            "mapa": {
+              "CLT": "CLT",
+              "efetivo": "CLT",
+              "jovem aprendiz": "aprendiz",
+              "aprendiz": "aprendiz",
+              "estágio": "estágio",
+              "PJ": "PJ",
+              "pessoa jurídica": "PJ",
+              "temporário": "temporário",
+              "autônomo": "autônomo",
+              "cooperado": "cooperado",
+              "intermitente": "intermitente",
+              "freelancer": "autônomo"
+            }
+          },
+          "jornada": {
+            "de": "shift",
+            "cada": "name"
+          },
+          "faixa_de": {
+            "de": "salary.initialRange",
+            "maior_que": 0
+          },
+          "faixa_ate": {
+            "de": "salary.finalRange",
+            "maior_que": 0
+          },
+          "inscricoes_ate": "date.due",
+          "so_pcd": "pcdOnly"
+        },
+        "html": [
+          "descricao"
+        ],
+        "datas": [
+          "publicada",
+          "inscricoes_ate"
+        ],
+        "corta": {
+          "descricao": 8000
+        },
+        "limite": 3
+      }
+    }
+  },
+  "greenhouse": {
+    "rotulo": "Greenhouse",
+    "para_voce": "O quadro de vagas de empresas que usam Greenhouse. É público e gratuito.",
+    "tipo": "http",
+    "oque": "o quadro de vagas de UMA empresa que usa Greenhouse (o endereço do quadro traz o nome dela: boards.greenhouse.io/<empresa>)",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 20
+    },
+    "operacoes": {
+      "buscar": {
+        "oque": "todas as vagas abertas da empresa, filtradas pelo título se vier `termo`",
+        "metodo": "GET",
+        "url": "https://boards-api.greenhouse.io/v1/boards/<empresa>/jobs",
+        "consulta": {
+          "content": "true"
+        },
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece no endereço do quadro dela (acme, em boards.greenhouse.io/acme)",
+            "obrigatorio": true
+          },
+          "termo": {
+            "oque": "filtra pelo título; alternativas separadas por vírgula"
+          },
+          "limite": {
+            "oque": "quantas no máximo, até 50"
+          }
+        },
+        "lista": "jobs",
+        "campos": {
+          "id": "id",
+          "titulo": "title",
+          "empresa": "company_name",
+          "local": "location.name",
+          "remoto": {
+            "de": "location.name",
+            "contem": "remot"
+          },
+          "link": "absolute_url",
+          "publicada": "first_published",
+          "descricao": "content"
+        },
+        "html": [
+          "descricao"
+        ],
+        "datas": [
+          "publicada"
+        ],
+        "filtra": [
+          "titulo"
+        ],
+        "corta": {
+          "descricao": 600
+        },
+        "limite": 50
+      },
+      "detalhe": {
+        "oque": "o anúncio INTEIRO de uma vaga, pelo `id` que a busca devolveu",
+        "metodo": "GET",
+        "url": "https://boards-api.greenhouse.io/v1/boards/<empresa>/jobs/<id>",
+        "consulta": {
+          "content": "true"
+        },
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece no endereço do quadro dela (acme, em boards.greenhouse.io/acme)",
+            "obrigatorio": true
+          },
+          "id": {
+            "oque": "o id da vaga, como veio na busca",
+            "obrigatorio": true
+          }
+        },
+        "campos": {
+          "id": "id",
+          "titulo": "title",
+          "empresa": "company_name",
+          "local": "location.name",
+          "remoto": {
+            "de": "location.name",
+            "contem": "remot"
+          },
+          "link": "absolute_url",
+          "publicada": "first_published",
+          "descricao": "content"
+        },
+        "html": [
+          "descricao"
+        ],
+        "datas": [
+          "publicada"
+        ],
+        "corta": {
+          "descricao": 8000
+        },
+        "limite": 1,
+        "um": true
+      }
+    }
+  },
+  "lever": {
+    "rotulo": "Lever",
+    "para_voce": "O quadro de vagas de empresas que usam Lever. É público e gratuito.",
+    "tipo": "http",
+    "oque": "o quadro de vagas de UMA empresa que usa Lever",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 20
+    },
+    "operacoes": {
+      "buscar": {
+        "oque": "todas as vagas abertas da empresa, filtradas pelo título se vier `termo`",
+        "metodo": "GET",
+        "url": "https://api.lever.co/v0/postings/<empresa>",
+        "consulta": {
+          "mode": "json"
+        },
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece em jobs.lever.co/<empresa>",
+            "obrigatorio": true
+          },
+          "termo": {
+            "oque": "filtra pelo título; alternativas separadas por vírgula"
+          },
+          "limite": {
+            "oque": "quantas no máximo, até 50"
+          }
+        },
+        "lista": "",
+        "campos": {
+          "id": "id",
+          "titulo": "text",
+          "empresa": "<empresa>",
+          "local": "categories.location",
+          "remoto": {
+            "de": "workplaceType",
+            "contem": "remote"
+          },
+          "link": "hostedUrl",
+          "publicada": "createdAt",
+          "descricao": "descriptionPlain"
+        },
+        "datas": [
+          "publicada"
+        ],
+        "filtra": [
+          "titulo"
+        ],
+        "corta": {
+          "descricao": 600
+        },
+        "limite": 50
+      },
+      "detalhe": {
+        "oque": "o anúncio INTEIRO de uma vaga que a busca já achou — passe o título exato em `termo`. Até três por chamada",
+        "metodo": "GET",
+        "url": "https://api.lever.co/v0/postings/<empresa>",
+        "consulta": {
+          "mode": "json"
+        },
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece em jobs.lever.co/<empresa>",
+            "obrigatorio": true
+          },
+          "termo": {
+            "oque": "filtra pelo título; alternativas separadas por vírgula"
+          },
+          "limite": {
+            "oque": "quantas no máximo, até 50"
+          }
+        },
+        "lista": "",
+        "campos": {
+          "id": "id",
+          "titulo": "text",
+          "empresa": "<empresa>",
+          "local": "categories.location",
+          "remoto": {
+            "de": "workplaceType",
+            "contem": "remote"
+          },
+          "link": "hostedUrl",
+          "publicada": "createdAt",
+          "descricao": "descriptionPlain"
+        },
+        "datas": [
+          "publicada"
+        ],
+        "filtra": [
+          "titulo"
+        ],
+        "corta": {
+          "descricao": 8000
+        },
+        "limite": 3
+      }
+    }
+  },
+  "ashby": {
+    "rotulo": "Ashby",
+    "para_voce": "O quadro de vagas de empresas que usam Ashby. É público e gratuito.",
+    "tipo": "http",
+    "oque": "o quadro de vagas de UMA empresa que usa Ashby",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 20
+    },
+    "operacoes": {
+      "buscar": {
+        "oque": "todas as vagas abertas da empresa, filtradas pelo título se vier `termo`",
+        "metodo": "GET",
+        "url": "https://api.ashbyhq.com/posting-api/job-board/<empresa>",
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece em jobs.ashbyhq.com/<empresa>",
+            "obrigatorio": true
+          },
+          "termo": {
+            "oque": "filtra pelo título; alternativas separadas por vírgula"
+          },
+          "limite": {
+            "oque": "quantas no máximo, até 50"
+          }
+        },
+        "lista": "jobs",
+        "campos": {
+          "id": "id",
+          "titulo": "title",
+          "empresa": "<empresa>",
+          "local": "location",
+          "remoto": "isRemote",
+          "link": "jobUrl",
+          "publicada": "publishedAt",
+          "descricao": "descriptionPlain"
+        },
+        "datas": [
+          "publicada"
+        ],
+        "filtra": [
+          "titulo"
+        ],
+        "corta": {
+          "descricao": 600
+        },
+        "limite": 50
+      },
+      "detalhe": {
+        "oque": "o anúncio INTEIRO de uma vaga que a busca já achou — passe o título exato em `termo`. Até três por chamada",
+        "metodo": "GET",
+        "url": "https://api.ashbyhq.com/posting-api/job-board/<empresa>",
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece em jobs.ashbyhq.com/<empresa>",
+            "obrigatorio": true
+          },
+          "termo": {
+            "oque": "filtra pelo título; alternativas separadas por vírgula"
+          },
+          "limite": {
+            "oque": "quantas no máximo, até 50"
+          }
+        },
+        "lista": "jobs",
+        "campos": {
+          "id": "id",
+          "titulo": "title",
+          "empresa": "<empresa>",
+          "local": "location",
+          "remoto": "isRemote",
+          "link": "jobUrl",
+          "publicada": "publishedAt",
+          "descricao": "descriptionPlain"
+        },
+        "datas": [
+          "publicada"
+        ],
+        "filtra": [
+          "titulo"
+        ],
+        "corta": {
+          "descricao": 8000
+        },
+        "limite": 3
+      }
+    }
+  },
+  "linkedin-vagas": {
+    "rotulo": "LinkedIn — vagas públicas",
+    "para_voce": "A lista de vagas do LinkedIn que qualquer visitante vê, sem entrar na sua conta. É gratuito.",
+    "tipo": "http",
+    "oque": "a listagem PÚBLICA de vagas do LinkedIn — a que qualquer visitante sem login vê —, com busca por palavra e local",
+    "aviso": "Isto lê a listagem pública de vagas, SEM login: não usa a sua conta, não abre sessão e não toca o seu perfil — é diferente de automatizar o LinkedIn logado, que é o que faz conta ser restringida. Os termos do serviço não gostam de coleta automática, mesmo de página pública: por isso o ritmo é baixo, de propósito, e insistir depois de um bloqueio pode fazer o seu endereço de rede ficar de fora por algumas horas. Não é API: o formato muda sem aviso, e quando mudar esta fonte para de funcionar até alguém consertar.",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 6
+    },
+    "adaptador": "adaptadores/linkedin-vagas.mjs",
+    "operacoes": {
+      "buscar": {
+        "oque": "dez vagas por página, com título, empresa, local, link e data — sem a descrição",
+        "parametros": {
+          "termo": {
+            "oque": "o que procurar",
+            "obrigatorio": true
+          },
+          "local": {
+            "oque": "em inglês, como a fonte entende: Brazil (o padrão), São Paulo. “Brasil” é ignorado por ela"
+          },
+          "modo": {
+            "oque": "remoto · hibrido · presencial. Sem ele vêm os três"
+          },
+          "dias": {
+            "oque": "só as publicadas nos últimos N dias"
+          },
+          "desde": {
+            "oque": "0, 10, 20… para a página seguinte"
+          },
+          "limite": {
+            "oque": "quantas no máximo, até 10"
+          }
+        },
+        "limite": 10
+      },
+      "detalhe": {
+        "oque": "a descrição e os critérios de UMA vaga, pelo id que veio na busca",
+        "parametros": {
+          "id": {
+            "oque": "o id da vaga",
+            "obrigatorio": true
+          }
+        },
+        "corta": {
+          "descricao": 2500
+        }
+      }
+    }
+  },
+  "ler-vaga": {
+    "_": "O “cole o link”. Lê UMA página de vaga pelo bloco schema.org/JobPosting — o que o site publica para o Google —, com as guardas de conectores/nucleo/pagina.mjs. `recusa` é a lista FECHADA dos sites cujo termo proíbe acesso automatizado (lidos em 24/09/2026): para eles nada é baixado, nem o DNS é consultado. Quem muda a lista é quem responde pela política, e não o agente.",
+    "rotulo": "Ler a vaga de um link",
+    "para_voce": "Quando você cola o link de uma vaga, ele lê a página daquela vaga — só ela — e traz cargo, empresa, contrato e o anúncio. Nos sites que proíbem leitura automática ele não abre, e você cola o texto.",
+    "tipo": "http",
+    "oque": "lê UMA página de vaga cujo link a PESSOA colou, pelo bloco schema.org/JobPosting da página. Nunca um link que você achou ou montou — para buscar há as fontes. Recusa, sem abrir, os sites cujo termo proíbe acesso automatizado",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 10
+    },
+    "adaptador": "adaptadores/ler-vaga.mjs",
+    "recusa": [
+      {
+        "dominios": [
+          "catho.com.br"
+        ],
+        "diga": "recusado · os termos desse site não permitem leitura automática (Catho, cl. 7.3) — cole o texto do anúncio"
+      },
+      {
+        "dominios": [
+          "infojobs.com.br"
+        ],
+        "diga": "recusado · os termos desse site não permitem leitura automática (InfoJobs, cl. 4 do aviso legal) — cole o texto do anúncio"
+      },
+      {
+        "dominios": [
+          "indeed.com",
+          "indeed.com.br"
+        ],
+        "diga": "recusado · os termos desse site não permitem leitura automática (Indeed, termos de uso) — cole o texto do anúncio. O Indeed tem conector oficial, que a pessoa liga na conta do Claude"
+      },
+      {
+        "dominios": [
+          "trampos.co"
+        ],
+        "diga": "recusado · os termos desse site não permitem leitura automática (Trampos, que proíbe robô e crawler) — cole o texto do anúncio"
+      }
+    ],
+    "encaminha": {
+      "linkedin.com": "encaminhado · vaga do LinkedIn se lê pelo `linkedin-vagas`, operação `detalhe`, com o número que vem depois de /jobs/view/ no link. Sem ele ligado, cole o texto do anúncio",
+      "gupy.io": "encaminhado · a página da Gupy não traz o bloco da vaga: use `gupy`, operação `detalhe`, com o título exato da vaga em `termo`"
+    },
+    "operacoes": {
+      "ler": {
+        "oque": "cargo, empresa, local, contrato, jornada, faixa, datas e o anúncio de UMA vaga, com a procedência (o site e a data da leitura)",
+        "parametros": {
+          "url": {
+            "oque": "o endereço da vaga, exatamente como a pessoa colou",
+            "obrigatorio": true
+          }
+        },
+        "corta": {
+          "descricao": 8000
+        }
+      }
+    }
+  }
+}

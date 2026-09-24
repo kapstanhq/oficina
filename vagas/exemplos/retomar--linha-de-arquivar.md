@@ -1,0 +1,1 @@
+- [ ] V-004 (Técnica de Enfermagem Plantonista, Aurora Saúde) — duas retomadas sem resposta a P-010 (Otto Brandão) desde 2026-08-25; arquivar ou deixar parada

@@ -1,0 +1,68 @@
+# pacote: vagas
+#
+# O que quem procura emprego fala num áudio — com recrutador, com o RH, com
+# quem indicou — e a transcrição escreve do jeito que ouve. Instalado por quem
+# monta a ponte, no degrau 7.5 da conexão:
+#
+#   whatsapp-reader vocabulario instalar <este arquivo>
+#
+# Formato: a forma certa; depois dos dois-pontos, os erros que o motor já
+# cometeu com ela. Erro só entra quando NÃO é palavra de verdade em outro
+# contexto — "Gupi" entra, "vaga" não, porque é palavra.
+#
+# É de qualquer profissão, então o que entra é o que TODA busca fala: sigla de
+# contrato e de benefício, conselho de classe, escala, plataforma, e o cargo
+# com nome em inglês — o cargo em português a transcrição já acerta. A dica que
+# vai junto com o áudio tem orçamento (uns 600 caracteres): o nome das
+# empresas, dos recrutadores e o cargo raro do seu ofício moram no
+# vocabulario.txt pessoal.
+
+CLT: celetê
+PJ: pejota, pê jota
+CTPS
+PcD: PCD, pê cê dê
+VR
+VA
+VT
+PLR
+FGTS
+INSS
+CNH
+13º salário
+aviso prévio
+home office: rôme ofice
+híbrido
+presencial
+12x36
+6x1
+jovem aprendiz
+estágio
+trainee: treinee, trêinee
+COREN: Coren
+CRM
+OAB
+CREA
+CRP
+CRC
+CRF
+CRN
+Gupy: Gupi, Gupe
+LinkedIn: Linked In, Linquedin
+InfoJobs: Info Jobs
+Catho
+Indeed: Indid
+Sine
+Vagas.com
+currículo
+portfólio: portifólio
+feedback: fidback
+onboarding: onbording
+customer success: costumer success
+product manager
+tech lead: tec lead
+UX designer: iu xis designer
+front-end: front end, fronte end
+back-end: back end, béque end
+full stack: full estéque
+QA
+SDR

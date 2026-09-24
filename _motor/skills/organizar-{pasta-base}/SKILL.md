@@ -3,7 +3,8 @@ name: organizar-{pasta-base}
 description: >-
   Faz a manutenção da {base}: lê o que está em `_bruto/` e ainda não virou
   fato — conversa colada, ficha, e-mail —, extrai os campos com procedência e
-  grava nos arquivos donos, e importa a planilha que estiver em _bruto/.
+  grava nos arquivos donos, e importa a planilha posta em _bruto/ com a
+  {base} já montada (sem {base}, a planilha é do /{plugin}:comecar).
   Aposenta quem parou há mais de {prazo-de-silencio}, aplica os tetos e mostra o que
   sairia antes de podar. Acha o que só se vê de cima: {andante} no funil sem
   arquivo, {item} que se cita e não existe, campo ? que uma conversa já
@@ -11,10 +12,10 @@ description: >-
   o {profissional} disser — organiza minha {base}, dá um jeito nessa bagunça,
   colei um monte de conversa e não sei se entrou, coloquei a planilha na
   pasta, {gatilhos-de-arrumar}, tem {pessoa} em dobro aí,
-  o arquivo {do-pessoa} está gigante, faz uma faxina. Também depois de uma
-  semana colando material sem organizar. Não escreve a mensagem de quem sumiu
-  (/{plugin}:retomar-contato), não monta a lista do dia
-  (/{plugin}:o-que-fazer-hoje) nem lê {documento-chave} (/{plugin}:{skill-conferir}).
+  o arquivo {do-pessoa} está gigante, faz uma faxina. Não escreve a mensagem
+  de quem sumiu (/{plugin}:retomar-contato), não monta a lista do dia
+  (/{plugin}:o-que-fazer-hoje) nem {acao-da-skill-conferir}
+  (/{plugin}:{skill-conferir}).
 license: MIT
 compatibility: >-
   Precisa da {base}, numa pasta do computador: ela é a manutenção da
@@ -46,7 +47,7 @@ de qualquer coisa, e o que escreve nunca é barato. Na dúvida sobre o estado da
 {base}, roda-se o laudo primeiro; ele diz se vale chamar esta.
 
 Ela não apaga nada, não abre link, não escreve mensagem para {pessoa} nenhum,
-não lê {documento-chave}, não decide {valor-que-e-dele} e não escolhe entre dois fatos que se
+não {acao-da-skill-conferir}, não decide {valor-que-e-dele} e não escolhe entre dois fatos que se
 contradizem — o que ela não apurou sai como `?` e vira linha em `## Falta
 saber`.
 
@@ -409,6 +410,9 @@ dois arquivos passam a disputar o mesmo nome.
 | `{campo-da-pessoa-no-item}` {do-item} nomeia quem não tem arquivo em `{pasta-pessoas}/` | pergunta: criar a ficha com `?` ou limpar o campo. No automático, cria |
 | arquivo {do-pessoa} com `etapa:` | não apaga e não copia para lugar nenhum: a etapa é {do-item}. Vai para `## Não bate`, com o nome do arquivo |
 | {item} com `etapa:` e `{campo-da-pessoa-no-item}` vazio | **não é defeito**, e não entra no relatório: {item} sem {pessoa} é o caso comum |
+[[fim]]
+[[se fim-bom:aceitei]]
+| aposentado com o motivo `{fim-bom}`, e nada entrou na {base} depois dele | **a {base} está em pausa**: diz isso na primeira linha do relatório e não oferece mais {itens}. O que ainda estava vivo continua onde está — aposentar cada um é decisão dele |
 [[fim]]
 | item no `_indice.md` sem arquivo, ou arquivo sem linha | reescreve o `_indice.md` a partir dos arquivos |
 | aposentado ainda na tabela viva, no funil ou no `hoje.md` | tira das três — ele já tem a linha em `## Arquivo morto` |

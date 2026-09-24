@@ -7,15 +7,13 @@
 
 # Conectar o WhatsApp — a cadeia
 
-Isto é o caminho OPCIONAL do passo 5. O padrão continua sendo colar, e quem
-não chegar até aqui não perde nenhuma das dez skills.
+Isto é OPCIONAL. O padrão continua sendo colar, e quem não chegar até aqui não
+perde nenhuma skill.
 
 **Só siga se houver linha de comando** — Claude Code, Codex CLI, Cursor. Nos
 chats da web não há como executar nada, e aí a resposta é uma linha: "esse
 caminho precisa de um programa que rode comandos no seu computador; aqui a
 gente cola, e funciona igual".
-
----
 
 ## Antes de instalar, o que ele tem que ouvir
 
@@ -76,49 +74,68 @@ Cada degrau é: **verifique · aja só se falhou · confirme**. Rodar a cadeia
 inteira de novo é seguro — cada degrau já feito passa direto. Nunca pule a
 confirmação: é ela que separa "instalei" de "funciona".
 
-### 1 · Go
+**Não precisa de Go, de git nem de compilador.** O caminho principal é o
+programa pronto, um arquivo por sistema. Compilar do código é a alternativa, no
+fim da cadeia, para quem prefere.
+
+### 1 · O programa, baixado
 
 ```
-verificar   go version
-agir        Windows:  winget install GoLang.Go
-            macOS:    brew install go   (ou o instalador de go.dev/dl)
-            sem gerenciador de pacotes: o instalador oficial de go.dev/dl,
-            que é assinado e passa sem aviso de segurança
-confirmar   go version responde
+verificar   a pasta ~/whatsapp-reader existe e tem o programa dentro
+agir        baixar da página de versões, github.com/kapstanhq/whatsapp-reader/releases/latest,
+            o arquivo do sistema dele, e extrair em ~/whatsapp-reader
+confirmar   o programa está lá: whatsapp-reader.exe no Windows,
+            whatsapp-reader no Mac e no Linux
 ```
 
-Depois de instalar, o terminal precisa ser reaberto para enxergar o `go` —
-sessão velha guarda o caminho antigo. Se `go version` falhar logo após uma
-instalação bem-sucedida, é isso.
-
-**Não precisa de compilador C.** Se alguma instrução mandar instalar GCC ou
-MinGW, está desatualizada.
-
-### 2 · A ponte no computador
+Qual arquivo — o harness diz o sistema; a arquitetura, se ele não souber, sai
+de `uname -m` (Mac e Linux) ou de Configurações › Sistema › Sobre (Windows):
 
 ```
-verificar   existe main.go na pasta baixada
-agir        git clone https://github.com/kapstanhq/whatsapp-reader
-confirmar   os arquivos .go estão lá
+Windows              whatsapp-reader_<versão>_windows_amd64.zip
+Windows em ARM       …_windows_arm64.zip     (Surface e notebooks Snapdragon)
+Mac com chip Apple   …_darwin_arm64.tar.gz   (M1 em diante — `uname -m` diz arm64)
+Mac com Intel        …_darwin_amd64.tar.gz
+Linux                …_linux_amd64.tar.gz    (ou arm64)
 ```
 
-**Há binário pronto** na página de releases do mesmo repositório, um por
-sistema: quem não quiser instalar o Go pula os degraus 1 e 3 e vai direto para
-o 4. O preço é o aviso do Windows sobre programa baixado da internet — que não
-aparece no que foi compilado ali mesmo —, e quem decide se libera é o
-corretor.
+**A pasta é fixa, e ela é o diretório da ponte**: a sessão, as conversas
+copiadas, `qr.png`, `nao-contatar.txt` e o `vocabulario.txt` pessoal moram ao
+lado do programa. Pasta de Downloads que ele limpa todo mês é ponte que some.
 
-### 3 · Compilada
+Quer conferir o arquivo? `checksums.txt`, na mesma página, tem o SHA-256 de
+cada um: `certutil -hashfile <arquivo> SHA256` no Windows, `shasum -a 256
+<arquivo>` no Mac e no Linux.
+
+### 2 · Liberado para rodar
+
+Programa baixado da internet e sem assinatura passa por uma trava do sistema.
+Cada um tem a sua, e ela aparece uma vez:
 
 ```
-verificar   o binário existe e é mais novo que os arquivos .go
-agir        CGO_ENABLED=0 go build -o whatsapp-reader .
-            (no Windows o nome sai como whatsapp-reader.exe)
-confirmar   rodar o binário sem argumento mostra a ajuda
+Windows   antes de extrair: botão direito no .zip → Propriedades →
+          marcar “Desbloquear” → OK. Se aparecer “O Windows protegeu o
+          computador”: “Mais informações” → “Executar assim mesmo”
+Mac       “não pode ser aberto porque a Apple não pode verificá-lo”:
+          xattr -d com.apple.quarantine ~/whatsapp-reader/whatsapp-reader
+          (ou Ajustes do Sistema › Privacidade e Segurança → “Abrir Mesmo Assim”)
+Linux     chmod +x ~/whatsapp-reader/whatsapp-reader
 ```
 
-Demora alguns minutos na primeira vez: ele baixa as bibliotecas. Silêncio no
-terminal é normal.
+**Quem decide liberar é ele.** Diga o que o aviso é — programa sem assinatura de
+loja, não vírus detectado — e, se ele não quiser, pare aqui: colar continua.
+
+### 3 · Ele responde
+
+```
+verificar   rodar o programa sem argumento mostra a ajuda
+agir        —
+confirmar   a ajuda lista serve, mcp, estado, verificar
+```
+
+**Nos comandos daqui em diante, `whatsapp-reader` é o caminho inteiro do
+programa** — ou, dentro da pasta dele, `./whatsapp-reader` no Mac e no Linux e
+`.\whatsapp-reader.exe` no Windows. Pôr a pasta no PATH é conforto, não degrau.
 
 ### 4 · O daemon de pé
 
@@ -158,8 +175,15 @@ Windows   Agendador de Tarefas → Criar Tarefa Básica
           ação: iniciar programa → o caminho do whatsapp-reader.exe
           argumento: serve
 
-macOS     um .plist em ~/Library/LaunchAgents com KeepAlive true e o mesmo
-          caminho; carregar com launchctl load
+macOS     um .plist em ~/Library/LaunchAgents (Label whatsapp-reader,
+          ProgramArguments com o caminho e `serve`, RunAtLoad e KeepAlive
+          true, WorkingDirectory a pasta da ponte); carregar com
+          launchctl load -w ~/Library/LaunchAgents/<o arquivo>.plist
+
+Linux     um serviço de usuário em ~/.config/systemd/user/whatsapp-reader.service
+          (ExecStart=<caminho> serve, WorkingDirectory=<a pasta>,
+          Restart=always, WantedBy=default.target); depois
+          systemctl --user enable --now whatsapp-reader
 ```
 
 **No Windows, o Agendador pode responder "Acesso negado"** — medido em
@@ -181,8 +205,8 @@ agendador cuida do processo; o pareamento continua sendo dele.
 
 ```
 verificar   whatsapp-reader estado diz "de pé e conectada"
-agir        o QR está na janela do passo 4, e também em qr.png ao lado do
-            binário — use a imagem se o desenho no terminal sair quebrado
+agir        o QR está na janela do degrau 4, e também em qr.png ao lado do
+            programa — use a imagem se o desenho no terminal sair quebrado
 confirmar   a janela imprime "pareado" e começa a contar o histórico
 ```
 
@@ -201,9 +225,14 @@ número.** O que veio, `estado_da_ponte` diz.
 
 ```
 verificar   a lista de servidores do programa mostra a ponte conectada
-agir        no Claude Code:  claude mcp add whatsapp -- <caminho>/whatsapp-reader mcp
+agir        no Claude Code:  claude mcp add -s user whatsapp -- <caminho> mcp
 confirmar   a lista mostra "Connected"
 ```
+
+`-s user` é o que faz a ponte valer em qualquer pasta — sem ele, ela só existe
+na pasta em que o comando rodou. `<caminho>` é o do programa, inteiro, e **no
+Windows com barra normal**: `C:/Users/<nome>/whatsapp-reader/whatsapp-reader.exe`
+— a invertida some no caminho até o programa, e o erro não diz isso.
 
 As ferramentas só aparecem quando o programa reinicia. Avise antes: ele vai
 precisar fechar e abrir, e isso é esperado, não é erro.
@@ -254,10 +283,11 @@ de quem ouve que o computador vai "escutar" as conversas.
 São dois programas e um modelo:
 
 ```
-Windows   scoop install whisper-cpp ffmpeg
+Windows   scoop install whisper-cpp ffmpeg   (o Scoop, se não houver, sai de
+          scoop.sh, sem pedir administrador)
 macOS     brew install whisper-cpp ffmpeg
-Linux     o ffmpeg vem do gerenciador da distribuição; o whisper.cpp se
-          compila de github.com/ggml-org/whisper.cpp
+Linux     o ffmpeg vem do gerenciador da distribuição (sudo apt install
+          ffmpeg); o whisper.cpp se compila de github.com/ggml-org/whisper.cpp
 ```
 
 O modelo é um arquivo `.bin` em `modelos/`, no diretório da ponte, baixado de
@@ -301,9 +331,9 @@ confirmar   ele diz que ela chegou, no celular dele
 ```
 
 Este degrau existe porque a alternativa é a primeira mensagem da vida daquela
-instalação sair para um cliente de verdade — e porque o mesmo princípio já vale
-para a agenda, o Gmail e o Drive nos passos 3 e 4. Não há razão para o envio ser
-o único a ganhar `sim` sem prova.
+instalação sair para um cliente de verdade — e porque a agenda, o Gmail e o
+Drive também só viram `sim` testados. Não há razão para o envio ser o único a
+ganhar `sim` sem prova.
 
 O número dele vem do próprio `estado_da_ponte`, junto com a saúde. **Mandar para
 si mesmo não abre conversa com ninguém** e não conta risco nenhum — a prévia diz
@@ -348,7 +378,7 @@ uma vez**. Quando um cliente pedir para não ser contatado, o contrato (seção
 da ponte, que a carteira não alcança:
 
 ```
-whatsapp-reader nao-contatar 5551900000012 "pediu em 12/08"
+whatsapp-reader nao-contatar 5511900000012 "pediu em 12/08"
 ```
 
 Diga ao corretor que ele mesmo pode rodá-lo, e que `--tirar` desfaz. Pedido
@@ -357,15 +387,57 @@ segura o envio se alguém esquecer — e é para isso que os dois lugares existe
 
 ---
 
+### A alternativa · compilar do código
+
+Para quem prefere não rodar programa baixado, ou quer a versão do dia. Troca os
+degraus 1 a 3, e o resto da cadeia é igual:
+
+```
+Go         Windows: winget install GoLang.Go · Mac: brew install go ·
+           Linux: o instalador de go.dev/dl (o do gerenciador costuma ser
+           velho demais). Reabra o terminal, e `go version` responde
+código     git clone https://github.com/kapstanhq/whatsapp-reader
+           (sem git: “Code” → “Download ZIP” na mesma página, e extraia)
+compilar   dentro da pasta, no Mac e no Linux:
+             CGO_ENABLED=0 go build -o whatsapp-reader .
+           no Windows (PowerShell):
+             $env:CGO_ENABLED="0"; go build -o whatsapp-reader.exe .
+```
+
+A primeira compilação baixa as bibliotecas e demora alguns minutos em silêncio.
+**Não precisa de compilador C**: instrução que mande instalar GCC ou MinGW está
+desatualizada.
+
+---
+
+## Desligar, e o que some junto
+
+É dele, e é curto. Nesta ordem, porque o primeiro já corta o acesso:
+
+```
+1  no celular: Configurações › Dispositivos conectados → o dispositivo →
+   “Desconectar”. A partir daqui a ponte não lê nem manda nada
+2  na máquina: fechar a janela do `serve` e tirá-lo da inicialização —
+   a tarefa do Agendador ou o atalho em shell:startup, o .plist
+   (launchctl unload -w <arquivo>) ou o serviço
+   (systemctl --user disable --now whatsapp-reader)
+3  no programa: claude mcp remove -s user whatsapp
+4  apagar a pasta ~/whatsapp-reader — a sessão e as conversas copiadas
+   moram nela, e só nela
+```
+
+No `INDICE.md`, `WhatsApp:` volta a `não`, com a data, e a linha `envio:` sai.
+O que já entrou na carteira fica: é dele, e tem procedência.
+
 ## Quando falhar
 
 | o que aparece | o que é | o conserto |
 |---|---|---|
-| `websocket: close 1006` | o WhatsApp recusou a versão da biblioteca, e o erro não diz isso | `go get -u go.mau.fi/whatsmeow@latest`, depois `go mod tidy` e compilar de novo. Se aparecer erro de compilação citando `context`, a biblioteca mudou e isso é conserto de mantenedor: pare e diga isso |
-| `missing go.sum entry` | dependência não resolvida | `go mod tidy` e compilar de novo |
-| o QR não aparece, ou sai como caracteres embaralhados | o terminal não desenha os blocos | use o `qr.png` que está ao lado do binário |
+| `websocket: close 1006` | o WhatsApp recusou a versão da biblioteca, e o erro não diz isso | baixe o programa da versão mais nova (degrau 1) e troque o arquivo, com o `serve` parado. Não há versão mais nova: é conserto de mantenedor — pare e diga isso. Quem compila: `go get -u go.mau.fi/whatsmeow@latest`, `go mod tidy` e compilar de novo |
+| “não pode ser aberto porque a Apple não pode verificá-lo” · “O Windows protegeu o computador” · `Permission denied` | a trava do sistema para programa baixado | o degrau 2 |
+| o QR não aparece, ou sai como caracteres embaralhados | o terminal não desenha os blocos | use o `qr.png` que está ao lado do programa |
 | "o QR expirou" | passou dos três minutos | rode `whatsapp-reader serve` de novo, com o celular já na tela de conectar |
-| o antivírus reclama do binário | executável recém-compilado, sem assinatura | ele foi compilado ali, na máquina dele, a partir do código — mas **não insista**: se ele não quiser liberar, volte para o colado |
+| o antivírus reclama do programa | executável sem assinatura de loja | o `checksums.txt` da página de versões prova que é o arquivo publicado; compilar do código é a outra saída — mas **não insista**: se ele não quiser liberar, volte para o colado |
 | `estado_da_ponte` diz zero conversas | o daemon não está rodando, ou nunca pareou | confira o degrau 4 antes do 5 |
 | tudo funciona e as ferramentas não aparecem | o programa não reiniciou depois do `mcp add` | fechar e abrir |
 | `estado` diz "fora do ar" e a janela parece aberta | a janela morreu, ou o computador reiniciou | rodar `serve` de novo, e fazer o degrau 4.5 desta vez |

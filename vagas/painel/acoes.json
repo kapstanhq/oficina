@@ -1,0 +1,289 @@
+{
+  "pack": "vagas",
+  "pastas": {
+    "item": "vagas",
+    "pessoa": "contatos"
+  },
+  "item": "Vaga",
+  "base": "busca",
+  "fila": "/vagas:gravar-o-que-marquei",
+  "comeco": [
+    "/vagas:perfil-de-busca",
+    "/vagas:buscar-vagas",
+    "/vagas:triar-vagas"
+  ],
+  "proximo": {
+    "nova": [
+      {
+        "faz": "marcar",
+        "porque": "Leia o essencial abaixo. Se cabe, salve: ela segue para completar, analisar e candidatar."
+      },
+      "/vagas:triar-vagas",
+      "/vagas:completar-ficha",
+      "descartar"
+    ],
+    "salva": [
+      {
+        "faz": "marcar",
+        "se": [
+          "agora:esperando o seu envio"
+        ],
+        "porque": "Preenchida, esperando o seu envio. Se já enviou, marque: o registro está pronto."
+      },
+      {
+        "faz": "/vagas:completar-ficha",
+        "se": [
+          "faltam",
+          "nunca:completado"
+        ],
+        "porque": "Faltam dados que decidem se a vaga cabe, e ninguém foi atrás deles ainda."
+      },
+      {
+        "faz": "/vagas:triar-vagas",
+        "se": [
+          "sem:encaixe",
+          "nunca:triagem"
+        ],
+        "porque": "Os dados estão aqui, mas a vaga ainda não foi comparada com o seu perfil."
+      },
+      {
+        "faz": "descartar",
+        "se": [
+          "sem:encaixe",
+          "ja:proposto baixo"
+        ],
+        "porque": "A análise propôs encaixe baixo. Concorda? Descarte. Se não, siga para o currículo."
+      },
+      {
+        "faz": "/vagas:montar-curriculo",
+        "se": [
+          "sem-documento:curriculos"
+        ],
+        "porque": "A análise está feita. Falta o currículo desta vaga, e a carta se o formulário pedir."
+      },
+      "/vagas:candidatar",
+      "/vagas:escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "candidatada": [
+      "/vagas:retomar-contato",
+      "/vagas:escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "em contato": [
+      "/vagas:escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "entrevista": [
+      "/vagas:escrever-ao-contato",
+      "marcar",
+      "descartar"
+    ],
+    "proposta": [
+      "/vagas:escrever-ao-contato",
+      "descartar"
+    ]
+  },
+  "destaque": [
+    "regime",
+    "contrato",
+    "jornada",
+    "faixa",
+    "idioma",
+    "encaixe"
+  ],
+  "resumo": [
+    "O que pesa a favor",
+    "O que pesa contra",
+    "O que a vaga pede"
+  ],
+  "motivos": [
+    "Presencial ou híbrida fora da minha cidade",
+    "Salário abaixo do que aceito",
+    "Pede um idioma que não tenho",
+    "Não é o cargo que procuro",
+    "Empresa ou setor que evito"
+  ],
+  "inicio": [
+    "comeco",
+    "hoje",
+    "funil",
+    "novidades",
+    "acoes"
+  ],
+  "fim": {
+    "de": "proposta",
+    "rotulo": "Aceitei a proposta",
+    "motivo": "aceitei"
+  },
+  "completar": "/vagas:completar-ficha",
+  "documentos": {
+    "curriculos": "curriculo",
+    "cartas": "carta"
+  },
+  "ordens": {
+    "encaixe": [
+      "alto",
+      "médio",
+      "baixo"
+    ]
+  },
+  "fases": {
+    "salva": [
+      {
+        "nome": "pesquisada",
+        "se": [
+          "ja:completado"
+        ]
+      },
+      {
+        "nome": "com currículo",
+        "se": [
+          "com-documento:curriculos"
+        ]
+      }
+    ]
+  },
+  "esforco": {
+    "/vagas:gravar-o-que-marquei": "low",
+    "/vagas:organizar-busca": "low",
+    "/vagas:completar-ficha": "medium"
+  },
+  "rotulos": {
+    "salva": "Salvar",
+    "candidatada": "Já me candidatei",
+    "em contato": "Houve contato",
+    "entrevista": "Marcar entrevista",
+    "proposta": "Recebi proposta",
+    "/vagas:triar-vagas": "Analisar esta vaga",
+    "/vagas:montar-curriculo": "Currículo e carta",
+    "/vagas:candidatar": "Candidatar-me",
+    "/vagas:escrever-ao-contato": "Escrever ao contato",
+    "/vagas:completar-ficha": "Completar informações"
+  },
+  "grupos": [
+    {
+      "rotulo": "Do ofício",
+      "acoes": [
+        {
+          "sobre": [],
+          "comando": "/vagas:perfil-de-busca",
+          "nome": "A entrevista: o perfil e a trajetória",
+          "oque": "Escreve o que você procura, o que descarta e quanto — e a sua trajetória, com os números que você pode dizer"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/vagas:buscar-vagas",
+          "nome": "Buscar vagas",
+          "oque": "Busca nas fontes do seu perfil, descarta o que você mandou descartar e guarda o resto, com a origem de cada vaga"
+        },
+        {
+          "sobre": [
+            "item",
+            "nada"
+          ],
+          "comando": "/vagas:triar-vagas",
+          "nome": "Triar as vagas",
+          "oque": "Julga a pilha com você: o que a vaga pede, o que pesa a favor e o que pesa contra"
+        },
+        {
+          "sobre": [
+            "item",
+            "nada"
+          ],
+          "comando": "/vagas:montar-curriculo",
+          "nome": "Montar o currículo",
+          "oque": "Monta o currículo para uma vaga, em duas páginas, só com o que é verdade"
+        },
+        {
+          "sobre": [
+            "item",
+            "pessoa"
+          ],
+          "comando": "/vagas:escrever-ao-contato",
+          "nome": "Escrever ao contato",
+          "oque": "Escreve ao recrutador, ao gestor ou a quem pode dar referência — a primeira mensagem e a resposta ao que ele perguntou"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/vagas:candidatar",
+          "nome": "Candidatar",
+          "oque": "Prepara as respostas, mostra tudo numa tela, preenche se você quiser — e para antes do botão"
+        }
+      ]
+    },
+    {
+      "rotulo": "Do motor, que é o mesmo em todo pack",
+      "acoes": [
+        {
+          "sobre": [],
+          "comando": "/vagas:comecar",
+          "nome": "Começar",
+          "oque": "Monta a pasta da busca e liga o que você quiser ligar"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/vagas:o-que-fazer-hoje",
+          "nome": "O que fazer hoje",
+          "oque": "A lista do dia: o que vence, o que travou, quem ficou de responder"
+        },
+        {
+          "sobre": [
+            "item",
+            "nada"
+          ],
+          "comando": "/vagas:retomar-contato",
+          "nome": "Retomar contato",
+          "oque": "Escreve para quem sumiu, com algo novo para dizer"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/vagas:cobrar-o-que-falta",
+          "nome": "Cobrar o que falta",
+          "oque": "O que prometeram e não mandaram"
+        },
+        {
+          "sobre": [],
+          "comando": "/vagas:importar-a-conversa",
+          "nome": "Importar a conversa",
+          "oque": "A conversa com o recrutador vira fato, com a origem guardada"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/vagas:organizar-busca",
+          "nome": "Organizar a busca",
+          "oque": "A manutenção: o que fechou, o que dobrou, o que passou do teto"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/vagas:laudo-da-busca",
+          "nome": "O laudo da busca",
+          "oque": "Confere a busca contra o contrato, sem mexer em nada"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/vagas:completar-ficha",
+          "nome": "Completar o que falta",
+          "oque": "Procura o que falta numa vaga — regime, jornada, faixa, idioma — nas fontes que a busca alcança, e grava com a origem"
+        }
+      ]
+    }
+  ]
+}

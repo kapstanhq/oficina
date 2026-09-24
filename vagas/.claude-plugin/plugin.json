@@ -1,0 +1,21 @@
+{
+  "name": "vagas",
+  "displayName": "Oficina Kapstan · Vagas",
+  "version": "0.3.0",
+  "description": "Para quem procura emprego no Brasil, em qualquer profissão: monta a sua busca numa pasta do seu computador e trabalha em cima dela — busca vagas, julga cada uma contra o que você procura, monta o currículo só com o que é verdade e prepara a candidatura campo a campo. Por padrão ele não entra em conta sua e para antes do botão de enviar. Ligar o LinkedIn ou a Gupy com login, o Google ou o WhatsApp, e deixar que ele envie por você, são escolhas suas — cada uma com o aviso do que muda, e cada envio passa pela sua aprovação no painel.",
+  "author": {
+    "name": "Kapstan",
+    "url": "https://kapstan.com.br"
+  },
+  "homepage": "https://kapstan.com.br/oficina",
+  "repository": "https://github.com/kapstanhq/oficina",
+  "license": "MIT",
+  "keywords": [
+    "vagas",
+    "emprego",
+    "curriculo",
+    "candidatura",
+    "carreira",
+    "portugues"
+  ]
+}

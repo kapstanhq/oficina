@@ -107,6 +107,42 @@ export function conferirParametros(op, parametros = {}) {
       throw new Error(`falta o parâmetro obrigatório ${nome} — ${d.oque || ""}`.trim());
     }
   }
+  traduzirParametros(op, parametros);   // valor fora da lista ou do formato: recusa aqui, antes da rede
+}
+
+/**
+ * Da palavra da pessoa à da fonte, e o teto que a fonte aguenta.
+ *
+ * `valores` é a tabela: a CHAVE é como se diz (`estágio`, `BA`) e o valor é
+ * o que a fonte entende (`vacancy_type_internship`, `Bahia`). Compara sem
+ * acento e sem caixa, e aceita também o próprio valor da fonte — `bahia` sai
+ * `Bahia`, com a grafia da tabela. Fora dela é recusa com a lista: a Gupy
+ * devolve ZERO para um `type` que não conhece, sem erro, e zero é a resposta
+ * errada com cara de certa. `formato` é a mesma recusa por regex — a Sólides
+ * devolve zero para `Curitiba` sem a UF. `maximo` corta o número: a Sólides dá
+ * 500 com `take` acima de 20 (medido em 24/09).
+ */
+export function traduzirParametros(op, parametros = {}) {
+  const saida = { ...parametros };
+  for (const [nome, d] of Object.entries(op.parametros || {})) {
+    const v = saida[nome];
+    if (v === undefined || v === null || v === "") continue;
+    if (d.valores) {
+      const alvo = semAcento(String(v).trim());
+      const achado = Object.entries(d.valores).find(([k]) => semAcento(k) === alvo)?.[1]
+        ?? Object.values(d.valores).find((x) => semAcento(x) === alvo);
+      if (achado === undefined) {
+        throw new Error(`parâmetro recusado: ${nome} = "${v}". Os que a fonte entende: ` +
+          Object.keys(d.valores).join(" · "));
+      }
+      saida[nome] = achado;
+    }
+    if (d.formato && !new RegExp(d.formato, "u").test(String(v).trim())) {
+      throw new Error(`parâmetro recusado: ${nome} = "${v}" — ${d.oque || "fora do formato"}`);
+    }
+    if (d.maximo !== undefined && Number(v) > Number(d.maximo)) saida[nome] = Number(d.maximo);
+  }
+  return saida;
 }
 
 /**
@@ -159,6 +195,57 @@ export function aplicarChave(url, cabecalhos, conector, chave) {
 }
 
 /**
+ * Um campo que não é caminho simples. Quatro formas, e uma de cada vez:
+ *
+ *   { de, contem }                 booleano — `remoto` de um `jobType`
+ *   { de, cada?, mapa?, junta? }   a palavra da fonte vira a do contrato
+ *                                  (`vacancy_type_internship` → `estágio`);
+ *                                  lista vira texto, pelo `cada` de cada item.
+ *                                  Valor fora do `mapa` sai como veio: feio,
+ *                                  e não mentira
+ *   { de, maior_que }              número, ou null — a Sólides manda faixa 0
+ *                                  quando a empresa não mostra
+ *   { primeiro, molde, se? }       o primeiro caminho preenchido; senão o
+ *                                  endereço montado do ITEM (`{id}` lê o campo
+ *                                  dele, codificado), só quando cada `se`
+ *                                  casar. É o link da Sólides: o que ela manda
+ *                                  vem quebrado (medido em 24/09)
+ */
+export function regraDeCampo(bruto, regra) {
+  if (regra.primeiro || regra.molde) {
+    for (const c of regra.primeiro || []) {
+      const v = ler(bruto, c);
+      if (v !== undefined && v !== null && String(v).trim()) return v;
+    }
+    if (!regra.molde) return null;
+    for (const [c, re] of Object.entries(regra.se || {})) {
+      if (!new RegExp(re).test(String(ler(bruto, c) ?? ""))) return null;
+    }
+    let falta = false;
+    const url = regra.molde.replace(/\{([\w.-]+)\}/g, (m, c) => {
+      const v = ler(bruto, c);
+      if (v === undefined || v === null || String(v) === "") falta = true;
+      return encodeURIComponent(String(v ?? ""));
+    });
+    return falta ? null : url;
+  }
+  const v = ler(bruto, regra.de);
+  if (v === undefined || v === null) return null;
+  if (regra.contem !== undefined) return semAcento(v).includes(semAcento(regra.contem));
+  if (regra.maior_que !== undefined) return Number(v) > Number(regra.maior_que) ? Number(v) : null;
+  const mapa = regra.mapa
+    ? Object.fromEntries(Object.entries(regra.mapa).map(([k, x]) => [semAcento(k), x])) : null;
+  const um = (x) => {
+    const bruto1 = regra.cada ? ler(x, regra.cada) : x;
+    if (bruto1 === undefined || bruto1 === null || bruto1 === "") return null;
+    return mapa && semAcento(bruto1) in mapa ? mapa[semAcento(bruto1)] : bruto1;
+  };
+  if (!Array.isArray(v)) return um(v);
+  const lista = [...new Set(v.map(um).filter((x) => x !== null && x !== ""))];
+  return lista.length ? lista.join(regra.junta ?? " · ") : null;
+}
+
+/**
  * Da resposta crua aos itens que o agente lê.
  *
  * ── POR QUE PROJETAR, E NÃO DEVOLVER O JSON DA FONTE ──────────────────
@@ -176,7 +263,7 @@ export function aplicarChave(url, cabecalhos, conector, chave) {
  * Um valor de `campos` é um caminho (`location.name`), um parâmetro ecoado
  * (`<empresa>` — a fonte que não repete o nome da empresa em cada item) ou
  * `{ de, contem }`, que vira booleano: é como `remoto` sai de um
- * `workplaceType: "remote"`.
+ * `workplaceType: "remote"`. As outras formas estão em `regraDeCampo`.
  */
 export function projetar(op, corpo, parametros = {}) {
   /* `um: true` é a operação que devolve UM objeto — o detalhe de um item —,
@@ -192,9 +279,7 @@ export function projetar(op, corpo, parametros = {}) {
     const item = {};
     for (const [nosso, regra] of Object.entries(campos)) {
       if (regra && typeof regra === "object") {
-        const v = ler(bruto, regra.de);
-        item[nosso] = v === undefined || v === null ? null
-          : semAcento(v).includes(semAcento(regra.contem));
+        item[nosso] = regraDeCampo(bruto, regra);
       } else {
         const eco = String(regra).match(/^<([\w-]+)>$/);
         item[nosso] = eco ? (parametros[eco[1]] ?? null) : (ler(bruto, regra) ?? null);
@@ -238,7 +323,8 @@ export function projetar(op, corpo, parametros = {}) {
  * `buscar` é o `fetch`, injetável: o adaptador de dois passos e a prova usam
  * o mesmo caminho, e nenhum dos dois pode depender de rede de verdade.
  */
-export async function chamarHttp({ conector, op, parametros, chave, buscar = fetch }) {
+export async function chamarHttp({ conector, op, parametros: pedidos, chave, buscar = fetch }) {
+  const parametros = traduzirParametros(op, pedidos);
   const url = montarUrl(op, parametros);
   const cabecalhos = { "User-Agent": "Mozilla/5.0 (conectores)", Accept: "application/json" };
   aplicarChave(url, cabecalhos, conector, chave);
@@ -262,6 +348,20 @@ export async function chamarHttp({ conector, op, parametros, chave, buscar = fet
     throw new Error("o serviço respondeu algo que não é JSON — o formato dele pode ter mudado");
   }
   const saida = projetar(op, corpo, parametros);
+  /* `total` é o que veio NESTA página; o da fonte inteira, quando ela diz,
+     é o que responde "a primeira página veio cheia?" */
+  if (op.total_em) {
+    const n = Number(ler(corpo, op.total_em));
+    if (Number.isFinite(n)) saida.total_na_fonte = n;
+  }
+  /* zero é resultado — mas zero com um parâmetro que a fonte lê de um jeito
+     só (a cidade sem acento, na Gupy) é mais provável ser a grafia */
+  if (!saida.itens.length) {
+    const dicas = Object.entries(op.parametros || {})
+      .filter(([nome, d]) => d.se_vazio && pedidos[nome] !== undefined && pedidos[nome] !== "")
+      .map(([nome, d]) => `${nome}: ${d.se_vazio}`);
+    if (dicas.length) saida.aviso = "nada voltou — confira " + dicas.join(" · ");
+  }
   const medido = conector.custo?.campo ? Number(ler(corpo, conector.custo.campo)) : NaN;
   return { ...saida, ...(Number.isFinite(medido) ? { custo: medido, medido: true } : {}) };
 }

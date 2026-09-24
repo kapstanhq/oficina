@@ -56,7 +56,7 @@ pular a lista.
 
 **Leia o contrato por seção, em `references/contrato/`** — o número da seção
 é o começo do nome do arquivo: `04-2-hoje.md` é a 4.2. Ele é o padrão comum
-das dez skills do pack, e nada de formato se decide aqui; o inteiro está em
+das {n-skills} skills do pack, e nada de formato se decide aqui; o inteiro está em
 `references/CONTRATO.md`. O que esta usa direto:
 
 ```
@@ -195,6 +195,17 @@ se mede na última linha do `## Histórico` {do-item} — e, quando o campo
 aponta {um-pessoa}, vale a data mais nova entre os dois arquivos.
 
 [[fim]]
+[[se fim-bom:aceitei]]
+**A {base} em pausa.** O `## Arquivo morto` de `{pasta-itens}/_indice.md` tem
+uma linha com o motivo `{fim-bom}`, e nada entrou na {base} depois dela: ele
+aceitou, e a {base} está em pausa. A lista abre dizendo isso, com a data, e só
+traz o que ainda anda — conversa em aberto, documento prometido, o que precisa
+ser encerrado com educação. **Não oferece mais {itens}**: nem
+`/{plugin}:{skill-do-dia-vazio}`, nem a linha de captação do dia vazio. A pausa
+acaba quando ele disser que volta a procurar, ou quando entrar {um-item}
+depois dela.
+
+[[fim]]
 Divergiu vista e arquivo — o `_indice.md` diz 5 de agosto e o histórico do
 {pessoa} tem linha de 12? Vale o arquivo, e a divergência vira uma linha em
 `## Falta saber` com o nome de `/{plugin}:organizar-{pasta-base}`. **Esta skill não
@@ -210,6 +221,9 @@ está em `allowed-tools` e a primeira chamada pede permissão — isso é normal
 
 - **só leitura.** `create_event`, `update_event` e `delete_event` não se usam
   nesta skill, em nenhum modo.
+- **agenda desligada, e a {base} tem compromisso com hora para hoje ou
+  amanhã:** ofereça ligar, em uma linha, pelo guia de
+  `references/conectores.md` — e siga sem ela se a resposta for não.
 - **evento sem {pessoa} na {base}** entra na lista como está, com `?` no lugar
   do id, e vira uma linha em `## Falta saber`. Não se cria {pessoa} a partir de
   um título de evento.

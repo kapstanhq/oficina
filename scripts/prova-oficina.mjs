@@ -1,5 +1,5 @@
 /**
- * `npm run prova-oficina -- [--seco [pasta] | --rodar [skill]]`
+ * `npm run prova-oficina -- [--seco [pasta] | --rodar [skill]] [--pack <pack>] [--fixture <pasta>]`
  *
  * A PROVA DO PACK DO CORRETOR — o que o `npm run prova` é para as figuras do
  * Estúdio, este é para as dez skills da Oficina: mecânico, sem julgar
@@ -38,7 +38,6 @@ import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PROC = join(RAIZ, "proc", "prova-oficina");
 
 /* ── O PACK DEIXA DE SER CONSTANTE ─────────────────────────────────────
    Isto tinha `corretor` escrito em seis lugares: os três caminhos, as seis
@@ -70,9 +69,36 @@ const PACK = (() => {
   return comFixture[0] || "corretor";
 })();
 
+/* ── A FIXTURE NÃO É SÓ UMA POR PACK ───────────────────────────────────
+   `--fixture vagas-b` troca a pasta de `_prova/` e mantém o pack: a mesma
+   régua, o mesmo plugin, outra pessoa. Uma persona só deixa passar a skill
+   que escreve o ofício da fixture em vez do ofício de quem usa — e o pack de
+   vagas vai a público para qualquer profissão. Sem a opção, a pasta é a do
+   pack, como sempre foi. */
+const FIXTURE_PASTA = (() => {
+  const i = process.argv.indexOf("--fixture");
+  const f = i > 0 ? process.argv[i + 1] : undefined;
+  if (i > 0 && (!f || f.startsWith("--"))) {
+    console.error("--fixture pede o nome de uma pasta de _prova/, ex.: --fixture vagas-b");
+    process.exit(1);
+  }
+  return f || PACK;
+})();
+/* a segunda fixture traz roteiro só do que faz sentido checar noutra persona:
+   skill sem roteiro ali é pulada, e não erro de cobertura — a cobertura é
+   cobrada na fixture principal do pack */
+const SEGUNDA = FIXTURE_PASTA !== PACK;
+
 const PASTA_BASE = pastaBaseDe(PACK);
-const FIXTURE = join(RAIZ, "_prova", PACK, PASTA_BASE);
-const ROTEIROS = join(RAIZ, "_prova", PACK, "roteiros");
+const FIXTURE = join(RAIZ, "_prova", FIXTURE_PASTA, PASTA_BASE);
+const ROTEIROS = join(RAIZ, "_prova", FIXTURE_PASTA, "roteiros");
+if (SEGUNDA && !existsSync(FIXTURE)) {
+  console.error(`--fixture ${FIXTURE_PASTA}: não há ${join("_prova", FIXTURE_PASTA, PASTA_BASE)}`);
+  process.exit(1);
+}
+/* o laudo e as execuções da segunda fixture moram numa subpasta: rodar as
+   duas em seguida não apaga a resposta da outra */
+const PROC = join(RAIZ, "proc", "prova-oficina", ...(SEGUNDA ? [FIXTURE_PASTA] : []));
 const PLUGIN = join(RAIZ, PACK);
 const MODELOS = join(PLUGIN, "modelos");
 
@@ -680,10 +706,13 @@ async function main() {
        porque descobrir isso depois de vinte minutos de modelo é caro. */
     const noPlugin = (await readdir(join(PLUGIN, "skills"), { withFileTypes: true }))
       .filter((e) => e.isDirectory()).map((e) => e.name);
-    for (const s of noPlugin) {
-      if (!todas.includes(s)) {
+    const puladas = noPlugin.filter((s) => !todas.includes(s));
+    if (SEGUNDA && puladas.length) {
+      laudo.push(`pulada(s) na fixture ${FIXTURE_PASTA}, sem roteiro: ${puladas.join(" · ")}`, "");
+    } else {
+      for (const s of puladas) {
         laudo.push(...imprimir(s, [{ regra: "cobertura", ok: false,
-          msg: `está em oficina/${PACK}/skills/ e não tem roteiro em _prova/${PACK}/roteiros/${s}.md` }]));
+          msg: `está em oficina/${PACK}/skills/ e não tem roteiro em _prova/${FIXTURE_PASTA}/roteiros/${s}.md` }]));
         erros++;
       }
     }

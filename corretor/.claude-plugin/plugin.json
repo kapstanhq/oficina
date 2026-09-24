@@ -1,7 +1,7 @@
 {
   "name": "corretor",
   "displayName": "Oficina Kapstan · Corretor de imóveis",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Dezesseis skills para corretor de imóveis, todas em cima de uma carteira de arquivos que mora numa pasta do computador dele, escolhida por ele: captar e anunciar, atender lead, montar visita, retomar contato, cobrar documento e organizar o que chegou.",
   "author": {
     "name": "Kapstan",

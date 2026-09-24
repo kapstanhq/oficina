@@ -10,7 +10,7 @@ description: >-
   prospector disser — completa essa ficha · procura o que falta · o que ela
   não diz, vê se acha · preenche os campos em branco · busca mais informação
   sobre isso — com o id, ou quando o botão "Completar informações" do painel a
-  chamar. Não é para julgar se serve, que é da skill de triagem do pack, nem
+  chamar. Não é para julgar se serve, que é /prospeccao:estudar-conta, nem
   para cobrar alguém, que é /prospeccao:cobrar-o-que-falta.
 license: MIT
 compatibility: >-
@@ -46,8 +46,8 @@ a estimativa pode ir numa nota ao lado, dita como estimativa e com a fonte.
 
 **Ela não julga.** Campo de julgamento — a proposta que o contrato manda o
 prospector confirmar — não é fato, e não se completa aqui. Se ele e as
-seções de análise estão vazios, o fecho diz que o próximo passo é a skill de
-triagem do pack.
+seções de análise estão vazios, o fecho diz que o próximo passo é
+`/prospeccao:estudar-conta`.
 
 **Ela não mexe na etapa**, não aposenta e não escreve a ninguém.
 
@@ -171,7 +171,7 @@ Se o painel está aberto, a página se atualiza sozinha: não diga o endereço.
 ## 6 · Onde ela para
 
 **Ela não julga.** Campo de julgamento e seções de análise vazios viram uma
-linha no fecho, apontando a skill de triagem do pack.
+linha no fecho, apontando `/prospeccao:estudar-conta`.
 
 **Ela não pergunta à organização.** Escrever para alguém perguntando o que
 falta é mensagem, e mensagem tem skill própria no pack.

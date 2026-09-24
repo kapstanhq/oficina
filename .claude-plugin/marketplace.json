@@ -14,6 +14,11 @@
       "name": "prospeccao",
       "source": "./prospeccao",
       "description": "Para quem prospecta para si — fundador, consultor, dono de agência: monta uma carteira de contas e contatos numa pasta do seu computador, estuda o que é público com procedência, escreve a abordagem e não escreve para quem pediu silêncio."
+    },
+    {
+      "name": "vagas",
+      "source": "./vagas",
+      "description": "Para quem procura emprego no Brasil, em qualquer profissão: monta a sua busca numa pasta do seu computador, julga cada vaga contra o que você procura, monta o currículo só com o que é verdade e prepara a candidatura. Por padrão ele não entra em conta sua e para antes do botão de enviar. Ligar o LinkedIn ou a Gupy com login, o Google ou o WhatsApp, e deixar que ele envie por você, são escolhas suas — cada uma com o aviso do que muda, e cada envio passa pela sua aprovação no painel."
     }
   ]
 }

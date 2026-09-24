@@ -66,7 +66,7 @@ pular a lista.
 
 **Leia o contrato por seção, em `references/contrato/`** — o número da seção
 é o começo do nome do arquivo: `04-2-hoje.md` é a 4.2. Ele é o padrão comum
-das dez skills do pack, e nada de formato se decide aqui; o inteiro está em
+das dezesseis skills do pack, e nada de formato se decide aqui; o inteiro está em
 `references/CONTRATO.md`. O que esta usa direto:
 
 ```
@@ -196,6 +196,9 @@ está em `allowed-tools` e a primeira chamada pede permissão — isso é normal
 
 - **só leitura.** `create_event`, `update_event` e `delete_event` não se usam
   nesta skill, em nenhum modo.
+- **agenda desligada, e a carteira tem compromisso com hora para hoje ou
+  amanhã:** ofereça ligar, em uma linha, pelo guia de
+  `references/conectores.md` — e siga sem ela se a resposta for não.
 - **evento sem cliente na carteira** entra na lista como está, com `?` no lugar
   do id, e vira uma linha em `## Falta saber`. Não se cria cliente a partir de
   um título de evento.

@@ -6,13 +6,14 @@ description: >-
   que traz uma novidade concreta em vez de cobrar resposta. Nunca repete o
   ângulo da última tentativa, deixa em paz quem já foi retomado duas vezes sem
   responder, e grava a tentativa no arquivo {do-andante} para a próxima execução
-  saber. Com o conector de WhatsApp ligado ela também manda — uma por uma,
-  depois de mostrar na tela para quem vai, o texto inteiro e por que aquela
-  pessoa está na lista. Use quando o {profissional} diz “quem sumiu?”, “quem parou
-  de responder”, “preciso dar um toque em alguém”, “semana fraca, quem eu
+  saber. Com o conector de WhatsApp ligado ela também manda, uma por uma,
+  depois de mostrar para quem vai e o texto inteiro. Use quando o
+  {profissional} diz “quem sumiu?”, “quem parou de responder”, “preciso dar um toque em alguém”, “semana fraca, quem eu
   chamo”, “{gatilho-de-quem-parou}”, “quero reativar {pessoa} de muito tempo atrás”, “tem
   gente parada há tempo demais aí?” ou pede a mensagem para {um-pessoa}
-  específico que ficou sem resposta.
+  específico que ficou sem resposta. Não é para quem deve algo a você
+  (/{plugin}:cobrar-o-que-falta), nem para responder quem respondeu
+  (/{plugin}:{skill-atender}).
 license: MIT
 compatibility: >-
   Precisa da {base}, numa pasta do computador — ela conta os dias de
@@ -38,7 +39,10 @@ nome nenhum, varre a {base} inteira.
 [[se etapa-de:item]]
 
 Aqui quem tem etapa é {o-item}, e quem recebe a mensagem é {o-pessoa} que o
-arquivo {do-item} nomeia. Chamar com {um-item} também vale, e aí ela olha só {esse-item}.
+arquivo {do-item} nomeia. Chamar com {um-item} também vale — é o que o botão do
+painel faz na página {do-item}, com o id —, e aí ela olha só {esse-item}: o
+passo 1 roda sobre ele, e se ele não está parado, ou não tem {pessoa}, a saída
+diz isso em uma linha e não escreve mensagem.
 [[fim]]
 
 Ela não escreve mensagem sem novidade (retomada sem novidade é cobrança, e
@@ -57,7 +61,7 @@ casos: é o padrão, e é o que sobra quando a ponte cai.
 
 **Leia o contrato por seção, em `references/contrato/`** — o número da seção
 é o começo do nome do arquivo: `04-5-arquivo-de-{pessoa}.md` é a 4.5. Ele é o
-padrão comum das dez skills do pack, e nada de formato se decide aqui; o
+padrão comum das {n-skills} skills do pack, e nada de formato se decide aqui; o
 inteiro está em `references/CONTRATO.md`. O que esta usa direto:
 
 ```

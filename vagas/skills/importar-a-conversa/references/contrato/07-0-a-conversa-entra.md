@@ -1,0 +1,148 @@
+<!-- CÓPIA GERADA · não edite: a fonte é oficina/_motor/ ou oficina/<pack>/contrato/, e `npm run oficina -- --escrever` refaz. -->
+
+## 7 · Como a conversa entra
+
+Há dois caminhos, e quem diz qual é a linha `WhatsApp:` do `INDICE.md`
+(seção 4.1). **O padrão é colado**, e é o único que funciona em toda
+ferramenta: o candidato exporta ou cola, e a skill lê os dois formatos que
+chegam. O conector é opcional, não existe em metade dos lugares onde o pack
+roda, e **nenhuma skill o exige** — skill que só funciona com ele quebrou o
+contrato.
+
+O caminho muda; o formato não. Conversa que entrou pelo conector e conversa
+que entrou colada produzem o **mesmo** arquivo em `_bruto/`, com a mesma
+procedência (seção 3). Nenhuma das outras precisa saber por onde ela veio,
+e é isso que impede o conector de virar um segundo pack.
+
+Uma coisa só é diferente, e ela é do WhatsApp: **a exportação não leva o som.**
+Pelo conector, nota de voz chega transcrita; colada, ela é buraco. Ver
+“Áudio”, abaixo.
+
+| a operação | colado | pelo conector |
+|---|---|---|
+| trazer a conversa de um contato | o candidato exporta ou cola | achar a conversa pelo telefone do arquivo do contato e ler o período que interessa |
+| saber quando foi a última mensagem | está no que ele colou | pergunta-se à conversa |
+| saber o que um áudio disse | perguntar ao candidato | vem transcrito, com a marca |
+| guardar em `_bruto/` | igual nos dois | igual nos dois |
+
+**O conector lê sempre, e manda uma por vez** — nunca em lote, e nunca sem o
+candidato ter visto o texto e o nome de quem recebe. Como isso funciona está em
+7.1. O bloco para copiar **continua sendo o padrão**: é o que funciona em toda
+ferramenta, e onde não há conector ele é a única saída.
+
+### O pré-voo, e ele é obrigatório
+
+**A primeira chamada ao conector, em qualquer skill, é `estado_da_ponte`.** Não
+é zelo: a ponte é um programa que fica de pé numa janela, e janela fechada
+congela o histórico no minuto em que ela fechou. Nada avisa. O que se lê depois
+disso é um retrato do passado com cara de presente — e uma skill que ordena o
+dia sobre ele entrega uma lista confiante e errada.
+
+Ela responde em uma linha o que importa, e a ação sai daí:
+
+```
+de pé e conectada          trabalhe, e não diga nada ao candidato
+de pé e desconectada       diga o que ela reporta, em uma linha, e siga com o
+                           que já está guardado — dizendo que é isso que é
+fora do ar, ou parada há   PARE de tratar o conector como fonte. Diga há quanto
+mais de um dia             tempo, que o que passou não volta, e que a janela do
+                           `serve` precisa ser reaberta. Depois ofereça o
+                           caminho colado, que funciona igual
+```
+
+**Silêncio só se justifica quando está tudo certo.** Ponte velha e trabalho
+normal é o único par que o candidato não pode ver, porque é o único em que
+ele acharia que a busca está em dia.
+
+### Exportado do aplicativo
+
+```
+[11/09/2026 09:12] Helena Prates: oi Rafael, gostamos da conversa de terça. consegue uma segunda rodada?
+[11/09/2026 09:20] Rafael Duarte: consigo sim. terça a quinta, de manhã, fica bom para vocês?
+[11/09/2026 09:21] Helena Prates: ‎<Mídia oculta>
+[11/09/2026 09:34] Helena Prates: dia 14, às 10h. vai ser com o diretor de operações junto
+```
+
+Aparece também sem colchetes, que é o formato antigo, e vale o mesmo:
+
+```
+11/09/2026 09:12 - Helena Prates: oi Rafael, gostamos da conversa de terça
+```
+
+A data é **dd/mm/aaaa** e a hora é de 24 horas — é o padrão brasileiro, e
+`03/08` é 3 de agosto. Ano de dois dígitos (`12/08/26`) é 2026. Ao gravar,
+converta para `2026-08-12`.
+
+**Quem é o candidato na conversa:** é o remetente cujo nome bate com `nome:` do
+`INDICE.md`. Não bateu de jeito nenhum? Uma pergunta, uma vez: “Nessa conversa,
+qual dos dois é você?”. Nunca deduza pelo tom — o risco é gravar a fala do
+contato como promessa do candidato.
+
+**O que não se lê, não se inventa:** `<Mídia oculta>`, `Esta mensagem foi
+apagada` e figurinha viram um buraco declarado, não um palpite. Se o buraco
+está no meio do que importa, ele vira uma linha em `## Combinado` ou uma
+pergunta: “Tem uma mídia oculta de 12 de agosto no meio da conversa. O que
+tinha ali?”
+
+### Áudio
+
+Nota de voz que entra **pelo conector** chega transcrita, e a marca vem junto:
+
+```
+[12/08/2026 14:41] Helena: [áudio 0:42 · transcrição] amanhã de manhã eu consigo passar
+```
+
+Grave no `_bruto/` com a marca, como chegou. Ela não é enfeite: **é texto de
+máquina**, e máquina troca nome, número e valor. Daí a regra, e ela tem duas
+partes:
+
+- **O que foi dito é fato**, e entra como qualquer outro. A procedência nomeia
+  o áudio, com a data convertida como toda data de campo:
+  `← _bruto/<arquivo>, áudio de 2026-08-12`. O `12/08` do rótulo é do bruto, e
+  fica lá.
+- **Número, valor, data e nome próprio saídos de transcrição não viram campo
+  sem confirmação.** Campo preenchido não levanta suspeita em ninguém, e um
+  “trezentos e cinquenta” ouvido errado sai na vaga e na mensagem que vai
+  ao contato. Pergunte uma vez: “O áudio de 12/08 diz R$ 14 a 16 mil. Confere?”
+
+Sem transcrição, o conector diz **por quê** no lugar do texto — e o motivo
+decide o que fazer:
+
+```
+na fila para transcrever      ainda vem: siga, e não pergunte nada
+não baixado: grupo            não vem: buraco declarado
+o arquivo expirou e o
+celular não tem mais          não vem: buraco declarado
+```
+
+**Colado, áudio continua buraco**, e aí vale o parágrafo de cima: vira pergunta
+ao candidato.
+
+### Texto solto
+
+Colagem sem carimbo de data e sem nome — um pedaço de conversa, um anúncio de
+vaga, um trecho do site da empresa, um e-mail encaminhado. Trate assim: o conteúdo é fato do que está
+escrito, a data é a que o candidato disser (ou a de hoje, e a procedência diz
+`← candidato, <hoje>`), e o autor não se adivinha.
+
+### O que fazer com ela depois, sempre nesta ordem
+
+1. **Grava o bruto primeiro**, em `_bruto/AAAA-MM-DD-<canal>-<apelido-curto>.md`, com
+   o cabeçalho de três linhas da seção 4.7 e o texto colado sem tocar. Primeiro
+   porque, se algo der errado no meio, o material do candidato já está salvo.
+2. **Extrai os fatos** para os arquivos donos — contato e vaga —, cada campo
+   com `← _bruto/<aquele arquivo>`. Fato é o que está escrito: “dá sábado, mas
+   cedo” é `## Combinado`, não “entrevista marcada para sábado”.
+3. **Atualiza as vistas** que mudaram: `funil.md` se a etapa mudou,
+   `_indice.md` se entrou item ou mudou o último contato.
+   A etapa é da vaga: conversa com um contato que mostra que a vaga andou
+   muda o `etapa:` no arquivo da vaga de que ela trata — o arquivo do contato
+   não tem esse campo. Conversa que não diz de qual vaga fala não muda etapa
+   nenhuma: vira pergunta.
+4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.
+
+Conversa que menciona vaga que não está na busca: não crie a vaga com o
+que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, a vaga não
+entra — dado que se adivinhou vira faixa errada na mensagem para o contato.
+
+---

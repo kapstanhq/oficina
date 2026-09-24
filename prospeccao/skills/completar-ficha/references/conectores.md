@@ -10,8 +10,10 @@
 Isto é OPCIONAL. Sem conector nenhum, tudo funciona com o que o prospector cola —
 é o caminho de sempre, e é o único nos chats da web.
 
-**Só existe se o plugin estiver instalado e houver `node` na máquina.** Onde as
-ferramentas `conectores_*` não aparecem, não mencione este arquivo.
+**As ferramentas `conectores_*` só existem com o plugin instalado e `node` na
+máquina.** Onde elas não aparecem, não as mencione — mas a última seção, “Ligar
+no dia, e desligar quando quiser”, vale sempre: Google, WhatsApp e o login em
+site não passam por elas.
 
 ---
 
@@ -139,3 +141,48 @@ peça o detalhe, se o conector tiver a operação, ou deixe `?`.
 
 **Falhou e você não sabe por quê?** Diga o que aconteceu e siga com o que
 tem. Conector é alcance; o trabalho é o mesmo sem ele, só que menor.
+
+## Ligar no dia, e desligar quando quiser
+
+Google, WhatsApp e o login em site não se ligam "por via das dúvidas". A skill
+que precisar de um deles oferece UMA vez, no dia em que ele faz falta, em três
+linhas: o que muda, como ligar, como desfazer. Não quis: uma linha em
+`## Pulado no começo`, com a data, e ela segue sem. Ligou: `sim  ← testado
+<data>` só depois da prova. Desligou: a linha volta a `não`, com a data.
+
+```
+Google Agenda, Gmail, Drive
+  ligar      Claude Code: /mcp → “Google Calendar”, “Gmail” ou “Google
+             Drive” → “Authenticate”, e a tela do Google no navegador dele.
+             Claude do navegador ou Desktop: Configurações → Conectores →
+             “Conectar”
+  provar     Agenda: list_calendars · Gmail: list_labels · Drive:
+             list_recent_files
+  desligar   o mesmo lugar → “Disconnect” / “Desconectar”
+  revogar    myaccount.google.com/connections, na conta que autorizou → o
+             app → “Excluir todas as conexões”. É o que corta o acesso do
+             lado do Google, mesmo com o programa instalado
+
+WhatsApp
+  ligar      a cadeia de `conectar-whatsapp.md`, com os avisos — ao lado
+             desta, ou em `../comecar/references/`
+  desligar   no celular: Configurações › Dispositivos conectados › o
+             dispositivo → “Desconectar”. Na máquina: fechar a janela do
+             `serve`, tirá-lo da inicialização (degrau 4.5),
+             `claude mcp remove -s user whatsapp`, e apagar a pasta da
+             ponte — é lá que moram a sessão e as conversas copiadas
+
+login em site, pelo navegador
+  ligar      painel → Configurações › Integrações → “Onde o assistente
+             entra com a sua conta” → Entrar. O login é dele, na janela que
+             abre: senha e dois fatores nunca passam por você
+  desligar   o mesmo lugar → “Sair”: o site sai do arquivo de sessões, e
+             nenhum assistente entra mais com a conta dele
+  revogar    “Sair” não desloga o navegador do painel. Para cortar de vez:
+             no próprio site, na página de segurança da conta, encerrar a
+             sessão ativa do Chrome — e apagar a pasta
+             ~/.kapstan/navegador/perfil
+```
+
+Quem liga e quem desliga é ele. Você diz o caminho, com o nome de cada botão,
+e espera — nunca desliga por ele, e nunca pede senha.
