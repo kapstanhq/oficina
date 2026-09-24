@@ -15,7 +15,7 @@
  *                  `data:` — ver `documento.mjs`
  */
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -67,9 +67,18 @@ export async function imprimir(html, { navegador = acharNavegador(), teto = 60_0
       { stdio: ["ignore", "ignore", "pipe"], windowsHide: true });
       let erro = "";
       p.stderr.on("data", (d) => { erro += d; });
-      const relogio = setTimeout(() => { p.kill(); falha(new Error("o navegador não terminou a impressão a tempo")); }, teto);
-      p.on("error", (e) => { clearTimeout(relogio); falha(e); });
-      p.on("exit", () => { clearTimeout(relogio); existsSync(pdf) ? ok() : falha(new Error("o navegador não gerou o PDF: " + erro.slice(-300))); });
+      /* o fim é o PDF parar de crescer, e não o processo sair: no macOS o
+         Chrome sem tela escreve o arquivo e continua de pé até o teto (CI, 24/09) */
+      let tamanho = -1;
+      const vigia = setInterval(() => {
+        const agora = existsSync(pdf) ? statSync(pdf).size : -1;
+        if (agora > 0 && agora === tamanho) { parar(); p.kill(); ok(); }
+        tamanho = agora;
+      }, 250);
+      const relogio = setTimeout(() => { parar(); p.kill(); falha(new Error("o navegador não terminou a impressão a tempo")); }, teto);
+      const parar = () => { clearInterval(vigia); clearTimeout(relogio); };
+      p.on("error", (e) => { parar(); falha(e); });
+      p.on("exit", () => { parar(); existsSync(pdf) ? ok() : falha(new Error("o navegador não gerou o PDF: " + erro.slice(-300))); });
     });
     return await readFile(pdf);
   } finally {
