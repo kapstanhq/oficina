@@ -15,11 +15,14 @@
     "svelte:painel": "node scripts/svelte-build-painel.mjs",
     "provar": "node scripts/prova-oficina.mjs",
     "marcas": "node scripts/motor-marcas.mjs",
+    "novo-pack": "node scripts/novo-pack.mjs",
     "prova:guardas": "node painel/prova-guardas.mjs",
     "prova:vigia": "node painel/prova-vigia.mjs",
     "prova:tela": "node painel/prova-tela.mjs",
     "prova:conectores": "node conectores/prova.mjs",
-    "prova:documentos": "node documentos/prova.mjs"
+    "prova:documentos": "node documentos/prova.mjs",
+    "prova:sempre": "node painel/prova-sempre.mjs --so-geracao",
+    "prova:lancar": "node painel/prova-lancar.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

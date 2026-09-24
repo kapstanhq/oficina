@@ -29,6 +29,8 @@
  * e ele o recebe como parâmetro de busca, não como caminho de URL.
  */
 
+import { TEXTOS_PADRAO } from "./textos.js";
+
 export const paraInicio = "#/";
 export const paraTarefa = "#/tarefa";
 /* ── ESTA É DO SISTEMA, E NÃO DO `INDICE.md` ──────────────────────────
@@ -397,8 +399,9 @@ export function nomeDoArquivo(caminho) {
 }
 
 /* as duas pastas guardadas são do FORMATO, e não de um ofício: o nome delas é
-   do motor (D242). "Bruto" lia como erro, e "Arquivo › Arquivo morto" repetia */
-const DO_FORMATO = { "_bruto": "Originais", "arquivo-morto": "Arquivados" };
+   do motor (D242). "Bruto" lia como erro, e "Arquivo › Arquivo morto" repetia.
+   O texto é da tabela de textos; o pack o troca, e `agruparMenu` o renova */
+let DO_FORMATO = { "_bruto": TEXTOS_PADRAO.originais, "arquivo-morto": TEXTOS_PADRAO.arquivados };
 
 export function nomeDeGente(alvo) {
   const formato = DO_FORMATO[String(alvo || "").trim().replace(/\/+$/, "")];
@@ -458,7 +461,8 @@ const ehGuardado = (alvo) => /^[_.]/.test(alvo) || alvo === "arquivo-morto";
 /* `itens` é a pasta dos itens do pack e `funil`, se a base tem `funil.md`:
    com os dois, a entrada da pasta abre o funil em lista e detalhe (D245) —
    uma tela só para as mesmas vagas */
-export function agruparMenu(mapa, { itens = "", funil = false } = {}) {
+export function agruparMenu(mapa, { itens = "", funil = false, textos = TEXTOS_PADRAO } = {}) {
+  DO_FORMATO = { "_bruto": textos.originais, "arquivo-morto": textos.arquivados };
   aprenderNomes(mapa);
   const pastas = new Map((mapa?.arvore || [])
     .filter((i) => i.tipo === "pasta").map((i) => [i.nome, i.itens || []]));

@@ -34,6 +34,8 @@ jobs:
 
       - run: npm run prova:guardas
       - run: npm run prova:vigia
+      - run: npm run prova:sempre
+      - run: npm run prova:lancar
       - run: npm run prova:conectores
       - run: npm run prova:documentos
       - run: npm run prova:tela

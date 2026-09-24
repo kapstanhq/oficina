@@ -17,7 +17,20 @@
 export const BLOCOS_DO_INICIO = ["comeco", "novidades", "numeros", "hoje", "funil", "acoes"];
 
 /** as chaves que a base pode ajustar */
-export const CHAVES_DA_BASE = ["inicio", "destaque", "resumo", "rotulos", "motivos", "proximo"];
+/* o modelo do botão que lança o assistente (D267 emenda D263): mora aqui, e
+   não no lancar.mjs, porque a página importa este arquivo e não pode levar Node. */
+export const MODELO_PADRAO = "opus";
+const APELIDOS = { opus: "Opus", sonnet: "Sonnet", haiku: "Haiku" };
+/** o valor normalizado, ou "" quando não é um modelo que o botão aceita */
+export function modeloValido(v) {
+  const m = String(v ?? "").trim().toLowerCase();
+  return APELIDOS[m] || /^claude-[a-z0-9][a-z0-9.-]{0,60}(\[1m\])?$/.test(m) ? m : "";
+}
+/** o nome que a tela escreve no aviso de custo */
+export const nomeDoModelo = (m) => APELIDOS[m] || m || APELIDOS[MODELO_PADRAO];
+
+
+export const CHAVES_DA_BASE = ["inicio", "destaque", "resumo", "rotulos", "motivos", "proximo", "modelo"];
 
 const listaDeTextos = (v, teto, largura) => Array.isArray(v) && v.length <= teto
   && v.every((x) => typeof x === "string" && x.trim() && x.length <= largura);
@@ -47,6 +60,9 @@ export function ajustarPelaBase(acoes, dela) {
     if (chave === "inicio") {
       if (listaDeTextos(valor, BLOCOS_DO_INICIO.length, 20) && valor.every((b) => BLOCOS_DO_INICIO.includes(b))) vale(chave, valor);
       else recusa(`inicio: uma lista com os blocos ${BLOCOS_DO_INICIO.join(", ")} — o que não estiver nela some do início`);
+    } else if (chave === "modelo") {
+      const m = modeloValido(valor);
+      if (m) vale(chave, m); else recusa("modelo: opus, sonnet, haiku ou um id claude-…");
     } else if (chave === "destaque") {
       if (listaDeTextos(valor, 8, 40)) vale(chave, valor); else recusa("destaque: até oito rótulos de campo, como estão no arquivo do item");
     } else if (chave === "resumo") {

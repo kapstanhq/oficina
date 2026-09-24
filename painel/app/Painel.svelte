@@ -36,6 +36,8 @@
   import { entrar, aguardarDocumento, enviarIntencao, pedirEstado,
     pedirMapa, pedirArquivo, pedirFila, marcarNaFila, anotarNaFila, mandarFila, tirarResposta, pedirAcoes,
     pedirExecucao, lancarAssistente, pararAssistente, mexerNaFilaDeExecucao, pedirFichas } from "./ponte.js";
+  import * as ponte from "./ponte.js";
+  import { textos, aplicarTextos } from "./textos.svelte.js";
   import { lerRota, indicePorId, documentosPorId, idsDaLinha, agruparMenu, nomeDeGente, paraInicio, paraTarefa,
     paraPasta, paraArquivo, paraConectores, paraSobre, paraFunil, TODAS, proximoDaLinha, ocupadosDe, partirId } from "./rota.js";
   import { setContext } from "svelte";
@@ -50,6 +52,16 @@
   import Funil from "./casa/Funil.svelte";
   import Documentos from "./casa/Documentos.svelte";
   import Pessoas from "./casa/Pessoas.svelte";
+
+  /* as vistas de `<pack>/painel/componentes/`, que a entrada gerada do pack
+     passa aqui — pack sem componentes não passa nada */
+  let { vistasDoPack = {} } = $props();
+
+  /* ── A PONTE, UMA SÓ, POR CONTEXTO ────────────────────────────────────
+     As telas de `casa/` a leem daqui, e não importam `ponte.js`: é o que
+     deixa um componente de pack usá-las (ou usar a ponte) sem saber onde
+     ela mora. */
+  setContext("ponte", ponte);
 
   /* ── A ENTRADA ────────────────────────────────────────────────────────
      `entrando` enquanto a troca não voltou, `sem-chave` quando o servidor
@@ -77,17 +89,14 @@
 
   /* o menu em grupos, e o agrupamento é mecânico — ver `agruparMenu` (D231) */
   const temFunil = $derived((mapa?.arvore || []).some((i) => i.tipo === "arquivo" && i.nome === "funil.md"));
-  const menu = $derived(agruparMenu(mapa, { itens: pastasDoPack?.item || "", funil: temFunil }));
+  const menu = $derived(agruparMenu(mapa, { itens: pastasDoPack?.item || "", funil: temFunil, textos }));
   /* a pasta dos itens É o funil (D245): o endereço velho da pasta cai nele */
   const pastaEhFunil = $derived(rota.tela === "pasta" && temFunil && rota.nome === pastasDoPack?.item);
   const nomeDosItens = $derived(pastasDoPack?.item ? nomeDeGente(pastasDoPack.item) : "Funil");
-  /* a vista `lista` que o agente manda mostra a ficha do item quando o id tem
-     arquivo (D242) — ela não recebe a casa por prop, porque a tarefa também
-     existe sem base */
-  setContext("casa", { get indice() { return indice; }, get destaque() { return destaque; },
-    get resumo() { return resumo; }, get documentos() { return documentos; },
-    get agente() { return estado.agente; }, get esperando() { return estado.esperando; },
-    get completar() { return completar; }, get rotulos() { return rotulos; } });
+  /* a vista `lista` que o agente manda mostra o arquivo do item quando o id
+     tem arquivo (D242): a casca dá o caminho e o desenho (`arquivoDoItem`, no
+     fim), e a vista não importa nada de `casa/` */
+  const caminhoDoId = (id) => indice.get(id) || "";
   /* a gaveta do telefone. Fecha a cada troca de rota: menu que fica aberto
      por cima da tela que a pessoa acabou de escolher é um clique a mais. */
   let gaveta = $state(false);
@@ -317,11 +326,13 @@
       estado = novo;
       execucao = novo?.execucao || null;
       acesso = "dentro";
-      mapa = novo?.base ? await pedirMapa() : null;
       /* relido a cada volta, e não uma vez: o ajuste da base (D244) muda
-         quando o agente escreve o painel.json dela */
+         quando o agente escreve o painel.json dela. Os textos do pack valem
+         também sem base, e entram antes do mapa: o menu já nasce com eles */
+      const lidas = await pedirAcoes().catch(() => null);
+      aplicarTextos(lidas?.textos);
+      mapa = novo?.base ? await pedirMapa() : null;
       if (mapa) {
-        const lidas = await pedirAcoes().catch(() => null);
         acoes = lidas?.grupos || [];
         pastasDoPack = lidas?.pastas || {};
         comeco = lidas?.comeco || [];
@@ -521,9 +532,9 @@
         ? [{ nome: nomeDeGente(partes[0]), href: paraPasta(partes[0]) }]
         : [];
     }
-    if (rota.tela === "conectores") return [{ nome: "Integrações" }];
-    if (rota.tela === "sobre") return [{ nome: "Conta" }];
-    if (rota.tela === "tarefa") return [{ nome: "Sua vez" }];
+    if (rota.tela === "conectores") return [{ nome: textos.integracoes }];
+    if (rota.tela === "sobre") return [{ nome: textos.conta }];
+    if (rota.tela === "tarefa") return [{ nome: textos.suaVez }];
     return [];
   })());
 </script>
@@ -564,7 +575,7 @@
         mostrar, aparece nesta tela.</p>
     {:else}
       {#key doc.versao}
-        <Tarefa {doc} {mandado} {recusa} {mandar} />
+        <Tarefa {doc} {mandado} {recusa} {mandar} {vistasDoPack} />
       {/key}
     {/if}
   </main>
@@ -576,7 +587,7 @@
     <div class="p-topo">
       <button type="button" class="p-topo-menu" aria-expanded={gaveta}
         aria-controls="p-lado" onclick={() => { gaveta = !gaveta; }}>
-        <span aria-hidden="true">☰</span> Menu
+        <span aria-hidden="true">☰</span> {textos.menu}
       </button>
       <span class="p-topo-titulo">{mapa.titulo}</span>
       <span class="p-pulso" data-tom={situacao.tom} title={situacao.titulo}
@@ -599,11 +610,11 @@
 
       <div class="p-lado-grupo">
         <a class="p-lado-item" href={paraInicio}
-          aria-current={atual === paraInicio ? "page" : undefined}>Início</a>
+          aria-current={atual === paraInicio ? "page" : undefined}>{textos.inicio}</a>
         {#if temTarefa}
           <a class="p-lado-item" href={paraTarefa} onclick={lembrarVolta}
             aria-current={rota.tela === "tarefa" ? "page" : undefined}>
-            Sua vez
+            {textos.suaVez}
             {#if esperaResposta}<span class="p-lado-conta p-lado-conta-viva">1</span>{/if}
           </a>
         {/if}
@@ -623,15 +634,15 @@
       {/if}
 
       <div class="p-lado-grupo">
-        <span class="p-lado-rotulo">Configurações</span>
+        <span class="p-lado-rotulo">{textos.configuracoes}</span>
         {#if estado.conectores}
           <a class="p-lado-item" href={paraConectores}
             title="ligar um serviço, colar a chave dele e dizer quanto ele pode gastar"
-            aria-current={rota.tela === "conectores" ? "page" : undefined}>Integrações</a>
+            aria-current={rota.tela === "conectores" ? "page" : undefined}>{textos.integracoes}</a>
         {/if}
         <a class="p-lado-item" href={paraSobre}
           title="quem você é, como trabalha e onde a {baseDoPack || 'base'} mora"
-          aria-current={rota.tela === "sobre" ? "page" : undefined}>Conta</a>
+          aria-current={rota.tela === "sobre" ? "page" : undefined}>{textos.conta}</a>
       </div>
 
       <!-- ── O GUARDADO, RECOLHIDO ──────────────────────────────────────
@@ -642,7 +653,7 @@
       {#if menu.guardado.length}
         <details class="p-lado-grupo"
           open={menu.guardado.some((m) => atual === m.href) || undefined}>
-          <summary class="p-lado-rotulo p-lado-rotulo-abre">Arquivo</summary>
+          <summary class="p-lado-rotulo p-lado-rotulo-abre">{textos.arquivo}</summary>
           {#each menu.guardado as m (m.alvo)}
             <a class="p-lado-item" href={m.href} title={m.descricao || undefined}
               aria-current={atual === m.href ? "page" : undefined}>
@@ -687,7 +698,7 @@
         class:p-miolo-inteira={rota.tela === "funil" || (rota.tela === "tarefa" && tarefaLarga)}>
         {#if trilha.length}
           <nav class="p-trilha" aria-label="onde você está">
-            <a href={paraInicio}>Início</a>
+            <a href={paraInicio}>{textos.inicio}</a>
             {#each trilha as t, i (i)}
               <span aria-hidden="true">›</span>
               {#if t.href}<a href={t.href}>{t.nome}</a>{:else}<span>{t.nome}</span>{/if}
@@ -723,7 +734,8 @@
                  texto aberto para correção de uma tela atravessar para a
                  seguinte, com o rascunho da anterior dentro -->
             {#key doc.versao}
-              <Tarefa {doc} {mandado} {guardada} {recusa} {mandar} esperando={!!estado.esperando} />
+              <Tarefa {doc} {mandado} {guardada} {recusa} {mandar} esperando={!!estado.esperando}
+                {vistasDoPack} {caminhoDoId} arquivo={arquivoDoItem} />
             {/key}
           {/if}
         {:else if rota.tela === "funil" || pastaEhFunil}
@@ -760,3 +772,8 @@
     </div>
   </div>
 {/if}
+
+{#snippet arquivoDoItem(caminho)}
+  <Arquivo {caminho} embutido {indice} {documentos} {destaque} {completar} {rotulos}
+    agente={estado.agente} esperando={estado.esperando} />
+{/snippet}

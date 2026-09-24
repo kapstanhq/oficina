@@ -1,0 +1,1 @@
+<<preencher: o exemplo “comecar--as-pastas-vazias” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "comecar--as-pastas-vazias" _motor). Os dois que existem: corretor/exemplos/comecar--as-pastas-vazias.md e prospeccao/exemplos/comecar--as-pastas-vazias.md>>

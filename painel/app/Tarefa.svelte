@@ -36,16 +36,19 @@
   import Laudo from "./vistas/Laudo.svelte";
   import Formulario from "./vistas/Formulario.svelte";
 
-  /* ── O MAPA DE VISTAS É FECHADO ───────────────────────────────────────
+  /* ── O MAPA DE VISTAS: AS COMUNS E AS DO PACK ──────────────────────────
+     As do pack chegam por `vistasDoPack`, que a entrada gerada do pack monta
+     de `<pack>/painel/componentes/` (ver `scripts/svelte-build-painel.mjs`).
      Vista que o servidor mande e que não esteja aqui não quebra a tela: cai
      no aviso do fim, que DIZ qual chegou. Uma tela em branco seria a mesma
      informação com zero pistas, e é o modo de falha que obriga alguém a
      abrir o console para descobrir o nome de um campo. */
-  const VISTAS = { lista: Lista, ficha: Ficha, texto: Texto, escolha: Escolha,
+  const COMUNS = { lista: Lista, ficha: Ficha, texto: Texto, escolha: Escolha,
     feedback: Feedback, laudo: Laudo, formulario: Formulario };
 
   let { doc, mandado = false, guardada = false, recusa = "", mandar = async () => {},
-    esperando = true } = $props();
+    esperando = true, vistasDoPack = {}, caminhoDoId = null, arquivo = null } = $props();
+  const VISTAS = $derived({ ...vistasDoPack, ...COMUNS });
 
   /* o que cada bloco coletou — o texto editado, os campos, as decisões. Cada
      vista é dona do formato do seu; esta tela só o carrega até o botão.
@@ -129,7 +132,7 @@
     {#if b.titulo}<h2 class="c-h3">{b.titulo}</h2>{/if}
     {#if Vista}
       <Vista dados={b.dados || {}} agir={(acao, dele) => agir(acao, dele, b.id)}
-        bind:extra={extras[i]} origem={comOrigem} />
+        bind:extra={extras[i]} origem={comOrigem} {caminhoDoId} {arquivo} />
     {:else}
       <p class="c-nota p-falta">
         O agente pediu a vista <code>{b.vista}</code>, que este painel não

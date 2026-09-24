@@ -20,6 +20,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 import { acharNavegador } from "../documentos/nucleo/imprimir.mjs";
+import { compilarPainel } from "../scripts/svelte-build-painel.mjs";
+import { juntarPainel } from "../scripts/painel.mjs";
+import { packsDoMarketplace, vistasDoPack } from "../scripts/vistas-do-pack.mjs";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const CHROME = process.env.CHROME || acharNavegador();
@@ -61,6 +64,9 @@ await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify({
   documentos: { documentos: "curriculo" },
   proximo: { "por julgar": ["marcar", "descartar", "/x:buscar"],
     "em andamento": ["marcar", "/x:sobre-item", "descartar"] },
+  /* a terceira camada (D267): a vista que só este pack tem, e um texto trocado */
+  vistas: { contagem: "a contagem de prova: dados { itens: [{ rotulo, n }] }" },
+  textos: { integracoes: "Serviços ligados" },
   grupos: [{ rotulo: "", acoes: [
     { comando: "/x:perfil", nome: "Escrever o perfil", oque: "O que você procura", sobre: [] },
     { comando: "/x:buscar", nome: "Buscar", oque: "Busca nas fontes", sobre: ["nada"] },
@@ -71,6 +77,11 @@ await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify({
 
 /* o modelo de documento de verdade, do pack de vagas: a prévia do painel (D270) */
 await cp(join(AQUI, "..", "documentos", "_prova", "documentos", "modelos"), join(PACK, "documentos", "modelos"), { recursive: true });
+
+/* a página DO PACK, com a vista de `_prova-pack/painel/componentes/` dentro:
+   o mesmo caminho do `npm run painel`, e o servidor a serve por `--pack` */
+await compilarPainel({ pack: join(AQUI, "_prova-pack"), saida: join(TEMP, "entrada-do-pack.js") });
+await writeFile(join(PACK, "painel", "painel.html"), await juntarPainel(join(TEMP, "entrada-do-pack.js")));
 
 const servidor = spawn(process.execPath, [join(AQUI, "servidor.mjs"), "--pack", PACK], {
   stdio: ["pipe", "pipe", "pipe"],
@@ -492,6 +503,34 @@ conferir("vista · o clique volta ao assistente", volta.acao, "nao");
 conferir("recado · volta em `comentario`, mesmo na recusa", volta.comentario, "a data certa é outra");
 conferir("recado · o do campo volta em `comentarios`, fora do valor",
   JSON.stringify(volta.comentarios) + " · " + volta.campos?.quando, '{"quando":"confira no e-mail"} · 2026-09-21');
+
+/* ── A VISTA DO PACK (D267) ──────────────────────────────────────────────
+   A que vem de `componentes/` passa pela mesma porta das comuns: está no
+   esquema, desenha, e o gesto dela volta ao assistente. */
+const lista = await pedir("tools/list", {});
+conferir("pack · a vista do pack está no esquema de painel_mostrar",
+  lista.result.tools.find((t) => t.name === "painel_mostrar").inputSchema.properties.vista.enum.includes("contagem"), true);
+await chamar("painel_mostrar", { titulo: "Vista do pack", vista: "contagem",
+  dados: { itens: [{ rotulo: "primeiro", n: 2 }, { rotulo: "segundo", n: 3 }] } });
+await ir("#/tarefa", "text=Vista do pack");
+conferir("pack · a vista do pack desenha", await pagina.locator("main [data-total]").textContent(), "5");
+conferir("pack · e não rola para o lado", await rolaDeLado(), false);
+await capturar("1300-vista-do-pack");
+const esperandoOPack = chamar("painel_esperar", { segundos: 15 });
+await dormir(300);
+await pagina.getByRole("button", { name: "Conferir a contagem" }).click();
+const doPack = await esperandoOPack;
+conferir("pack · o gesto da vista do pack volta ao assistente", `${doPack.acao} · ${doPack.total}`, "contei · 5");
+const recusada = await chamar("painel_mostrar", { titulo: "x", vista: "nenhuma", dados: {} });
+conferir("pack · vista desconhecida é recusada dizendo as que existem, com a do pack",
+  /vista desconhecida: nenhuma.*contagem/.test(JSON.stringify(recusada)), true);
+conferir("pack · o texto que o pack trocou está no menu", await tem('nav#p-lado a:text-is("Serviços ligados")'), true);
+/* o pack sem `componentes/` leva a página comum, byte a byte */
+const comum = await readFile(join(AQUI, "painel.html"), "utf8");
+for (const { nome } of packsDoMarketplace().filter((x) => !vistasDoPack(x.pasta).vistas.length)) {
+  conferir(`pack · ${nome}, sem componentes, tem o painel comum byte a byte`,
+    (await readFile(join(AQUI, `painel.${nome}.html`), "utf8").catch(() => "")) === comum, true);
+}
 
 /* ── O TELEFONE, a 390 px ──────────────────────────────────────────────── */
 await pagina.setViewportSize({ width: 390, height: 844 });

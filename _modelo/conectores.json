@@ -1,0 +1,3 @@
+{
+  "_": "As fontes de dado que este ofício acrescenta ao catálogo base (conectores/catalogo.json), que o montador funde em __slug__/conectores/catalogo.json. Vazio vale: o pack sobe com o catálogo base. Nome que já existe no base só aceita `operacoes+` e `sessoes+`."
+}

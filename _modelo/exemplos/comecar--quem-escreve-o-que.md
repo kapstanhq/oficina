@@ -1,0 +1,1 @@
+<<preencher: o exemplo “comecar--quem-escreve-o-que” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "comecar--quem-escreve-o-que" _motor). Os dois que existem: corretor/exemplos/comecar--quem-escreve-o-que.md e prospeccao/exemplos/comecar--quem-escreve-o-que.md>>

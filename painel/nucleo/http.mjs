@@ -64,7 +64,7 @@ import { createServer } from "node:http";
 import { createHmac, randomBytes } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, posix, win32 } from "node:path";
 
 /* ── A PORTA ──────────────────────────────────────────────────────────
    3000 é o `npm run dev`, 3001 o `--dist`, 4173 a auditoria. O painel começa
@@ -113,11 +113,96 @@ const FORMATO_DA_CHAVE = /^[A-Za-z0-9_-]{32,}$/;
 export const pastaDaChave = () =>
   process.env.KAPSTAN_PAINEL_DIR || join(homedir(), ".kapstan", "painel");
 
-/* o atalho que põe o painel solto no login do Windows (D243): a pasta
-   Inicializar do usuário. Quem escreve é `sempre.mjs --instalar`; o servidor
-   só confere se ele existe, para a página Conta dizer */
-export const atalhoDoLogin = () => join(process.env.KAPSTAN_INICIALIZAR_DIR
-  || join(process.env.APPDATA || "", "Microsoft", "Windows", "Start Menu", "Programs", "Startup"), "kapstan-painel.vbs");
+/* ── O QUE PÕE O PAINEL SOLTO NO LOGIN (D243) ─────────────────────────
+   Quem escreve é `sempre.mjs --instalar`; o servidor só confere se existe,
+   para a página Conta dizer. Tudo no nível do USUÁRIO, sem administrador:
+
+     win32    `.vbs` na pasta Inicializar
+     darwin   LaunchAgent em ~/Library/LaunchAgents
+     linux    `.desktop` no autostart do XDG — sobe com a sessão gráfica. A
+              unidade do systemd de usuário é a alternativa para quem não tem
+              sessão gráfica: `sempre.mjs` a escreve, e quem a liga é a pessoa
+
+   `KAPSTAN_INICIALIZAR_DIR` troca a pasta, e é o que a prova usa. As funções
+   recebem plataforma, ambiente e casa para a prova gerar as três daqui. */
+export const ROTULO_DO_LOGIN = "br.com.kapstan.painel";
+const NOME_NO_LOGIN = { win32: "kapstan-painel.vbs", darwin: `${ROTULO_DO_LOGIN}.plist`, linux: "kapstan-painel.desktop" };
+const plat = (p) => (p === "win32" || p === "darwin" ? p : "linux");
+/* caminho de outra plataforma se monta com o separador DELA */
+const juntar = (p, ...partes) => (p === "win32" ? win32 : posix).join(...partes);
+
+export function atalhoDoLogin({ plataforma = process.platform, env = process.env, casa = homedir() } = {}) {
+  const p = plat(plataforma);
+  if (env.KAPSTAN_INICIALIZAR_DIR) return join(env.KAPSTAN_INICIALIZAR_DIR, NOME_NO_LOGIN[p]);
+  if (p === "win32") return juntar(p, env.APPDATA || juntar(p, casa, "AppData", "Roaming"),
+    "Microsoft", "Windows", "Start Menu", "Programs", "Startup", NOME_NO_LOGIN[p]);
+  if (p === "darwin") return juntar(p, casa, "Library", "LaunchAgents", NOME_NO_LOGIN[p]);
+  return juntar(p, env.XDG_CONFIG_HOME || juntar(p, casa, ".config"), "autostart", NOME_NO_LOGIN[p]);
+}
+
+/** a unidade do systemd de usuário — só no Linux, e só a alternativa */
+export function unidadeDoLogin({ env = process.env, casa = homedir() } = {}) {
+  if (env.KAPSTAN_INICIALIZAR_DIR) return join(env.KAPSTAN_INICIALIZAR_DIR, "kapstan-painel.service");
+  return posix.join(env.XDG_CONFIG_HOME || posix.join(casa, ".config"), "systemd", "user", "kapstan-painel.service");
+}
+
+/**
+ * O CONTEÚDO do que vai no login, por plataforma — puro, sem tocar o disco.
+ * `comando` é a linha inteira, sem aspas: [node, sempre.mjs, "--base", pasta, …].
+ * `caminhos` é o PATH de quem instalou: o launchd e o systemd sobem com um
+ * PATH mínimo, e o lançador precisa achar o `claude`.
+ */
+export function conteudoDoLogin(plataforma, { comando, caminhos = "" }) {
+  const p = plat(plataforma);
+  const aviso = "O painel da Kapstan sempre ligado (D243). Criado por sempre.mjs --instalar; tire com --desinstalar.";
+  if (p === "win32") {
+    /* `.vbs` porque o `Run` com 0 sobe o node SEM janela; e em UTF-16, que é
+       o que o wscript lê sem estragar acento no caminho */
+    const linha = comando.map((x) => x.startsWith("--") ? x : `"${x}"`).join(" ");
+    const vbs = `' ${aviso}\r\n`
+      + `CreateObject("WScript.Shell").Run "${linha.replace(/"/g, '""')}", 0, False\r\n`;
+    return Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(vbs, "utf16le")]);
+  }
+  if (p === "darwin") {
+    const xml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return Buffer.from([
+      `<?xml version="1.0" encoding="UTF-8"?>`,
+      `<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">`,
+      `<!-- ${xml(aviso)} -->`,
+      `<plist version="1.0">`, `<dict>`,
+      `  <key>Label</key><string>${ROTULO_DO_LOGIN}</string>`,
+      `  <key>ProgramArguments</key>`, `  <array>`,
+      ...comando.map((x) => `    <string>${xml(x)}</string>`),
+      `  </array>`,
+      /* o supervisor já sobe o servidor de novo quando ele cai; o launchd só o põe de pé */
+      `  <key>RunAtLoad</key><true/>`,
+      `  <key>KeepAlive</key><false/>`,
+      ...(caminhos ? [`  <key>EnvironmentVariables</key>`, `  <dict><key>PATH</key><string>${xml(caminhos)}</string></dict>`] : []),
+      `</dict>`, `</plist>`, ``].join("\n"), "utf8");
+  }
+  /* no Exec do .desktop a barra invertida passa por DOIS escapes (aspas e
+     string), e `%` é código de campo */
+  const desktop = (x) => x.startsWith("--") ? x
+    : `"${x.replace(/[\\"`$]/g, "\\$&")}"`.replace(/\\/g, "\\\\").replace(/%/g, "%%");
+  return Buffer.from([
+    `[Desktop Entry]`, `Type=Application`, `Name=Painel da Kapstan`, `Comment=${aviso}`,
+    `Exec=${comando.map(desktop).join(" ")}`,
+    `Terminal=false`, `NoDisplay=true`, `X-GNOME-Autostart-enabled=true`, ``].join("\n"), "utf8");
+}
+
+/** a unidade do systemd de usuário, para quem prefere `systemctl --user enable` ao autostart */
+export function conteudoDaUnidade({ comando, caminhos = "" }) {
+  /* aspas do systemd: `\` e `"` escapam, `%` é especificador e `$` expande */
+  const aspas = (x) => `"${x.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/%/g, "%%").replace(/\$/g, "$$$$")}"`;
+  return Buffer.from([
+    `# O painel da Kapstan sempre ligado (D243), para quem não tem sessão gráfica.`,
+    `# Ligar: systemctl --user enable --now kapstan-painel.service (e apagar o .desktop do autostart)`,
+    `[Unit]`, `Description=Painel da Kapstan sempre ligado`, ``,
+    `[Service]`, `ExecStart=${comando.map((x) => x.startsWith("--") ? x : aspas(x)).join(" ")}`,
+    ...(caminhos ? [`Environment=${aspas("PATH=" + caminhos)}`] : []),
+    `Restart=no`, ``,
+    `[Install]`, `WantedBy=default.target`, ``].join("\n"), "utf8");
+}
 
 /**
  * A chave fixa desta máquina — lida do disco, ou criada na primeira vez.

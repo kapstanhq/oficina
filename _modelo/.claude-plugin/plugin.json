@@ -1,0 +1,18 @@
+{
+  "name": "__slug__",
+  "displayName": "Oficina Kapstan · __nome__",
+  "version": "0.1.0",
+  "description": "<<preencher: uma frase para quem instala — para quem é, o que o pack monta e o que ele faz em cima disso. Sem o número de skills por extenso: o montador confere>>",
+  "author": {
+    "name": "Kapstan",
+    "url": "https://kapstan.com.br"
+  },
+  "homepage": "https://kapstan.com.br/oficina",
+  "repository": "https://github.com/kapstanhq/oficina",
+  "license": "MIT",
+  "keywords": [
+    "<<preencher: palavras de busca do ofício, sem acento>>",
+    "crm",
+    "portugues"
+  ]
+}

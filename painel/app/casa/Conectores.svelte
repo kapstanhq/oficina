@@ -35,9 +35,9 @@
    * dígitos: o servidor devolve `guardada: true` e nada mais, e a tela não
    * teria de onde tirar o resto. O que ela diz é "há uma chave guardada".
    */
-  import { pedirConectores, ligarConector, desligarConector, guardarChaveDe,
-    escreverTetoDe, testarConector, pedirExtrato, mexerNaSessao } from "../ponte.js";
+  import { getContext } from "svelte";
   import { nomeDeGente } from "../rota.js";
+  const { pedirConectores, ligarConector, desligarConector, guardarChaveDe, escreverTetoDe, testarConector, pedirExtrato, mexerNaSessao } = getContext("ponte");
 
   let { recarga = 0 } = $props();
 

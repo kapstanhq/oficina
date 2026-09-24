@@ -28,13 +28,14 @@
    * o pedido e o guardasse para quem nunca vem é pior que um desligado: a
    * pessoa escreve, aperta, e acha que mandou.
    */
-  import { pedirArquivo, enviarPedido } from "../ponte.js";
+  import { getContext } from "svelte";
   import Ficha from "../vistas/Ficha.svelte";
   import { partirId, nomeDeGente, partirProximo, nomeDoArquivo, paraArquivo, paraFunil, chavesDoArquivo } from "../rota.js";
   import Itens from "./Itens.svelte";
-  import ComIds from "./ComIds.svelte";
+  import ComIds from "../comum/ComIds.svelte";
   import Proximo from "./Proximo.svelte";
   import Item from "./Item.svelte";
+  const { pedirArquivo, enviarPedido } = getContext("ponte");
 
   let { caminho, recarga = 0, agente = false, esperando = false, andamento = null,
     indice = null, documentos = null, destaque = [], rotulos = {}, motivos = [],

@@ -19,7 +19,7 @@
    * vez de chutar. Ele ganha tinta âmbar porque é o que a próxima skill vai
    * atacar — é a mesma informação que vira `## Falta saber` no fecho.
    */
-  import ComIds from "../casa/ComIds.svelte";
+  import ComIds from "../comum/ComIds.svelte";
 
   /* `indice` só existe na casa: com ele, o id citado num valor vira link
      (D239). A ficha que o agente manda numa tarefa vem sem, e é só texto. */

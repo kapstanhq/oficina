@@ -16,7 +16,7 @@
    * Mesma regra da `Ficha`: o `←` é o que separa esta base de um CRM que
    * inventa, e escondê-lo faria a regra do contrato existir sem ninguém ver.
    */
-  import ComIds from "./ComIds.svelte";
+  import ComIds from "../comum/ComIds.svelte";
 
   /* com `indice`, todo id citado vira link para o arquivo dele (D239) */
   /* `discreta` (D257): a origem sai da linha e vai para o `title` — a página

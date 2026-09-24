@@ -9,18 +9,23 @@
  *   não disputa   com uma sessão segurando o painel da mesma base, o solto
  *                 espera ela fechar em vez de abrir outra porta
  *   instalar      o atalho do login nasce, e `--remover` o tira e desliga
+ *   gerar         o que vai no login dos TRÊS sistemas — .vbs, LaunchAgent,
+ *                 .desktop e a unidade do systemd —, gerado daqui e escrito
+ *                 numa pasta temporária: roda em qualquer sistema
  *
  * Tudo em pastas temporárias e numa porta própria: nada desta máquina é
  * tocado, e o atalho vai para uma pasta Inicializar de mentira.
  *
  *   node painel/prova-sempre.mjs
+ *   node painel/prova-sempre.mjs --so-geracao   só os casos de gerar, sem processo
  */
 import { spawn, spawnSync } from "node:child_process";
-import { cp, mkdtemp, readFile, rm } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { atalhoDoLogin, conteudoDaUnidade, conteudoDoLogin, unidadeDoLogin } from "./nucleo/http.mjs";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const TEMP = await mkdtemp(join(tmpdir(), "kapstan-prova-sempre-"));
@@ -69,7 +74,61 @@ function sessao(onde = BASE) {
     try { return JSON.parse(r.result?.content?.[0]?.text); } catch { return r; } } };
 }
 
+/* ── GERAR: o login dos três sistemas, sem instalar nada ─────────────── */
+{
+  const casa = "/home/ana";
+  const onde = (plataforma, env = {}) => atalhoDoLogin({ plataforma, env, casa });
+  conferir("gerar · Windows: a pasta Inicializar do APPDATA",
+    atalhoDoLogin({ plataforma: "win32", env: { APPDATA: "C:\\Users\\ana\\AppData\\Roaming" }, casa: "C:\\Users\\ana" }),
+    "C:\\Users\\ana\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\kapstan-painel.vbs");
+  conferir("gerar · Windows sem APPDATA não vira caminho relativo",
+    atalhoDoLogin({ plataforma: "win32", env: {}, casa: "C:\\Users\\ana" }).startsWith("C:\\Users\\ana\\AppData\\Roaming\\"), true);
+  conferir("gerar · Mac: LaunchAgent do usuário", onde("darwin"), "/home/ana/Library/LaunchAgents/br.com.kapstan.painel.plist");
+  conferir("gerar · Linux: autostart do XDG", onde("linux"), "/home/ana/.config/autostart/kapstan-painel.desktop");
+  conferir("gerar · Linux: XDG_CONFIG_HOME vale", onde("linux", { XDG_CONFIG_HOME: "/cfg" }), "/cfg/autostart/kapstan-painel.desktop");
+  conferir("gerar · Linux: a unidade do systemd de usuário", unidadeDoLogin({ env: {}, casa }),
+    "/home/ana/.config/systemd/user/kapstan-painel.service");
+
+  /* um caminho com espaço, acento, `%`, `$`, `&` e aspas: o que quebra cada formato */
+  const base = '/home/ana/Minha base & 100% $HOME "ó"';
+  const comando = ["/usr/bin/node", "/opt/oficina/painel/sempre.mjs", "--base", base];
+  const PASTA = join(TEMP, "gerar");
+  await mkdir(PASTA, { recursive: true });
+  const escrito = async (nome, buf) => { await writeFile(join(PASTA, nome), buf); return readFile(join(PASTA, nome)); };
+
+  const vbs = await escrito("kapstan-painel.vbs", conteudoDoLogin("win32", { comando }));
+  conferir("gerar · .vbs em UTF-16 com BOM", vbs[0] === 0xff && vbs[1] === 0xfe, true);
+  conferir("gerar · .vbs dobra as aspas do caminho",
+    vbs.toString("utf16le").includes('""/home/ana/Minha base & 100% $HOME ""ó"""""'), true);
+
+  const plist = (await escrito("br.com.kapstan.painel.plist",
+    conteudoDoLogin("darwin", { comando, caminhos: "/opt/homebrew/bin:/usr/bin" }))).toString("utf8");
+  conferir("gerar · plist: sobe no login e não se relança",
+    plist.includes("<key>RunAtLoad</key><true/>") && plist.includes("<key>KeepAlive</key><false/>"), true);
+  conferir("gerar · plist: um <string> por argumento, com & escapado",
+    plist.includes('<string>/home/ana/Minha base &amp; 100% $HOME "ó"</string>') && plist.includes("<string>--base</string>"), true);
+  conferir("gerar · plist: o node e o PATH de quem instalou",
+    plist.includes("<string>/usr/bin/node</string>") && plist.includes("<string>/opt/homebrew/bin:/usr/bin</string>"), true);
+  conferir("gerar · plist: nenhum & cru", /&(?!amp;|lt;|gt;)/.test(plist), false);
+
+  const desktop = (await escrito("kapstan-painel.desktop", conteudoDoLogin("linux", { comando }))).toString("utf8");
+  conferir("gerar · .desktop: Exec com aspas, % dobrado, $ e aspas escapados duas vezes",
+    desktop.split("\n").find((l) => l.startsWith("Exec=")),
+    String.raw`Exec="/usr/bin/node" "/opt/oficina/painel/sempre.mjs" --base "/home/ana/Minha base & 100%% \\$HOME \\"ó\\""`);
+  conferir("gerar · .desktop: é uma entrada de aplicativo do autostart",
+    desktop.startsWith("[Desktop Entry]\nType=Application\n") && desktop.includes("X-GNOME-Autostart-enabled=true"), true);
+
+  const unidade = (await escrito("kapstan-painel.service",
+    conteudoDaUnidade({ comando, caminhos: "/usr/local/bin:/usr/bin" }))).toString("utf8");
+  conferir("gerar · unidade: ExecStart com % e $ neutralizados",
+    unidade.split("\n").find((l) => l.startsWith("ExecStart=")),
+    String.raw`ExecStart="/usr/bin/node" "/opt/oficina/painel/sempre.mjs" --base "/home/ana/Minha base & 100%% $$HOME \"ó\""`);
+  conferir("gerar · unidade: o PATH vai junto, e liga com o login do usuário",
+    unidade.includes('Environment="PATH=/usr/local/bin:/usr/bin"') && unidade.includes("WantedBy=default.target"), true);
+}
+
 try {
+  if (process.argv.includes("--so-geracao")) throw Object.assign(new Error("pular"), { pular: true });
   /* ── NÃO DISPUTA: a sessão chegou primeiro ─────────────────────────── */
   const primeira = sessao();
   await primeira.pedir("initialize", { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "prova", version: "0" } });
@@ -119,10 +178,10 @@ try {
 
   /* ── INSTALAR E REMOVER ────────────────────────────────────────────── */
   const inst = sempre("--instalar", "--base", BASE);
-  const atalho = join(TEMP, "inicializar", "kapstan-painel.vbs");
+  const atalho = atalhoDoLogin({ env: ENV });
   conferir("instalar · o atalho do login nasce", existsSync(atalho), true);
   conferir("instalar · e aponta para esta base",
-    existsSync(atalho) && (await readFile(atalho)).toString("utf16le").includes(BASE), true);
+    existsSync(atalho) && (await readFile(atalho)).toString(process.platform === "win32" ? "utf16le" : "utf8").includes(BASE), true);
   conferir("instalar · diz o endereço", /ligado: http:\/\/127\.0\.0\.1:4310\//.test(inst.stdout), true);
   conferir("estado · diz que está ligado e sobe com o login",
     /^ligado/.test(sempre("--estado").stdout) && /sobe com o login/.test(sempre("--estado").stdout), true);
@@ -132,6 +191,8 @@ try {
   conferir("remover · o supervisor sai junto", await ate(async () => sup.exitCode !== null || sup.signalCode !== null, 5000), true);
   conferir("registro · a chave não vai para o log",
     !(await readFile(join(TEMP, "painel", "sempre.log"), "utf8")).includes(await chave()), true);
+} catch (e) {
+  if (!e?.pular) throw e;
 } finally {
   for (const p of vivos) { try { p.kill(); } catch { /* já foi */ } }
   const p = await pid();

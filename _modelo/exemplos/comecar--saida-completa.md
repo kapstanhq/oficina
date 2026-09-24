@@ -1,0 +1,1 @@
+<<preencher: o exemplo “comecar--saida-completa” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "comecar--saida-completa" _motor). Os dois que existem: corretor/exemplos/comecar--saida-completa.md e prospeccao/exemplos/comecar--saida-completa.md>>

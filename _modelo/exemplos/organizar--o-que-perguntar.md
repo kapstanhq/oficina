@@ -1,0 +1,1 @@
+<<preencher: o exemplo “organizar--o-que-perguntar” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "organizar--o-que-perguntar" _motor). Os dois que existem: corretor/exemplos/organizar--o-que-perguntar.md e prospeccao/exemplos/organizar--o-que-perguntar.md>>

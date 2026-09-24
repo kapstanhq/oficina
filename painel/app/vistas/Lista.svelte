@@ -45,12 +45,13 @@
    * Nenhum dos dois toca em `marcadas`: abrir, ler e fechar deixa a decisão
    * exatamente onde estava.
    */
-  import { getContext } from "svelte";
   import Leitor from "../Leitor.svelte";
-  import Arquivo from "../casa/Arquivo.svelte";
   import { partirId } from "../rota.js";
 
-  let { dados = {}, agir = () => {}, extra = $bindable({}) } = $props();
+  /* `caminhoDoId` e `arquivo` vêm da casca, pela Tarefa: com base aberta, o
+     id que tem arquivo abre o arquivo. A vista não sabe da casa — sem os
+     dois, o item mostra o que o agente mandou */
+  let { dados = {}, agir = () => {}, extra = $bindable({}), caminhoDoId = null, arquivo = null } = $props();
 
   /* ── LISTA E DETALHE (D244) ───────────────────────────────────────────
      O lote pode ser lido no mesmo `Leitor` da rota do funil — a lista de um
@@ -58,7 +59,6 @@
      modo não perde nada. O agente abre nele com `modo: "leitor"` (e
      `um_por_vez: true`, do D242, vale como apelido); a pessoa troca quando
      quiser. Com base aberta, o item cujo id tem arquivo mostra o arquivo. */
-  const casa = getContext("casa") || null;
   let noLeitorEscolhido = $state(null);
   const noLeitor = $derived(noLeitorEscolhido ?? (dados.modo === "leitor" || !!dados.um_por_vez));
   let aberto = $state("");
@@ -118,7 +118,7 @@
     return { comentar: comenta(it), chave: id, id: p.id || (/^\p{Lu}{1,4}-\d{1,6}$/u.test(id) ? id : ""),
       titulo: p.id ? p.nome : String(it.titulo ?? id), sub: it.linha || "", detalhe: it.detalhe || "",
       link: it.link || "", etiqueta: it.marca || g.rotulo || "",
-      caminho: casa?.indice?.get(p.id || id) || "" };
+      caminho: caminhoDoId?.(p.id || id) || "" };
   })));
   const opcoesDoLeitor = $derived(decisoes.map((d) => ({ chave: d.chave, rotulo: d.rotulo || d.chave,
     tom: d.tom === "recusa" ? "recusa" : "", tipo: "marca" })));
@@ -171,10 +171,8 @@
     opcoesDe={() => opcoesDoLeitor} marcadaDe={(it) => marcadas[it.chave] || ""}
     escolher={(it, o) => marcar(it.chave, o.chave)} rotuloDaLista="itens para decidir">
     {#snippet detalhe(it)}
-      {#if it.caminho}
-        <Arquivo caminho={it.caminho} embutido indice={casa?.indice} documentos={casa?.documentos}
-          destaque={casa?.destaque || []} agente={casa?.agente} esperando={casa?.esperando}
-          completar={casa?.completar || ""} rotulos={casa?.rotulos || {}} />
+      {#if it.caminho && arquivo}
+        {@render arquivo(it.caminho)}
       {:else}
         <h2 class="c-h2">{it.titulo}</h2>
         {#if it.etiqueta}<span class="c-etiqueta c-etiqueta-cinza" style="align-self:flex-start">{it.etiqueta}</span>{/if}

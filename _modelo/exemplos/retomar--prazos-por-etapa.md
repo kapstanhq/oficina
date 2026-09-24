@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--prazos-por-etapa” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--prazos-por-etapa" _motor). Os dois que existem: corretor/exemplos/retomar--prazos-por-etapa.md e prospeccao/exemplos/retomar--prazos-por-etapa.md>>

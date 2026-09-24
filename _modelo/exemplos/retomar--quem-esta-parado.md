@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--quem-esta-parado” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--quem-esta-parado" _motor). Os dois que existem: corretor/exemplos/retomar--quem-esta-parado.md e prospeccao/exemplos/retomar--quem-esta-parado.md>>

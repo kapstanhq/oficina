@@ -17,10 +17,11 @@
    * a informação que existe. Dizer "não achei o índice" onde nunca houve um
    * seria inventar um defeito.
    */
-  import { pedirArquivo } from "../ponte.js";
+  import { getContext } from "svelte";
   import { paraArquivo, paraFunil, idsDaLinha, nomeDeGente, partirId, ehLinhaVazia } from "../rota.js";
   import Itens from "./Itens.svelte";
   import Proximo from "./Proximo.svelte";
+  const { pedirArquivo } = getContext("ponte");
 
   let { nome, mapa, indice, recarga = 0, andamento = null, decisoes = [],
     decidir = () => {}, acoes = [], proximos = {}, rotulos = {}, pastasDoPack = {},

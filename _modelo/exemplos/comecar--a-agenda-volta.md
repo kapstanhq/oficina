@@ -1,0 +1,1 @@
+<<preencher: o exemplo “comecar--a-agenda-volta” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "comecar--a-agenda-volta" _motor). Os dois que existem: corretor/exemplos/comecar--a-agenda-volta.md e prospeccao/exemplos/comecar--a-agenda-volta.md>>

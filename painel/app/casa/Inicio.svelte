@@ -33,12 +33,14 @@
    * assistente sozinho (D232) há também o "Fazer agora", com o custo dito
    * antes. O que NÃO existe é botão que aceita um pedido que ninguém vai ler.
    */
-  import { pedirArquivo, pedirMudancas } from "../ponte.js";
+  import { getContext } from "svelte";
   import { paraArquivo, paraTarefa, paraFunil, idsDaLinha, partirLinha, partirId, nomeDoArquivo,
     nomeDeGente, caudaParaLer, ehLinhaVazia, comFicha, pegarDoItem, ordenar as emOrdem,
     valorCurto, semResposta, fichaDoItem, passosDoItem, faseDe, trechosDoFunil, noTrecho } from "../rota.js";
   import Proximo from "./Proximo.svelte";
+  import { textos } from "../textos.svelte.js";
   import { BLOCOS_DO_INICIO } from "../../nucleo/molde.mjs";
+  const { pedirArquivo, pedirMudancas } = getContext("ponte");
 
   let { mapa, indice, recarga = 0, doc = null, esperaResposta = false, agenteEsperando = false,
     agente = false, aoResponder = () => {}, funil = null, andamento = null,
@@ -95,7 +97,7 @@
   });
   const TETO_DE_MUDANCAS = 6;
   let todasAsMudancas = $state(false);
-  const tipoDa = (m) => m.caminho.startsWith("arquivo-morto/") ? "Saiu" : m.novo ? "Novo" : "Mudou";
+  const tipoDa = (m) => m.caminho.startsWith("arquivo-morto/") ? "saiu" : m.novo ? "novo" : "mudou";
   const ondeMora = (m) => {
     const pasta = m.caminho.includes("/") ? m.caminho.split("/")[0] : "";
     return pasta && pasta !== "arquivo-morto" ? nomeDeGente(pasta) : "";
@@ -310,16 +312,16 @@
     <summary class="p-cabeca">
       <h2 class="c-h3">Novidades</h2>
       <span class="c-nota">{[
-        contaDo("Novo") && `${contaDo("Novo")} ${contaDo("Novo") === 1 ? "novo" : "novos"}`,
-        contaDo("Mudou") && `${contaDo("Mudou")} ${contaDo("Mudou") === 1 ? "mudou" : "mudaram"}`,
-        contaDo("Saiu") && `${contaDo("Saiu")} ${contaDo("Saiu") === 1 ? "arquivado" : "arquivados"}`,
+        contaDo("novo") && `${contaDo("novo")} ${contaDo("novo") === 1 ? "novo" : "novos"}`,
+        contaDo("mudou") && `${contaDo("mudou")} ${contaDo("mudou") === 1 ? "mudou" : "mudaram"}`,
+        contaDo("saiu") && `${contaDo("saiu")} ${contaDo("saiu") === 1 ? "arquivado" : "arquivados"}`,
       ].filter(Boolean).join(" · ")} desde {quando(visitaAnterior)}</span>
     </summary>
     <ul class="p-mudou">
       {#each (todasAsMudancas ? mudou : mudou.slice(0, TETO_DE_MUDANCAS)) as m (m.caminho)}
         <li>
           <a href={paraArquivo(m.caminho)}>
-            <span class="p-mudou-tipo" data-tipo={tipoDa(m)}>{tipoDa(m)}</span>
+            <span class="p-mudou-tipo" data-tipo={tipoDa(m)}>{textos[tipoDa(m)]}</span>
             <b>{nomeDoArquivo(m.caminho)}</b>
             {#if ondeMora(m)}<span class="p-mudou-onde">{ondeMora(m)}</span>{/if}
           </a>

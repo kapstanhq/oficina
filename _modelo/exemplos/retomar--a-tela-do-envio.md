@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--a-tela-do-envio” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--a-tela-do-envio" _motor). Os dois que existem: corretor/exemplos/retomar--a-tela-do-envio.md e prospeccao/exemplos/retomar--a-tela-do-envio.md>>

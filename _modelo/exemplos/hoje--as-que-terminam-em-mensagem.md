@@ -1,0 +1,1 @@
+<<preencher: o exemplo “hoje--as-que-terminam-em-mensagem” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "hoje--as-que-terminam-em-mensagem" _motor). Os dois que existem: corretor/exemplos/hoje--as-que-terminam-em-mensagem.md e prospeccao/exemplos/hoje--as-que-terminam-em-mensagem.md>>

@@ -1,0 +1,1 @@
+<<preencher: o exemplo “hoje--o-que-grava-e-onde” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "hoje--o-que-grava-e-onde" _motor). Os dois que existem: corretor/exemplos/hoje--o-que-grava-e-onde.md e prospeccao/exemplos/hoje--o-que-grava-e-onde.md>>

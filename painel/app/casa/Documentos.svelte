@@ -16,8 +16,9 @@
    * O documento sem id (o currículo base) vem primeiro, sozinho. Não sabe de
    * ofício: "vaga" e "currículo" chegam da pasta e do apelido do item.
    */
-  import { pedirFichas } from "../ponte.js";
+  import { getContext } from "svelte";
   import { nomeDeGente, paraArquivo, paraFunil, TODAS } from "../rota.js";
+  const { pedirFichas } = getContext("ponte");
 
   let { nome, mapa = null, andamento = null, nomeDoItem = () => "", recarga = 0, descricao = "",
     umItem = "Item", nomeDosItens = "Itens" } = $props();

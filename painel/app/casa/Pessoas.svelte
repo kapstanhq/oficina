@@ -15,9 +15,10 @@
    * Não sabe de ofício: os rótulos são os do arquivo. O que ele escolhe é só
    * a FORMA do valor — endereço vira link, `?` não aparece.
    */
-  import { pedirFichas } from "../ponte.js";
+  import { getContext } from "svelte";
   import { nomeDeGente, paraArquivo, partirId, semResposta, valorCurto } from "../rota.js";
-  import ComIds from "./ComIds.svelte";
+  import ComIds from "../comum/ComIds.svelte";
+  const { pedirFichas } = getContext("ponte");
 
   let { nome, indice = null, recarga = 0, descricao = "" } = $props();
 

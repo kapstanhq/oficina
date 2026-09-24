@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--o-angulo” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--o-angulo" _motor). Os dois que existem: corretor/exemplos/retomar--o-angulo.md e prospeccao/exemplos/retomar--o-angulo.md>>

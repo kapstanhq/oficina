@@ -1,0 +1,1 @@
+<<preencher: o exemplo “hoje--a-escada-da-consequencia” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "hoje--a-escada-da-consequencia" _motor). Os dois que existem: corretor/exemplos/hoje--a-escada-da-consequencia.md e prospeccao/exemplos/hoje--a-escada-da-consequencia.md>>

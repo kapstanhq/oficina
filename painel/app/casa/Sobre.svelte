@@ -36,6 +36,10 @@
   const demais = $derived((mapa?.secoes || [])
     .filter((s) => !RESERVADAS.some((r) => semAcento(s.titulo).startsWith(r))));
 
+  /* `sempre.plataforma` é o `process.platform` do servidor; sem ele, o texto não nomeia sistema */
+  const ENTRADA = { win32: "no Windows", darwin: "no Mac", linux: "na sua sessão do Linux" };
+  const entrada = $derived(ENTRADA[sempre?.plataforma] || "no computador");
+
   const desligado = (v) => /^(não|nao|—|-|\?)(\s|$)/i.test(String(v || "").trim());
 </script>
 
@@ -96,7 +100,7 @@
       </li>
       <li>
         <span class="p-ponto" data-tom={sempre.noLogin ? "vivo" : "falta"} aria-hidden="true"></span>
-        <span>{sempre.noLogin ? "Ela sobe sozinha quando você entra no Windows." : "Ela não sobe sozinha com o Windows."}</span>
+        <span>{sempre.noLogin ? `Ela sobe sozinha quando você entra ${entrada}.` : `Ela não sobe sozinha quando você entra ${entrada}.`}</span>
       </li>
     </ul>
     {#if !sempre.solto || !sempre.noLogin}
@@ -104,7 +108,7 @@
       <button type="button" class="p-pedido-copiar" onclick={() => copiar(sempre.comando)} aria-label="copiar o comando">
         <code>{sempre.comando}</code><em>{copiado ? "Copiado ✓" : "Copiar"}</em>
       </button>
-      <p class="c-nota">Para desfazer, o mesmo comando com <code>--remover</code> no lugar de <code>--instalar</code>.</p>
+      <p class="c-nota">Para desfazer, o mesmo comando com <code>--desinstalar</code> no lugar de <code>--instalar</code>.</p>
     {/if}
   </section>
 {/if}

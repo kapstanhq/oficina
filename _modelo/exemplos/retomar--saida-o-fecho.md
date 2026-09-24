@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--saida-o-fecho” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--saida-o-fecho" _motor). Os dois que existem: corretor/exemplos/retomar--saida-o-fecho.md e prospeccao/exemplos/retomar--saida-o-fecho.md>>

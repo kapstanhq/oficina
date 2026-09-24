@@ -19,7 +19,7 @@
  *
  *   node painel/sempre.mjs --base <pasta> [--pack <pasta do pack>]
  *   node painel/sempre.mjs --instalar --base <pasta>   sobe com o login, e já sobe
- *   node painel/sempre.mjs --remover                   tira do login e desliga
+ *   node painel/sempre.mjs --desinstalar               tira do login e desliga (`--remover` também)
  *   node painel/sempre.mjs --estado                    diz se está de pé, e onde
  *
  * O registro vai para `sempre.log`, ao lado da chave — com a chave RISCADA
@@ -29,7 +29,8 @@ import { spawn, spawnSync } from "node:child_process";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, watch, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { atalhoDoLogin, chaveDaMaquina, pastaDaChave } from "./nucleo/http.mjs";
+import { atalhoDoLogin, chaveDaMaquina, conteudoDaUnidade, conteudoDoLogin, pastaDaChave, ROTULO_DO_LOGIN,
+  unidadeDoLogin } from "./nucleo/http.mjs";
 import { acharAnfitriao } from "./nucleo/hospede.mjs";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
@@ -42,9 +43,17 @@ const PID = join(PASTA, "sempre.pid");
 const LOG = join(PASTA, "sempre.log");
 const PORTA = Number(process.env.PAINEL_PORTA || 4180);
 const WINDOWS = process.platform === "win32";
-/* na pasta Inicializar do usuário: roda no login dele, sem administrador */
+const MAC = process.platform === "darwin";
+const LINUX = !WINDOWS && !MAC;
+/* no login do usuário, sem administrador — onde, por sistema, em `nucleo/http.mjs` */
 const ATALHO = atalhoDoLogin();
-const INICIALIZAR = dirname(ATALHO);
+const UNIDADE = LINUX ? unidadeDoLogin() : "";
+/* com a pasta trocada (a prova), escreve os arquivos e não chama launchctl nem systemctl */
+const DE_PROVA = !!process.env.KAPSTAN_INICIALIZAR_DIR;
+const sistema = (programa, args) => DE_PROVA ? { status: 0 }
+  : spawnSync(programa, args, { stdio: "ignore", windowsHide: true, timeout: 15_000 });
+const temSystemdDeUsuario = () => LINUX && !DE_PROVA && sistema("systemctl", ["--user", "show-environment"]).status === 0;
+const alvoDoLaunchd = () => `gui/${process.getuid?.() ?? ""}`;
 
 mkdirSync(PASTA, { recursive: true });
 const TETO_DO_LOG = 512 * 1024;
@@ -77,11 +86,20 @@ if (tem("--estado")) {
     ? `ligado · pid ${p.pid} · ${p.base}${url ? " · " + url : " · o servidor está subindo"}`
     : "desligado");
   console.log(existsSync(ATALHO) ? `sobe com o login (${ATALHO})` : "não sobe com o login");
+  if (UNIDADE && existsSync(UNIDADE)) console.log(`unidade do systemd escrita (${UNIDADE})`);
   process.exit(0);
 }
 
-if (tem("--remover")) {
-  if (existsSync(ATALHO)) { rmSync(ATALHO); console.log("tirado do login"); }
+if (tem("--desinstalar") || tem("--remover")) {
+  if (MAC && existsSync(ATALHO)) {
+    if (sistema("launchctl", ["bootout", alvoDoLaunchd(), ATALHO]).status !== 0) sistema("launchctl", ["unload", ATALHO]);
+  }
+  if (existsSync(ATALHO)) { rmSync(ATALHO); console.log(`tirado do login (${ATALHO})`); }
+  if (UNIDADE && existsSync(UNIDADE)) {
+    sistema("systemctl", ["--user", "disable", "--now", "kapstan-painel.service"]);
+    rmSync(UNIDADE);
+    console.log(`unidade do systemd tirada (${UNIDADE})`);
+  }
   const p = lerPid();
   if (p && vivo(p.pid)) { matarArvore(p.pid); matarArvore(p.filho); console.log(`desligado (pid ${p.pid})`); }
   rmSync(PID, { force: true });
@@ -96,21 +114,28 @@ if (!BASE || !existsSync(join(BASE, "INDICE.md"))) {
 }
 
 if (tem("--instalar")) {
-  if (WINDOWS) {
-    /* `.vbs` porque o `Run` com 0 sobe o node SEM janela; e em UTF-16, que é
-       o que o wscript lê sem estragar acento no caminho */
-    const linha = [process.execPath, ESTE, "--base", BASE, ...PACK].map((x) => x.startsWith("--") ? x : `"${x}"`).join(" ");
-    const vbs = `' O painel da Kapstan sempre ligado (D243). Criado por sempre.mjs --instalar; tire com --remover.\r\n`
-      + `CreateObject("WScript.Shell").Run "${linha.replace(/"/g, '""')}", 0, False\r\n`;
-    mkdirSync(INICIALIZAR, { recursive: true });
-    writeFileSync(ATALHO, Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(vbs, "utf16le")]));
-    console.log(`sobe com o login: ${ATALHO}`);
-  } else {
-    console.log("fora do Windows, ponha esta linha nos programas do login:\n  "
-      + [process.execPath, ESTE, "--base", BASE, ...PACK].join(" "));
+  const comando = [process.execPath, ESTE, "--base", BASE, ...PACK];
+  const caminhos = process.env.PATH || "";
+  mkdirSync(dirname(ATALHO), { recursive: true });
+  writeFileSync(ATALHO, conteudoDoLogin(process.platform, { comando, caminhos }));
+  console.log(`sobe com o login: ${ATALHO}`);
+  /* no Mac o launchd já o põe de pé (RunAtLoad): subir daqui também daria dois */
+  let subiuPeloSistema = false;
+  if (MAC && !DE_PROVA) {
+    sistema("launchctl", ["bootout", alvoDoLaunchd(), ATALHO]);
+    subiuPeloSistema = sistema("launchctl", ["bootstrap", alvoDoLaunchd(), ATALHO]).status === 0
+      || sistema("launchctl", ["load", "-w", ATALHO]).status === 0;
+    if (!subiuPeloSistema) console.log(`o launchctl não carregou ${ROTULO_DO_LOGIN}: ele sobe no próximo login`);
+  }
+  /* Linux sem sessão gráfica não lê o autostart: a unidade fica escrita, e ligá-la é da pessoa */
+  if (UNIDADE && (DE_PROVA || temSystemdDeUsuario())) {
+    mkdirSync(dirname(UNIDADE), { recursive: true });
+    writeFileSync(UNIDADE, conteudoDaUnidade({ comando, caminhos }));
+    console.log(`sem sessão gráfica, use a unidade do systemd no lugar do autostart: ${UNIDADE}\n`
+      + "  systemctl --user enable --now kapstan-painel.service   (e apague o .desktop)");
   }
   const p = lerPid();
-  if (!(p && vivo(p.pid))) {
+  if (!subiuPeloSistema && !(p && vivo(p.pid))) {
     spawn(process.execPath, [ESTE, "--base", BASE, ...PACK], { detached: true, stdio: "ignore", windowsHide: true }).unref();
   }
   let url = "";

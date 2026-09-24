@@ -28,11 +28,12 @@
  */
 import { readFile, writeFile as gravarCru, rename, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+import { RAIZ, packsDoMarketplace } from "./vistas-do-pack.mjs";
 
-const RAIZ = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PAINEL = join(RAIZ, "painel");
+const APP = join(PAINEL, "app");
 
 /* `.tmp` + rename, como a geração da Oficina e o Estúdio: no Windows um
    `writeFile` num arquivo que outro processo tem aberto lança `UNKNOWN` de
@@ -49,12 +50,6 @@ const precisa = async (caminho, comando) => {
   }
   return readFile(caminho, "utf8");
 };
-
-const fonte = await readFile(join(PAINEL, "index.html"), "utf8");
-const folhaTw = await precisa(join(PAINEL, "estilo.generated.css"), "npm run tw:painel");
-const folhaComp = existsSync(join(PAINEL, "app", "entrada.generated.css"))
-  ? await readFile(join(PAINEL, "app", "entrada.generated.css"), "utf8") : "";
-const script = await precisa(join(PAINEL, "app", "entrada.generated.js"), "npm run svelte:painel");
 
 /* ── A SUBSTITUIÇÃO É POR LINHA INTEIRA, E ELA COBRA ───────────────────
    Trocar por regex frouxa deixaria um `<link>` de pé se alguém reordenasse o
@@ -95,66 +90,93 @@ const seguro = (js) => js
   .replace(/<\/script>/gi, "<\\/script>")
   .replace(/<!--/g, "<\\!--");
 
-let saida = fonte;
-saida = trocar(saida,
-  `<link rel="stylesheet" href="/estilo.generated.css">`,
-  `<style>\n${folhaTw.trim()}\n</style>`);
-saida = trocar(saida,
-  `<link rel="stylesheet" href="/app/entrada.generated.css">`,
-  folhaComp.trim() ? `<style>\n${folhaComp.trim()}\n</style>` : "<!-- os componentes não têm <style> próprio -->");
-saida = trocar(saida,
-  `<script type="module" src="/app/entrada.generated.js"></script>`,
-  `<script type="module">\n${seguro(script.trim())}\n</script>`);
+/**
+ * O `painel.html` de um bundle: `js` é o caminho do `.js` do esbuild, e o
+ * `.css` dos componentes, se houver, está ao lado com o mesmo nome. Devolve
+ * o HTML, conferido. É também o que a prova da tela chama para o pack dela.
+ */
+export async function juntarPainel(js) {
+  const fonte = await readFile(join(PAINEL, "index.html"), "utf8");
+  const folhaTw = await precisa(join(PAINEL, "estilo.generated.css"), "npm run tw:painel");
+  const css = js.replace(/\.js$/, ".css");
+  const folhaComp = existsSync(css) ? await readFile(css, "utf8") : "";
+  const script = await precisa(js, "npm run svelte:painel");
 
-/* o aviso de cópia gerada, na primeira linha depois do doctype — o mesmo
-   gesto dos `references/` da Oficina, e pela mesma razão: alguém vai abrir
-   este arquivo para consertar alguma coisa, e precisa saber que a correção
-   morre no próximo build. */
-saida = saida.replace(/^<!doctype html>\r?\n/i,
-  "<!doctype html>\n<!-- ARQUIVO GERADO · não edite.\n" +
-  "     A fonte é painel/index.html, painel/estilo.css e painel/app/**,\n" +
-  "     e `npm run painel` refaz este arquivo. -->\n");
+  let saida = fonte;
+  saida = trocar(saida,
+    `<link rel="stylesheet" href="/estilo.generated.css">`,
+    `<style>\n${folhaTw.trim()}\n</style>`);
+  saida = trocar(saida,
+    `<link rel="stylesheet" href="/app/entrada.generated.css">`,
+    folhaComp.trim() ? `<style>\n${folhaComp.trim()}\n</style>` : "<!-- os componentes não têm <style> próprio -->");
+  saida = trocar(saida,
+    `<script type="module" src="/app/entrada.generated.js"></script>`,
+    `<script type="module">\n${seguro(script.trim())}\n</script>`);
 
-/* ── E O QUE SAIU É CONFERIDO, porque o defeito foi MUDO ──────────────
-   A versão com `replace()` (ver `trocar`) produziu um HTML com o bundle
-   picado e pedaços do próprio HTML costurados dentro dele — e imprimiu ✓ com
-   o peso certo. O erro só apareceu num navegador, como JAVASCRIPT NA TELA.
+  /* o aviso de cópia gerada, na primeira linha depois do doctype — o mesmo
+     gesto dos `references/` da Oficina, e pela mesma razão: alguém vai abrir
+     este arquivo para consertar alguma coisa, e precisa saber que a correção
+     morre no próximo build. */
+  saida = saida.replace(/^<!doctype html>\r?\n/i,
+    "<!doctype html>\n<!-- ARQUIVO GERADO · não edite.\n" +
+    "     A fonte é painel/index.html, painel/estilo.css, painel/app/** e\n" +
+    "     <pack>/painel/componentes/; `npm run painel` refaz este arquivo. -->\n");
 
-   As três cobranças abaixo são o que aquele defeito teria estourado. Elas
-   não medem gosto nem desenho: medem se o arquivo é um documento HTML com
-   UM script inteiro dentro, que é a única coisa que este build promete. */
-{
-  const abre = (saida.match(/<script/gi) || []).length;
-  const fecha = (saida.match(/<\/script>/gi) || []).length;
-  const queixas = [];
-  if (abre !== 1 || fecha !== 1) {
-    queixas.push(`são ${abre} <script> e ${fecha} </script> — o esperado é um de cada`);
+  /* ── E O QUE SAIU É CONFERIDO, porque o defeito foi MUDO ──────────────
+     A versão com `replace()` (ver `trocar`) produziu um HTML com o bundle
+     picado e pedaços do próprio HTML costurados dentro dele — e imprimiu ✓ com
+     o peso certo. O erro só apareceu num navegador, como JAVASCRIPT NA TELA.
+
+     As três cobranças abaixo são o que aquele defeito teria estourado. Elas
+     não medem gosto nem desenho: medem se o arquivo é um documento HTML com
+     UM script inteiro dentro, que é a única coisa que este build promete. */
+  {
+    const abre = (saida.match(/<script/gi) || []).length;
+    const fecha = (saida.match(/<\/script>/gi) || []).length;
+    const queixas = [];
+    if (abre !== 1 || fecha !== 1) {
+      queixas.push(`são ${abre} <script> e ${fecha} </script> — o esperado é um de cada`);
+    }
+    /* o `src` da fonte não pode sobreviver: se ele está aqui, ou a troca não
+       aconteceu, ou o trecho casado foi reinjetado como texto */
+    if (saida.includes("entrada.generated.js")) {
+      queixas.push("o `src` da fonte ficou no arquivo — a página buscaria um " +
+        "arquivo que não existe ao lado dela");
+    }
+    /* o bundle inteiro tem de estar lá dentro. Comparar o TAMANHO pega a
+       costura: um bundle picado sai menor que a fonte. */
+    const dentro = saida.length - fonte.length - folhaTw.length - folhaComp.length;
+    if (dentro < script.trim().length) {
+      queixas.push(`o script embutido tem ~${dentro} caracteres e a fonte tem ` +
+        `${script.trim().length} — faltou pedaço`);
+    }
+    if (queixas.length) {
+      console.error("✗ o painel.html saiu quebrado:");
+      for (const q of queixas) console.error("    " + q);
+      process.exit(1);
+    }
   }
-  /* o `src` da fonte não pode sobreviver: se ele está aqui, ou a troca não
-     aconteceu, ou o trecho casado foi reinjetado como texto */
-  if (saida.includes("entrada.generated.js")) {
-    queixas.push("o `src` da fonte ficou no arquivo — a página buscaria um " +
-      "arquivo que não existe ao lado dela");
-  }
-  /* o bundle inteiro tem de estar lá dentro. Comparar o TAMANHO pega a
-     costura: um bundle picado sai menor que a fonte. */
-  const dentro = saida.length - fonte.length - folhaTw.length - folhaComp.length;
-  if (dentro < script.trim().length) {
-    queixas.push(`o script embutido tem ~${dentro} caracteres e a fonte tem ` +
-      `${script.trim().length} — faltou pedaço`);
-  }
-  if (queixas.length) {
-    console.error("✗ o painel.html saiu quebrado:");
-    for (const q of queixas) console.error("    " + q);
-    process.exit(1);
-  }
+
+  return saida;
 }
 
-const destino = join(PAINEL, "painel.html");
-await escrever(destino, saida);
-
-const kb = (n) => (n / 1024).toFixed(1) + " kB";
-const { size } = await stat(destino);
-console.log(`✓ painel · painel.html com tudo dentro · ${kb(size)}`);
-console.log(`  (css ${kb(folhaTw.length + folhaComp.length)} · js ${kb(script.length)})`);
-console.log(`  para levá-lo aos packs: \`npm run oficina -- --escrever\``);
+/* ── UM PAINEL POR PACK ─────────────────────────────────────────────────
+   `painel.html` é o comum (o do `--demonstracao` e da árvore-fonte sem
+   pack); `painel.<pack>.html` é o que o montador leva a `<pack>/painel/`.
+   Pack sem `componentes/` sai do bundle comum, e o arquivo é o comum byte a
+   byte — é o que a prova da tela confere. */
+if (import.meta.url === pathToFileURL(process.argv[1] || "").href) {
+  const kb = (n) => (n / 1024).toFixed(1) + " kB";
+  const comum = join(APP, "entrada.generated.js");
+  const alvos = [["painel.html", comum], ...packsDoMarketplace().map(({ nome }) => {
+    const proprio = join(APP, `entrada.generated.${nome}.js`);
+    return [`painel.${nome}.html`, existsSync(proprio) ? proprio : comum];
+  })];
+  for (const [nome, js] of alvos) {
+    const destino = join(PAINEL, nome);
+    await escrever(destino, await juntarPainel(js));
+    const { size } = await stat(destino);
+    console.log(`✓ painel · ${nome} com tudo dentro · ${kb(size)}${js === comum ? "" : " · com as vistas do pack"}`);
+  }
+  console.log("  para levá-los aos packs: `npm run montar -- --escrever`");
+}

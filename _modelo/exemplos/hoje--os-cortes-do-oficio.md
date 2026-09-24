@@ -1,0 +1,1 @@
+<<preencher: o exemplo “hoje--os-cortes-do-oficio” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "hoje--os-cortes-do-oficio" _motor). Os dois que existem: corretor/exemplos/hoje--os-cortes-do-oficio.md e prospeccao/exemplos/hoje--os-cortes-do-oficio.md>>

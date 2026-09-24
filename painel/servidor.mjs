@@ -60,9 +60,26 @@ import { criarBase } from "./nucleo/base.mjs";
 import { criarFila } from "./nucleo/fila.mjs";
 import { acharAnfitriao } from "./nucleo/hospede.mjs";
 import { ajustarPelaBase } from "./nucleo/molde.mjs";
-import { criarLancador, resolverLancamento } from "./nucleo/lancar.mjs";
+import { criarLancador, nomeDoModelo, resolverLancamento } from "./nucleo/lancar.mjs";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
+
+/* ── O PACK, E O QUE DÁ PARA PEDIR (D231, D232) ───────────────────────
+   No pack instalado o painel mora em `<pack>/painel/`: o pack é a pasta de
+   cima, e o `acoes.json` está ao lado deste arquivo. Na árvore-fonte não há
+   pack em volta — `--pack <pasta>` aponta para um, e `--acoes <arquivo>`
+   continua valendo para quem só quer ver a lista.
+
+   A lista tem dois usos, e o segundo é o que pede cuidado: ela é o que o
+   início MOSTRA, e é a LISTA FECHADA do que o botão pode disparar. */
+const argumento = (nome) => {
+  const i = process.argv.indexOf(nome);
+  return i >= 0 ? resolve(process.argv[i + 1] || "") : "";
+};
+const PASTA_DO_PACK = argumento("--pack")
+  || (existsSync(join(AQUI, "..", ".claude-plugin", "plugin.json")) ? join(AQUI, "..") : "");
+const ARQUIVO_DE_ACOES = argumento("--acoes")
+  || (argumento("--pack") ? join(PASTA_DO_PACK, "painel", "acoes.json") : join(AQUI, "acoes.json"));
 
 /* ── AS SETE VISTAS ───────────────────────────────────────────────────
    O vocabulário é fechado de propósito, e o teto tinha número: SEIS. O
@@ -108,6 +125,19 @@ const VISTAS = {
   formulario: "o que a PESSOA preenche ou corrige, campo a campo. `valor` é o " +
     "que você já sabe, com a procedência em `de`; `?` sai vazio e marcado.",
 };
+
+/* ── E AS DO PACK (D267) ──────────────────────────────────────────────
+   `<pack>/painel/componentes/<Nome>.svelte` é a vista `nome`, e o que o
+   agente lê sobre ela é a frase de `painel.json` → `vistas`, que o
+   montador cobra e leva ao `acoes.json`. Lido uma vez, na subida: o esquema
+   de `painel_mostrar` é fixo por processo, e o vigia troca o processo quando
+   o `acoes.json` muda. Vista comum não se sobrescreve. */
+try {
+  const doPack = JSON.parse(readFileSync(ARQUIVO_DE_ACOES, "utf8"))?.vistas || {};
+  for (const [nome, frase] of Object.entries(doPack)) {
+    if (!VISTAS[nome] && typeof frase === "string") VISTAS[nome] = frase;
+  }
+} catch { /* sem acoes.json: só as comuns */ }
 
 /* ── O ESQUEMA DE ENTRADA ─────────────────────────────────────────────
    Escrito à mão e não gerado por biblioteca de esquema: são quarenta linhas
@@ -312,23 +342,6 @@ let ocupacoes = 0;
 const ocupar = () => { if (ocupacoes++ === 0) avisarOcupado(true); };
 const liberar = () => { if (ocupacoes > 0 && --ocupacoes === 0) avisarOcupado(false); };
 
-/* ── O PACK, E O QUE DÁ PARA PEDIR (D231, D232) ───────────────────────
-   No pack instalado o painel mora em `<pack>/painel/`: o pack é a pasta de
-   cima, e o `acoes.json` está ao lado deste arquivo. Na árvore-fonte não há
-   pack em volta — `--pack <pasta>` aponta para um, e `--acoes <arquivo>`
-   continua valendo para quem só quer ver a lista.
-
-   A lista tem dois usos, e o segundo é o que pede cuidado: ela é o que o
-   início MOSTRA, e é a LISTA FECHADA do que o botão pode disparar. */
-const argumento = (nome) => {
-  const i = process.argv.indexOf(nome);
-  return i >= 0 ? resolve(process.argv[i + 1] || "") : "";
-};
-const PASTA_DO_PACK = argumento("--pack")
-  || (existsSync(join(AQUI, "..", ".claude-plugin", "plugin.json")) ? join(AQUI, "..") : "");
-const ARQUIVO_DE_ACOES = argumento("--acoes")
-  || (argumento("--pack") ? join(PASTA_DO_PACK, "painel", "acoes.json") : join(AQUI, "acoes.json"));
-
 async function lerAcoes() {
   try { return JSON.parse(await readFile(ARQUIVO_DE_ACOES, "utf8")); }
   catch { return { pack: "", pastas: {}, grupos: [] }; }
@@ -494,6 +507,12 @@ async function portaDeConectores() {
   }
 }
 
+/* a página do PACK, com as vistas dele dentro: no pack instalado é a que mora
+   ao lado deste arquivo; na árvore-fonte, `--pack` aponta a cópia do pack, e
+   sem ela vale a comum (`npm run painel`) */
+const PAGINA = argumento("--pack") && existsSync(join(PASTA_DO_PACK, "painel", "painel.html"))
+  ? join(PASTA_DO_PACK, "painel", "painel.html") : join(AQUI, "painel.html");
+
 /* ── O PAINEL SÓ SOBE QUANDO ALGUÉM O PEDE ────────────────────────────
    Abrir a porta no `initialize` poria um servidor HTTP de pé em toda sessão
    do Claude Code que tivesse o plugin instalado, inclusive nas que nunca
@@ -503,7 +522,7 @@ let aberto = null;
 async function garantirAberto() {
   if (aberto) return aberto;
   /* lida a cada pedido, e não uma vez: ver a nota em `nucleo/http.mjs` */
-  const html = () => readFile(join(AQUI, "painel.html"), "utf8");
+  const html = () => readFile(PAGINA, "utf8");
   await html();                    // sem o arquivo, falha AQUI, com a mensagem de sempre
   const conectores = await portaDeConectores();
   temConectores = !!conectores;
@@ -561,7 +580,7 @@ async function garantirAberto() {
       "GET /estado": async () => ({
         /* a versão da PÁGINA que está no disco. A aba guarda a que carregou e,
            quando as duas divergem, oferece atualizar — ver `Painel.svelte` */
-        pagina: await stat(join(AQUI, "painel.html")).then((s) => Math.round(s.mtimeMs)).catch(() => 0),
+        pagina: await stat(PAGINA).then((s) => Math.round(s.mtimeMs)).catch(() => 0),
         /* é por este campo, atrás da chave, que um hóspede reconhece o anfitrião */
         painel: "kapstan",
         /* a execução disparada pelo painel: se dá, se há uma rodando, e a última */
@@ -573,7 +592,7 @@ async function garantirAberto() {
         agente: haAgente(),
         /* o painel sempre ligado (D243): se ESTE processo é o solto, se ele sobe
            com o login, e a linha que o liga — a página Conta mostra os três */
-        sempre: base.ligada ? { solto: !!process.env.KAPSTAN_SEMPRE, noLogin: existsSync(atalhoDoLogin()),
+        sempre: base.ligada ? { plataforma: process.platform, solto: !!process.env.KAPSTAN_SEMPRE, noLogin: existsSync(atalhoDoLogin()),
           comando: `node "${join(AQUI, "sempre.mjs")}" --instalar --base "${base.raiz}"` } : null,
         esperando: sessao.esperando,
         temTarefa: sessao.temTarefa,
@@ -642,7 +661,7 @@ async function garantirAberto() {
         const { nome, prompt, esforco = "" } = await resolver(corpo || {});
         const agora = l.estado();
         if (corpo?.confirmo !== true) {
-          const antes = await l.daUltimaVez(String(corpo?.o), prompt, esforco);
+          const antes = await l.daUltimaVez(String(corpo?.o), prompt, esforco, base.raiz);
           /* com uma rodando, o pedido entra na fila (D271) — e o aviso diz */
           const naFrente = agora.rodando ? 1 + agora.fila.length : 0;
           const dolar = (v) => "US$ " + v.toFixed(2).replace(".", ",");
@@ -653,7 +672,7 @@ async function garantirAberto() {
                 (naFrente > 1 ? `, com ${naFrente - 1} na frente,` : "") +
                 " e começa sozinho quando chegar a vez. Ele consome do seu plano do Claude "
               : "Isto chama o assistente agora, e consome do seu plano do Claude ") +
-              `(modelo Opus${esforco ? `, esforço ${ESFORCO_EM_PT[esforco] || esforco}` : ""}). ` + (antes
+              `(modelo ${nomeDoModelo(l.modeloPara(base.raiz))}${esforco ? `, esforço ${ESFORCO_EM_PT[esforco] || esforco}` : ""}). ` + (antes
                 ? `Da última vez que você pediu isto, custou ${dolar(antes.custo)} e levou ` +
                   `${antes.minutos} ${antes.minutos === 1 ? "minuto" : "minutos"}. `
                 : "Costuma levar de um a quinze minutos e custar de um a três dólares; " +

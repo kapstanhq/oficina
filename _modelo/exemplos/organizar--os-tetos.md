@@ -1,0 +1,1 @@
+<<preencher: o exemplo “organizar--os-tetos” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "organizar--os-tetos" _motor). Os dois que existem: corretor/exemplos/organizar--os-tetos.md e prospeccao/exemplos/organizar--os-tetos.md>>

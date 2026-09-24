@@ -19,7 +19,7 @@
    */
   import Ficha from "../vistas/Ficha.svelte";
   import Itens from "./Itens.svelte";
-  import ComIds from "./ComIds.svelte";
+  import ComIds from "../comum/ComIds.svelte";
   import { passosDoItem, notaQueDiz, valorCurto, ehLinhaVazia, nomeDeGente, nomeDoArquivo, paraArquivo } from "../rota.js";
 
   let { arquivo, cabeca, chaves = [], faltam = [], meusDocumentos = [], arvore = [], indice = null,

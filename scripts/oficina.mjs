@@ -39,6 +39,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { fatiar, achatar } from "./prompt-do-pack.mjs";
 import { por, maiuscula } from "./texto.mjs";
 import { BLOCOS_DO_INICIO } from "../painel/nucleo/molde.mjs";
+import { TEXTOS_PADRAO } from "../painel/app/textos.js";
+import { vistasDoPack } from "./vistas-do-pack.mjs";
 
 /* ── ESCREVER É .tmp + rename, E NÃO writeFile ─────────────────────────
    `UNKNOWN: open` no Windows quando outro processo segura o arquivo — o
@@ -478,6 +480,31 @@ async function acoesDoPack(pack) {
     const torto = String(alvos).split(/\s+/).filter((a) => !ALVOS.has(a));
     if (torto.length) throw new Error(`${pack}/painel.json: ${skill} · “${torto.join(" ")}” — os que existem: nada, item, pessoa`);
   }
+  /* `textos` (D267): o que o pack troca na tabela de `painel/app/textos.js` */
+  const textos = declarado.textos && typeof declarado.textos === "object" ? declarado.textos : {};
+  for (const [chave, texto] of Object.entries(textos)) {
+    if (!(chave in TEXTOS_PADRAO)) {
+      throw new Error(`${pack}/painel.json: textos · “${chave}” não é um texto do painel (os que existem: ${Object.keys(TEXTOS_PADRAO).join(", ")})`);
+    }
+    if (typeof texto !== "string" || !texto.trim() || texto.length > 40) {
+      throw new Error(`${pack}/painel.json: textos · “${chave}” pede um texto curto, com até 40 caracteres`);
+    }
+  }
+  /* `vistas` (D267): a frase que o agente lê sobre cada vista de
+     `<pack>/painel/componentes/` — uma por componente, e nenhuma sem ele */
+  const vistas = declarado.vistas && typeof declarado.vistas === "object" ? declarado.vistas : {};
+  {
+    const { vistas: dosComponentes, erros } = vistasDoPack(join(OFICINA, pack));
+    if (erros.length) throw new Error(`${pack}/painel/componentes: ${erros.join(" · ")}`);
+    const nomes = dosComponentes.map((v) => v.nome);
+    for (const nome of nomes) {
+      if (typeof vistas[nome] !== "string" || vistas[nome].trim().length < 20) {
+        throw new Error(`${pack}/painel.json: vistas · “${nome}” tem componente e não tem a frase que o agente lê — o que ela mostra, quando usar e o formato de \`dados\``);
+      }
+    }
+    const orfas = Object.keys(vistas).filter((n) => !nomes.includes(n));
+    if (orfas.length) throw new Error(`${pack}/painel.json: vistas · ${orfas.join(", ")} sem ${pack}/painel/componentes/<Nome>.svelte`);
+  }
   const vocab = await vocabularioDe(pack).catch(() => ({}));
   const readme = join(OFICINA, pack, "README.md");
   const linhas = existsSync(readme) ? (await readFile(readme, "utf8")).split(/\r?\n/) : [];
@@ -546,6 +573,8 @@ async function acoesDoPack(pack) {
     ...(Object.keys(ordens).length ? { ordens } : {}),
     ...(Object.keys(fases).length ? { fases } : {}),
     ...(Object.keys(esforco).length ? { esforco } : {}),
+    ...(Object.keys(textos).length ? { textos: Object.fromEntries(Object.entries(textos).map(([k, v]) => [k, v.trim()])) } : {}),
+    ...(Object.keys(vistas).length ? { vistas: Object.fromEntries(Object.entries(vistas).map(([k, v]) => [k, v.trim()])) } : {}),
     /* a skill vira o comando, que é a chave que o painel tem na mão */
     rotulos: Object.fromEntries(Object.entries(rotulos).map(([k, v]) => [etapas.includes(k) ? k : comandoDe(k) || k, v.trim()])),
     grupos: grupos.filter((g) => g.acoes.length),
@@ -1113,9 +1142,12 @@ export async function conferirOficina({ escrever = false } = {}) {
           await ler(join(OFICINA, pack, ".claude-plugin", "plugin.json"))],
         ...(existsSync(prompt) ? [[`prompts/${pack}.md`, await ler(prompt)]] : []),
       ], Number(vocab["total-skills"])));
+      /* as do motor entram pelo nome que VÃO ter: na primeira montagem de um
+         pack novo elas ainda não estão no disco, e o README acusava falta. */
+      const doMotor = (await skillsDoMotorPara(vocab)).map(([n]) => resolverMarcas(n, vocab));
       erros.push(...conferirIndice(
         await ler(join(OFICINA, pack, "README.md")),
-        `${pack}/README.md`, pack, await skillsDe(pack)));
+        `${pack}/README.md`, pack, [...new Set([...await skillsDe(pack), ...doMotor])]));
       if (existsSync(prompt)) {
         erros.push(...conferirTarefasDoPrompt(await ler(prompt), `prompts/${pack}.md`,
           (await tarefasDe(pack)).map((id) => ({ id }))));
@@ -1320,10 +1352,13 @@ export async function conferirOficina({ escrever = false } = {}) {
       }
     }
     for (const rel of DO_PAINEL) {
-      const origem = join(PAINEL, ...rel.split("/"));
+      /* a página é a DO PACK — as vistas de `<pack>/painel/componentes/` vão
+         dentro dela (D267); `npm run painel` escreve uma por pack */
+      const deOrigem = rel === "painel.html" ? `painel.${pack}.html` : rel;
+      const origem = join(PAINEL, ...deOrigem.split("/"));
       const alvo = join(OFICINA, pack, "painel", ...rel.split("/"));
       if (!existsSync(origem)) {
-        erros.push(`painel/${rel}: não existe — rode \`npm run painel\` antes`);
+        erros.push(`painel/${deOrigem}: não existe — rode \`npm run painel\` antes`);
         continue;
       }
       const conteudo = await readFile(origem, "utf8");

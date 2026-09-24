@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--saida-cada-mensagem” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--saida-cada-mensagem" _motor). Os dois que existem: corretor/exemplos/retomar--saida-cada-mensagem.md e prospeccao/exemplos/retomar--saida-cada-mensagem.md>>

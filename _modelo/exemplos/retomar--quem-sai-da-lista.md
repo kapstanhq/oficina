@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--quem-sai-da-lista” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--quem-sai-da-lista" _motor). Os dois que existem: corretor/exemplos/retomar--quem-sai-da-lista.md e prospeccao/exemplos/retomar--quem-sai-da-lista.md>>

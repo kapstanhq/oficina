@@ -71,5 +71,21 @@ todo PR.
 
 ## Um pack novo
 
-Ainda não há molde nem comando para criar um: está no plano. Enquanto isso,
-abra uma questão dizendo o ofício, e a gente combina o caminho.
+Nasce do `_modelo/`, que tem tudo o que o montador e o marketplace exigem, com
+o que é do ofício marcado `<<preencher…>>`. No Claude Code, aberto na raiz, o
+caminho curto é `/criar-pack`: ela entrevista você sobre o ofício e preenche.
+À mão:
+
+```
+npm run novo-pack -- <slug> --nome "Nome do ofício"
+npm run marcas <slug>             # o que falta — repita até “total: 0”
+npm run painel                    # a página do painel, uma por pack
+npm run montar -- --escrever      # gera skills do motor, painel e contrato
+npm run montar                    # tem de sair tudo ✓
+npm run provar -- --seco --pack <slug>
+```
+
+O `novo-pack` copia o molde para `<slug>/`, a fixture para `_prova/<slug>/` e
+registra o pack no `marketplace.json`. As skills do motor não vêm no molde: o
+montador as gera. Antes do PR, cada skill precisa de um roteiro em
+`_prova/<slug>/roteiros/`.

@@ -1,0 +1,1 @@
+<<preencher: o exemplo “retomar--linha-de-arquivar” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "retomar--linha-de-arquivar" _motor). Os dois que existem: corretor/exemplos/retomar--linha-de-arquivar.md e prospeccao/exemplos/retomar--linha-de-arquivar.md>>

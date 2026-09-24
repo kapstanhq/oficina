@@ -1,0 +1,1 @@
+<<preencher: o exemplo “organizar--quem-decide-aposentar” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "organizar--quem-decide-aposentar" _motor). Os dois que existem: corretor/exemplos/organizar--quem-decide-aposentar.md e prospeccao/exemplos/organizar--quem-decide-aposentar.md>>

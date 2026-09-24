@@ -35,6 +35,8 @@
    repositório inteiro por candidato a classe. Medido em `oficina-tw.css`:
    2,4 → 1,2 kB gzip só desligando a varredura automática. */
 @source "./app/**/*.svelte";
+/* e as vistas dos packs (D267): a folha é uma só para todos os painéis */
+@source "../*/painel/componentes/**/*.svelte";
 
 /* ── OS TOKENS, copiados de `site/css/base.css` ────────────────────────
    Só os que as regras compostas abaixo leem. Quem acrescentar uma peça que
@@ -728,7 +730,7 @@ header .p-etapas{gap:4px}
 .p-mudou a:hover b{text-decoration:underline;text-underline-offset:3px}
 .p-mudou b{font-weight:var(--peso-interface);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .p-mudou-tipo{flex:none;width:52px;font-size:12px;color:var(--mute)}
-.p-mudou-tipo[data-tipo="Novo"]{color:var(--accent-forte);font-weight:var(--peso-interface)}
+.p-mudou-tipo[data-tipo="novo"]{color:var(--accent-forte);font-weight:var(--peso-interface)}
 .p-mudou-onde{margin-left:auto;flex:none;font-size:12px;color:var(--mute)}
 
 /* ── A EXECUÇÃO, E O PEDIDO DE CONFIRMAÇÃO (D232) ─────────────────────── */

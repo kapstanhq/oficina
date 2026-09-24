@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "painel": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/painel/nucleo/vigia.mjs",
+        "${CLAUDE_PLUGIN_ROOT}/painel/servidor.mjs"
+      ]
+    },
+    "conectores": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/painel/nucleo/vigia.mjs",
+        "${CLAUDE_PLUGIN_ROOT}/conectores/servidor.mjs"
+      ]
+    },
+    "documentos": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/painel/nucleo/vigia.mjs",
+        "${CLAUDE_PLUGIN_ROOT}/documentos/servidor.mjs"
+      ]
+    }
+  }
+}

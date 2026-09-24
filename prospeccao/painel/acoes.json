@@ -12,6 +12,95 @@
   "destaque": [],
   "resumo": [],
   "motivos": [],
+  "completar": "/prospeccao:completar-ficha",
   "rotulos": {},
-  "grupos": []
+  "grupos": [
+    {
+      "rotulo": "",
+      "acoes": [
+        {
+          "sobre": [],
+          "comando": "/prospeccao:comecar",
+          "nome": "Começar",
+          "oque": "Monta a carteira e testa o que está conectado"
+        },
+        {
+          "sobre": [],
+          "comando": "/prospeccao:perfil-de-cliente",
+          "nome": "Escrever o perfil",
+          "oque": "Escreve quem vale a pena procurar, e o que desqualifica"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/prospeccao:estudar-conta",
+          "nome": "Estudar a conta",
+          "oque": "Lê o que é público sobre uma empresa e grava fato com origem, nunca opinião"
+        },
+        {
+          "sobre": [
+            "pessoa"
+          ],
+          "comando": "/prospeccao:escrever-abordagem",
+          "nome": "Escrever a abordagem",
+          "oque": "Escreve a mensagem a um contato, e recusa quem pediu silêncio"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/prospeccao:o-que-fazer-hoje",
+          "nome": "O que fazer hoje",
+          "oque": "Monta a lista do dia a partir da carteira"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/prospeccao:retomar-contato",
+          "nome": "Retomar contato",
+          "oque": "Acha quem parou de responder e escreve a volta com uma novidade concreta"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/prospeccao:cobrar-o-que-falta",
+          "nome": "Cobrar o que falta",
+          "oque": "Cobra quem ficou de mandar e não mandou"
+        },
+        {
+          "sobre": [],
+          "comando": "/prospeccao:importar-a-conversa",
+          "nome": "Importar a conversa",
+          "oque": "Enche a carteira com o que já está no seu WhatsApp"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/prospeccao:organizar-carteira",
+          "nome": "Organizar a carteira",
+          "oque": "Guarda o que chegou e arquiva o que morreu"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/prospeccao:laudo-da-carteira",
+          "nome": "O laudo da carteira",
+          "oque": "Diz o que está errado na carteira, sem mexer nela"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/prospeccao:completar-ficha",
+          "nome": "Completar o que falta",
+          "oque": "Procura o que falta na ficha de uma conta nas fontes que você tem, e grava com a origem"
+        }
+      ]
+    }
+  ]
 }

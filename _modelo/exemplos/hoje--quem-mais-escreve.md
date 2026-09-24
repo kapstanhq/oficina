@@ -1,0 +1,1 @@
+<<preencher: o exemplo “hoje--quem-mais-escreve” no ofício deste pack — o motor cola este arquivo inteiro onde escreve a marca (grep -rn "hoje--quem-mais-escreve" _motor). Os dois que existem: corretor/exemplos/hoje--quem-mais-escreve.md e prospeccao/exemplos/hoje--quem-mais-escreve.md>>
