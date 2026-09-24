@@ -169,7 +169,7 @@ export function partirProximo(texto, comandos = []) {
    "Marcar como “salva”" de antes escrevia a etapa como estado num botão
    que é gesto. */
 export function passosDoItem({ id = "", andamento = null, acoes = [], proximos = {}, rotulos = {}, tipo = "item",
-  ficha = null, ocupados = [] } = {}) {
+  ficha = null, ocupados = [], fim = null } = {}) {
   const etapa = andamento?.de?.get(id) || "";
   const todas = acoes.flatMap((g) => g.acoes || []);
   const doAgente = partirProximo(andamento?.proximo?.get(id) || "", todas.map((a) => a.comando));
@@ -185,6 +185,12 @@ export function passosDoItem({ id = "", andamento = null, acoes = [], proximos =
     if (entrada === "descartar") {
       return { tipo: "descartar", chave: "descartar", rotulo: "Descartar",
         dica: "Tirar da lista — vai para o arquivo-morto, com a data." };
+    }
+    /* o fim BOM do pack (`acoes.json` → `fim`): na etapa dele, um descarte
+       com motivo fixo — sai do funil pela mesma porta, e não é recusa */
+    if (entrada === "fim") {
+      return { tipo: "fim", chave: "fim", rotulo: fim.rotulo, motivo: fim.motivo,
+        dica: `Terminou bem: sai do funil para o arquivo-morto, com o motivo “${fim.motivo}”.` };
     }
     const a = todas.find((x) => x.comando === entrada);
     if (!a) return null;
@@ -228,9 +234,10 @@ export function passosDoItem({ id = "", andamento = null, acoes = [], proximos =
   /* "Mais" tem TUDO o que se faz sobre o item: o fluxo da etapa, as outras
      skills que agem sobre ele, mover e descartar — nesta ordem */
   const doFluxo = doPack.map((e) => e.faz);
+  const fimAqui = !!(fim?.de && fim.de === etapa);
   const outras = todas.filter((a) => (a.sobre || []).includes(tipo) && !doFluxo.includes(a.comando)).map((a) => a.comando);
   const ordem = [...new Set([escolhida?.faz, ...doFluxo.filter((e) => e !== "descartar"), ...outras,
-    ...(doFluxo.includes("marcar") ? [] : ["marcar"]), "descartar"].filter(Boolean))];
+    ...(doFluxo.includes("marcar") ? [] : ["marcar"]), fimAqui && "fim", "descartar"].filter(Boolean))];
   const lista = ordem.map(resolver).filter(Boolean);
   const destaque = escolhida ? lista.find((x) => x.chave === resolver(escolhida.faz)?.chave) || null : null;
   if (destaque) {
@@ -238,6 +245,25 @@ export function passosDoItem({ id = "", andamento = null, acoes = [], proximos =
     destaque.porque = escolhida.porque;
   }
   return { etapa, seguinte, doAgente, lista, destaque, trilha };
+}
+
+/** a decisão da fila é o fim bom, e não um descarte */
+export const ehFim = (d, fim) => !!(fim?.motivo && d?.gesto === "descartar" && d.motivo === fim.motivo);
+
+/**
+ * O gesto de um passo na FILA: `{ decidir }` ou `{ anotar }`, ou null quando
+ * o passo não é de fila. Descartar sobre o fim marcado troca o motivo em vez
+ * de desmarcar — os dois são o mesmo gesto para a fila.
+ */
+export function gestoDoPasso(p, { id = "", nome = "", etapa = "", marcada = null, fim = null } = {}) {
+  const de = { item: id, nome, de: etapa };
+  if (p?.tipo === "marcar") return { decidir: { ...de, gesto: "etapa", para: p.para } };
+  if (p?.tipo === "fim") return { decidir: { ...de, gesto: "descartar", motivo: p.motivo } };
+  if (p?.tipo === "descartar") {
+    return marcada?.item === id && ehFim(marcada, fim) ? { anotar: { item: id, motivo: "" } }
+      : { decidir: { ...de, gesto: "descartar" } };
+  }
+  return null;
 }
 
 /* ── AS CONDIÇÕES DO FLUXO (D257) ─────────────────────────────────────

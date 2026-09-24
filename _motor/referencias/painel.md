@@ -190,7 +190,8 @@ chaves que mudam:
   "resumo":   ["O que pesa contra", "O que pesa a favor"],
   "rotulos":  { "<etapa de destino ou skill>": "texto do botão" },
   "motivos":  ["motivo de descarte de um clique", "…"],
-  "proximo":  { "<etapa>": ["marcar", "<skill>", "descartar"] }
+  "proximo":  { "<etapa>": ["marcar", "<skill>", "descartar"] },
+  "lancar":   false
 }
 ```
 
@@ -198,7 +199,9 @@ chaves que mudam:
 `numeros`, `hoje`, `funil`, `acoes`), e o que não estiver na lista some
 dela. `destaque` são os rótulos de campo como estão no arquivo do
 {andante}; `resumo`, títulos de seção; em `rotulos` e `proximo`, as skills
-vão pelo nome, sem a barra. O painel só lê: chave errada é ignorada, e a
+vão pelo nome, sem a barra. `"lancar": false` é para quem não quer que o
+painel chame você sozinho ("tira o botão que chama o Claude"): os botões passam
+a copiar o pedido. O painel só lê: chave errada é ignorada, e a
 página **Conta** diz qual e por quê — confira lá depois de escrever. Para
 voltar ao molde, apague a chave (ou o arquivo). Diga em uma linha o que mudou;
 a aba se atualiza na próxima volta.
@@ -234,7 +237,9 @@ coisa**, pelas regras de sempre: a linha `etapa:`, o `## Histórico`, o
 `funil.md`, o `_indice.md` e os contadores do `INDICE.md`. A procedência é
 `← {profissional}, no painel, AAAA-MM-DD`. `descartar` é a Regra 3 — aposentar,
 com data e motivo; sem `motivo` na fila, o motivo é `descartado no painel`, e
-você não pergunta. A decisão que chega com `envelheceu: true` é de um item que
+você não pergunta. O fim BOM que o pack declara (o botão próprio da última
+etapa) chega igual, como `descartar` com o motivo dele: grave esse motivo, sem
+trocar por outro. A decisão que chega com `envelheceu: true` é de um item que
 já não está na etapa `de` — mudou depois do clique, e `agora` diz onde ele está.
 Não grave: diga em uma linha, e confirme-a mesmo assim; a barra do painel já
 avisou o {profissional}.

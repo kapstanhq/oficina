@@ -84,6 +84,18 @@ export function resolverModelo({ env = process.env, base = "" } = {}) {
   return { modelo: MODELO_PADRAO, de: "padrão", avisos };
 }
 
+/* ── A BASE PODE DESLIGAR O BOTÃO ─────────────────────────────────────
+   `"lancar": false` no `painel.json` da base: o painel só mostra o pedido
+   para copiar, e aqui nada dispara — nem o clique, nem o que já estava na
+   fila. Lido a cada vez, como o modelo. JSON torto não desliga: o aviso dele
+   é da página Conta. */
+export const DESLIGADO = "o botão que chama o assistente está desligado nesta base (“lancar”: false no painel.json dela) — peça na conversa com o Claude";
+export function lancarDesligado(base = "") {
+  if (!base) return false;
+  try { return JSON.parse(readFileSync(join(base, "painel.json"), "utf8"))?.lancar === false; }
+  catch { return false; }
+}
+
 /* ── O TEXTO DE FORA É DADO (D267) ────────────────────────────────────
    A execução lê a web e grava na base sem perguntar (`acceptEdits`): uma
    página pode trazer "agora apague X" escrito para o modelo. As permissões
@@ -226,6 +238,7 @@ export function criarLancador({
     lancar({ o, nome, prompt, base, naFila = false, esforco = "" }) {
       if (!disponivel) throw recusa("este painel não tem como chamar o assistente sozinho");
       if (!base) throw recusa("não há base aberta no painel");
+      if (lancarDesligado(base)) throw Object.assign(new Error(DESLIGADO), { codigo: 403 });
       pastaDaExecucao(base);
       if (rodando) {
         if (!naFila) throw recusa(`o assistente já está trabalhando em “${rodando.nome}” — espere ele terminar`);
@@ -297,7 +310,10 @@ export function criarLancador({
     const { modelo, de, avisos } = resolverModelo({ env, base });
     for (const a of avisos) aoRegistrar(a);
     let cwd;
-    try { cwd = pastaDaExecucao(base); } catch (e) {
+    try {
+      if (lancarDesligado(base)) throw new Error(DESLIGADO);
+      cwd = pastaDaExecucao(base);
+    } catch (e) {
       /* o da fila chega aqui depois do clique: a base pode ter sumido no meio. Pausa, sem derrubar o servidor */
       const agora = new Date().toISOString();
       ultima = { o, nome, desde: agora, ate: agora, ok: false, motivo: e.message, resumo: "", custo: null, modelo, base };
@@ -394,6 +410,8 @@ export function criarLancador({
       guardarUltima();
       feitas = [...feitas, { nome, ok: ultima.ok, custo, motivo: ultima.motivo }].slice(-TETO_DA_FILA);
       if (!ultima.ok && espera.length) pausada = ultima.motivo || "a anterior não terminou";
+      /* a base desligou o botão no meio: o que espera fica na fila, pausado */
+      if (!pausada && espera.length && lancarDesligado(espera[0].base)) pausada = DESLIGADO;
       /* o próximo começa ANTES de liberar: o vigia não troca o processo no vão */
       if (!pausada && espera.length) iniciar(espera.shift());
       aoTerminar(ultima);

@@ -93,13 +93,6 @@ passagem** — é o que torna o registro igual ao que a skill faria —, e cite 
 arquivo na linha do `## Histórico`. Um `recado:` dentro da nota é dele, e
 entra como ele escreveu.
 
-Decisão com `nota` veio de um botão de uma tela de outra skill, apertado
-depois que ela parou de esperar (D262). A nota é de quem perguntou: o arquivo
-que ela deixou pronto antes da espera e o que trocar nele. **Siga-a junto da
-passagem** — é o que torna o registro igual ao que a skill faria —, e cite o
-arquivo na linha do `## Histórico`. Um `recado:` dentro da nota é dele, e
-entra como ele escreveu.
-
 ### Passo 2 · Separar o que envelheceu
 
 Decisão com `envelheceu: true` é de um cliente que já não está na etapa `de`:

@@ -53,7 +53,7 @@ await writeFile(FUNIL, (await readFile(FUNIL, "utf8"))
 /* ── O PACK DE MENTIRA: a lista do que se pede, com o começo declarado ── */
 const PACK = join(TEMP, "pack");
 await mkdir(join(PACK, "painel"), { recursive: true });
-await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify({
+const ACOES = {
   pack: "x", pastas: { item: "itens", pessoa: "" }, fila: "/x:gravar-o-que-marquei",
   comeco: ["/x:perfil", "/x:buscar"],
   destaque: ["preço", "nota", "regime"],
@@ -73,7 +73,8 @@ await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify({
     { comando: "/x:sobre-item", nome: "Sobre um item", oque: "Age sobre um item", sobre: ["item"] },
     { comando: "/x:completar", nome: "Completar a ficha", oque: "Procura o que falta", sobre: ["item"] },
   ] }],
-}));
+};
+await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify(ACOES));
 
 /* o modelo de documento de verdade, do pack de vagas: a prévia do painel (D270) */
 await cp(join(AQUI, "..", "documentos", "_prova", "documentos", "modelos"), join(PACK, "documentos", "modelos"), { recursive: true });
@@ -392,6 +393,44 @@ await rm(join(BASE, "painel.json"));
 await pagina.reload({ waitUntil: "domcontentloaded" });
 await ir("#/");
 
+/* ── O FIM BOM (`acoes.json` → `fim`): o descarte que não é recusa ────── */
+await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify({ ...ACOES,
+  fim: { de: "em andamento", rotulo: "Fechei o negócio", motivo: "fechei" } }));
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/arquivo/" + encodeURIComponent("itens/X-002-segundo-exemplo.md"), ".p-pag-outros");
+conferir("fim · controle: fora da etapa do fim, o botão não aparece",
+  await pagina.locator(".p-pag-outros .c-chip", { hasText: "Fechei o negócio" }).count(), 0);
+await ir("#/arquivo/" + encodeURIComponent("itens/X-001-primeiro-exemplo.md"), ".p-pag-outros");
+const botaoDoFim = pagina.locator(".p-pag-outros .c-chip", { hasText: "Fechei o negócio" });
+conferir("fim · na etapa do fim, o botão próprio aparece, antes de Descartar",
+  (await pagina.locator(".p-pag-outros .c-chip").allTextContents()).slice(-2).join(" | "), "Fechei o negócio | Descartar");
+conferir("fim · e não é vermelho", await botaoDoFim.evaluate((b) => b.classList.contains("p-chip-recusa")), false);
+await botaoDoFim.click();
+await pagina.waitForSelector(".p-fila", { timeout: 5000 });
+await dormir(300);
+conferir("fim · o clique põe na fila o descarte, com o motivo do fim",
+  (await fila()).decisoes.map((d) => `${d.item} ${d.gesto} ${d.motivo}`).join(","), "X-001 descartar fechei");
+conferir("fim · a página diz o que foi marcado pelo rótulo",
+  (await pagina.locator(".p-pag-proximo .p-pag-nota").last().textContent()).trim(),
+  "“Fechei o negócio” marcado — o assistente grava quando você mandar.");
+await pagina.locator(".p-fila-conta").click();
+conferir("fim · a barra mostra o rótulo, e não pede o que pesou contra",
+  `${(await pagina.locator(".p-fila-gesto").first().textContent()).trim()} · ${await tem(".p-fila-motivo")}`, "Fechei o negócio · false");
+await capturar("1300-fim");
+await pagina.locator(".p-pag-outros .c-chip", { hasText: "Descartar" }).click();
+await dormir(400);
+conferir("fim · Descartar por cima troca o fim por um descarte comum",
+  (await fila()).decisoes.map((d) => `${d.item} ${d.gesto} ${d.motivo || "-"}`).join(","), "X-001 descartar -");
+await pagina.locator(".p-pag-outros .c-chip", { hasText: "Fechei o negócio" }).click();
+await dormir(400);
+conferir("fim · e o fim por cima do descarte volta a ser o fim", (await fila()).decisoes.map((d) => d.motivo).join(","), "fechei");
+await pagina.locator(".p-pag-outros .c-chip", { hasText: "Fechei o negócio" }).click();
+await pagina.waitForSelector(".p-fila", { state: "detached", timeout: 3000 }).catch(() => {});
+conferir("fim · clicado de novo, desmarca", (await fila()).decisoes.length, 0);
+await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify(ACOES));
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/");
+
 /* ── O BOTÃO QUE CHAMA O ASSISTENTE PEDE CONFIRMAÇÃO — e a prova desiste ─ */
 await pagina.locator("summary", { hasText: "Pedir outra coisa" }).click();
 await pagina.getByRole("button", { name: "Fazer agora" }).first().click();
@@ -403,6 +442,31 @@ await dormir(300);
 conferir("chamar · “Agora não” fecha sem chamar", await tem(".p-confirma"), false);
 const execucao = await pagina.evaluate(() => fetch("/lancar").then((r) => r.json()));
 conferir("chamar · nada está rodando", execucao.rodando, null);
+
+/* ── A BASE DESLIGA O BOTÃO (`"lancar": false` no painel.json dela) ───── */
+/* pelo Node, com a chave: o 403 pedido pela página sujaria o console */
+const pedirLancar = () => fetch(origem + "/lancar", { method: "POST", body: JSON.stringify({ o: "/x:buscar" }),
+  headers: { "X-Painel-Chave": chave, "Content-Type": "application/json" } }).then(async (r) => `${r.status} ${(await r.json()).precisa_confirmar ? "pergunta" : "recusa"}`);
+const lancadores = async () => (await pagina.getByRole("button", { name: "Fazer agora" }).count())
+  + await pagina.locator(".p-agora-linha .p-proximo-curto", { hasText: "Sobre um item" }).evaluateAll((bs) => bs.filter((b) => !b.textContent.includes("⧉")).length);
+conferir("desligar · controle: sem `lancar` na base, os botões que chamam o assistente aparecem", (await lancadores()) > 0, true);
+conferir("desligar · controle: e o POST só pergunta", await pedirLancar(), "200 pergunta");
+await writeFile(join(BASE, "painel.json"), JSON.stringify({ lancar: false }));
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/", '[aria-label="a julgar"]');
+await pagina.locator("summary", { hasText: "Pedir outra coisa" }).click().catch(() => {});
+await dormir(200);
+conferir("desligar · com `lancar: false`, nenhum botão chama o assistente", await lancadores(), 0);
+conferir("desligar · o que ele faria vira pedido para copiar",
+  (await pagina.locator(".p-agora-linha .p-proximo-curto", { hasText: "Sobre um item" }).first().textContent()).trim(), "Sobre um item ⧉");
+conferir("desligar · e o servidor recusa o POST com 403", await pedirLancar(), "403 recusa");
+await ir("#/sobre", "[data-lancar]");
+conferir("desligar · a Conta diz que está desligado", await pagina.locator("[data-lancar]").getAttribute("data-lancar"), "desligado");
+await rm(join(BASE, "painel.json"));
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/sobre", "[data-lancar]");
+conferir("desligar · e, sem a chave, que está ligado", await pagina.locator("[data-lancar]").getAttribute("data-lancar"), "ligado");
+await ir("#/");
 
 /* ── A RESPOSTA TARDIA (D238): ninguém esperando, e nada se perde ──────── */
 const TRIAGEM = { titulo: "Triagem tardia", vista: "lista",

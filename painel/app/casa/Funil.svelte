@@ -15,12 +15,13 @@
    * cada um, e clicar abre. A ordem é uma só para a tabela e para a lista do
    * leitor — e é a mesma do funil do início; quem a guarda é a casca.
    */
+  import { getContext } from "svelte";
   import Leitor from "../Leitor.svelte";
   import Arquivo from "./Arquivo.svelte";
   import Tabela from "./Tabela.svelte";
   import { partirLinha, idsDaLinha, partirId, passosDoItem, caudaParaLer, ehLinhaVazia,
     paraFunil, TODAS, nomeDoArquivo, comFicha, pegarDoItem, ordenar as emOrdem, ordenacoesDe,
-    sentidoPadrao, semResposta, fichaDoItem, valorCurto, faseDe, trechosDoFunil, noTrecho } from "../rota.js";
+    sentidoPadrao, semResposta, fichaDoItem, valorCurto, faseDe, trechosDoFunil, noTrecho, ehFim, gestoDoPasso } from "../rota.js";
 
   let { etapa = TODAS, id = "", funil = null, indice, documentos = null, andamento = null,
     decisoes = [], decidir = async () => {}, anotar = () => {}, acoes = [], proximos = {},
@@ -28,6 +29,8 @@
     chamar = () => {}, recarga = 0, agente = false, esperando = false,
     nome = "Funil", mapa = null, completar = "", fichas = null, documentosDoPack = {}, ordens = {}, fases = {},
     ordem = { chave: "", desc: false }, ordenar = () => {}, umItem = "", ocupados = [] } = $props();
+  const molde = getContext("molde");
+  const fim = $derived(molde?.fim || null);
 
   const linhasDe = (s) => (s?.itens || []).filter((i) => i.tipo === "linha" && !ehLinhaVazia(i.texto));
   const secoes = $derived((funil?.secoes || []).map((s) => ({
@@ -101,10 +104,10 @@
   ]);
 
   const opcoesDe = (it) => {
-    const p = passosDoItem({ id: it.id, andamento, acoes, proximos, rotulos, ficha: fichaDoItem(it), ocupados });
+    const p = passosDoItem({ id: it.id, andamento, acoes, proximos, rotulos, ficha: fichaDoItem(it), ocupados, fim });
     return p.lista.map((x) => ({
       chave: x.chave, passo: x, dica: x.porque || x.dica || x.oque || "",
-      tipo: x.tipo === "marcar" || x.tipo === "descartar" ? "marca" : "acao",
+      tipo: x.tipo === "marcar" || x.tipo === "descartar" || x.tipo === "fim" ? "marca" : "acao",
       tom: x.tipo === "descartar" ? "recusa" : "", motivo: x.tipo === "descartar",
       destaque: !!x.recomendado, ocupado: x.ocupado || "",
       rotulo: x.tipo === "conversa" || (x.tipo === "skill" && !podeChamar) ? x.rotulo + " ⧉" : x.rotulo,
@@ -112,15 +115,16 @@
   };
   const marcadaDe = (it) => {
     const d = decisoes.find((x) => x.item === it.id);
-    return d ? (d.gesto === "descartar" ? "descartar" : "marcar") : "";
+    return d ? (ehFim(d, fim) ? "fim" : d.gesto === "descartar" ? "descartar" : "marcar") : "";
   };
   async function escolher(it, op, motivo = "") {
     const x = op.passo;
     const de = andamento?.de?.get(it.id) || it.etapa;
-    if (x.tipo === "marcar") await decidir({ item: it.id, nome: it.titulo, de, gesto: "etapa", para: x.para });
-    else if (x.tipo === "descartar") {
-      await decidir({ item: it.id, nome: it.titulo, de, gesto: "descartar" });
-      if (motivo) anotar({ item: it.id, motivo });
+    const g = gestoDoPasso(x, { id: it.id, nome: it.titulo, etapa: de, marcada: decisoes.find((d) => d.item === it.id), fim });
+    if (g?.anotar) anotar({ ...g.anotar, motivo });
+    else if (g?.decidir) {
+      await decidir(g.decidir);
+      if (motivo && x.tipo === "descartar") anotar({ item: it.id, motivo });
     } else if (x.tipo === "skill" && podeChamar) chamar(x.comando, x.item);
     else { try { await navigator.clipboard.writeText(x.pedido); } catch { /* o rótulo mostra o pedido */ } }
   }

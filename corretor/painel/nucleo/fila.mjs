@@ -193,7 +193,11 @@ export function criarFila({ pasta, aoRegistrar = () => {} }) {
     const atual = await ler(raiz);
     const antiga = atual.find((d) => d.item === item);
     const resto = atual.filter((d) => d.item !== item);
-    const mesma = antiga && antiga.gesto === gesto && antiga.para === para;
+    /* o descarte que chega COM motivo é outro gesto do que tem outro: o
+       fim bom do pack (`acoes.json` → `fim`) é um descarte com motivo fixo, e
+       apertá-lo sobre um descarte comum troca, em vez de desmarcar */
+    const mesma = antiga && antiga.gesto === gesto && antiga.para === para
+      && (!limpo(pedido?.motivo, 300) || limpo(pedido.motivo, 300) === (antiga.motivo || ""));
     if (!mesma) {
       if (resto.length >= TETO_DA_FILA) {
         throw recusa(`a fila chegou a ${TETO_DA_FILA} decisões — peça ao assistente para gravar antes de marcar mais`);

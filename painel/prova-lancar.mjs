@@ -109,6 +109,19 @@ try {
   conferir("pasta · a casa do usuário não é base", recusa(homedir()), 409);
   conferir("pasta · caminho relativo não é base", recusa("base"), 409);
   conferir("pasta · nenhuma recusa pôs processo de pé", lancados.length - antes, 1);
+
+  /* ── A BASE DESLIGA O BOTÃO (`"lancar": false`) ──────────────────────── */
+  await painelDaBase({ lancar: true });
+  conferir("desligado · controle: `lancar: true` lança", recusa(BASE), "passou");
+  const rodando = lancados.at(-1);
+  l.lancar({ o: "/x:outra", nome: "Outra", prompt: "/x:outra", base: BASE, naFila: true });
+  await painelDaBase({ lancar: false });
+  const depois = lancados.length;
+  conferir("desligado · o clique é recusado com 403", recusa(BASE), 403);
+  terminar(rodando, 0.1);
+  await dormir(100);
+  conferir("desligado · e o que esperava na fila não sobe: fica nela, pausada",
+    `${lancados.length - depois} · ${l.estado().fila.length} · ${/desligado/.test(l.estado().pausada)}`, "0 · 1 · true");
 } finally {
   await rm(TEMP, { recursive: true, force: true }).catch(() => {});
 }

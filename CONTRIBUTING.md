@@ -37,6 +37,7 @@ E as provas, que não chamam modelo nenhum:
 npm run prova:guardas           # as guardas do servidor local do painel
 npm run prova:vigia             # a troca do servidor quando o código muda
 npm run prova:tela              # o painel no navegador, a 1300 e a 390 px
+npm run prova:montador          # o que o montador recusa num painel.json de pack
 npm run prova:conectores
 npm run prova:documentos
 npm run provar -- --seco --pack <pack>

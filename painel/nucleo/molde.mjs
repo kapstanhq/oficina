@@ -30,7 +30,9 @@ export function modeloValido(v) {
 export const nomeDoModelo = (m) => APELIDOS[m] || m || APELIDOS[MODELO_PADRAO];
 
 
-export const CHAVES_DA_BASE = ["inicio", "destaque", "resumo", "rotulos", "motivos", "proximo", "modelo"];
+/* `lancar: false` desliga o botão que chama o assistente: o painel mostra o
+   pedido para copiar, e o servidor recusa o `POST /lancar` (`lancar.mjs`) */
+export const CHAVES_DA_BASE = ["inicio", "destaque", "resumo", "rotulos", "motivos", "proximo", "modelo", "lancar"];
 
 const listaDeTextos = (v, teto, largura) => Array.isArray(v) && v.length <= teto
   && v.every((x) => typeof x === "string" && x.trim() && x.length <= largura);
@@ -63,6 +65,8 @@ export function ajustarPelaBase(acoes, dela) {
     } else if (chave === "modelo") {
       const m = modeloValido(valor);
       if (m) vale(chave, m); else recusa("modelo: opus, sonnet, haiku ou um id claude-…");
+    } else if (chave === "lancar") {
+      if (typeof valor === "boolean") vale(chave, valor); else recusa("lancar: true ou false — false desliga o botão que chama o assistente");
     } else if (chave === "destaque") {
       if (listaDeTextos(valor, 8, 40)) vale(chave, valor); else recusa("destaque: até oito rótulos de campo, como estão no arquivo do item");
     } else if (chave === "resumo") {

@@ -22,7 +22,8 @@
     "prova:conectores": "node conectores/prova.mjs",
     "prova:documentos": "node documentos/prova.mjs",
     "prova:sempre": "node painel/prova-sempre.mjs --so-geracao",
-    "prova:lancar": "node painel/prova-lancar.mjs"
+    "prova:lancar": "node painel/prova-lancar.mjs",
+    "prova:montador": "node scripts/prova-montador.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

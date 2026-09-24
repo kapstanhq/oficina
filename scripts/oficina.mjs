@@ -340,15 +340,16 @@ const ALVOS = new Set(["nada", "item", "pessoa"]);
    seria o mesmo gesto em dois lugares. */
 const SKILL_DA_FILA = "gravar-o-que-marquei";
 
-async function acoesDoPack(pack) {
-  const doPainel = join(OFICINA, pack, "painel.json");
+/* `raiz` é a pasta dos packs: a prova do montador a troca por uma temporária */
+export async function acoesDoPack(pack, raiz = OFICINA) {
+  const doPainel = join(raiz, pack, "painel.json");
   const declarado = existsSync(doPainel) ? JSON.parse(await readFile(doPainel, "utf8")) : {};
   const sobre = declarado.sobre || {};
   /* `comeco`: os passos de quem acabou de instalar, na ordem do ofício. O
      painel os mostra enquanto a base não tem item nenhum (D234) */
   const comeco = Array.isArray(declarado.comeco) ? declarado.comeco : [];
   for (const skill of comeco) {
-    if (!existsSync(join(OFICINA, pack, "skills", skill))) {
+    if (!existsSync(join(raiz, pack, "skills", skill))) {
       throw new Error(`${pack}/painel.json: comeco · “${skill}” não é uma skill deste pack`);
     }
   }
@@ -360,7 +361,7 @@ async function acoesDoPack(pack) {
      estão no arquivo do item. O painel só os mostra grandes; não sabe o que são */
   const destaque = Array.isArray(declarado.destaque) ? declarado.destaque.map(String) : [];
   if (destaque.some((d) => !d.trim() || d.length > 40)) throw new Error(`${pack}/painel.json: destaque · rótulo vazio ou longo demais`);
-  const doFunil = join(OFICINA, pack, "contrato", "04-3-funil.md");
+  const doFunil = join(raiz, pack, "contrato", "04-3-funil.md");
   const etapas = existsSync(doFunil)
     ? [...(await readFile(doFunil, "utf8")).matchAll(/^## (.+)$/gm)].map((m) => m[1].trim()) : [];
   /* D242: `resumo` (seções que o baralho mostra), `motivos` (descartes de um
@@ -409,7 +410,7 @@ async function acoesDoPack(pack) {
   /* `documentos` (D270): pasta da base → modelo de documento do pack */
   const documentos = declarado.documentos && typeof declarado.documentos === "object" ? declarado.documentos : {};
   for (const [pasta, modelo] of Object.entries(documentos)) {
-    if (!existsSync(join(OFICINA, pack, "documentos", "modelos", String(modelo), "modelo.json"))) {
+    if (!existsSync(join(raiz, pack, "documentos", "modelos", String(modelo), "modelo.json"))) {
       throw new Error(`${pack}/painel.json: documentos · “${pasta}” aponta o modelo “${modelo}”, que não existe em ${pack}/documentos/modelos/`);
     }
   }
@@ -423,6 +424,23 @@ async function acoesDoPack(pack) {
   const bloco = inicio.find((b) => !BLOCOS_DO_INICIO.includes(b));
   if (bloco) throw new Error(`${pack}/painel.json: inicio · “${bloco}” não é um bloco do início (os que existem: ${BLOCOS_DO_INICIO.join(", ")})`);
   const motivos = listaCurta("motivos", 8, 60);
+  /* `fim`: o fim BOM — na etapa `de`, um botão próprio (`rotulo`) que tira o
+     item do funil como o descarte, com o `motivo` fixo, e não é descarte */
+  let fim = null;
+  if (declarado.fim !== undefined) {
+    const f = declarado.fim;
+    const erro = (texto) => new Error(`${pack}/painel.json: fim · ${texto}`);
+    if (!f || typeof f !== "object" || Array.isArray(f)) throw erro("um objeto { de, rotulo, motivo }");
+    const sobra = Object.keys(f).filter((k) => !["de", "rotulo", "motivo"].includes(k));
+    if (sobra.length) throw erro(`“${sobra.join(", ")}” não é campo do fim (os que existem: de, rotulo, motivo)`);
+    const de = typeof f.de === "string" ? f.de.trim() : "";
+    if (!etapas.includes(de)) throw erro(`“${f.de ?? ""}” não é uma etapa do funil deste pack (as que existem: ${etapas.join(", ")})`);
+    const rotulo = typeof f.rotulo === "string" ? f.rotulo.trim() : "";
+    if (!rotulo || rotulo.length > 40) throw erro("rotulo é o texto do botão, com até 40 caracteres");
+    const motivo = typeof f.motivo === "string" ? f.motivo : "";
+    if (!/^\S{1,40}$/u.test(motivo)) throw erro(`motivo é uma palavra só, sem espaço, com até 40 caracteres — veio “${f.motivo ?? ""}”`);
+    fim = { de, rotulo, motivo };
+  }
   /* `esforco` (D263): o `--effort` do `claude` por skill. A skill tem de
      existir no pack, e o valor, ser um dos que o `claude` aceita */
   const esforco = {};
@@ -430,14 +448,14 @@ async function acoesDoPack(pack) {
     if (!["low", "medium", "high", "xhigh", "max"].includes(valor)) {
       throw new Error(`${pack}/painel.json: esforco · “${skill}” pede “${valor}” — os que existem: low, medium, high, xhigh, max`);
     }
-    if (!existsSync(join(OFICINA, pack, "skills", skill, "SKILL.md"))) {
+    if (!existsSync(join(raiz, pack, "skills", skill, "SKILL.md"))) {
       throw new Error(`${pack}/painel.json: esforco · “${skill}” não é uma skill deste pack`);
     }
     esforco[`/${pack}:${skill}`] = valor;
   }
   const rotulos = declarado.rotulos && typeof declarado.rotulos === "object" ? declarado.rotulos : {};
   for (const [chave, texto] of Object.entries(rotulos)) {
-    if (!etapas.includes(chave) && !existsSync(join(OFICINA, pack, "skills", chave))) {
+    if (!etapas.includes(chave) && !existsSync(join(raiz, pack, "skills", chave))) {
       throw new Error(`${pack}/painel.json: rotulos · “${chave}” não é etapa do funil nem skill deste pack`);
     }
     if (typeof texto !== "string" || !texto.trim() || texto.length > 32) {
@@ -467,14 +485,14 @@ async function acoesDoPack(pack) {
         }
       }
       if (e === "marcar" || e === "descartar") continue;
-      if (!existsSync(join(OFICINA, pack, "skills", e))) {
+      if (!existsSync(join(raiz, pack, "skills", e))) {
         throw new Error(`${pack}/painel.json: proximo · “${e}” não é uma skill deste pack, nem marcar/descartar`);
       }
       if (!sobre[e]) throw new Error(`${pack}/painel.json: proximo · “${e}” não declara \`sobre\` — conversa não vira botão`);
     }
   }
   for (const [skill, alvos] of Object.entries(sobre)) {
-    if (!existsSync(join(OFICINA, pack, "skills", skill))) {
+    if (!existsSync(join(raiz, pack, "skills", skill))) {
       throw new Error(`${pack}/painel.json: “${skill}” não é uma skill deste pack`);
     }
     const torto = String(alvos).split(/\s+/).filter((a) => !ALVOS.has(a));
@@ -494,7 +512,7 @@ async function acoesDoPack(pack) {
      `<pack>/painel/componentes/` — uma por componente, e nenhuma sem ele */
   const vistas = declarado.vistas && typeof declarado.vistas === "object" ? declarado.vistas : {};
   {
-    const { vistas: dosComponentes, erros } = vistasDoPack(join(OFICINA, pack));
+    const { vistas: dosComponentes, erros } = vistasDoPack(join(raiz, pack));
     if (erros.length) throw new Error(`${pack}/painel/componentes: ${erros.join(" · ")}`);
     const nomes = dosComponentes.map((v) => v.nome);
     for (const nome of nomes) {
@@ -506,7 +524,7 @@ async function acoesDoPack(pack) {
     if (orfas.length) throw new Error(`${pack}/painel.json: vistas · ${orfas.join(", ")} sem ${pack}/painel/componentes/<Nome>.svelte`);
   }
   const vocab = await vocabularioDe(pack).catch(() => ({}));
-  const readme = join(OFICINA, pack, "README.md");
+  const readme = join(raiz, pack, "README.md");
   const linhas = existsSync(readme) ? (await readFile(readme, "utf8")).split(/\r?\n/) : [];
   const grupos = [];
   const vistos = new Set();
@@ -526,7 +544,7 @@ async function acoesDoPack(pack) {
     if (vistos.has(m[1])) continue;
     vistos.add(m[1]);
     if (m[2] === SKILL_DA_FILA) continue;
-    const skill = join(OFICINA, pack, "skills", m[2], "SKILL.md");
+    const skill = join(raiz, pack, "skills", m[2], "SKILL.md");
     const titulo = existsSync(skill)
       ? ((await readFile(skill, "utf8")).match(/^# (.+)$/m) || [])[1] : "";
     const oque = m[3].replace(/`/g, "");
@@ -561,13 +579,14 @@ async function acoesDoPack(pack) {
     item: vocab.Item || "",
     /* a palavra da base ("busca", "carteira"): é o rótulo do grupo do menu (D236) */
     base: vocab.base || "",
-    fila: existsSync(join(OFICINA, pack, "skills", SKILL_DA_FILA)) ? `/${pack}:${SKILL_DA_FILA}` : "",
+    fila: existsSync(join(raiz, pack, "skills", SKILL_DA_FILA)) ? `/${pack}:${SKILL_DA_FILA}` : "",
     comeco: comeco.map((s) => todas.find((a) => a.comando.endsWith(":" + s)).comando),
     proximo: proximoResolvido,
     destaque,
     resumo,
     motivos,
     ...(inicio.length ? { inicio } : {}),
+    ...(fim ? { fim } : {}),
     ...(completar ? { completar: comandoDe(completar) } : {}),
     ...(Object.keys(documentos).length ? { documentos } : {}),
     ...(Object.keys(ordens).length ? { ordens } : {}),

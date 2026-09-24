@@ -62,6 +62,11 @@
      deixa um componente de pack usá-las (ou usar a ponte) sem saber onde
      ela mora. */
   setContext("ponte", ponte);
+  /* o que do molde vale em toda tela que desenha o próximo passo: o fim bom
+     do pack (`acoes.json` → `fim`). Por contexto, e não de prop em prop
+     pelas cinco telas que chegam ao `Proximo` */
+  const molde = $state({ fim: null });
+  setContext("molde", molde);
 
   /* ── A ENTRADA ────────────────────────────────────────────────────────
      `entrando` enquanto a troca não voltou, `sem-chave` quando o servidor
@@ -341,6 +346,7 @@
         rotulos = lidas?.rotulos || {};
         resumo = lidas?.resumo || [];
         motivos = lidas?.motivos || [];
+        molde.fim = lidas?.fim || null;
         completar = lidas?.completar || "";
         documentosDoPack = lidas?.documentos || {};
         ordens = lidas?.ordens || {};
@@ -723,7 +729,7 @@
         {#if rota.tela === "conectores"}
           <Conectores {recarga} />
         {:else if rota.tela === "sobre"}
-          <Sobre {mapa} conectores={estado.conectores} sempre={estado.sempre} {ajuste} />
+          <Sobre {mapa} conectores={estado.conectores} sempre={estado.sempre} {ajuste} {execucao} />
         {:else if rota.tela === "tarefa"}
           {#if !temTarefa}
             <p class="c-corpo">O assistente não pediu nada agora. Quando ele

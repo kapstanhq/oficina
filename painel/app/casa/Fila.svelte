@@ -21,6 +21,9 @@
    * da fila sem gravar. O descarte ganha o motivo, opcional, escrito depois
    * do clique: é o que ensina a triagem seguinte.
    */
+  import { getContext } from "svelte";
+  import { ehFim } from "../rota.js";
+
   let { decisoes = [], respostas = [], esperando = false, agente = false, podeChamar = false,
     trabalhando = false, decidir = () => {}, anotar = () => {}, dispensar = () => {},
     mandar = async () => ({}), chamar = () => {} } = $props();
@@ -64,7 +67,9 @@
     return () => raiz.setProperty("--altura-fila", "0px");
   });
 
-  const resumo = (d) => d.gesto === "descartar" ? "descartar" : `→ ${d.para}`;
+  /* o fim bom do pack é um descarte para a fila, e não para quem lê a barra */
+  const molde = getContext("molde");
+  const resumo = (d) => ehFim(d, molde?.fim) ? molde.fim.rotulo : d.gesto === "descartar" ? "descartar" : `→ ${d.para}`;
 </script>
 
 {#if total}
@@ -90,7 +95,7 @@
                 {d.agora ? `hoje está em “${d.agora}”` : "já não está no funil"}. O assistente
                 vai tirar esta da fila sem gravar; se ainda quiser, desfaça e marque de novo.</span>
             {/if}
-            {#if d.gesto === "descartar"}
+            {#if d.gesto === "descartar" && !ehFim(d, molde?.fim)}
               <label class="p-fila-motivo">
                 <span>Por quê? (opcional)</span>
                 <input type="text" maxlength="300" value={d.motivo || ""}

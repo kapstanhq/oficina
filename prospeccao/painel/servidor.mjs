@@ -60,7 +60,7 @@ import { criarBase } from "./nucleo/base.mjs";
 import { criarFila } from "./nucleo/fila.mjs";
 import { acharAnfitriao } from "./nucleo/hospede.mjs";
 import { ajustarPelaBase } from "./nucleo/molde.mjs";
-import { criarLancador, nomeDoModelo, resolverLancamento } from "./nucleo/lancar.mjs";
+import { criarLancador, DESLIGADO, lancarDesligado, nomeDoModelo, resolverLancamento } from "./nucleo/lancar.mjs";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 
@@ -408,8 +408,14 @@ async function oLancador() {
    o resultado dela não é desta tela */
 async function estadoDaExecucao() {
   const e = (await oLancador()).estado();
-  return { ...e, ultima: e.ultima && e.ultima.base === base.raiz ? e.ultima : null };
+  /* a base que escreveu `"lancar": false` não tem botão: a tela copia o pedido */
+  const desligado = base.ligada && lancarDesligado(base.raiz);
+  return { ...e, disponivel: e.disponivel && !desligado, desligado,
+    ultima: e.ultima && e.ultima.base === base.raiz ? e.ultima : null };
 }
+const recusarSeDesligado = () => {
+  if (base.ligada && lancarDesligado(base.raiz)) throw Object.assign(new Error(DESLIGADO), { codigo: 403 });
+};
 
 /* a LISTA FECHADA mora em `nucleo/lancar.mjs` (`resolverLancamento`), onde a
    prova a alcança: é a propriedade de segurança do botão, e função que só
@@ -658,6 +664,7 @@ async function garantirAberto() {
       "POST /lancar": async ({ corpo }) => {
         const l = await oLancador();
         if (!base.ligada) throw Object.assign(new Error("não há base aberta no painel"), { codigo: 400 });
+        recusarSeDesligado();
         const { nome, prompt, esforco = "" } = await resolver(corpo || {});
         const agora = l.estado();
         if (corpo?.confirmo !== true) {
@@ -684,8 +691,10 @@ async function garantirAberto() {
         return l.lancar({ o: String(corpo.o), nome, prompt, base: base.raiz, naFila: true, esforco });
       },
       "POST /lancar/parar": async () => (await oLancador()).parar(),
-      "POST /lancar/fila": async ({ corpo }) =>
-        (await oLancador()).mexerNaFila({ acao: String(corpo?.acao || ""), n: corpo?.n }),
+      "POST /lancar/fila": async ({ corpo }) => {
+        if (corpo?.acao === "continuar") recusarSeDesligado();
+        return (await oLancador()).mexerNaFila({ acao: String(corpo?.acao || ""), n: corpo?.n });
+      },
 
       /* ── A FILA DE DECISÕES (D232) ─────────────────────────────────
          A pessoa marca quando quiser; o assistente grava quando vier. As

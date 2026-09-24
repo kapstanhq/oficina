@@ -20,7 +20,8 @@
   import Ficha from "../vistas/Ficha.svelte";
   import Itens from "./Itens.svelte";
   import ComIds from "../comum/ComIds.svelte";
-  import { passosDoItem, notaQueDiz, valorCurto, ehLinhaVazia, nomeDeGente, nomeDoArquivo, paraArquivo } from "../rota.js";
+  import { getContext } from "svelte";
+  import { passosDoItem, notaQueDiz, ehFim, gestoDoPasso, valorCurto, ehLinhaVazia, nomeDeGente, nomeDoArquivo, paraArquivo } from "../rota.js";
 
   let { arquivo, cabeca, chaves = [], faltam = [], meusDocumentos = [], arvore = [], indice = null,
     andamento = null, acoes = [], proximos = {}, rotulos = {}, motivos = [], decisoes = [],
@@ -59,7 +60,9 @@
     pastasDeDocs: [...new Set(meusDocumentos.map((d) => d.split("/")[0]))],
     historico: (historico?.itens || []).map((i) => i.texto || ""),
   });
-  const passos = $derived(passosDoItem({ id, andamento, acoes, proximos, rotulos, tipo, ficha, ocupados }));
+  const molde = getContext("molde");
+  const fim = $derived(molde?.fim || null);
+  const passos = $derived(passosDoItem({ id, andamento, acoes, proximos, rotulos, tipo, ficha, ocupados, fim }));
   const destaque = $derived(passos.destaque || passos.lista.find((p) => p.tipo !== "descartar") || null);
   const outros = $derived(passos.lista.filter((p) => p !== destaque));
   const notaDoAgente = $derived(notaQueDiz(passos.doAgente?.nota));
@@ -68,8 +71,9 @@
   let copiado = $state("");
   async function agir(p) {
     if (!p) return;
-    if (p.tipo === "marcar") decidir({ item: id, nome: cabeca.nome, de: etapa, gesto: "etapa", para: passos.seguinte });
-    else if (p.tipo === "descartar") decidir({ item: id, nome: cabeca.nome, de: etapa, gesto: "descartar" });
+    const g = gestoDoPasso(p, { id, nome: cabeca.nome, etapa, marcada, fim });
+    if (g?.decidir) decidir(g.decidir);
+    else if (g?.anotar) anotar(g.anotar);
     else if (p.tipo === "skill" && p.ocupado) return;
     else if (p.tipo === "skill" && podeChamar) chamar(p.comando, p.item);
     else {
@@ -169,7 +173,7 @@
         </div>
       {/if}
       {#if marcada}
-        <p class="p-pag-nota">{marcada.gesto === "descartar" ? "Descarte marcado" : `Mudança para “${marcada.para}” marcada`} — o assistente grava quando você mandar.</p>
+        <p class="p-pag-nota">{ehFim(marcada, fim) ? `“${fim.rotulo}” marcado` : marcada.gesto === "descartar" ? "Descarte marcado" : `Mudança para “${marcada.para}” marcada`} — o assistente grava quando você mandar.</p>
       {/if}
     </section>
   {/if}

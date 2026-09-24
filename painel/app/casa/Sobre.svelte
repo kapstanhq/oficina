@@ -22,7 +22,7 @@
   import Ficha from "../vistas/Ficha.svelte";
   import Itens from "./Itens.svelte";
 
-  let { mapa, conectores = false, sempre = null, ajuste = { daBase: [], avisos: [] } } = $props();
+  let { mapa, conectores = false, sempre = null, ajuste = { daBase: [], avisos: [] }, execucao = null } = $props();
 
   let copiado = $state(false);
   async function copiar(texto) {
@@ -127,6 +127,17 @@
       texto dos botões, peça ao assistente — “põe o funil primeiro no painel”.</p>
   {/if}
   {#each ajuste.avisos as a (a)}<p class="c-nota p-falta">Ignorado no painel.json da base: {a}</p>{/each}
+  <!-- o botão que chama o assistente sozinho: ligado por padrão, e a base o
+       desliga com `"lancar": false` — o painel passa a copiar o pedido -->
+  {#if execucao?.disponivel || execucao?.desligado}
+    <p class="c-nota" data-lancar={execucao.desligado ? "desligado" : "ligado"}>{#if execucao.desligado}
+      O botão que chama o assistente está desligado nesta base (<code>"lancar": false</code> no
+      <code>painel.json</code> dela): o painel mostra o pedido para você colar no Claude.
+    {:else}
+      O botão que chama o assistente está ligado: ele trabalha sozinho e consome do seu plano. Para
+      desligar, escreva <code>"lancar": false</code> no <code>painel.json</code> da base — ou peça ao assistente.
+    {/if}</p>
+  {/if}
 </section>
 
 {#if mapa.campos.length}

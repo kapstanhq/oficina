@@ -13,6 +13,8 @@
    * ── TRÊS TIPOS DE ENTRADA, DOIS DESTINOS ──────────────────────────────
    *   marcar      a etapa seguinte do funil — vai para a FILA (D232)
    *   descartar   o arquivo-morto — vai para a FILA, com motivo opcional
+ *   fim         o fim BOM do pack, na etapa dele: o mesmo descarte, com o
+ *               motivo fixo do `fim` — sem vermelho e sem "o que pesou contra"
    *   skill       chama o assistente (D232), com o id se ela age sobre o
    *               item e sem ele se roda sozinha; sem botão, copia o pedido
    * Skill que é conversa (sem `sobre`) não vira botão: aparece só para copiar.
@@ -24,20 +26,25 @@
    * Substitui `Decidir.svelte`: eram dois botões iguais em três lugares, e
    * a pergunta "e agora?" ficava sem resposta em todos.
    */
-  import { passosDoItem, notaQueDiz } from "../rota.js";
+  import { getContext } from "svelte";
+  import { passosDoItem, notaQueDiz, ehFim, gestoDoPasso } from "../rota.js";
 
   let { id = "", nome = "", andamento = null, decisoes = [], decidir = () => {},
     anotar = () => {}, acoes = [], proximos = {}, rotulos = {}, tipo = "item", podeChamar = false,
     chamar = () => {}, modo = "cheio", comMotivo = false, motivos = [], ficha = null, ocupados = [] } = $props();
 
-  const passos = $derived(passosDoItem({ id, andamento, acoes, proximos, rotulos, tipo, ficha, ocupados }));
+  const molde = getContext("molde");
+  const fim = $derived(molde?.fim || null);
+  const passos = $derived(passosDoItem({ id, andamento, acoes, proximos, rotulos, tipo, ficha, ocupados, fim }));
   const etapa = $derived(passos.etapa);
   const seguinte = $derived(passos.seguinte);
   const doAgente = $derived({ ...passos.doAgente, nota: notaQueDiz(passos.doAgente.nota) });
   const marcada = $derived(decisoes.find((d) => d.item === id) || null);
+  const marcouFim = $derived(ehFim(marcada, fim));
   /* o gesto que já está na fila fica pressionado */
   const pressionado = (p) => p.tipo === "marcar" ? marcada?.gesto === "etapa" && marcada.para === seguinte
-    : p.tipo === "descartar" ? marcada?.gesto === "descartar" : undefined;
+    : p.tipo === "fim" ? marcouFim
+    : p.tipo === "descartar" ? marcada?.gesto === "descartar" && !marcouFim : undefined;
   const lista = $derived(passos.lista);
   /* o destaque é o que o estado do item pede (D257); os outros, na ordem */
   const destaque = $derived(passos.destaque || lista[0] || null);
@@ -62,15 +69,16 @@
     /* o cartão e a linha da tabela abrem o arquivo ao clique: o gesto não pode abrir */
     e.preventDefault();
     e.stopPropagation();
-    if (p.tipo === "marcar") decidir({ item: id, nome, de: etapa, gesto: "etapa", para: seguinte });
-    else if (p.tipo === "descartar") decidir({ item: id, nome, de: etapa, gesto: "descartar" });
+    const g = gestoDoPasso(p, { id, nome, etapa, marcada, fim });
+    if (g?.decidir) decidir(g.decidir);
+    else if (g?.anotar) anotar(g.anotar);
     else if (p.tipo === "skill" && p.ocupado) return;
     else if (p.tipo === "skill" && podeChamar) chamar(p.comando, p.item);
     else copiar(p.pedido);
   };
   const rotuloDe = (p) => {
     const base = p.ocupado ? `${p.rotulo} · ${p.ocupado}` : p.rotulo;
-    if (p.tipo === "marcar" || p.tipo === "descartar") return base;
+    if (p.tipo === "marcar" || p.tipo === "descartar" || p.tipo === "fim") return base;
     if (p.tipo === "skill" && podeChamar) return base;
     return copiado === p.pedido ? "Copiado ✓" : copiado === "!" + p.pedido ? "Selecione e copie" : base + " ⧉";
   };
@@ -117,10 +125,10 @@
 
     {#if marcada && modo !== "linha"}
       <span class="p-proximo-nota">
-        {marcada.gesto === "descartar" ? "Descarte marcado" : `Mudança para “${marcada.para}” marcada`} — o assistente grava quando você mandar.
+        {marcouFim ? `“${fim.rotulo}” marcado` : marcada.gesto === "descartar" ? "Descarte marcado" : `Mudança para “${marcada.para}” marcada`} — o assistente grava quando você mandar.
       </span>
     {/if}
-    {#if marcada?.gesto === "descartar" && comMotivo}
+    {#if marcada?.gesto === "descartar" && !marcouFim && comMotivo}
       <!-- o motivo é opcional, e vai para o arquivo-morto junto (D234); os do
            pack são de um clique (D242) -->
       {#if motivos.length}
