@@ -470,10 +470,11 @@ titulo("o processo: a CLI do humano e o stdio do agente");
         pedidos[0].some((a) => a.startsWith("--remote-debugging-port")), false);
       const portaArq = join(process.env.KAPSTAN_NAVEGADOR_DIR, "perfil", "DevToolsActivePort");
       let linhas = [];
-      for (let i = 0; i < 60 && linhas.length < 2; i++) {
+      for (let i = 0; i < 240 && linhas.length < 2; i++) {   // 60 s: a primeira abertura no CI passou de 15
         await new Promise((r) => setTimeout(r, 250));
         linhas = (await lerArquivo(portaArq, "utf8").catch(() => "")).split(/\r?\n/).filter(Boolean);
       }
+      if (linhas.length < 2) throw new Error("o navegador não escreveu o DevToolsActivePort em 60 s");
       daJanela = await abrirCdp(`ws://127.0.0.1:${linhas[0]}${linhas[1]}`);
       const validade = Math.round(Date.now() / 1000) + 30 * 86400;
       await daJanela.enviar("Storage.setCookies", { cookies: [

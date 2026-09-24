@@ -57,9 +57,12 @@ export async function imprimir(html, { navegador = acharNavegador(), teto = 60_0
     const pagina = join(pasta, "documento.html");
     const pdf = join(pasta, "documento.pdf");
     await writeFile(pagina, html, "utf8");
+    /* `--use-mock-keychain`: no macOS o perfil novo consulta o Keychain e a
+       impressão trava sem erro até o teto (CI, 24/09). Só vale aqui, porque o
+       perfil é descartável; no perfil de login ele tornaria os cookies ilegíveis. */
     await new Promise((ok, falha) => {
       const p = spawn(navegador, ["--headless=new", "--disable-gpu", "--no-first-run",
-        "--no-default-browser-check", "--no-pdf-header-footer", "--run-all-compositor-stages-before-draw",
+        "--no-default-browser-check", "--use-mock-keychain", "--no-pdf-header-footer", "--run-all-compositor-stages-before-draw",
         `--user-data-dir=${join(pasta, "perfil")}`, `--print-to-pdf=${pdf}`, pathToFileURL(pagina).href],
       { stdio: ["ignore", "ignore", "pipe"], windowsHide: true });
       let erro = "";

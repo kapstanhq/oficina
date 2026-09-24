@@ -543,13 +543,17 @@ async function garantirAberto() {
          MESMA função que rodaria por stdio: não há uma segunda implementação
          de `mostrar` para divergir da primeira. Está atrás das quatro
          guardas, e quem a chama provou ter a chave desta máquina. */
-      "POST /agente/chamar": async ({ corpo }) => {
+      "POST /agente/chamar": async ({ corpo, res }) => {
         const f = locais.find((x) => x.name === corpo?.ferramenta);
         if (!f) throw Object.assign(new Error("ferramenta desconhecida"), { codigo: 404 });
         ultimaPresenca = Date.now();
         registrar(`um hóspede chamou ${f.name}`);
+        /* libera quando a RESPOSTA sai, e não quando a ferramenta volta: o vigia
+           troca o servidor no instante do aviso, e a resposta escrita depois
+           morria no caminho — o hóspede recebia conexão caída (CI Linux, 24/09) */
         ocupar();
-        try { return await f.executar(corpo.args || {}); } finally { liberar(); }
+        res.once("close", liberar);
+        return await f.executar(corpo.args || {});
       },
 
       "POST /agente/presenca": async () => { ultimaPresenca = Date.now(); return { ok: true }; },
