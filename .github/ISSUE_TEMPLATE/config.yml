@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Problema de segurança
+    url: https://github.com/kapstanhq/oficina/security/advisories/new
+    about: Não abra questão pública — mande pelo aviso privado do GitHub (veja o SECURITY.md)

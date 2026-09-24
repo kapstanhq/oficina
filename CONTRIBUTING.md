@@ -9,7 +9,7 @@ a próxima montagem a reescreve. Antes de mexer, ache a fonte na tabela.
 | Uma regra de um ofício só | `<pack>/contrato/*.md` | idem |
 | A palavra de um ofício (`{item}`, `{pessoa}`, `{base}`…) | `<pack>/contrato/vocabulario.json` | todo texto do motor naquele pack |
 | Uma skill própria do pack | `<pack>/skills/<skill>/SKILL.md` | — (é fonte) |
-| O prompt da porta 2 | `prompts/<pack>.md` | `<pack>/PROMPT.md` |
+| O prompt colado (sem o Claude Code) | `prompts/<pack>.md` | `<pack>/PROMPT.md` |
 | A tela do painel | `painel/app/*.svelte`, `painel/estilo.css` | `<pack>/painel/painel.html` |
 | O servidor do painel, dos conectores ou dos documentos | `painel/`, `conectores/`, `documentos/` | `<pack>/painel/`, `<pack>/conectores/`, `<pack>/documentos/` |
 | Como o painel se arranja num pack | `<pack>/painel.json` | `<pack>/painel/acoes.json` |
@@ -44,6 +44,7 @@ npm run prova:conectores        # `-- --rede` chama as fontes de verdade
 npm run prova:documentos
 npm run provar -- --seco --pack <pack>
 npm run provar -- --seco --pack <pack> --fixture <pack>-b   # a segunda fixture
+npm run captura                 # refaz a imagem do README: o painel sobre a fixture
 ```
 
 `npm run provar -- --rodar --pack <pack>` executa cada skill de verdade contra a

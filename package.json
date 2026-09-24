@@ -1,6 +1,6 @@
 {
   "name": "oficina",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Oficina Kapstan: packs de skills por ofício para o Claude Code, com o painel, os conectores e o montador que os geram.",
   "license": "MIT",
@@ -23,7 +23,8 @@
     "prova:documentos": "node documentos/prova.mjs",
     "prova:sempre": "node painel/prova-sempre.mjs --so-geracao",
     "prova:lancar": "node painel/prova-lancar.mjs",
-    "prova:montador": "node scripts/prova-montador.mjs"
+    "prova:montador": "node scripts/prova-montador.mjs",
+    "captura": "node scripts/captura-painel.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

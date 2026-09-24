@@ -1,0 +1,27 @@
+name: O que você reescreve toda semana
+description: Uma ferramenta nova num pack, ou a próxima profissão
+labels: ["pedido"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        É daqui que sai a próxima ferramenta e a próxima profissão. A régua é o trabalho que se repete, não o tamanho do mercado.
+  - type: input
+    id: profissao
+    attributes:
+      label: A sua profissão
+      placeholder: técnica de enfermagem, contador, dono de agência…
+    validations:
+      required: true
+  - type: textarea
+    id: repete
+    attributes:
+      label: O que você escreve, confere ou cobra toda semana
+      description: Conte como é hoje, passo a passo — o que você abre, o que copia, para quem manda.
+    validations:
+      required: true
+  - type: textarea
+    id: onde
+    attributes:
+      label: De onde vem a informação
+      description: Planilha, WhatsApp, e-mail, um site, um sistema da empresa… Se ela só existe numa base paga, diga qual.

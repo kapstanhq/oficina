@@ -1,6 +1,6 @@
 # Pack do corretor de imóveis
 
-**Dezesseis skills de IA, em português, para quem vende e aluga imóvel.**
+**Quinze skills de IA, em português, para quem vende e aluga imóvel.**
 
 Elas escrevem o anúncio, respondem o lead, montam a visita, cobram o documento e
 lembram de quem sumiu — usando o que você já contou antes. Você não repete a
@@ -58,7 +58,7 @@ abre pastas do seu computador?**
 
 | Onde você usa IA | Por onde entrar |
 |---|---|
-| Claude Code, Codex, ChatGPT do computador, Copilot, Cursor | **Porta 1** — o agente instala as dezesseis ferramentas |
+| Claude Code, Codex, ChatGPT do computador, Copilot, Cursor | **Porta 1** — o agente instala as quinze ferramentas |
 | ChatGPT na web ou no celular, Gemini, Claude no navegador | **Porta 2** — você cola um prompt |
 
 ---
@@ -107,7 +107,7 @@ Os servidores precisam do Node.js 20.19 ou mais novo: confira com
 
 3. Baixe o repositório para uma pasta temporária.
 
-4. Copie as dezesseis pastas de corretor/skills/ para a pasta de skills, inteiras —
+4. Copie todas as pastas de corretor/skills/ para a pasta de skills, inteiras —
    inclusive a subpasta references/, que as skills leem para funcionar.
 
 5. Confira: cada pasta copiada tem um SKILL.md e um references/CONTRATO.md.
@@ -156,8 +156,8 @@ inteiro de [`PROMPT.md`](PROMPT.md). Cola uma vez e serve para tudo.
 | **Claude** no navegador | um Projeto, com o prompt nas **Instruções do projeto** | 3 min |
 | **Claude** com plano Pro, Max, Team ou Enterprise | melhor que o prompt: a ferramenta em `.zip`, pelas **Configurações** | 3 min |
 
-O passo a passo de cada um, com o nome de cada botão, está no
-[README da Oficina](../README.md#porta-2--você-cola-um-prompt).
+Onde fica cada botão está no
+[README da Oficina](../README.md#sem-o-claude-code).
 
 Duas coisas para saber antes: o `.zip` do Claude exige **execução de código**
 ligada nas configurações, e em nenhum dos quatro a carteira mora — no navegador
@@ -166,7 +166,7 @@ anexar ou colar, e o que ela escreve sai na conversa.
 
 ---
 
-## As dezesseis ferramentas
+## As quinze ferramentas
 
 | Comando | O que faz |
 |---|---|
@@ -185,7 +185,9 @@ anexar ou colar, e o que ela escreve sai na conversa.
 | `/corretor:organizar-carteira` | Guarda o que chegou e arquiva o que morreu |
 | `/corretor:laudo-da-carteira` | Diz o que está errado na carteira, sem mexer nela |
 | `/corretor:completar-ficha` | Procura o que falta na ficha do imóvel nas fontes que você tem, e grava com a origem |
-| `/corretor:gravar-o-que-marquei` | Grava na carteira o que você marcou no painel, e mais nada |
+
+E uma que o painel chama por você: `/corretor:gravar-o-que-marquei` grava na
+carteira o que você marcou nele, e mais nada.
 
 Você também pode simplesmente escrever o que quer, em português — “escreve o
 anúncio desse imóvel”, “o que eu faço hoje” — e a ferramenta certa é escolhida
@@ -487,7 +489,7 @@ carteira: local · C:\Users\seu-nome\carteira
 ```
 
 `local` é o seu computador, e depois do `·` vem a pasta. Quem escreve essa linha
-é o `/corretor:comecar`, e as dezesseis ferramentas leem e obedecem.
+é o `/corretor:comecar`, e as quinze ferramentas leem e obedecem.
 
 São arquivos de texto comuns. Você abre no Bloco de Notas, imprime, copia para
 um pendrive. **Nenhum passa por servidor da Kapstan**: eles não saem da sua
@@ -540,7 +542,7 @@ anúncio não ligou para o que sai no seu nome.
 
 ## Em que programas isto roda
 
-O passo a passo acima é o do Claude Code, que é o caminho testado. As mesmas dezesseis
+O passo a passo acima é o do Claude Code, que é o caminho testado. As mesmas quinze
 ferramentas também carregam no Codex e no ChatGPT do computador
 (`~/.agents/skills`), no Copilot e no Cursor (`.agents/skills`) — e quem
 descobre a pasta e escreve nela é o pedido colado da porta 1.

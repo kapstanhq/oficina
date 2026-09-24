@@ -16,7 +16,7 @@ assinatura de e-mail: Joana Prates · técnica de enfermagem · COREN-PE ativo
 
 ## Onde está o quê
 perfil.md        o que procuro, o que aceito, o que descarto, quanto, e onde olhar
-trajetoria.md    o que eu fiz, com os números que posso dizer — a fonte de todo currículo
+trajetoria.md    o que eu fiz na minha trajetória, com os números que posso dizer — a fonte de todo currículo
 hoje.md          o que vence, o que travou, o que prometeram e não mandaram
 funil.md         que vaga está em que etapa, desde quando
 vagas/           _indice.md tem a lista; um arquivo por vaga

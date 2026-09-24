@@ -951,7 +951,12 @@ async function contagensDoPack(pack, bruto) {
    Ela é LITERAL de propósito — procura o numeral por extenso colado no
    substantivo e não tenta entender a frase. Subconjunto legítimo ("cinco
    ferramentas colam") se declara com `<!-- de N -->` na mesma linha: a
-   exceção fica visível ao lado do número, que é onde ela se lê. */
+   exceção fica visível ao lado do número, que é onde ela se lê.
+
+   O número público conta o que a pessoa PEDE: a `gravar-o-que-marquei` é do
+   painel e fica fora, como fica fora da página do site. As marcas
+   `{n-skills}` do contrato continuam contando todas as pastas — ali o
+   leitor é o modelo, e a da fila também lê o contrato. */
 const NUMERAIS = {
   uma: 1, duas: 2, três: 3, tres: 3, quatro: 4, cinco: 5, seis: 6, sete: 7,
   oito: 8, nove: 9, dez: 10, onze: 11, doze: 12, treze: 13, catorze: 14,
@@ -1160,7 +1165,8 @@ export async function conferirOficina({ escrever = false } = {}) {
         [`${pack}/.claude-plugin/plugin.json`,
           await ler(join(OFICINA, pack, ".claude-plugin", "plugin.json"))],
         ...(existsSync(prompt) ? [[`prompts/${pack}.md`, await ler(prompt)]] : []),
-      ], Number(vocab["total-skills"])));
+      ], Number(vocab["total-skills"]) -
+        (existsSync(join(OFICINA, pack, "skills", SKILL_DA_FILA)) ? 1 : 0)));
       /* as do motor entram pelo nome que VÃO ter: na primeira montagem de um
          pack novo elas ainda não estão no disco, e o README acusava falta. */
       const doMotor = (await skillsDoMotorPara(vocab)).map(([n]) => resolverMarcas(n, vocab));

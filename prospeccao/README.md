@@ -1,6 +1,6 @@
 # Pack de prospecção
 
-**Doze skills de IA, em português, para quem prospecta o próprio cliente —
+**Onze skills de IA, em português, para quem prospecta o próprio cliente —
 fundador, consultor, dono de agência.**
 
 Elas escrevem quem vale a pena procurar, estudam o que é público sobre cada
@@ -23,8 +23,9 @@ locais em Node.js — o painel, os conectores e os documentos. Pelo marketplace 
 duas entram juntas. Os servidores precisam do Node.js 20.19 ou mais novo:
 confira com `node --version` e, se faltar, instale de https://nodejs.org.
 
-Não usa o Claude Code? O [README da Oficina](../README.md) tem a instalação por
-outros agentes e a **porta 2**: o pack inteiro num prompt só, em
+Não usa o Claude Code? O [README da Oficina](../README.md#sem-o-claude-code) tem
+a instalação por outros agentes e o caminho sem instalar: o pack inteiro num
+prompt só, em
 [`PROMPT.md`](PROMPT.md), para colar num Gem do Gemini ou num Projeto do
 ChatGPT.
 
@@ -36,7 +37,7 @@ Depois de instalar, monte a carteira:
 
 ---
 
-## As doze ferramentas
+## As onze ferramentas
 
 | Comando | O que faz |
 |---|---|
@@ -51,7 +52,9 @@ Depois de instalar, monte a carteira:
 | `/prospeccao:organizar-carteira` | Guarda o que chegou e arquiva o que morreu |
 | `/prospeccao:laudo-da-carteira` | Diz o que está errado na carteira, sem mexer nela |
 | `/prospeccao:completar-ficha` | Procura o que falta na ficha de uma conta nas fontes que você tem, e grava com a origem |
-| `/prospeccao:gravar-o-que-marquei` | Grava na carteira o que você marcou no painel, e mais nada |
+
+E uma que o painel chama por você: `/prospeccao:gravar-o-que-marquei` grava na
+carteira o que você marcou nele, e mais nada.
 
 ---
 

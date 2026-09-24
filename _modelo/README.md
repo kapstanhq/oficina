@@ -46,7 +46,9 @@ morar. Daí em diante ela pergunta uma coisa de cada vez e salva conforme avanç
 | `/__slug__:organizar-<<preencher: pasta-base>>` | Guarda o que chegou e arquiva o que morreu |
 | `/__slug__:laudo-da-<<preencher: pasta-base>>` | Diz o que está errado, sem mexer em nada |
 | `/__slug__:completar-ficha` | Procura o que falta na ficha nas fontes que você tem, e grava com a origem |
-| `/__slug__:gravar-o-que-marquei` | Grava o que você marcou no painel, e mais nada |
+
+E uma que o painel chama por você: `/__slug__:gravar-o-que-marquei` grava o que
+você marcou nele, e mais nada.
 
 Você também pode escrever o que quer, em português, e a ferramenta certa é
 escolhida sozinha.

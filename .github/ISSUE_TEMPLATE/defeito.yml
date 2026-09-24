@@ -1,0 +1,35 @@
+name: Algo não funcionou
+description: Uma skill, o painel, a instalação ou um conector fez o que não devia
+labels: ["defeito"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por avisar. **Não cole dado pessoal** — nome, telefone, e-mail, salário, conversa com recrutador ou cliente. Se o problema depende de um arquivo da sua pasta, troque os dados por inventados antes de colar.
+  - type: dropdown
+    id: pack
+    attributes:
+      label: Pack
+      options: [vagas, prospeccao, corretor, todos, não sei]
+    validations:
+      required: true
+  - type: input
+    id: onde
+    attributes:
+      label: Onde aconteceu
+      description: O comando que você rodou, ou a tela do painel
+      placeholder: /vagas:buscar-vagas
+    validations:
+      required: true
+  - type: textarea
+    id: aconteceu
+    attributes:
+      label: O que aconteceu, e o que você esperava
+    validations:
+      required: true
+  - type: input
+    id: ambiente
+    attributes:
+      label: Sistema, Node e versão do pack
+      description: "`node --version`, e a versão que o `/plugin` mostra"
+      placeholder: Windows 11 · Node 22.12 · vagas 0.3.1

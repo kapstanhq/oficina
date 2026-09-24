@@ -1,6 +1,6 @@
 # Vagas
 
-**Para quem procura emprego no Brasil, em qualquer profissão.** Quinze skills que
+**Para quem procura emprego no Brasil, em qualquer profissão.** Catorze skills que
 montam a sua busca numa pasta do seu computador e trabalham em cima dela — do
 plantão 12x36 ao cargo de gestão, da primeira carteira assinada à troca de área.
 
@@ -47,7 +47,7 @@ E ele **não inventa**. O currículo só diz o que está na sua `trajetoria.md`;
 número, cargo e data saem iguais em todo lugar; o que a vaga pede e você não tem
 aparece na conversa com você, não disfarçado no papel.
 
-## As quinze
+## As catorze
 
 Do ofício:
 
@@ -72,7 +72,9 @@ Do motor, que é o mesmo em todo pack:
 | `/vagas:organizar-busca` | a manutenção: o que fechou, o que dobrou, o que passou do teto |
 | `/vagas:laudo-da-busca` | confere a busca contra o contrato, sem mexer em nada |
 | `/vagas:completar-ficha` | procura o que falta numa vaga — regime, jornada, faixa, idioma — nas fontes que a busca alcança, e grava com a origem |
-| `/vagas:gravar-o-que-marquei` | grava na busca o que você marcou no painel — a etapa e o descarte —, e mais nada |
+
+E uma que o painel chama por você: `/vagas:gravar-o-que-marquei` grava na busca o
+que você marcou nele — a etapa e o descarte —, e mais nada.
 
 ## O que dá alcance, e é opcional
 

@@ -1,277 +1,146 @@
 # Oficina
 
-**Ferramentas de IA por profissão, em português. Gratuitas.**
+[![CI](https://github.com/kapstanhq/oficina/actions/workflows/ci.yml/badge.svg)](https://github.com/kapstanhq/oficina/actions/workflows/ci.yml)
+[![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-221e18)](LICENSE)
+
+**Ferramentas de IA por profissão, em português. Gratuitas e de código aberto.**
 
 Cada **pack** é um conjunto de ferramentas de um ofício. Você instala uma vez e
 passa a ter comandos prontos para o que você faz todo dia — escrever, responder,
-conferir, lembrar.
+conferir, lembrar. Tudo o que você conta fica em arquivos seus, numa pasta do seu
+computador, e você não repete a mesma informação duas vezes.
 
-As ferramentas guardam o que você já contou, em arquivos seus — numa pasta do
-seu computador. Você não repete a mesma informação duas vezes.
+![O painel do pack de vagas: a busca de uma pessoa fictícia, com o funil de etapas, o que espera um passo seu e as vagas novas para julgar](.github/imagens/painel-vagas.jpg)
+
+<sub>O painel do pack de vagas, com a busca de uma pessoa fictícia. Ele abre no
+seu navegador e lê só a pasta do seu computador.</sub>
 
 ---
 
 ## Packs
 
-| Pack | Para quem | O que faz | Status |
+| Pack | Para quem | O que faz | Onde funciona |
 |---|---|---|---|
-| [**corretor**](corretor/) | Corretor de imóveis | Anúncio, matrícula, resposta de lead, visita, retomada de contato, documentos e a lista do dia | **Disponível** |
-| [**prospeccao**](prospeccao/) | Quem prospecta o próprio cliente — fundador, consultor, dono de agência | Perfil de cliente, estudo da conta com procedência, abordagem escrita, retomada com gancho novo e a lista do dia | **Disponível** |
-| [**vagas**](vagas/) | Quem procura emprego, em qualquer profissão | Entrevista que monta o seu perfil, busca em fontes públicas, triagem contra o que você procura, currículo em PDF a partir da sua trajetória e candidatura preparada campo a campo | **Disponível** · só no Claude Code |
-| **médico e clínica** | Consultório e clínica | Paciente no lugar de cliente, a linha de cuidado no lugar do funil. Dado de saúde é sensível, e é o que faz a carteira em arquivo no computador ser a forma certa | Em estudo |
-| **advogado** | Advogado e escritório | O andamento em português para o cliente, o prazo que não se perde, a minuta a partir das peças que já são suas | Em estudo |
+| [**vagas**](vagas/) | Quem procura emprego, em qualquer profissão | Entrevista que monta o seu perfil, busca em fontes públicas, triagem contra o que você procura, currículo em PDF a partir da sua trajetória e candidatura preparada campo a campo | Claude Code |
+| [**prospeccao**](prospeccao/) | Quem prospecta o próprio cliente — fundador, consultor, dono de agência | Perfil de cliente, estudo da conta com procedência, abordagem escrita, retomada com gancho novo e a lista do dia | Claude Code, ou colado em qualquer IA |
+| [**corretor**](corretor/) | Corretor de imóveis | Anúncio, matrícula, resposta de lead, visita, retomada de contato, documentos e a lista do dia | Claude Code, ou colado em qualquer IA |
+
+Em estudo: **médico e clínica** e **advogado**.
 
 ---
 
-## Como instalar
+## Começar
 
-Vale para qualquer pack. Duas portas, e a pergunta que decide é uma só: **o
-programa em que você usa IA abre pastas do seu computador?**
+Vale para qualquer pack, e leva uns cinco minutos. É o caminho que testamos.
 
-| Onde você usa IA | Por onde entrar |
+1. **Tenha o [Claude Code](https://claude.com/product/claude-code)** — no
+   terminal ou no app de desktop. Ele é pago.
+2. **Instale o [Node.js](https://nodejs.org)** 20.19 ou mais novo — é "avançar,
+   avançar". Ele roda o painel, os conectores e os documentos, só no seu
+   computador.
+3. **No Claude Code, cole** (troque `vagas` pelo pack que você quer):
+   ```
+   /plugin marketplace add https://github.com/kapstanhq/oficina.git
+   /plugin install vagas@kapstan-oficina
+   ```
+4. **Comece:**
+   ```
+   /vagas:comecar
+   ```
+   Ele pergunta uma coisa de cada vez — a primeira é em que pasta a sua base vai
+   morar —, salva conforme avança, e você pode parar no meio e voltar depois.
+
+A partir daí você pede em português: "o que eu faço hoje?", "busca vagas para
+mim". Para atualizar: `/plugin marketplace update kapstan-oficina`.
+
+<details>
+<summary>Por que a URL inteira, e não <code>kapstanhq/oficina</code></summary>
+
+O atalho clona por SSH e falha em quem não tem chave carregada no ssh-agent. A
+URL com `.git` clona por HTTPS e funciona em qualquer máquina.
+</details>
+
+---
+
+## Sem o Claude Code
+
+**Os packs `corretor` e `prospeccao` também funcionam colados.** No ChatGPT, no
+Gemini ou no Claude do navegador não se instala ferramenta: cola-se um prompt —
+o pack inteiro num texto só.
+
+O caminho mais curto é montar o seu na página do pack:
+[corretor de imóveis](https://kapstan.com.br/oficina/corretor-de-imoveis) ou
+[prospecção](https://kapstan.com.br/oficina/prospeccao). Você escolhe onde usa
+IA e quais ferramentas quer, e o texto sai pronto, com um botão de copiar.
+Prefere o arquivo? Ele está em [`corretor/PROMPT.md`](corretor/PROMPT.md) e
+[`prospeccao/PROMPT.md`](prospeccao/PROMPT.md): copie o que estiver entre as
+duas marcas `---8<---`.
+
+| Onde | Como guardar o prompt |
 |---|---|
-| Claude Code, Codex, ChatGPT do computador, Copilot, Cursor | **Porta 1** — o agente instala o pack inteiro |
-| ChatGPT na web ou no celular, Gemini, Claude no navegador | **Porta 2** — você cola um prompt |
+| **Gemini** (grátis) | **Gems** → **Novo Gem** → cole em instruções, e anexe os arquivos da sua carteira em **Conhecimento** |
+| **ChatGPT** na web ou no celular | um **Projeto** ou um **GPT** → cole em **Instruções**, e suba a carteira em **Arquivos** |
+| **Claude** no navegador | **Projetos** → **Novo projeto** → cole em **Instruções do projeto** |
 
-A porta 2 não é o plano B. É onde está a maior parte das pessoas, e ali não se
-instala nada: cola-se um texto.
+O prompt entrega o texto — o anúncio, a matrícula lida, o estudo da conta, a
+abordagem. O que ele não faz sozinho é **lembrar**: retomar contato na hora
+certa, não escrever para quem pediu para parar, montar a lista do dia. Isso
+depende dos arquivos, e só o pack instalado os lê.
 
----
+**O pack `vagas` não funciona colado.** Ele guarda a busca numa pasta do seu
+computador e roda programas nela — a busca nas fontes, o painel, o currículo em
+PDF —, e o chat da web não chega lá.
 
-## Porta 1 · O agente instala o pack
+<details>
+<summary>Codex, Cursor, Copilot ou o ChatGPT do computador (não testado)</summary>
 
-### 1. Tenha um agente aberto
-
-Serve o **Claude Code** (<https://claude.com/product/claude-code>), o **Codex**,
-o **ChatGPT do computador**, o **Copilot** ou o **Cursor**. Todos funcionam em
-Windows, Mac e Linux.
-
-> **Atenção:** todos são serviços pagos. Não existe versão gratuita. Se você não
-> tem nenhum, vá pela porta 2 — o Gem do Gemini é grátis.
-
-### 2. Copie este pedido e cole no seu agente
-
-Ele faz a instalação sozinho. Você não precisa baixar nem procurar pasta
-nenhuma. **Troque `<pack>` pelo nome da pasta do pack que você quer** — hoje
-`corretor`, `prospeccao` ou `vagas`, e é o nome que está na primeira coluna da tabela
-lá em cima.
+As skills seguem um formato aberto, e as de `corretor` e `prospeccao` carregam
+nesses programas. Entram só as skills, sem o painel. Cole no seu agente:
 
 ```
-Instale o pack <pack> da Oficina Kapstan, que está no repositório público
-https://github.com/kapstanhq/oficina
+Instale o pack <pack> da Oficina Kapstan, do repositório público
+https://github.com/kapstanhq/oficina — <pack> é corretor ou prospeccao.
 
-O pack tem duas partes: as skills, que são arquivos de texto, e três
-servidores locais em Node.js — o painel, os conectores e os documentos.
-Pelo marketplace do Claude Code as duas entram juntas e não há nada para
-compilar. Pela cópia manual (passos 2 a 6) entram só as skills, sem o painel.
-Os servidores precisam do Node.js 20.19 ou mais novo: confira com
-`node --version` e, se faltar, instale de https://nodejs.org.
-
-1. Se você for o Claude Code, o caminho curto é o marketplace:
-       /plugin marketplace add https://github.com/kapstanhq/oficina.git
-       /plugin install <pack>@kapstan-oficina
-   A URL inteira, e NÃO o atalho `kapstanhq/oficina`: o atalho clona por SSH
-   por padrão e falha em quem não tem chave carregada no ssh-agent.
-   Para atualizar depois, o pedido é explícito — marketplace de terceiro não
-   atualiza sozinho: /plugin marketplace update kapstan-oficina
-   Se você for o Codex, o atalho equivalente é o $skill-installer.
-   Funcionando um dos dois, pule os passos abaixo.
-
-2. Senão, descubra qual é a pasta de skills da ferramenta em que você roda:
-       Claude Code                     ~/.claude/skills
+1. Descubra a pasta de skills da ferramenta em que você roda:
        Codex ou ChatGPT no computador  ~/.agents/skills
        Copilot ou Cursor               .agents/skills
        outra                           a que a sua documentação indicar
-
-3. Baixe o repositório para uma pasta temporária.
-
-4. Copie as pastas de <pack>/skills/ para a pasta de skills, inteiras —
+   Se você for o Codex, o $skill-installer faz isto sozinho.
+2. Baixe o repositório para uma pasta temporária.
+3. Copie todas as pastas de <pack>/skills/ para a pasta de skills, inteiras —
    inclusive a subpasta references/, que as skills leem para funcionar.
-
-5. Confira: cada pasta copiada tem um SKILL.md e um references/CONTRATO.md.
-   Me diga quantas chegaram.
-
-6. Apague a pasta temporária.
-
-7. Me diga o comando para montar a carteira: /<pack>:comecar, ou /comecar se
-   a sua ferramenta não usar prefixo.
+4. Confira que cada pasta copiada tem um SKILL.md e um references/CONTRATO.md,
+   e me diga quantas chegaram.
+5. Apague a pasta temporária e me diga o comando para começar: /comecar.
 
 Antes de começar, me mostre o que você vai fazer e em que pastas vai escrever.
 ```
-
-O pedido manda o agente **mostrar o que vai fazer antes de fazer**. Leia, e só
-então deixe seguir.
-
-### 3. Monte a sua base
-
-```
-/<pack>:comecar
-```
-
-Leva cerca de 10 minutos. Ele pergunta uma coisa de cada vez — a primeira é em
-que pasta do seu computador a sua base vai morar —, salva conforme avança e você
-pode fechar no meio e voltar depois.
-
-**Pronto.** A partir daí você digita o que precisa, em português.
-
----
-
-## Porta 2 · Você cola um prompt
-
-No chat pelo navegador ou pelo celular não se instala ferramenta: nem o ChatGPT
-da web, nem o Gemini, nem o Claude sem plano pago recebem uma. O que funciona
-ali é **colar um prompt** — o pack inteiro num texto só, que dá conta de todas as
-tarefas.
-
-**O caminho mais curto é montar o seu na página do pack** —
-[corretor de imóveis](https://kapstan.com.br/oficina/corretor-de-imoveis) ou
-[prospecção](https://kapstan.com.br/oficina/prospeccao). Ali você
-escolhe onde usa IA, se já tem carteira e quais ferramentas quer, e o texto
-sai pronto, menor e com os passos do seu serviço — tem um botão de copiar.
-
-Prefere o arquivo? Ele está em `<pack>/PROMPT.md` —
-[corretor](corretor/PROMPT.md) · [prospeccao](prospeccao/PROMPT.md). Abra e
-copie tudo o que estiver entre as duas marcas `---8<---`. É o pack inteiro,
-com todas as tarefas. Cola uma vez e serve para tudo — não se cria um
-assistente por tarefa.
-
-### No Gemini — grátis
-
-1. Abra <https://gemini.google.com> e clique em **Gems**, no menu da esquerda.
-2. **Novo Gem**: dê o nome do ofício — “Corretor”, “Prospecção” — e cole o
-   prompt no campo de instruções.
-3. Em **Conhecimento**, anexe os arquivos da sua carteira. Salve.
-
-O passo 3 é o que quase ninguém percebe: **o que você anexa ao Gem ele lê**. Em
-vez de responder só com o que você cola na conversa, ele responde olhando a
-sua carteira. O que ele escreve continua saindo na conversa — quem leva de
-volta para os arquivos é você.
-
-### No ChatGPT da web ou do celular
-
-1. Em <https://chatgpt.com>, crie um **Projeto** pela barra lateral, ou um GPT
-   personalizado em **GPTs** → **Criar** → aba **Configurar**.
-2. Cole o prompt em **Instruções**.
-3. Suba os arquivos da sua carteira em **Arquivos**, no Projeto, ou em
-   **Conhecimento**, no GPT. Salve.
-
-Ferramenta solta não entra no ChatGPT da web nem no celular. Entra no do
-computador, que é a porta 1.
-
-### No Claude do navegador
-
-1. Em <https://claude.ai>, vá em **Projetos** → **Novo projeto**.
-2. Abra **Instruções do projeto** e cole o prompt.
-3. Adicione os arquivos da sua carteira ao conhecimento do projeto.
-
-### Tem plano pago no Claude? Mande a ferramenta inteira
-
-É melhor que o prompt: em vez de um resumo do pack, vai a ferramenta como ela é.
-Leva uns 3 minutos.
-
-1. Abra <https://github.com/kapstanhq/oficina>, clique no botão verde **Code**
-   e depois em **Download ZIP**.
-2. Descompacte o arquivo baixado e entre na pasta
-   `oficina-main` → `<pack>` → `skills`.
-3. Ali dentro há uma pasta por ferramenta. Clique com o botão direito na que
-   você quer e escolha **Enviar para → Pasta compactada** (no Mac:
-   **Comprimir**).
-4. No Claude, abra as **Configurações**, vá em **Recursos** e envie o `.zip`.
-5. Repita para cada ferramenta que quiser usar.
-
-> **Uma condição, e um limite.** Precisa de plano Pro, Max, Team ou Enterprise,
-> com **execução de código** ligada nas configurações. E a sua base fica de
-> fora: no navegador não existe pasta do seu computador, então ali a ferramenta
-> trabalha com os arquivos que você anexar.
-
-### O que a porta 2 não faz
-
-O prompt entrega o texto — o anúncio e a matrícula lida no pack do corretor, o
-estudo da conta e a abordagem no de prospecção. O que ele não faz sozinho é
-**lembrar**.
-
-| O que se perde sem arquivos | Por quê |
-|---|---|
-| Retomar contato | Ela precisa saber há quantos dias a pessoa não responde e qual ângulo já foi tentado. A segunda retomada não pode repetir a primeira. |
-| Não escrever para quem pediu para parar | No pack de prospecção, a lista de quem pediu silêncio é um arquivo da carteira. Sem ela, a ferramenta escreve e avisa que não conferiu — quem confere é você. |
-| A lista do dia | Ela lê a carteira inteira de uma vez. Colar o suficiente para reproduzir isso é colar tudo. |
-| Começar a carteira, e organizá-la | Uma monta e a outra arruma. As duas são a carteira em si, e sem arquivo não há o que montar nem o que arrumar. |
-| O `?` que vira a pergunta de amanhã | Sem arquivo, a procedência vale dentro de uma conversa só, e a sessão seguinte recomeça do zero. |
-
-Anexando arquivos — os documentos da sua carteira no Gem, no GPT ou no Projeto
-—, boa parte disso volta.
-
----
-
-## Onde funciona
-
-O arquivo de cada ferramenta segue um formato aberto, e não um formato nosso.
-Por isso o mesmo pack carrega em vários lugares. O que muda é **como ele entra**
-e **onde a sua base pode ficar**.
-
-| Onde você usa IA | Como o pack entra | Onde a base pode ficar |
-|---|---|---|
-| **Claude Code** | marketplace, ou o pedido da porta 1 | uma pasta do computador |
-| **Codex**, **ChatGPT do computador** | o pedido da porta 1, em `~/.agents/skills` | uma pasta do computador |
-| **Copilot**, **Cursor** | o pedido da porta 1, em `.agents/skills` | uma pasta do computador |
-| **Claude no navegador**, com plano pago | `.zip` pelas Configurações | os arquivos que você anexar |
-| **Claude no navegador**, sem plano pago | prompt colado num Projeto | os arquivos que você anexar |
-| **ChatGPT na web ou no celular** | prompt colado num Projeto ou GPT | os arquivos que você anexar |
-| **Gemini** | prompt colado num Gem | os arquivos anexados ao Gem |
-
-O Claude Code é o caminho que testamos. Nos outros, o pedido de instalação
-descobre sozinho onde escrever — e, se a sua ferramenta não estiver na tabela,
-vale o que a documentação dela indicar.
-
----
-
-## O que você não precisa
-
-- **Não precisa saber programar.** Tudo é digitado em português — no agente, se
-  você foi pela porta 1; na caixa de mensagem, se foi pela 2.
-- **Não precisa de planilha, CRM ou sistema novo.** As ferramentas criam os
-  arquivos sozinhas.
-- **Não precisa da autorização da sua empresa.** Os arquivos são seus e ficam
-  na sua máquina.
+</details>
 
 ---
 
 ## Onde ficam os seus dados
 
-Numa pasta do seu computador, e você escolhe uma vez qual. Os arquivos não saem
-da sua máquina, e o que isso cobra é que as ferramentas só funcionam onde existe
-pasta — no chat da web, não.
-
-São os mesmos arquivos em todo programa que abre pasta, e a árvore é a mesma
-em qualquer pack — o que muda é o nome das duas pastas. No do corretor:
+Numa pasta do seu computador, e você escolhe qual. São arquivos de texto
+comuns: você abre no Bloco de Notas, imprime, copia para um pendrive. A árvore é
+a mesma em todo pack — o que muda é o nome das pastas. No de vagas:
 
 ```
-carteira/
-├── imoveis/
-│   ├── V-071-casa-3d-azenha.md
-│   └── A-014-apto-2d-menino-deus.md
-├── clientes/
-│   └── C-017-joana-ribeiro.md
+busca/
+├── vagas/
+│   └── V-012-lumina-pagamentos.md
+├── contatos/
+│   └── P-003-bruno-sato.md
+├── curriculos/
+├── perfil.md
+├── trajetoria.md
 ├── hoje.md
 └── funil.md
 ```
 
-E no de prospecção, `contas/` e `contatos/` no lugar das duas, mais dois
-arquivos que só aquele ofício tem: `perfil.md`, que é a régua de quem vale a
-pena, e `nao-perturbe.md`, que toda skill lê antes de escrever qualquer
-mensagem.
-
-São arquivos de texto comuns. Você abre no Bloco de Notas, imprime, copia para
-um pendrive, manda por e-mail.
-
-**A Kapstan não recebe nada.** Não existe servidor nosso no meio, e não existe
-conta nossa: os arquivos ficam na sua máquina e pronto. E nada fica preso — se
-você parar de usar as ferramentas amanhã, eles continuam lá e continuam
-legíveis.
-
-Ler a carteira no celular ainda não existe. O que resolveria é uma cópia no seu
-Google Drive, gravada a partir do computador; enquanto ela não estiver pronta,
-não está prometida.
+**A Kapstan não recebe nada.** Não existe servidor nosso no meio, nem conta
+nossa. E nada fica preso: se você parar de usar as ferramentas amanhã, os
+arquivos continuam lá e continuam legíveis.
 
 ---
 
@@ -279,51 +148,32 @@ não está prometida.
 
 | Não fazem | Por quê |
 |---|---|
-| Mandar em lote, ou mandar sem você ver | Com o conector de WhatsApp ligado elas mandam pelo seu número — uma por vez, com o destinatário e o texto inteiro na sua tela antes. Sem ele, escrevem o texto e quem cola é você. Lista de transmissão não existe. |
-| Inventar informação | O que não foi apurado aparece como `?` e vira pergunta. |
-| Decidir por você | Preço, aceitar proposta, dizer que um documento está em ordem: elas mostram o que olhar e param. |
+| Mandar em lote, ou mandar sem você ver | Com um conector ligado, elas mandam uma por vez — quem recebe e o texto inteiro aparecem na sua tela antes. Sem ele, escrevem e quem envia é você. |
+| Inventar informação | O que não foi apurado aparece como `?` e vira pergunta. O currículo só diz o que está na sua trajetória. |
+| Decidir por você | Preço, aceitar proposta, dizer que um documento está em ordem, enviar uma candidatura: elas mostram o que olhar e param. Enviar por você é uma escolha que você liga, e cada envio passa pela sua aprovação. |
 
-Cada pack tem uma seção **“Onde este pack para”** com os limites daquele ofício,
-escrita antes de instalar e não depois.
-
----
-
-## Roadmap
-
-| Quando | O que |
-|---|---|
-| Agora | Packs do corretor de imóveis, de prospecção e de busca de vaga |
-| Próximo | O ofício que a próxima pesquisa escolher — a régua é o que a pessoa reescreve toda semana, não o tamanho do mercado |
-| Sempre | Novas ferramentas dentro dos packs que já existem |
-
-O que decide o próximo pack não é palpite: é a carteira em arquivo servir ao
-ofício, e a ferramenta não depender de dado comprado. Foi isso que tirou da
-lista o contador, o corretor de seguros e o despachante — os três precisam de
-uma base que ninguém abre de graça, e um pack que promete o que não entrega é
-pior que pack nenhum.
+Cada pack tem uma seção com os limites daquele ofício, escrita antes de
+instalar e não depois.
 
 ---
 
 ## Contribuir
 
-Conte **o que você reescreve toda semana**. É disso que sai a próxima
-ferramenta, e é o que decide qual profissão entra depois. Abra uma questão em
-<https://github.com/kapstanhq/oficina/issues>.
+Conte **o que você reescreve toda semana**. É disso que sai a próxima ferramenta
+e a próxima profissão: [abra uma questão](https://github.com/kapstanhq/oficina/issues/new/choose).
 
 O código inteiro está aqui — as skills, o motor que as monta, o painel, os
-conectores e as provas —, e pull request é bem-vindo. Metade do que está
-dentro de cada pack é GERADO a partir de uma fonte, e editar a cópia não
-adianta: o [CONTRIBUTING.md](CONTRIBUTING.md) diz onde fica a fonte de cada
-coisa e como provar a mudança antes de mandar.
+conectores e as provas —, e pull request é bem-vindo. Metade do que está dentro
+de cada pack é gerado a partir de uma fonte: o [CONTRIBUTING.md](CONTRIBUTING.md)
+diz onde fica a fonte de cada coisa, como provar a mudança e como começar um
+pack novo. Achou um problema de segurança? Veja o [SECURITY.md](SECURITY.md).
 
 ---
 
 ## Quem faz
 
-[Kapstan](https://kapstan.com.br) — implantação de IA dentro da operação de
-empresas.
-
-A Oficina é aberta e gratuita, e continua assim.
+[Kapstan](https://kapstan.com.br) — produto, IA e crescimento. A Oficina é
+aberta e gratuita, e continua assim.
 
 ## Licença
 
