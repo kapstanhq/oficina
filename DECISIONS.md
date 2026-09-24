@@ -1461,6 +1461,17 @@ A F3 da D267. O que decidiu cada frente, em uma linha:
   dado — o que é instrução ao modelo, não barreira: a base deve ter backup.
 - **Dado sensível** (autodeclaração para formulário) fica só na base local, e a
   pessoa apaga a linha quando quiser.
+- **Só no Claude Code, nesta versão** (decidido em 24/09). O pack depende de
+  um agente que rode na máquina — pasta local e servidor MCP por stdio —, e o
+  que o prende ao Claude Code é pouco: a instalação pelo marketplace, o
+  `${CLAUDE_PLUGIN_ROOT}`, o `claude -p` do botão e os nomes `/vagas:…`.
+  Codex, Gemini CLI, Cursor e Copilot ficam para depois de um teste de
+  verdade. **Em aberto, para a versão 2:** o pack inteiro como UM servidor
+  MCP — skills como prompts, contrato como recursos, o painel como MCP App
+  dentro do chat, e a extensão `.mcpb` do Claude Desktop como instalação de
+  dois cliques —, o único caminho que chega a quem não usa terminal sem tirar
+  os dados do computador da pessoa. A versão hospedada, para os chats da web,
+  não: quebra a promessa dos dados locais.
 
 | recusado | por que caiu |
 |---|---|

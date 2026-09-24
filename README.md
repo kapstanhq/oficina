@@ -17,7 +17,7 @@ seu computador. Você não repete a mesma informação duas vezes.
 |---|---|---|---|
 | [**corretor**](corretor/) | Corretor de imóveis | Anúncio, matrícula, resposta de lead, visita, retomada de contato, documentos e a lista do dia | **Disponível** |
 | [**prospeccao**](prospeccao/) | Quem prospecta o próprio cliente — fundador, consultor, dono de agência | Perfil de cliente, estudo da conta com procedência, abordagem escrita, retomada com gancho novo e a lista do dia | **Disponível** |
-| [**vagas**](vagas/) | Quem procura emprego, em qualquer profissão | Entrevista que monta o seu perfil, busca em fontes públicas, triagem contra o que você procura, currículo em PDF a partir da sua trajetória e candidatura preparada campo a campo | **Disponível** · só pela porta 1 |
+| [**vagas**](vagas/) | Quem procura emprego, em qualquer profissão | Entrevista que monta o seu perfil, busca em fontes públicas, triagem contra o que você procura, currículo em PDF a partir da sua trajetória e candidatura preparada campo a campo | **Disponível** · só no Claude Code |
 | **médico e clínica** | Consultório e clínica | Paciente no lugar de cliente, a linha de cuidado no lugar do funil. Dado de saúde é sensível, e é o que faz a carteira em arquivo no computador ser a forma certa | Em estudo |
 | **advogado** | Advogado e escritório | O andamento em português para o cliente, o prazo que não se perde, a minuta a partir das peças que já são suas | Em estudo |
 

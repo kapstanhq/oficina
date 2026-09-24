@@ -4,10 +4,29 @@
 montam a sua busca numa pasta do seu computador e trabalham em cima dela — do
 plantão 12x36 ao cargo de gestão, da primeira carteira assinada à troca de área.
 
-Ele entra pela porta 1 do [README da Oficina](../README.md): o agente instala o
-pack inteiro. **A porta 2 — o prompt para colar num chat da web — ainda não
-existe para este pack.** É uma lacuna, e está declarada aqui para ninguém
-procurar por ela.
+## Como começar
+
+**Ele funciona no [Claude Code](https://claude.com/product/claude-code)** — no
+terminal ou no app de desktop —, que é pago. Não funciona colado no ChatGPT, no
+Gemini ou no chat do Claude na web: o pack guarda a sua busca numa pasta do seu
+computador e roda programas nela, e esses chats não chegam lá.
+
+1. **Instale o Node.js** (20.19 ou mais novo) de <https://nodejs.org> — é
+   "avançar, avançar". Confira depois com `node --version`.
+2. **Abra o Claude Code** (`claude` num terminal, em qualquer pasta) e cole:
+   ```
+   /plugin marketplace add https://github.com/kapstanhq/oficina.git
+   /plugin install vagas@kapstan-oficina
+   ```
+3. **Comece:**
+   ```
+   /vagas:comecar
+   ```
+   Ele cria a pasta da busca, pergunta como encontrar você e leva para a
+   entrevista. Dali em diante, abra o Claude em qualquer pasta e peça em
+   português — "busca vagas para mim", "o que eu faço hoje?".
+
+Para atualizar depois: `/plugin marketplace update kapstan-oficina`.
 
 ## O que ele faz, e o que ele não faz
 
