@@ -87,8 +87,12 @@ function comProcedencia(texto) {
 
    O `:` precisa vir seguido de ESPAÇO ou de fim de linha, e é isso que
    impede `https://boards.greenhouse.io/...` — uma linha inteira de URL, comum
-   em `_bruto/` — de virar um campo chamado "https". */
-const CAMPO = /^([^:#|>\-*\s][^:]{0,58}):(?:[ \t]+(.*))?$/;
+   em `_bruto/` — de virar um campo chamado "https".
+
+   E a linha que abre com um nome e DOIS espaços é coluna do menu, não campo:
+   `trajetoria.md    o que eu fiz: …` virava campo de rótulo comprido e sumia
+   do menu sem aviso, porque o menu só lê colunas. */
+const CAMPO = /^(?!\S+[ \t]{2,}\S)([^:#|>\-*\s][^:]{0,58}):(?:[ \t]+(.*))?$/;
 const TITULO = /^(#{1,6})[ \t]+(.*)$/;
 const CAIXA = /^[-*][ \t]+\[([ xX])\][ \t]+(.*)$/;
 const MARCADOR = /^[-*][ \t]+(.*)$/;

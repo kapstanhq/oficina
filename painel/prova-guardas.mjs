@@ -77,7 +77,7 @@ const { criarConectores } = await import("../conectores/nucleo/conectores.mjs");
 const { criarPortaDeConectores } = await import("../conectores/nucleo/painel.mjs");
 
 import { abrirPainel } from "./nucleo/http.mjs";
-import { criarBase } from "./nucleo/base.mjs";
+import { criarBase, interpretar } from "./nucleo/base.mjs";
 import { criarFila } from "./nucleo/fila.mjs";
 import { ajustarPelaBase } from "./nucleo/molde.mjs";
 
@@ -836,6 +836,13 @@ console.log(`${forte ? "✓" : "✗"} a chave tem 32+ caracteres de base64url ·
   conferir("id · o apelido vira o nome", p.nome, "primeiro exemplo, Acme");
   conferir("id · e o id fica de etiqueta", p.id, "X-001");
   conferir("id · texto sem id passa inteiro", partirId("só um texto").nome, "só um texto");
+
+  /* a linha do menu com dois-pontos na descrição continua coluna — e o
+     campo de verdade, com o controle ao lado, continua campo */
+  const menu = interpretar(["# I", "", "## Onde está o quê",
+    "trajetoria.md    a trajetória: o que fiz", "regime: remoto"].join("\n")).secoes[0].itens;
+  conferir("menu · dois-pontos na descrição não vira campo", menu[0].tipo, "colunas");
+  conferir("menu · controle: o campo continua campo", menu[1].tipo, "campo");
 }
 
 const mal = casos.filter((c) => !c).length;

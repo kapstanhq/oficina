@@ -35,6 +35,10 @@ você escreveu que procura — regime, contrato, jornada, faixa, idioma —, **m
 currículo** a partir do que você fez de verdade, **prepara a candidatura** campo
 a campo, e lembra de quem ficou de responder.
 
+![A candidatura no painel: as respostas do formulário campo a campo, cada uma saída da busca, a disponibilidade em branco para a pessoa responder e o botão Preencher no navegador](../.github/imagens/candidatura-vagas.jpg)
+
+<sub>A candidatura de uma pessoa fictícia, campo a campo: cada resposta sai da busca, o que só você sabe fica em branco, e com o navegador ligado o botão preenche o formulário no site.</sub>
+
 **Por padrão ele não entra em conta sua e para antes do botão de enviar. Ligar
 o LinkedIn ou a Gupy com login, o Google ou o WhatsApp, e deixar que ele envie
 por você, são escolhas suas — cada uma com o aviso do que muda, e cada envio
