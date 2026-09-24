@@ -72,6 +72,7 @@ try {
 
   const r = await chamar("documento_gerar", { base: BASE, origem: "curriculos/CV-base.md", modelo: "curriculo" });
   conferir("gera · o PDF nasce ao lado do markdown", `${r.pdf} · ${existsSync(join(BASE, "curriculos", "CV-base.pdf"))}`, "curriculos/CV-base.pdf · true");
+  if (!r.pdf) console.log("  veio:", JSON.stringify(r).slice(0, 600));
   conferir("gera · dentro do teto", `${r.paginas} · ${r.cabe}`, "1 · true");
   conferir("gera · com a fonte embutida", r.fonte_embutida, true);
   const bytes = (await readFile(join(BASE, "curriculos", "CV-base.pdf"))).toString("latin1");
