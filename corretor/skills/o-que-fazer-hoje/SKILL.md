@@ -216,14 +216,14 @@ campo inventado não é gatilho:
 | gatilho | onde está escrito | vai para | quem resolve |
 |---|---|---|---|
 | visita hoje | `## Combinado` do cliente, ou a agenda | Vence hoje | — |
-| confirmação da véspera | visita marcada para amanhã | Vence hoje | `/corretor:montar-visita` |
+| confirmação da véspera | visita agendada para amanhã | Vence hoje | `/corretor:montar-visita` |
 | lead sem resposta | `etapa: novo lead` e nenhuma fala do corretor depois da entrada | Vence hoje | `/corretor:responder-lead` |
 | proposta parada | `etapa: proposta` com `· desde` de dois dias ou mais | Vence hoje | — |
 | exclusividade acabando | `exclusividade: sim, até <data>`, faltando 7 dias ou menos | Vence hoje | — |
-| prometido e não chegou | `## Combinado` com promessa de data já passada | Prometido e não chegou | `/corretor:documentos-do-negocio` |
-| papel que trava | `conferida: não` ou `pendências: ?` num imóvel com cliente em `visitou` ou `proposta` | Travado | `/corretor:conferir-matricula` |
-| parado tempo demais | sem manifestação dele há mais de 7 dias, em etapa viva | Travado | `/corretor:retomar-contato` |
-| imóvel sem anúncio | `estado:` à venda ou para alugar, e `link:` ausente ou `?`, ou `## O que vende` vazio, há 7 dias ou mais | Travado | `/corretor:anunciar-imovel` |
+| prometido e não chegou | `## Combinado` com promessa de data já passada | Aguardando retorno | `/corretor:documentos-do-negocio` |
+| papel que trava | `conferida: não` ou `pendências: ?` num imóvel com cliente em `visita realizada` ou `proposta` | Parado | `/corretor:conferir-matricula` |
+| parado tempo demais | sem manifestação dele há mais de 7 dias, em etapa viva | Parado | `/corretor:retomar-contato` |
+| imóvel sem anúncio | `estado:` à venda ou para alugar, e `link:` ausente ou `?`, ou `## O que vende` vazio, há 7 dias ou mais | Parado | `/corretor:anunciar-imovel` |
 
 Os cortes de dia são estes, e **não se inventa outro**: véspera é 1 dia;
 promessa vence no dia seguinte ao prometido; parado é 7 dias; anúncio parado é
@@ -329,7 +329,7 @@ Leia o arquivo velho **antes** de gravar por cima. Ele guarda duas coisas que
 não existem em nenhum outro lugar:
 
 - **caixa marcada `- [x]`** — é o corretor dizendo que fez. Ela vai para
-  `## Feito nos últimos sete dias` com a data do título daquele arquivo.
+  `## Concluído nos últimos 7 dias` com a data do título daquele arquivo.
   **Caixa marcada nunca é desmarcada por reescrita**, nem quando a skill roda
   duas vezes no mesmo dia: item que ele marcou de manhã não volta para
   `## Vence hoje` à tarde. Este é o defeito que mais rápido faz o corretor
@@ -337,8 +337,8 @@ não existem em nenhum outro lugar:
 - **linha que outra skill acrescentou** — e são três, não duas:
   `/corretor:montar-visita` escreve a véspera em `## Vence hoje`,
   `/corretor:documentos-do-negocio` escreve o que pedir em `## Vence hoje` e o
-  que prometeram em `## Prometido e não chegou`, e
-  `/corretor:retomar-contato` escreve a sugestão de arquivar em `## Travado`.
+  que prometeram em `## Aguardando retorno`, e
+  `/corretor:retomar-contato` escreve a sugestão de arquivar em `## Parado`.
   Esta skill reescreve o arquivo INTEIRO, então lista incompleta aqui é linha
   apagada em silêncio. Reconstrua-a a partir do arquivo dono. Não achou o
   fato em arquivo nenhum? **Carregue a linha como está**, na mesma seção, e
@@ -592,15 +592,15 @@ O formato é o da seção 4.2, e nada além dele:
 - [ ] Responder C-024 (Paulo Menezes) — entrou ontem pelo Zap e não teve resposta
 - [ ] Cobrar a resposta da proposta de C-008 (Família Duarte) no V-052 (apto 3 dorm, Cidade Baixa) — parada desde 2026-08-16
 
-## Travado
+## Parado
 - [ ] V-071 (casa 3 dorm, Azenha) — matrícula não conferida, e a proposta é sexta
 - [ ] C-019 (Rita Camargo) — parada há 14 dias; é caso de /corretor:retomar-contato
 - [ ] A-014 (apto 2 dorm, Menino Deus) — sem anúncio desde 2026-08-11
 
-## Prometido e não chegou
+## Aguardando retorno
 - [ ] C-031 (Sr. Almeida) — ia mandar o IPTU do V-071 (casa 3 dorm, Azenha) em 2026-08-13, seis dias
 
-## Feito nos últimos sete dias
+## Concluído nos últimos 7 dias
 - [x] 2026-08-15 — visita do C-017 (Joana Ribeiro) ao V-071 (casa 3 dorm, Azenha)
 ```
 

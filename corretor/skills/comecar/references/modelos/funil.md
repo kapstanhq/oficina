@@ -10,13 +10,13 @@
 ## novo lead
 - nada aqui.
 
-## em conversa
+## em atendimento
 - nada aqui.
 
-## visita marcada
+## visita agendada
 - nada aqui.
 
-## visitou
+## visita realizada
 - nada aqui.
 
 ## proposta

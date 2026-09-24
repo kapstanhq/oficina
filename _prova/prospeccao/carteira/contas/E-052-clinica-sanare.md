@@ -1,6 +1,6 @@
 # E-052 (Clínica Sanare, Curitiba)
 
-site: https://clinicasanareortopedia.com.br  ← prospector, 2026-08-11
+site: https://clinicasanareortopedia.example  ← prospector, 2026-08-11
 estado: a estudar
 setor: saúde privada  ← prospector, 2026-08-11
 cidade: Curitiba, PR  ← prospector, 2026-08-11

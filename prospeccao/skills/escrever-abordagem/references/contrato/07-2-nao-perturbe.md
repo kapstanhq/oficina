@@ -17,14 +17,14 @@ nunca encolhe. É o art. 18 da LGPD virado arquivo, e é a única leitura que
 |---|---|---|---|---|
 | P-036 (Vera Lins) | e-mail | 2026-07-02 | ela | “me tira dessa lista” |
 | P-042 (Bia Nogueira) | LinkedIn | 2026-07-19 | ela | “não temos interesse, obrigada” |
-| carla.menezes@antigaempresa.com.br | e-mail | 2026-06-11 | volta automática | caixa desativada |
-| todo @grupobrasa.com.br | e-mail | 2026-08-02 | jurídico deles | pediu por escrito, domínio inteiro |
+| carla.menezes@antigaempresa.example | e-mail | 2026-06-11 | volta automática | caixa desativada |
+| todo @grupobrasa.example | e-mail | 2026-08-02 | jurídico deles | pediu por escrito, domínio inteiro |
 ```
 
 Quatro coisas que este formato resolve, e as quatro já quebraram uma carteira
 em algum lugar:
 
-- **a linha vale mesmo sem ficha.** `carla.menezes@antigaempresa.com.br` não é
+- **a linha vale mesmo sem ficha.** `carla.menezes@antigaempresa.example` não é
   um `P-` — é um endereço que voltou. A skill compara pelo **endereço e pelo
   telefone**, não só pelo id: pessoa que trocou de empresa ou de número
   continua sendo a mesma pessoa

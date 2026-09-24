@@ -3,7 +3,7 @@
 aposentado: 2026-08-01 · motivo: saiu da empresa
 
 cargo: controladoria  ← LinkedIn, 2026-05-14
-e-mail: otavio.prado@logsulcargas.com.br  ← site, 2026-05-14
+e-mail: otavio.prado@logsulcargas.example  ← site, 2026-05-14
 telefone: ?
 linkedin: ?
 canal: e-mail

@@ -1,0 +1,32 @@
+{
+  "name": "oficina",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Oficina Kapstan: packs de skills por ofício para o Claude Code, com o painel, os conectores e o montador que os geram.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "montar": "node scripts/oficina.mjs",
+    "painel": "npm run tw:painel && npm run svelte:painel && node scripts/painel.mjs",
+    "tw:painel": "tailwindcss -i painel/estilo.css -o painel/estilo.generated.css --minify",
+    "svelte:painel": "node scripts/svelte-build-painel.mjs",
+    "provar": "node scripts/prova-oficina.mjs",
+    "marcas": "node scripts/motor-marcas.mjs",
+    "prova:guardas": "node painel/prova-guardas.mjs",
+    "prova:vigia": "node painel/prova-vigia.mjs",
+    "prova:tela": "node painel/prova-tela.mjs",
+    "prova:conectores": "node conectores/prova.mjs",
+    "prova:documentos": "node documentos/prova.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "esbuild": "^0.28.2",
+    "esbuild-svelte": "^0.9.5",
+    "playwright-core": "^1.63.0",
+    "svelte": "^5.56.10",
+    "tailwindcss": "^4.3.3"
+  }
+}

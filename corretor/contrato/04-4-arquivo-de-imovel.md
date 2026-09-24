@@ -5,7 +5,7 @@ Teto: **40 linhas**.
 ```markdown
 # V-071 (casa 3 dorm, Azenha)
 
-link: https://fontesimoveis.com.br/imovel/8812  ← corretor, 2026-08-12
+link: https://fontesimoveis.example/imovel/8812  ← corretor, 2026-08-12
 estado: à venda
 tipo: casa · 120 m²  ← link, 2026-08-12
 preço: R$ 520.000  ← link, 2026-08-12
@@ -13,7 +13,7 @@ condomínio: —
 iptu: ?  ← pedir ao proprietário
 dormitórios: 3 · suíte: 1 · vagas: 2  ← link, 2026-08-12
 endereço: rua José do Patrocínio, Azenha, Porto Alegre  ← link, 2026-08-12
-proprietário: Sr. Almeida, +55 51 99777-1122  ← corretor, 2026-08-12
+proprietário: Sr. Almeida, +55 51 90000-0003  ← corretor, 2026-08-12
 exclusividade: sim, até 2026-11-30  ← corretor, 2026-08-12
 
 ## O que vende

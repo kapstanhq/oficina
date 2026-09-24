@@ -1,7 +1,7 @@
 # P-017 (Carla Menezes)
 
 cargo: head de dados  ← LinkedIn, 2026-08-12
-e-mail: carla.menezes@vetorbank.com.br  ← site, página de imprensa, 2026-08-18
+e-mail: carla.menezes@vetorbank.example  ← site, página de imprensa, 2026-08-18
 telefone: ?
 linkedin: https://linkedin.com/in/carlamenezes  ← prospector, 2026-08-12
 canal: e-mail

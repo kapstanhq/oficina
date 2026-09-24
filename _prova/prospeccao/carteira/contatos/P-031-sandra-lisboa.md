@@ -1,11 +1,11 @@
 # P-031 (Sandra Lisboa)
 
 cargo: compras  ← LinkedIn, 2026-08-11
-e-mail: sandra.lisboa@moveisbertoldo.com.br  ← site, 2026-08-11
-telefone: +55 54 99777-1122  ← _bruto/2026-08-08-email-bertoldo.md
+e-mail: sandra.lisboa@moveisbertoldo.example  ← site, 2026-08-11
+telefone: +55 54 90000-0003  ← _bruto/2026-08-08-email-bertoldo.md
 linkedin: ?
 canal: e-mail
-etapa: reunião marcada · desde 2026-08-17
+etapa: reunião agendada · desde 2026-08-17
 de onde veio: o P-019 (Rui Baptista) me encaminhou  ← _bruto/2026-08-08-email-bertoldo.md
 não contatar: não
 

@@ -20,8 +20,9 @@ compatibility: >-
   mensagem e DIZ, em uma linha, que não conferiu a lista — quem confere é o
   prospector, antes de mandar. Sem conector ela entrega o bloco para copiar,
   que é o padrão em toda ferramenta. Com conector de WhatsApp, manda uma por
-  vez, depois de ele ver o texto e o destinatário — e a primeira abordagem
-  quase nunca sai por lá (contrato §7.1).
+  vez, depois de ele ver o texto e o destinatário — mas abordagem é primeiro
+  contato, e primeiro contato sai por LINK, que abre o aplicativo com a
+  mensagem escrita (contrato §7.1).
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -169,7 +170,7 @@ Carla, vi que o VetorBank abriu vaga para analista de risco de crédito.
 Montei painel de inadimplência por safra para duas financeiras do mesmo porte —
 nos dois casos o fechamento do mês caiu de nove dias para dois.
 
-https://vasquesanalytics.com.br/casos/safra
+https://vasquesanalytics.example/casos/safra
 
 Vale uma conversa de 20 minutos na semana que vem? Terça ou quinta?
 ```

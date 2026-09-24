@@ -1,0 +1,1198 @@
+/* ═══ painel/estilo · Tailwind, escopado ao painel ════════════════════════
+   Fonte versionada; `estilo.generated.css` é o derivado — não se edita, se
+   refaz (`npm run tw:painel`).
+
+   ── O QUE É COMPARTILHADO, E O QUE É PRÓPRIO ───────────────────────────
+   As REGRAS são compartilhadas: `casca-atomos.css` (`.c-selo`, `.c-acao`,
+   `.c-corpo`) e `casca-pecas.css` (`.c-caixa`, `.c-faixa`, `.c-chip`) são os
+   MESMOS arquivos que a Oficina e o Estúdio compõem. Um botão do painel e um
+   botão da Oficina passam a ser a mesma regra escrita uma vez.
+
+   Os TOKENS são próprios, e isso é deliberado — é o mesmo arranjo do
+   Estúdio, que os tem em `lib/carta.css`. A razão é mecânica: `base.css`
+   traz dez `@font-face` apontando para `../fontes/*.woff2`, e esta página é
+   autocontida e servida da raiz de um servidor local. Importá-lo daria dez
+   404 e uma página que abre sem tipografia nenhuma.
+
+   O que se paga por isso está registrado no D111 — duas fontes de token para
+   a mesma cor foi como a página ganhou o segundo preto. O que impede a
+   repetição aqui é o tamanho: são vinte linhas, todas copiadas de `base.css`
+   de uma vez, e nenhuma delas é escolha nova. Token NOVO não nasce aqui: se
+   o painel precisar de um, ele nasce no `DESIGN.md` e desce para os dois.
+
+   ── A TIPOGRAFIA É DO SISTEMA ──────────────────────────────────────────
+   E ela é uma escolha, não uma falta: o painel abre por dois minutos no meio
+   de outra coisa, e embutir ~100 kB de woff2 em cada pack instalado para
+   isso é peso que quem instala carrega para sempre. A pilha abaixo é a que o
+   sistema já tem carregada. */
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme" layer(theme) source(none);
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/utilities" layer(utilities) source(none);
+
+/* `source(none)` + `@source` explícito: sem isso o Tailwind varre o
+   repositório inteiro por candidato a classe. Medido em `oficina-tw.css`:
+   2,4 → 1,2 kB gzip só desligando a varredura automática. */
+@source "./app/**/*.svelte";
+
+/* ── OS TOKENS, copiados de `site/css/base.css` ────────────────────────
+   Só os que as regras compostas abaixo leem. Quem acrescentar uma peça que
+   precise de um token que não está aqui copia a LINHA de lá, sem inventar
+   valor. */
+:root{
+  --creme:#f7f5f0;
+  --paper:var(--creme); --panel:#fff; --lift:#fff9ec;
+  --ink:#221e18; --ink-rgb:34,30,24;
+  --soft:rgba(34,30,24,.72);
+  --mute:rgba(34,30,24,.58);
+  --apagado:rgba(34,30,24,.42);
+  --fio:rgba(34,30,24,.16);
+  --fio2:rgba(34,30,24,.08);
+  --fio-forte:rgba(34,30,24,.32);
+  --fio-controle:rgba(34,30,24,.52);
+  --cela:#f2efe8;
+  --carvao:#2f2a22;
+  --noite:#1a1712;
+  --accent:#c8863c;
+  --accent-forte:#9a5f1e;
+  --verd:#3f6b45;
+  --ember:#9c3b2e;
+  --estado:#4a7c59;
+
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:Georgia,"Times New Roman",serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --marca:var(--sans);
+
+  --peso-corpo:400; --peso-interface:500; --peso-objeto:600; --peso-marca:700;
+
+  --t-display:34px;    --linha-display:1.14;
+  --t-titulo:26px;     --linha-titulo:1.2;
+  --t-secao:21px;      --linha-secao:1.28;
+  --t-subtitulo:19px;  --linha-subtitulo:1.35;
+  --t-chamada:18px;    --linha-chamada:1.5;
+  --t-corpo:16px;      --linha-corpo:1.6;
+  --t-comando:15px;    --linha-comando:1.5;
+  --t-interface:15px;  --linha-interface:1.42;
+  --t-espec:13.5px;    --linha-espec:1.4;
+  --t-rotulo:11.5px;   --linha-rotulo:1.3;
+  --t-sinal:10.5px;
+  --t-marca:17px;
+
+  --s0:4px; --s1:8px; --s2:12px; --s3:20px; --s4:28px;
+  --s5:40px; --s6:56px; --s7:76px; --s8:104px;
+
+  --r-fio:4px; --r-acao:8px; --r-entrada:10px;
+  --r-objeto:14px; --r-cela:18px; --r-redondo:999px;
+
+  --sombra-superficie:0 1px 2px rgba(34,30,24,.05);
+  --sombra-objeto:0 10px 28px -12px rgba(34,30,24,.28);
+
+  --tecla:36px;
+  --curva:cubic-bezier(.22,.61,.36,1);
+  --rap:150ms;
+}
+
+/* o `@theme` é o MESMO arquivo que a Oficina e o Estúdio compõem: ele só dá
+   NOME ao que o `:root` acima já definiu, para o Tailwind emitir a classe. */
+@import "./casca/casca-tokens.css";
+
+/* e as regras compostas, também as mesmas — ver o cabeçalho de cada um */
+@import "./casca/casca-atomos.css";
+@import "./casca/casca-pecas.css";
+
+/* ══ O QUE É SÓ DO PAINEL ═════════════════════════════════════════════════
+   As peças que não existem na Oficina: a barra de estado (que diz se o
+   agente está esperando), a linha de item de uma lista, o campo de
+   procedência de uma ficha, a entrada do formulário, a decisão de recusa do
+   lote — e, no fim da folha, o que a PÁGINA INICIAL trouxe: a navegação, o
+   aviso de tarefa, os contadores, o quadro do funil e a tabela de uma pasta. */
+
+/* ── A SEÇÃO, e por que ela estava faltando ───────────────────────────
+   Copiada de `site/css/casca.css`, linha por linha. Os sete componentes de
+   vista já escreviam `class="c-secao" style="gap:var(--s2)"` — mas
+   `casca.css` não é uma entrada do Tailwind, então a regra nunca chegou
+   aqui: a classe não existia na folha, `gap` num bloco não faz nada, e o
+   espaço entre o rótulo e a lista de cada seção era ZERO. O sintoma passa
+   por gosto ("está apertado") e não por defeito, que é o que o fez durar. */
+.c-secao{display:flex;flex-direction:column;gap:var(--s3)}
+
+/* ══ A LÍNGUA DA TELA (D231) ══════════════════════════════════════════════
+   As regras compartilhadas vestem a Oficina, que é uma página de MARCA: selo,
+   etiqueta, ação e chip em mono, maiúsculas e espaçadas. O painel é ferramenta
+   de quem nunca abriu um terminal, e ali a mesma letra lê como tela de
+   programador — "LIGAR", "SÓ LEITURA · SEM SESSÃO". Aqui os quatro falam em
+   sans, caixa normal, no corpo da interface. Cor, raio, borda e estados
+   continuam sendo os da folha compartilhada: muda a voz, não a peça.
+   Mono fica para o que é CÓDIGO: o comando que se copia, o id, o caminho. */
+.c-selo,.c-etiqueta,.c-acao,.c-chip{
+  font-family:var(--sans);text-transform:none;letter-spacing:0;
+}
+.c-selo{font-size:var(--t-espec);line-height:var(--linha-espec)}
+.c-etiqueta{font-size:12.5px;line-height:1.3;border-radius:var(--r-redondo);padding:3px 10px}
+.c-acao{font-size:var(--t-interface);font-weight:var(--peso-interface)}
+.c-chip{font-size:var(--t-espec)}
+
+/* ══ A CASCA ══════════════════════════════════════════════════════════════
+   Menu à esquerda e palco à direita a partir de 900 px; abaixo disso o menu é
+   gaveta e sobra uma barra com o botão dele. Era uma fileira de pílulas no
+   topo — onze itens iguais, sem grupo, com `Bruto` ao lado de `Vagas`. */
+.p-casca{display:grid;grid-template-columns:264px minmax(0,1fr);min-height:100vh}
+.p-palco{min-width:0}
+
+.p-lado{
+  position:sticky;top:0;height:100vh;overflow-y:auto;scrollbar-width:thin;
+  display:flex;flex-direction:column;gap:var(--s3);
+  padding:var(--s3) var(--s2);
+  background:var(--cela);border-right:1px solid var(--fio);
+}
+.p-lado-marca{
+  padding:0 var(--s2);text-decoration:none;color:var(--ink);
+  font-size:var(--t-interface);font-weight:var(--peso-objeto);line-height:1.3;
+}
+.p-lado-grupo{display:flex;flex-direction:column;gap:2px}
+.p-lado-rotulo{
+  padding:0 var(--s2) var(--s0);
+  font-size:12.5px;font-weight:var(--peso-interface);color:var(--mute);
+}
+/* o `<summary>` do guardado: o triângulo do navegador sai, e entra um sinal
+   que vira — é o mesmo gesto, com a letra do resto do menu */
+.p-lado-rotulo-abre{cursor:pointer;list-style:none;display:flex;align-items:center;gap:var(--s0)}
+.p-lado-rotulo-abre::-webkit-details-marker{display:none}
+.p-lado-rotulo-abre::after{content:"›";margin-left:auto;transition:transform var(--rap) var(--curva)}
+details[open] > .p-lado-rotulo-abre::after{transform:rotate(90deg)}
+.p-lado-item{
+  display:flex;align-items:center;gap:var(--s1);min-height:var(--tecla);
+  padding:var(--s0) var(--s2);border-radius:var(--r-acao);
+  text-decoration:none;color:var(--soft);font-size:var(--t-interface);
+  transition:background var(--rap) var(--curva);
+}
+.p-lado-item:hover{background:color-mix(in srgb, var(--ink) 6%, transparent);color:var(--ink)}
+.p-lado-item[aria-current]{background:var(--ink);color:var(--creme);font-weight:var(--peso-interface)}
+.p-lado-item:focus-visible,.p-etapa:focus-visible,.p-topo-menu:focus-visible,
+.p-pedido-copiar:focus-visible{outline:2px solid var(--accent-forte);outline-offset:1px}
+.p-lado-conta{
+  margin-left:auto;min-width:22px;padding:1px 7px;text-align:center;
+  border-radius:var(--r-redondo);font-size:12.5px;
+  background:color-mix(in srgb, var(--ink) 8%, transparent);color:var(--soft);
+}
+.p-lado-item[aria-current] .p-lado-conta{background:color-mix(in srgb, var(--creme) 22%, transparent);color:var(--creme)}
+.p-lado-conta-viva{background:var(--accent-forte);color:var(--lift)}
+
+/* ── DE QUEM É A VEZ ──────────────────────────────────────────────────
+   No pé do menu. Uma tela parada é ambígua entre "o assistente está
+   pensando" e "isto travou", e a segunda leitura faz fechar a aba no meio de
+   uma tarefa: o estado tem nome, e o nome está sempre à vista. */
+.p-situacao{
+  margin-top:auto;display:flex;gap:var(--s2);align-items:flex-start;
+  padding:var(--s2);border-radius:var(--r-entrada);
+  background:var(--panel);border:1px solid var(--fio);
+}
+.p-situacao > div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.p-situacao b{font-size:var(--t-espec);font-weight:var(--peso-objeto);line-height:1.3}
+.p-situacao span{font-size:12.5px;line-height:1.4;color:var(--mute);overflow-wrap:anywhere}
+.p-situacao a{font-size:var(--t-espec);color:var(--accent-forte);font-weight:var(--peso-interface)}
+.p-situacao[data-tom="vivo"]{border-color:var(--accent-forte);background:var(--lift)}
+.p-situacao[data-tom="falha"]{border-color:var(--ember)}
+.p-situacao .p-pulso{margin-top:5px}
+
+/* o ponto de estado: verde pulsando quando a vez é da pessoa, brasa quando
+   não há contato, apagado no repouso */
+.p-pulso{
+  width:8px;height:8px;border-radius:var(--r-redondo);
+  background:var(--apagado);flex:none;
+}
+.p-pulso[data-tom="vivo"]{background:var(--estado);animation:p-pulsar 1.8s var(--curva) infinite}
+.p-pulso[data-tom="falha"]{background:var(--ember)}
+@keyframes p-pulsar{0%,100%{opacity:1}50%{opacity:.35}}
+/* Movimento é informação aqui, mas não à custa de quem não o tolera: sem o
+   pulso o ponto continua VERDE, que é o sinal, e só a animação some. */
+@media (prefers-reduced-motion:reduce){
+  .p-pulso[data-tom="vivo"]{animation:none}
+  .p-lado{transition:none}
+}
+
+/* ── A BARRA DO TELEFONE, E A DO PAINEL SEM BASE ──────────────────────── */
+.p-topo{
+  display:none;position:sticky;top:0;z-index:10;
+  align-items:center;gap:var(--s2);
+  padding:var(--s1) var(--s3);min-height:48px;
+  background:color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--fio);
+}
+.p-topo-sempre{display:flex}
+.p-topo-titulo{
+  flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-size:var(--t-interface);font-weight:var(--peso-interface);
+}
+.p-topo-menu{
+  display:inline-flex;align-items:center;gap:var(--s1);min-height:var(--tecla);
+  padding:0 var(--s2);border:1px solid var(--fio-forte);border-radius:var(--r-acao);
+  background:var(--panel);font:inherit;font-size:var(--t-espec);cursor:pointer;
+}
+.p-veu{
+  display:none;position:fixed;inset:0;z-index:19;border:0;
+  background:rgba(var(--ink-rgb),.38);cursor:pointer;
+}
+
+@media (max-width:899px){
+  .p-casca{display:block}
+  .p-topo{display:flex}
+  .p-veu{display:block}
+  .p-lado{
+    position:fixed;inset:0 auto 0 0;z-index:20;width:min(86vw,304px);height:100dvh;
+    transform:translateX(-102%);transition:transform 200ms var(--curva);
+    box-shadow:var(--sombra-objeto);
+  }
+  .p-lado[data-aberto]{transform:none}
+}
+
+/* ── A TRILHA ─────────────────────────────────────────────────────────── */
+.p-trilha{
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1);
+  font-size:var(--t-espec);color:var(--mute);
+}
+.p-trilha a{color:var(--mute);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--fio-forte)}
+.p-trilha a:hover{color:var(--accent-forte)}
+
+/* ── O CABEÇALHO DE UMA SEÇÃO, com o atalho à direita ─────────────────── */
+.p-cabeca{display:flex;align-items:baseline;gap:var(--s2);flex-wrap:wrap}
+.p-cabeca-link{
+  margin-left:auto;font-size:var(--t-espec);color:var(--mute);
+  text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--fio-forte);
+}
+.p-cabeca-link:hover{color:var(--accent-forte)}
+.p-vazio{
+  margin:0;padding:var(--s3);border:1px dashed var(--fio-forte);border-radius:var(--r-objeto);
+  font-size:var(--t-interface);line-height:1.5;color:var(--mute);
+}
+
+.p-miolo{
+  max-width:72ch;margin:0 auto;padding:var(--s4) var(--s3) var(--s6);
+  display:flex;flex-direction:column;gap:var(--s3);
+}
+
+/* ── O ITEM DE LISTA ──────────────────────────────────────────────────
+   Grade de duas colunas: a marca (o id, a etapa) e o corpo. `align-items:
+   baseline` para que o id alinhe com a primeira linha do título, e não com o
+   topo da caixa — é o que faz uma lista de alturas diferentes ler como
+   lista, e não como cartões empilhados. */
+.p-item{
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s0) var(--s2);
+  align-items:baseline;padding:var(--s2) var(--s3);
+  border-bottom:1px solid var(--fio2);
+}
+.p-item:last-child{border-bottom:0}
+.p-item-titulo{font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-item-linha{grid-column:2;color:var(--soft);font-size:var(--t-espec);line-height:var(--linha-espec)}
+.p-item-acoes{grid-column:2;display:flex;flex-wrap:wrap;gap:var(--s1);margin-top:var(--s0)}
+
+/* ── CONSULTAR SEM PERDER A MARCA ─────────────────────────────────────
+   A faixa de consulta é irmã da de decisão, e vem ANTES dela: a ordem na
+   tela é a ordem do gesto — a pessoa lê, e então decide. O detalhe abre na
+   própria linha porque, numa tela de lote, pedir o detalhe ao agente trocaria
+   o documento e apagaria tudo o que já foi marcado.
+
+   O filete à esquerda faz o mesmo trabalho da citação num texto: diz que
+   aquilo é material de apoio, e não mais um item da lista. */
+.p-item-consulta{grid-column:2;display:flex;flex-wrap:wrap;gap:var(--s1);margin-top:var(--s0)}
+.p-item-detalhe{
+  grid-column:2;margin-top:var(--s1);padding:var(--s2) var(--s2) var(--s2) var(--s3);
+  border-left:2px solid var(--fio-forte);border-radius:var(--r-fio);
+  background:var(--lift);color:var(--soft);
+  font-size:var(--t-espec);line-height:var(--linha-espec);
+  /* o detalhe chega com quebra de linha dentro — é o anúncio, a razão, o
+     trecho citado. `pre-wrap` guarda as quebras e ainda deixa a linha longa
+     dobrar sozinha; `pre` puro furaria a caixa com uma URL. */
+  white-space:pre-wrap;overflow-wrap:anywhere;
+}
+/* a âncora usa a pílula dos botões, e precisa desfazer o que o navegador põe
+   nela: sublinhado e a cor de link. Ela é um controle, e lê como um. */
+a.c-chip{text-decoration:none}
+
+/* ── A GRADE DA FICHA ─────────────────────────────────────────────────
+   Rótulo e valor lado a lado, e empilhados quando a coluna encolhe. O
+   `minmax(0,…)` nas duas faixas é o que impede um valor sem espaço — uma URL
+   — de esticar a grade para fora da `c-caixa`, que tem `overflow-clip`: o
+   mínimo `auto` de uma faixa de grade é o MIN-CONTENT dela, e o min-content
+   de uma URL é a URL inteira. Medido a 375 px com os campos vindos do disco:
+   o valor saía cortado, sem rolagem e sem nada dizendo que havia mais. */
+.p-ficha{
+  display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);
+  gap:var(--s1) var(--s3);
+}
+@media (max-width:560px){
+  .p-ficha{grid-template-columns:minmax(0,1fr);gap:var(--s0)}
+  .p-ficha dt{margin-top:var(--s2)}
+  .p-ficha dt:first-child{margin-top:0}
+}
+
+/* ── A PROCEDÊNCIA ────────────────────────────────────────────────────
+   O `←` de onde o fato veio é o que separa esta base de um CRM que
+   inventa. Ele é secundário na tinta, e no que é longo — a trajetória, a
+   tela de tarefa — sai da primeira leitura para o `title` e volta por um
+   interruptor (D258, D265). */
+.p-de{
+  font-size:12.5px;line-height:1.4;color:var(--mute);
+  display:block;margin-top:2px;
+}
+.p-falta{color:var(--accent-forte);font-weight:var(--peso-interface)}
+
+/* ── O BLOCO DE TEXTO ─────────────────────────────────────────────────
+   Ele é o que vai ser COPIADO, então nasce em cerca — nunca em moldura
+   desenhada. O contrato §10 diz por quê: uma caixa de `┌─┐` parece
+   organizada e viaja junto quando alguém seleciona e copia. */
+.p-bloco{
+  white-space:pre-wrap;word-break:break-word;
+  font-family:var(--mono);font-size:var(--t-comando);line-height:var(--linha-comando);
+  background:var(--cela);border:1px solid var(--fio);border-radius:var(--r-entrada);
+  padding:var(--s3);
+}
+
+/* ── O CAMPO DO FORMULÁRIO ────────────────────────────────────────────
+   A quarta peça que só existe aqui. A Oficina não tem entrada de texto, e
+   por isso `casca-atomos.css` não tem regra para uma — quando tiver, esta
+   sobe para lá. Os valores são todos tokens: o raio é o `--r-entrada`, que
+   já existia para isto, e o fio é o `--fio-controle`, o de contraste 3:1
+   que o `DESIGN.md` reserva para borda de controle.
+
+   `font:inherit` porque `input` e `textarea` NÃO herdam fonte do documento:
+   sem ele o campo abre na fonte do sistema operacional, em 13 px, no meio de
+   uma página em 15. */
+.p-campo-linha{display:flex;flex-direction:column;gap:var(--s1);align-items:flex-start}
+.p-campo{
+  font:inherit;font-size:var(--t-interface);line-height:var(--linha-interface);
+  width:100%;padding:var(--s1) var(--s2);color:var(--ink);
+  background:var(--panel);border:1px solid var(--fio-controle);border-radius:var(--r-entrada);
+}
+.p-campo:focus-visible{outline:2px solid var(--accent-forte);outline-offset:1px}
+.p-campo-curto{width:auto;min-width:14ch}
+textarea.p-campo{resize:vertical}
+/* obrigatório e vazio: âmbar, que é a tinta do `?` na ficha — o mesmo sinal
+   ("isto aqui falta") com a mesma cor. Vermelho diria ERRO, e campo que
+   ninguém preencheu ainda não é erro de ninguém. */
+.p-campo-falta{border-color:var(--accent-forte);background:var(--lift)}
+
+/* a decisão de tom `recusa`, marcada: âmbar cheio, como o `c-acao-ambar` no
+   hover. Sem isto "Vale" e "Não vale" acendem iguais, e uma lista de doze
+   julgados vira doze pílulas pretas que é preciso LER para distinguir. */
+.p-chip-recusa[aria-pressed="true"]{
+  background:var(--accent-forte);border-color:var(--accent-forte);color:var(--lift);
+}
+
+/* ══ A PÁGINA INICIAL ═════════════════════════════════════════════════════
+   O painel de tarefa é uma coluna de leitura e nada mais. A casa tem menu,
+   quadro e tabela — três formas que a coluna de 72ch não comporta. */
+
+/* ── O AVISO DE TAREFA ────────────────────────────────────────────────
+   Ele é a ÚNICA coisa da casa que interrompe: o agente parou e está
+   esperando, e quem está lendo um arquivo não tem como saber. Fica preso ao
+   topo porque o custo de não ver é o agente pendurado até o teto do
+   `painel_esperar` — e a pessoa achando que ele travou. */
+.p-aviso{
+  position:sticky;top:0;z-index:11;
+  display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap;
+  padding:var(--s2) var(--s3);
+  background:var(--accent-forte);color:var(--lift);
+  font-size:var(--t-interface);font-weight:var(--peso-interface);
+}
+.p-aviso a{color:var(--lift);text-decoration:underline;text-underline-offset:3px;margin-left:auto}
+/* no telefone a barra do menu ocupa o topo, e o aviso gruda embaixo dela */
+@media (max-width:899px){.p-aviso{top:48px}}
+
+/* a coluna larga: a de 72ch é de LEITURA, e o quadro do funil não é texto */
+.p-miolo-larga{max-width:1080px}
+
+/* ── OS CONTADORES ────────────────────────────────────────────────────
+   `## Quanto tem` são números que se leem de relance, e o número vem ANTES
+   do rótulo no eixo vertical porque é ele que se procura. */
+.p-numeros{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:var(--s2);
+}
+.p-numero{
+  display:flex;flex-direction:column;gap:2px;
+  padding:var(--s2) var(--s3);
+  background:var(--panel);border:1px solid var(--fio);border-radius:var(--r-objeto);
+}
+.p-numero b{font-size:var(--t-titulo);line-height:1.1;font-weight:var(--peso-objeto)}
+.p-numero span{font-size:var(--t-espec);line-height:var(--linha-espec);color:var(--mute)}
+/* o contador sem trabalho dentro. Continua legível — é informação, não
+   decoração —, e para de disputar o olho com o que tem número. */
+.p-numero-zero{background:transparent}
+.p-numero-zero b{color:var(--mute);font-weight:var(--peso-interface)}
+
+/* ── A VEZ ────────────────────────────────────────────────────────────
+   O topo do início quando o assistente parou esperando. É um link inteiro, e
+   não um cartão com um botão dentro: o alvo do clique é a faixa toda. */
+.p-vez{
+  display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap;
+  padding:var(--s3);border-radius:var(--r-objeto);text-decoration:none;
+  background:var(--lift);border:1px solid var(--accent-forte);color:var(--ink);
+}
+.p-vez-texto{display:flex;flex-direction:column;gap:2px;flex:1;min-width:200px}
+.p-vez-texto b{font-size:var(--t-chamada);font-weight:var(--peso-objeto);line-height:1.3}
+.p-vez-texto span{font-size:var(--t-interface);color:var(--soft)}
+.p-vez-botao{
+  display:inline-flex;align-items:center;min-height:var(--tecla);padding:0 var(--s3);
+  border-radius:var(--r-acao);background:var(--ink);color:var(--creme);
+  font-size:var(--t-interface);font-weight:var(--peso-interface);
+}
+.p-vez:hover .p-vez-botao{background:var(--accent-forte)}
+
+/* ── A RÉGUA DAS ETAPAS ───────────────────────────────────────────────
+   Todas as etapas numa linha, na ordem do arquivo, com o número de cada uma.
+   Rola na horizontal no telefone, e a rolagem aqui é de PÍLULAS, e não de
+   colunas de cartões: o que fica fora da tela é um nome e um número. */
+.p-etapas{
+  display:flex;align-items:stretch;gap:var(--s1);
+  overflow-x:auto;scrollbar-width:thin;padding-bottom:var(--s0);
+}
+.p-etapas-seta{align-self:center;color:var(--fio-forte);flex:none}
+.p-etapa{
+  flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:1px;
+  min-width:104px;padding:var(--s1) var(--s2);cursor:pointer;
+  font:inherit;text-align:left;color:var(--ink);
+  background:var(--panel);border:1px solid var(--fio);border-radius:var(--r-entrada);
+  transition:border-color var(--rap) var(--curva);
+}
+.p-etapa:hover{border-color:var(--fio-forte)}
+.p-etapa b{font-size:var(--t-secao);line-height:1.1;font-weight:var(--peso-objeto)}
+.p-etapa span{font-size:var(--t-espec);color:var(--soft);white-space:nowrap}
+.p-etapa span{display:block}
+.p-etapa span::first-letter{text-transform:uppercase}
+.p-etapa[data-vazia]{background:transparent}
+.p-etapa[data-vazia] b{color:var(--mute);font-weight:var(--peso-interface)}
+.p-etapa[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--creme)}
+.p-etapa[aria-selected="true"] b,.p-etapa[aria-selected="true"] span{color:var(--creme)}
+
+/* a lista da etapa escolhida: grade que dobra sozinha, sem rolagem lateral */
+.p-cartoes{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:var(--s2);
+}
+.p-cartao{
+  display:block;text-decoration:none;color:inherit;
+  padding:var(--s2) var(--s3);background:var(--panel);
+  border:1px solid var(--fio);border-radius:var(--r-entrada);
+  transition:border-color var(--rap) var(--curva);
+}
+.p-cartao b{display:block;font-size:var(--t-interface);font-weight:var(--peso-objeto);line-height:1.35}
+.p-cartao > span{
+  display:block;margin-top:var(--s0);
+  font-size:var(--t-espec);line-height:var(--linha-espec);color:var(--soft);
+}
+
+/* ── O QUE DÁ PARA PEDIR ──────────────────────────────────────────────
+   O nome da ação, o que ela faz, e o comando numa faixa que se copia com um
+   clique. O comando é a ÚNICA mono do início: é código, e é para colar. */
+.p-pedidos{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s2)}
+.p-pedido{
+  display:flex;flex-direction:column;gap:var(--s1);
+  padding:var(--s3);background:var(--panel);
+  border:1px solid var(--fio);border-radius:var(--r-objeto);
+}
+.p-pedido b{font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-pedido > span{font-size:var(--t-espec);line-height:1.5;color:var(--soft);flex:1}
+.p-pedido-copiar{
+  display:flex;align-items:center;gap:var(--s2);margin-top:var(--s0);
+  padding:var(--s1) var(--s2);cursor:pointer;font:inherit;text-align:left;
+  background:var(--cela);border:1px solid var(--fio);border-radius:var(--r-acao);
+  transition:border-color var(--rap) var(--curva);
+}
+.p-pedido-copiar:hover{border-color:var(--ink)}
+.p-pedido-copiar code{
+  flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-family:var(--mono);font-size:12.5px;color:var(--ink);
+}
+.p-pedido-copiar em{font-style:normal;font-size:12.5px;font-weight:var(--peso-interface);color:var(--accent-forte);flex:none}
+
+/* ── LINHAS COM PONTO DE ESTADO — o "anotado como ligado" do Sobre ────── */
+.p-linhas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s1)}
+.p-linhas li{
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s2);align-items:baseline;
+  font-size:var(--t-interface);line-height:1.5;color:var(--soft);
+}
+.p-linhas b{color:var(--ink);font-weight:var(--peso-interface)}
+.p-ponto{width:8px;height:8px;border-radius:var(--r-redondo);background:var(--apagado);transform:translateY(-1px)}
+.p-ponto[data-tom="vivo"]{background:var(--estado)}
+.p-ponto[data-tom="falta"]{background:var(--accent)}
+
+/* ══ DECIDIR, E A FILA (D232) ═════════════════════════════════════════════
+   O cartão deixou de ser um link inteiro: dentro dele há botões, e botão
+   dentro de `<a>` não é marcação válida. O link é o miolo; os gestos ficam
+   embaixo, separados por um fio. */
+.p-cartao > a{display:block;text-decoration:none;color:inherit}
+.p-cartao > a > span{
+  display:block;margin-top:var(--s0);
+  font-size:var(--t-espec);line-height:var(--linha-espec);color:var(--soft);
+}
+.p-cartao > a:hover b{text-decoration:underline;text-underline-offset:3px}
+.p-cartao:has(> a):hover{border-color:var(--ink)}
+/* marcado e ainda não gravado: âmbar, a tinta do "isto está pendente" em toda
+   a tela — o mesmo sinal do `?` de uma ficha */
+.p-cartao[data-marcado]{border-color:var(--accent-forte);background:var(--lift)}
+
+/* ── O PRÓXIMO PASSO (D235) ───────────────────────────────────────────
+   Um destaque em tinta cheia e os outros em chip, nos três lugares. No
+   cartão e na linha o bloco é uma fileira; na página do item é um cartão
+   âmbar claro — é a única coisa da ficha que pede um clique. */
+.p-proximo{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2)}
+.p-proximo[data-modo="cartao"]{margin-top:var(--s2);padding-top:var(--s2);border-top:1px solid var(--fio2)}
+.p-proximo[data-modo="linha"],.p-proximo[data-modo="par"]{flex-wrap:nowrap}
+.p-proximo[data-modo="cheio"]{
+  flex-direction:column;align-items:stretch;gap:var(--s2);
+  padding:var(--s3);border-radius:var(--r-objeto);
+  background:var(--lift);border:1px solid var(--accent);
+}
+.p-proximo-rotulo{font-size:12.5px;font-weight:var(--peso-interface);color:var(--accent-forte);text-transform:uppercase;letter-spacing:.04em}
+.p-proximo-destaque{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s3)}
+.p-proximo-destaque > div{display:flex;flex-direction:column;gap:var(--s0);flex:1;min-width:220px}
+.p-proximo-destaque b{font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-proximo-destaque span{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}
+.p-proximo-destaque em{font-style:normal;font-size:var(--t-espec);line-height:1.5;color:var(--ink)}
+.p-proximo-destaque .c-acao{flex:none}
+.p-proximo-curto{min-height:30px;font-size:12.5px;padding:0 var(--s2);white-space:nowrap}
+.p-proximo-outros{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1)}
+.p-proximo[data-modo="linha"] .p-proximo-outros{flex-wrap:nowrap}
+.p-proximo-outros > span{font-size:12.5px;color:var(--mute)}
+.p-proximo .c-chip{min-height:30px;font-size:12.5px;padding:0 var(--s2);white-space:nowrap}
+.p-proximo .c-chip::first-letter{text-transform:uppercase}
+.p-proximo-nota{flex-basis:100%;font-size:12.5px;color:var(--accent-forte);font-weight:var(--peso-interface)}
+/* o destaque marcado (a passagem ou o descarte já na fila) fica pressionado */
+.p-proximo .c-acao-cheia[aria-pressed="true"]{background:var(--accent-forte);border-color:var(--accent-forte)}
+
+/* ── A BARRA DA FILA ──────────────────────────────────────────────────
+   Presa ao pé do palco enquanto há decisão por gravar. Tinta cheia: é a
+   única coisa da casa, além do aviso de tarefa, que PRECISA ser vista —
+   sem ela a pessoa sai achando que o clique já valeu. */
+.p-fila{
+  position:sticky;bottom:0;z-index:8;
+  background:var(--carvao);color:var(--creme);
+  border-top:1px solid var(--noite);
+}
+.p-fila-barra{
+  display:flex;align-items:center;gap:var(--s2) var(--s3);flex-wrap:wrap;
+  padding:var(--s2) var(--s3);
+}
+.p-fila-conta{
+  display:inline-flex;align-items:center;gap:var(--s1);cursor:pointer;
+  background:none;border:0;padding:0;font:inherit;color:inherit;font-size:var(--t-interface);
+}
+.p-fila-conta b{
+  min-width:24px;padding:1px 8px;text-align:center;border-radius:var(--r-redondo);
+  background:var(--accent-forte);color:var(--lift);font-weight:var(--peso-objeto);
+}
+.p-fila .c-acao{margin-left:auto}
+.p-fila-frase{margin-left:auto;font-size:var(--t-espec);color:color-mix(in srgb, var(--creme) 78%, transparent)}
+.p-fila-frase button{
+  background:none;border:0;padding:0;font:inherit;color:var(--creme);cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px;
+}
+.p-fila-frase em{font-style:normal;color:var(--accent);margin-left:var(--s0)}
+.p-fila-recado{margin:0;padding:0 var(--s3) var(--s2);font-size:var(--t-espec);color:var(--accent)}
+.p-fila-lista{
+  list-style:none;margin:0;padding:var(--s2) var(--s3) 0;max-height:40vh;overflow-y:auto;
+  display:flex;flex-direction:column;gap:var(--s1);
+}
+.p-fila-lista li{
+  display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:var(--s2);align-items:center;
+  padding-bottom:var(--s1);border-bottom:1px solid color-mix(in srgb, var(--creme) 14%, transparent);
+  font-size:var(--t-espec);
+}
+.p-fila-lista b{font-weight:var(--peso-interface)}
+.p-fila-lista .p-id{background:color-mix(in srgb, var(--creme) 14%, transparent);color:var(--creme)}
+.p-fila-gesto{color:var(--accent);white-space:nowrap}
+.p-fila-lista .c-chip{min-height:28px;font-size:12.5px;color:var(--creme);
+  border-color:color-mix(in srgb, var(--creme) 40%, transparent)}
+.p-fila-lista .c-chip:hover{border-color:var(--creme);color:var(--creme)}
+/* D234: a marca que envelheceu e o motivo ocupam a linha inteira, embaixo */
+.p-fila-velha, .p-fila-motivo{grid-column:1 / -1}
+.p-fila-velha{color:var(--accent);line-height:1.5}
+.p-fila-velhas{font-size:var(--t-espec);color:var(--accent)}
+.p-fila-motivo, .p-decidir-motivo{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
+.p-fila-motivo span, .p-decidir-motivo span{font-size:12.5px;white-space:nowrap}
+.p-fila-motivo input, .p-decidir-motivo input{
+  flex:1;min-width:0;min-height:30px;padding:0 var(--s2);font:inherit;font-size:13px;
+  border-radius:var(--r-entrada);border:1px solid var(--fio-controle);background:var(--lift);color:var(--ink);
+}
+.p-fila-motivo input{background:color-mix(in srgb, var(--creme) 10%, transparent);color:var(--creme);
+  border-color:color-mix(in srgb, var(--creme) 30%, transparent)}
+.p-decidir-motivo{flex-basis:100%}
+
+/* ── O QUE SE LÊ ANTES DE TUDO (D240) ────────────────────────────────── */
+.p-chaves{display:flex;flex-wrap:wrap;gap:var(--s2);margin:0}
+.p-chave{
+  display:flex;flex-direction:column;gap:2px;min-width:120px;flex:1 1 140px;
+  padding:var(--s2) var(--s3);border-radius:var(--r-objeto);
+  background:var(--panel);border:1px solid var(--fio);
+}
+.p-chave dt{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+.p-chave dd{margin:0;font-size:var(--t-interface);font-weight:var(--peso-objeto);line-height:1.35;overflow-wrap:anywhere}
+.p-chave-falta{background:var(--lift);border-color:var(--accent)}
+.p-chave-falta dd{color:var(--accent-forte)}
+
+/* ── AS RELAÇÕES POR ID (D239) ───────────────────────────────────────── */
+.p-id-link{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--fio-forte)}
+.p-id-link:hover{text-decoration-color:var(--ink)}
+.p-pertence{margin:0;font-size:var(--t-espec);color:var(--soft)}
+.p-pertence a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;font-weight:var(--peso-interface)}
+.p-documentos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.p-documentos li{border-bottom:1px solid var(--fio2)}
+.p-documentos a{display:flex;align-items:baseline;gap:var(--s2);padding:var(--s1) 0;min-height:36px;color:inherit;text-decoration:none;font-size:var(--t-interface)}
+.p-documentos a:hover{text-decoration:underline;text-underline-offset:3px}
+.p-documentos-pasta{flex:none;font-size:12px;color:var(--mute);min-width:84px}
+
+/* ── O INÍCIO: AGORA, A PILHA E O QUE SE DOBRA (D264) ────────────────── */
+.p-etapa{text-decoration:none}
+/* com as fases (D266) a régua tem oito trechos: estreitos, e a fase lê como
+   degrau da etapa de antes — filete tracejado, e a seta vira ponto */
+header .p-etapa{min-width:0;padding:var(--s1) var(--s2) var(--s1) 10px}
+header .p-etapa[data-fase]{border-style:dashed}
+header .p-etapas{gap:4px}
+.p-agora{list-style:none;margin:0;padding:0;background:var(--panel);border:1px solid var(--fio);border-radius:var(--r-objeto)}
+.p-agora-linha{display:flex;align-items:center;gap:var(--s2) var(--s3);padding:var(--s2) var(--s3);border-bottom:1px solid var(--fio2)}
+.p-agora-linha:last-child{border-bottom:0}
+.p-agora-linha[data-marcado]{background:var(--lift)}
+.p-agora-texto{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 var(--s2)}
+.p-agora-texto > a{color:inherit;text-decoration:none}
+.p-agora-texto > a:hover b{text-decoration:underline;text-underline-offset:3px}
+.p-agora-texto b{font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-agora-texto .p-id{margin-left:var(--s1)}
+.p-agora-etapa{font-size:12px;color:var(--mute)}
+.p-agora-etapa::first-letter{text-transform:uppercase}
+.p-agora-texto p{flex-basis:100%;margin:2px 0 0;font-size:var(--t-espec);line-height:var(--linha-espec);color:var(--soft);
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.p-agora-linha .p-proximo{flex:none}
+@media (max-width:720px){
+  .p-agora-linha{flex-direction:column;align-items:stretch}
+  .p-agora-linha .p-proximo{flex-wrap:wrap}
+}
+.p-aviso-dia{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2);
+  padding:var(--s1) var(--s2);border-radius:var(--r-entrada);background:var(--lift);font-size:var(--t-espec);color:var(--soft)}
+.p-feitos summary,.p-dobra > summary{cursor:pointer;list-style:none}
+.p-feitos summary::-webkit-details-marker,.p-dobra > summary::-webkit-details-marker{display:none}
+.p-feitos summary{font-size:var(--t-espec);color:var(--mute)}
+.p-feitos summary::before,.p-dobra > summary::before{content:"▸";display:inline-block;width:1em;color:var(--mute);transition:transform var(--rap) var(--curva)}
+.p-feitos[open] summary::before,.p-dobra[open] > summary::before{transform:rotate(90deg)}
+.p-feitos ul{list-style:none;margin:var(--s1) 0 0;padding:0 0 0 1em;display:flex;flex-direction:column;gap:var(--s0);
+  font-size:var(--t-espec);line-height:var(--linha-espec);color:var(--soft)}
+.p-dobra{gap:var(--s2)}
+.p-dobra:not([open]){gap:0}
+.p-dobra > summary{display:flex;align-items:baseline;gap:var(--s2);flex-wrap:wrap}
+.p-pedidos-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.p-pedidos-lista li{display:flex;align-items:center;gap:var(--s3);padding:var(--s1) 0;border-bottom:1px solid var(--fio2)}
+.p-pedidos-lista li > div{flex:1;min-width:0;display:flex;flex-direction:column}
+.p-pedidos-lista b{font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-pedidos-lista li > div span{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}
+.p-pedidos-lista .c-chip,.p-pedidos-lista .c-nota{flex:none}
+
+/* ── O DOCUMENTO NA TELA DE TAREFA (D265) ─────────────────────────────── */
+.p-doc{
+  background:var(--panel);border:1px solid var(--fio);border-radius:var(--r-objeto);
+  padding:var(--s4) var(--s4) var(--s3);font-size:var(--t-interface);line-height:1.55;color:var(--ink);
+  max-width:72ch;
+}
+.p-doc h1{margin:0 0 var(--s1);font-size:var(--t-secao);font-weight:var(--peso-objeto);line-height:1.2}
+.p-doc h2{margin:var(--s4) 0 var(--s1);padding-bottom:4px;border-bottom:1px solid var(--fio);
+  font-size:12.5px;font-weight:var(--peso-interface);letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.p-doc h3{margin:var(--s3) 0 2px;font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-doc p{margin:0 0 var(--s2);color:var(--soft)}
+.p-doc h1 + p{font-size:var(--t-espec)}
+.p-doc ul{margin:0 0 var(--s2);padding-left:1.2em;list-style:disc;display:flex;flex-direction:column;gap:3px}
+.p-doc li{display:list-item}
+.p-doc li::marker{color:var(--mute)}
+.p-doc b{font-weight:var(--peso-objeto);color:var(--ink)}
+@media (max-width:560px){.p-doc{padding:var(--s3)}}
+
+/* ── O COMEÇO E O QUE MUDOU (D234) ───────────────────────────────────── */
+.p-comeco{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s2)}
+.p-comeco li{
+  display:flex;gap:var(--s3);align-items:flex-start;padding:var(--s3);
+  border-radius:var(--r-objeto);background:var(--panel);border:1px solid var(--fio);
+}
+.p-comeco-n{
+  flex:none;width:28px;height:28px;border-radius:var(--r-redondo);display:grid;place-items:center;
+  background:var(--ink);color:var(--paper);font-size:13px;font-weight:var(--peso-objeto);
+}
+.p-comeco li > div{display:flex;flex-direction:column;gap:var(--s1);min-width:0;flex:1;align-items:flex-start}
+.p-comeco b{font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-comeco li > div > span{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}
+.p-mudou{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.p-mudou li{border-bottom:1px solid var(--fio2)}
+.p-mudou a{
+  display:flex;align-items:baseline;gap:var(--s2);padding:var(--s1) 0;min-height:36px;
+  color:inherit;text-decoration:none;font-size:var(--t-espec);
+}
+.p-mudou a:hover b{text-decoration:underline;text-underline-offset:3px}
+.p-mudou b{font-weight:var(--peso-interface);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-mudou-tipo{flex:none;width:52px;font-size:12px;color:var(--mute)}
+.p-mudou-tipo[data-tipo="Novo"]{color:var(--accent-forte);font-weight:var(--peso-interface)}
+.p-mudou-onde{margin-left:auto;flex:none;font-size:12px;color:var(--mute)}
+
+/* ── A EXECUÇÃO, E O PEDIDO DE CONFIRMAÇÃO (D232) ─────────────────────── */
+.p-execucao{
+  display:flex;align-items:flex-start;gap:var(--s2) var(--s3);flex-wrap:wrap;
+  padding:var(--s3);border-radius:var(--r-objeto);
+  background:var(--panel);border:1px solid var(--fio);
+}
+.p-execucao > div{display:flex;flex-direction:column;gap:var(--s0);flex:1;min-width:220px}
+.p-execucao b{font-size:var(--t-interface);font-weight:var(--peso-objeto)}
+.p-execucao span{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}
+.p-execucao summary{cursor:pointer;font-size:var(--t-espec);color:var(--mute);margin-top:var(--s0)}
+.p-execucao-passos{list-style:none;margin:var(--s1) 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.p-execucao-passos li{font-size:var(--t-espec);line-height:1.5;color:var(--mute);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p-execucao-passos li[data-agora]{color:var(--ink);font-weight:var(--peso-interface)}
+.p-execucao .p-pulso{margin-top:6px}
+.p-execucao[data-tom="vivo"]{border-color:var(--estado);background:color-mix(in srgb, var(--estado) 7%, var(--panel))}
+.p-execucao[data-tom="falha"]{border-color:var(--ember)}
+/* a fila (D271): um pedido por linha, e o "tirar" é texto, não botão cheio */
+.p-execucao-lista{list-style:none;margin:var(--s1) 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
+.p-execucao-lista li{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}
+.p-execucao-lista li[data-feita="falha"]{color:var(--ember)}
+.p-execucao-item{color:inherit;text-decoration:underline;text-decoration-color:var(--fio-forte);text-underline-offset:2px}
+.p-execucao-item span{font-size:.9em;color:var(--mute);font-variant-numeric:tabular-nums}
+.p-execucao-item:hover{color:var(--ink)}
+.p-execucao-lista button{margin-left:var(--s1);padding:0;border:0;background:none;cursor:pointer;
+  font:inherit;color:var(--mute);text-decoration:underline;text-underline-offset:2px}
+.p-execucao-lista button:hover{color:var(--ink)}
+.p-execucao-texto{
+  margin:var(--s2) 0 0;white-space:pre-wrap;overflow-wrap:anywhere;max-height:50vh;overflow-y:auto;
+  font-family:var(--sans);font-size:var(--t-espec);line-height:1.55;color:var(--soft);
+}
+/* a confirmação cobre a tela: é a única hora em que o painel gasta sem a
+   pessoa ter digitado nada, e não pode passar como mais um cartão */
+.p-confirma{
+  position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:var(--s3);
+  background:rgba(var(--ink-rgb),.42);
+}
+.p-confirma-caixa{
+  max-width:520px;display:flex;flex-direction:column;gap:var(--s2);
+  padding:var(--s4);background:var(--paper);box-shadow:var(--sombra-objeto);
+}
+
+/* ── A TABELA DE UMA PASTA ────────────────────────────────────────────
+   O `_indice.md` tem UMA tabela, e ela é a lista da pasta. Desenhá-la como
+   tabela e não como cartões é obedecer ao arquivo: as colunas que estão lá
+   são as que o ofício escolheu mostrar, e reordená-las seria a tela decidindo
+   o que importa. */
+.p-tabela{width:100%;border-collapse:collapse;font-size:var(--t-espec)}
+.p-tabela th{
+  text-align:left;padding:var(--s1) var(--s2);
+  font-size:12.5px;color:var(--mute);font-weight:var(--peso-interface);white-space:nowrap;
+  border-bottom:1px solid var(--fio);
+}
+.p-tabela td{padding:var(--s2);border-bottom:1px solid var(--fio2);vertical-align:top}
+.p-tabela tr:last-child td{border-bottom:0}
+.p-tabela a{color:inherit;text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--fio-forte)}
+.p-tabela a:hover{text-decoration-color:var(--accent-forte);color:var(--accent-forte)}
+
+/* a linha que abre: o cursor e o realce dizem que é clicável ANTES do clique */
+.p-tabela-abre tr[data-abre]{cursor:pointer;transition:background var(--rap) var(--curva)}
+.p-tabela-abre tr[data-abre]:hover{background:color-mix(in srgb, var(--ink) 4%, transparent)}
+.p-tabela-abre td:first-child{min-width:220px;font-size:var(--t-interface)}
+.p-tabela-abre td:first-child a{font-weight:var(--peso-interface);text-decoration:none}
+.p-tabela-abre tr[data-abre]:hover td:first-child a{text-decoration:underline;text-underline-offset:3px}
+
+/* o id: etiqueta em mono, pequena. É código — é o que a pessoa dita ao
+   assistente —, e por isso é das poucas monos que sobraram na tela */
+.p-id{
+  display:inline-block;margin-left:var(--s1);padding:1px 6px;vertical-align:1px;
+  font-family:var(--mono);font-size:11.5px;color:var(--mute);white-space:nowrap;
+  background:color-mix(in srgb, var(--ink) 6%, transparent);border-radius:var(--r-fio);
+}
+.p-curta{white-space:nowrap}
+.p-procura{display:flex;flex-direction:column;gap:var(--s1);max-width:420px}
+
+/* ── O ARQUIVO CRU ────────────────────────────────────────────────────
+   O que o interpretador não reconheceu continua legível: a última saída é
+   mostrar o texto como ele está no disco. `.p-bloco` já é essa forma. */
+.p-corpo-prosa{font-size:var(--t-corpo);line-height:var(--linha-corpo);color:var(--soft)}
+
+/* ══ OS CONECTORES ════════════════════════════════════════════════════════
+   Um cartão por serviço, e dentro dele uma gaveta por gesto. Nada aqui é
+   forma nova: a caixa é a `c-caixa` de sempre, o campo é o `.p-campo` do
+   formulário e o botão é a `c-acao`. O que existe é o ARRANJO. */
+.p-conector{display:flex;flex-direction:column;gap:var(--s2);padding:var(--s3)}
+/* uma linha por site em que se entra (D272): o nome e a frase, os botões à direita */
+.p-sessao{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);flex-wrap:wrap;padding:var(--s2) var(--s3)}
+.p-sessao > div:first-child{display:flex;flex-direction:column;gap:2px;min-width:220px;flex:1}
+.p-sessao .p-acoes{margin:0}
+.p-sessao[data-estado="logada"]{border-color:var(--estado)}
+.p-sessao[data-estado="vencida"]{border-color:var(--ember)}
+/* o nome e a etiqueta de estado na mesma linha, e ela quebra: a 375 px
+   "ligue pelo Claude" ao lado de `email-do-agente` não cabe em linha
+   nenhuma, e sem o `wrap` a etiqueta sairia pela borda da caixa, que é
+   `overflow-clip` — some sem deixar rastro. */
+.p-conector-topo{
+  display:flex;align-items:baseline;gap:var(--s2);flex-wrap:wrap;
+}
+/* o ligado em verde. `c-etiqueta-ambar` e `-cinza` já existem na folha
+   compartilhada; o verde não, porque a Oficina não tem estado "de pé". Os
+   14% são os mesmos do âmbar, e o texto é o `--verd` do DESIGN.md. */
+.p-etiqueta-viva{
+  background:color-mix(in srgb, var(--verd) 14%, transparent);
+  border-color:transparent;color:var(--verd);
+}
+.p-conectores-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));align-items:start}
+.p-conector-nome{margin:0;font-size:var(--t-chamada);font-weight:var(--peso-objeto);line-height:1.3}
+.p-conta-titulo{font-size:var(--t-espec);font-weight:var(--peso-corpo);color:var(--mute);margin-left:var(--s0)}
+.p-acoes{display:flex;flex-wrap:wrap;gap:var(--s1);align-items:center}
+
+/* a gaveta de um gesto: colada ao cartão, separada por um fio. Ela não é
+   outro cartão — é a continuação deste, e uma segunda borda faria ler como
+   duas coisas. */
+.p-gaveta{
+  display:flex;flex-direction:column;gap:var(--s2);
+  padding-top:var(--s2);border-top:1px solid var(--fio2);
+}
+/* a de confirmação é `c-caixa c-caixa-ambar`, e aí ela TEM borda própria:
+   ali a separação é o ponto. O padding vem daqui. */
+.c-caixa.p-gaveta{padding:var(--s3);border-top-width:1px}
+
+/* os passos de onde tirar a chave. Numerados porque são uma sequência, e
+   com o número fora do texto para a segunda linha alinhar com a primeira. */
+.p-passos{
+  margin:var(--s1) 0 0;padding-left:1.4em;
+  display:flex;flex-direction:column;gap:var(--s1);
+  font-size:var(--t-espec);line-height:var(--linha-espec);color:var(--soft);
+}
+.p-guia{
+  display:flex;flex-direction:column;gap:var(--s1);
+  padding:var(--s2);background:var(--cela);border-radius:var(--r-entrada);
+}
+
+/* o extrato: hora, operação e quanto. Três colunas que viram uma no
+   telefone — uma linha de extrato com 11 px para caber a 375 é uma linha
+   que ninguém lê. */
+.p-extrato{
+  list-style:none;margin:var(--s2) 0 0;padding:0;
+  display:flex;flex-direction:column;gap:var(--s1);
+  font-size:var(--t-espec);line-height:var(--linha-espec);
+}
+.p-extrato li{
+  display:grid;grid-template-columns:auto 1fr auto;gap:var(--s1) var(--s2);
+  padding-bottom:var(--s1);border-bottom:1px solid var(--fio2);
+}
+.p-extrato li:last-child{border-bottom:0;padding-bottom:0}
+.p-extrato li span:first-child{font-family:var(--mono);color:var(--mute)}
+.p-extrato li span:last-child{font-family:var(--mono);white-space:nowrap}
+@media (max-width:480px){
+  .p-extrato li{grid-template-columns:1fr auto}
+  .p-extrato li span:nth-child(2){grid-column:1/-1;color:var(--soft)}
+}
+
+/* ── A LISTA E O DETALHE (D244) ──────────────────────────────────────────
+   A lista numa coluna que rola sozinha, o item inteiro ao lado, e a barra do
+   item grudada no topo enquanto ele rola. Estreito (a coluna da tarefa, o
+   telefone): uma coisa por vez — a lista, ou o item com "‹ Lista". */
+.p-revisar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2)}
+.p-motivos{display:flex;flex-wrap:wrap;gap:var(--s1)}
+.p-motivos .c-chip{min-height:30px;font-size:12.5px}
+.p-lista-modo{display:flex;gap:var(--s1)}
+.p-miolo-inteira{max-width:1440px}
+.p-leitor{container-type:inline-size}
+.p-leitor-grade{display:grid;grid-template-columns:minmax(240px,310px) minmax(0,1fr);gap:var(--s4);align-items:start}
+.p-leitor-lista{
+  position:sticky;top:var(--s2);display:flex;flex-direction:column;gap:var(--s2);
+  max-height:calc(100vh - var(--s4) - var(--altura-fila, 0px));overflow:hidden;padding:2px;
+}
+.p-leitor-filtros{display:flex;flex-wrap:wrap;gap:var(--s1)}
+.p-leitor-filtros .c-chip{min-height:30px;font-size:12.5px}
+.p-leitor-filtros .c-chip span{color:var(--mute)}
+.p-leitor-filtros .c-chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--creme)}
+.p-leitor-filtros .c-chip[aria-pressed="true"] span{color:var(--creme);opacity:.75}
+.p-leitor-procura{min-height:36px}
+/* ── A LISTA É QUEM ROLA ─────────────────────────────────────────────────
+   Filtros e busca ficam; a lista rola dentro da coluna. Ela encolhia para
+   caber e cortava o resto (`overflow:hidden` num filho flex que encolhe): a
+   coluna media 872 de 872 px, sem nada para rolar, e a roda rolava a página.
+   A barra é a do sistema, na largura normal, num espaço reservado
+   (`scrollbar-gutter`) — não cobre o texto e não é um fio —, discreta em
+   repouso e forte com o mouse em cima. Transparente em repouso ela não
+   aparecia ao passar o mouse: o Chrome nem sempre repinta a barra quando só
+   a cor muda. */
+.p-leitor-lista ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
+  flex:0 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-gutter:stable;scrollbar-width:auto;scrollbar-color:var(--fio) transparent;
+  border:1px solid var(--fio);border-radius:var(--r-objeto);background:var(--panel)}
+.p-leitor-lista ul:hover, .p-leitor-lista ul:focus-within{scrollbar-color:var(--fio-forte) transparent}
+.p-leitor-lista li + li{border-top:1px solid var(--fio2)}
+.p-leitor-linha{
+  display:flex;align-items:center;gap:var(--s1);width:100%;min-height:34px;text-align:left;cursor:pointer;
+  padding:6px var(--s2);background:none;border:0;border-left:3px solid transparent;font:inherit;color:inherit;
+}
+.p-leitor-linha:hover{background:var(--lift)}
+.p-leitor-linha[aria-current="true"]{background:var(--lift);border-left-color:var(--accent-forte)}
+.p-leitor-linha b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:var(--t-espec);font-weight:var(--peso-interface);line-height:1.3}
+.p-leitor-linha[aria-current="true"] b{font-weight:var(--peso-objeto)}
+.p-leitor-linha[data-estado="recusa"] b{color:var(--mute);text-decoration:line-through}
+.p-leitor-linha em, .p-leitor-linha strong{flex:none;font-style:normal;font-size:11.5px;line-height:1.3;white-space:nowrap}
+.p-leitor-linha em{padding:1px 7px;border-radius:var(--r-redondo);background:var(--fio2);color:var(--soft)}
+.p-leitor-linha strong{font-weight:var(--peso-interface);color:var(--accent-forte)}
+.p-leitor-id{flex:none;min-width:40px;font-size:11px;line-height:1.3;color:var(--apagado);font-variant-numeric:tabular-nums}
+.p-leitor-linha[aria-current="true"] .p-leitor-id{color:var(--mute)}
+.p-leitor-palco{min-width:0;display:flex;flex-direction:column;gap:var(--s3);overscroll-behavior-x:none}
+.p-leitor-barra{
+  position:sticky;top:0;z-index:7;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:var(--s2);padding:var(--s2) 0;background:var(--paper);border-bottom:1px solid var(--fio);
+}
+.p-leitor-andar, .p-leitor-gestos{display:flex;align-items:center;gap:var(--s1);flex-wrap:wrap}
+.p-leitor-andar .c-acao, .p-leitor-gestos .c-acao{min-height:40px;padding:0 var(--s3)}
+.p-leitor-andar .c-acao:disabled{opacity:.4;cursor:default}
+.p-leitor-pos{min-width:72px;text-align:center;font-size:var(--t-espec);color:var(--soft);font-variant-numeric:tabular-nums}
+.p-leitor-gestos .c-acao[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--creme)}
+.p-leitor-gestos .c-acao-cheia[aria-pressed="true"]{background:var(--accent-forte);border-color:var(--accent-forte)}
+.p-leitor-voltar{display:none}
+/* na rota do funil ele volta à TABELA, que não está na tela (D274) */
+.p-leitor-voltar[data-sempre]{display:inline-flex}
+.p-leitor-ordem{display:flex;align-items:center;gap:var(--s1)}
+.p-leitor-ordem label{display:flex;align-items:center;gap:var(--s1);flex:1;min-width:0;font-size:12px;color:var(--mute)}
+.p-leitor-ordem select{flex:1;min-width:0;padding:4px 8px;font-size:var(--t-espec)}
+
+.p-cabeca-ordem{display:flex;align-items:center;gap:var(--s1);margin-left:auto;font-size:12px;color:var(--mute)}
+.p-cabeca-ordem + .p-cabeca-link{margin-left:var(--s2)}
+.p-cabeca-ordem select{padding:4px 8px;font-size:var(--t-espec)}
+.p-cartao-fatos{font-size:12px;color:var(--soft)}
+
+/* ═══ A TABELA DOS ITENS (D274) ═══════════════════════════════════════════
+   Uma linha por item, a letra da interface em corpo de lista. Rola para o
+   lado DENTRO da caixa: a página não ganha rolagem lateral. No telefone, as
+   linhas viram cartões com o rótulo de cada valor. */
+.p-tabela{container-type:inline-size;display:flex;flex-direction:column;gap:var(--s2)}
+.p-tabela-topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2)}
+.p-tabela-procura{width:min(280px, 100%);padding:6px 10px;font-size:var(--t-espec)}
+.p-tabela-rolo{overflow-x:auto;border:1px solid var(--fio);border-radius:var(--r-objeto);background:var(--panel);
+  scrollbar-color:var(--fio) transparent}
+.p-tabela table{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.35}
+.p-tabela th{position:sticky;top:0;z-index:1;background:var(--panel);text-align:left;padding:0;
+  border-bottom:1px solid var(--fio);white-space:nowrap}
+.p-tabela th button{display:block;width:100%;padding:9px 8px;background:none;border:0;cursor:pointer;
+  font:inherit;font-size:12px;font-weight:var(--peso-interface);color:var(--soft);text-align:left}
+.p-tabela th button:hover{color:var(--ink)}
+.p-tabela th[aria-sort] button{color:var(--ink)}
+.p-tabela td{padding:8px 8px;border-bottom:1px solid var(--fio);vertical-align:top;
+  max-width:120px;overflow-wrap:break-word;color:var(--ink);background:var(--panel)}
+/* o nome fica preso à esquerda quando a tabela rola para o lado */
+.p-tabela th:first-child, .p-tabela td:first-child{position:sticky;left:0;z-index:1}
+.p-tabela th:first-child{z-index:2}
+.p-tabela td[data-tipo="atualizada"] small{display:block;font-size:11.5px;line-height:1.3;color:var(--mute)}
+.p-tabela td[data-tipo="faltam"], .p-tabela th[data-tipo="faltam"] button{text-align:center}
+.p-tabela tbody tr{cursor:pointer}
+.p-tabela tbody tr:last-child td{border-bottom:0}
+.p-tabela tbody tr:hover td{background:var(--lift)}
+.p-tabela td[data-tipo="nome"]{min-width:170px;max-width:230px}
+.p-tabela td[data-tipo="etapa"], .p-tabela td[data-tipo="faltam"]{white-space:nowrap}
+.p-tabela td[data-tipo="atualizada"]{min-width:88px}
+.p-tabela td[data-tipo="nome"] a{color:inherit;text-decoration:none}
+.p-tabela td[data-tipo="nome"] a:hover b{text-decoration:underline;text-underline-offset:2px}
+.p-tabela td[data-tipo="nome"] b{font-weight:var(--peso-objeto)}
+.p-tabela td[data-tipo="nome"] .p-id{margin-left:6px}
+.p-tabela [data-vazio]{color:var(--mute)}
+.p-tabela-etapa{color:var(--soft)}
+.p-tabela-doc{display:inline-block;margin:0 4px 2px 0;padding:0 6px;white-space:nowrap;border:1px solid var(--fio);border-radius:999px;font-size:12px;color:var(--soft)}
+.p-tabela-falta{color:var(--ember)}
+.p-tabela-completo{color:var(--estado)}
+.p-tabela-marca{display:block;margin-top:2px;font-style:normal;font-size:12px;color:var(--estado)}
+.p-tabela-marca[data-recusa]{color:var(--ember)}
+.p-tabela tr[data-marcada] td{background:color-mix(in srgb, var(--estado) 5%, var(--panel))}
+@container (max-width:760px){
+  .p-tabela-rolo{border:0;background:none;overflow:visible}
+  .p-tabela table, .p-tabela tbody{display:block}
+  .p-tabela thead{display:none}
+  .p-tabela tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin-bottom:var(--s2);padding:12px;
+    border:1px solid var(--fio);border-radius:var(--r-objeto);background:var(--panel)}
+  .p-tabela td{display:flex;flex-direction:column;gap:1px;padding:0;border:0;max-width:none;white-space:normal;position:static;background:none}
+  .p-tabela td::before{content:attr(data-rotulo);font-size:11px;color:var(--mute)}
+  .p-tabela td[data-tipo="nome"]{grid-column:1 / -1;max-width:none}
+  .p-tabela td[data-tipo="nome"]::before{display:none}
+  .p-tabela td[data-tipo="faltam"]{text-align:left}
+}
+/* o botão com o menu aberto: aberto, e não desligado */
+.p-leitor-gestos .c-acao[aria-expanded="true"]{background:var(--lift);border-color:var(--ink);color:var(--ink);opacity:1}
+.p-leitor-menu{position:relative}
+.p-leitor-pop{
+  position:absolute;left:0;top:calc(100% + 6px);z-index:20;min-width:280px;max-width:min(360px, 90vw);
+  display:flex;flex-direction:column;padding:var(--s1);background:var(--panel);
+  border:1px solid var(--fio);border-radius:var(--r-objeto);box-shadow:var(--sombra-objeto);
+}
+.p-leitor-pop > span{padding:var(--s1) var(--s2);font-size:12px;color:var(--mute)}
+.p-leitor-pop button{
+  display:flex;flex-direction:column;gap:2px;text-align:left;cursor:pointer;
+  padding:var(--s1) var(--s2);background:none;border:0;border-radius:8px;font:inherit;font-size:var(--t-espec);color:var(--ink);
+}
+.p-leitor-pop button:hover, .p-leitor-pop button:focus-visible{background:var(--lift)}
+.p-leitor-pop small{font-size:12px;color:var(--soft)}
+/* "Mais ações" tem todas (D257): o próximo passo marcado, o que está na fila
+   apagado, e Descartar no fim, separado */
+.p-leitor-pop button{display:grid;grid-template-columns:1fr auto;align-items:baseline;column-gap:var(--s2)}
+.p-leitor-pop button small{grid-column:1 / -1}
+.p-leitor-pop button em{font-style:normal;font-size:11px;color:var(--mute);white-space:nowrap}
+.p-leitor-pop button[data-destaque] span{font-weight:var(--peso-objeto)}
+.p-leitor-pop button[data-destaque] em{color:var(--accent-forte)}
+.p-leitor-pop button[data-recusa]{margin-top:var(--s0);border-top:1px solid var(--fio2);border-radius:0 0 8px 8px;color:var(--ember)}
+.p-leitor-pop button:disabled{opacity:.55;cursor:default;background:none}
+.p-leitor-gestos .p-leitor-pop{left:auto;right:0}
+.p-leitor-item{display:flex;flex-direction:column;gap:var(--s3)}
+.p-leitor-escolha{margin-top:var(--s5)}
+@media (max-width:899px){ .p-leitor-barra{top:48px} }
+@container (max-width:760px){
+  .p-leitor-grade{display:block}
+  .p-leitor-lista{position:static;max-height:none;overflow:visible}
+  .p-leitor-lista ul{overflow:visible}
+  .p-leitor-grade[data-com-item] .p-leitor-lista{display:none}
+  .p-leitor-grade:not([data-com-item]) .p-leitor-palco{display:none}
+  .p-leitor-voltar{display:inline-flex}
+  .p-leitor-barra{justify-content:flex-start}
+  .p-leitor-gestos{width:100%}
+  .p-leitor-gestos .c-acao-cheia{margin-left:auto}
+}
+
+/* ── O QUE FALTA, E QUEM VAI ATRÁS (D245) ─────────────────────────────── */
+.p-completar{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2);
+  margin-top:calc(var(--s1) * -1);padding:var(--s2) var(--s3);border-radius:var(--r-objeto);
+  background:var(--lift);border:1px dashed var(--accent);
+}
+.p-completar span{font-size:var(--t-espec);color:var(--accent-forte)}
+
+/* ── O DOCUMENTO EM PDF (D270) ────────────────────────────────────────── */
+.p-documento-botoes{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2)}
+
+/* ══ A PÁGINA DE UM ITEM (D257) ═══════════════════════════════════════════
+   Em ordem de pergunta: quem é → e agora? → cabe para mim? → o que se sabe →
+   documentos → histórico. Cada bloco é uma superfície; o essencial em
+   ladrilhos que não crescem com o texto — o inteiro abre por clique. */
+.p-pag{display:flex;flex-direction:column;gap:var(--s4)}
+.p-pag-cabeca{display:flex;flex-direction:column;gap:var(--s1)}
+.p-pag-sobre{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1)}
+.p-pag-etapa{display:inline-flex;align-items:center;padding:2px 10px;border-radius:var(--r-redondo);
+  font-size:12.5px;font-weight:var(--peso-interface);color:var(--estado);
+  background:color-mix(in srgb, var(--estado) 10%, var(--panel));border:1px solid color-mix(in srgb, var(--estado) 30%, transparent)}
+.p-pag-titulo{margin:0;font-size:var(--t-titulo);line-height:var(--linha-titulo);font-weight:var(--peso-objeto);letter-spacing:-.01em;text-wrap:balance}
+.p-pag-quem{margin:0;font-size:var(--t-chamada);color:var(--soft)}
+.p-pag-enderecos{display:flex;flex-wrap:wrap;gap:var(--s1);margin-top:var(--s1)}
+.p-pag-enderecos .c-chip{text-decoration:none}
+
+.p-pag-proximo{display:grid;grid-template-columns:1fr auto;align-items:start;gap:var(--s2) var(--s3);
+  padding:var(--s3);border-radius:var(--r-cela);background:var(--lift);
+  border:1px solid color-mix(in srgb, var(--accent) 40%, transparent)}
+.p-pag-proximo-texto{display:flex;flex-direction:column;gap:var(--s0)}
+.p-pag-proximo-texto b{font-size:var(--t-secao);line-height:var(--linha-secao);font-weight:var(--peso-objeto)}
+.p-pag-proximo-texto p{margin:0;color:var(--soft);font-size:var(--t-interface);line-height:var(--linha-interface);max-width:60ch}
+.p-pag-rotulo{font-size:var(--t-rotulo);font-weight:var(--peso-objeto);letter-spacing:.06em;text-transform:uppercase;color:var(--accent-forte)}
+.p-pag-proximo-acao{display:flex;flex-direction:column;align-items:flex-end;gap:var(--s1);text-align:right}
+.p-pag-proximo-acao .c-nota{font-size:12px;max-width:24ch}
+.p-pag-nota{margin:0;font-size:var(--t-espec);color:var(--mute)}
+.p-pag-trilha{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;margin:var(--s1) 0 0;padding:var(--s2) 0 0;list-style:none;border-top:1px solid color-mix(in srgb, var(--accent) 25%, transparent)}
+.p-pag-trilha li{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-radius:var(--r-redondo);
+  font-size:var(--t-espec);color:var(--mute);background:color-mix(in srgb, var(--panel) 60%, transparent)}
+.p-pag-trilha li span{font-size:11px}
+.p-pag-trilha li[data-feito]{color:var(--estado)}
+.p-pag-trilha li[data-agora]{color:var(--ink);font-weight:var(--peso-objeto);background:var(--panel);box-shadow:inset 0 0 0 1px var(--accent)}
+.p-pag-trilha li[data-agora] span{color:var(--accent)}
+.p-pag-outros{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1)}
+.p-pag-outros > span{font-size:var(--t-espec);color:var(--mute)}
+
+.p-pag-bloco{display:flex;flex-direction:column;gap:var(--s2)}
+.p-pag-h2{margin:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--s1);font-size:var(--t-subtitulo);line-height:var(--linha-subtitulo);font-weight:var(--peso-objeto)}
+.p-pag-h2 span{font-size:var(--t-espec);font-weight:var(--peso-corpo);color:var(--mute)}
+.p-pag-fatos{display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:var(--s2);margin:0}
+.p-pag-fato{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:var(--r-objeto);background:var(--panel);border:1px solid var(--fio)}
+.p-pag-fato dt{font-size:var(--t-rotulo);letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.p-pag-fato dd{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.p-pag-fato dd b{font-size:var(--t-interface);line-height:var(--linha-interface);font-weight:var(--peso-objeto)}
+.p-pag-fato[data-falta]{background:var(--lift);border-style:dashed;border-color:color-mix(in srgb, var(--accent) 55%, transparent)}
+.p-pag-fato[data-falta] dd b{color:var(--accent-forte);font-weight:var(--peso-interface)}
+.p-pag-detalhe{font-size:12.5px;line-height:1.45;color:var(--soft)}
+.p-pag-fato[data-falta] .p-pag-detalhe{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.p-pag-mais{align-self:flex-start;padding:0;background:none;border:0;font:inherit;font-size:12.5px;color:var(--soft);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.p-pag-mais:hover{color:var(--ink)}
+
+.p-pag-secoes{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:var(--s3)}
+.p-pag-secoes .p-pag-bloco{padding:var(--s3);border-radius:var(--r-cela);background:var(--panel);border:1px solid var(--fio2)}
+.p-pag-vazias{margin:calc(var(--s2) * -1) 0 0;font-size:var(--t-espec);color:var(--mute)}
+.p-pag-vazias span{color:var(--soft);font-weight:var(--peso-interface)}
+
+.p-pag-docs{display:flex;flex-direction:column;gap:var(--s1);margin:0;padding:0;list-style:none}
+.p-pag-docs li{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);padding:10px 12px;border-radius:var(--r-objeto);background:var(--panel);border:1px solid var(--fio)}
+.p-pag-docs li > a:first-child{display:flex;flex-direction:column;text-decoration:none;color:var(--ink)}
+.p-pag-docs li > a:first-child span{font-size:var(--t-espec);color:var(--mute)}
+
+.p-pag-historico{display:flex;flex-direction:column;margin:0;padding:0;list-style:none;border-left:2px solid var(--fio)}
+.p-pag-historico li{display:grid;grid-template-columns:52px 1fr;gap:var(--s1);padding:6px 0 6px var(--s2);font-size:var(--t-espec);line-height:var(--linha-espec);color:var(--soft)}
+.p-pag-historico time{color:var(--mute);font-variant-numeric:tabular-nums}
+.p-pag-ficha{border-top:1px solid var(--fio2);padding-top:var(--s2)}
+.p-pag-ficha > summary{cursor:pointer;font-size:var(--t-espec);color:var(--soft)}
+.p-pag-ficha[open] > summary{margin-bottom:var(--s2)}
+@container (max-width:560px){
+  .p-pag-proximo{grid-template-columns:1fr}
+  .p-pag-proximo-acao{align-items:stretch;text-align:left}
+  .p-pag-proximo-acao .c-nota{max-width:none}
+  .p-pag-historico li{grid-template-columns:44px 1fr}
+}
+
+/* ══ AS PASTAS DE DOCUMENTOS E DE PESSOAS, E O ARQUIVO LONGO (D258) ══════ */
+.p-docs-descricao{margin:0;max-width:62ch;font-size:var(--t-interface);line-height:var(--linha-interface);color:var(--soft)}
+.p-docs{display:flex;flex-direction:column;gap:var(--s2);margin-top:var(--s2)}
+.p-docs-grupo{padding:var(--s2) var(--s3) var(--s3);border-radius:var(--r-cela);background:var(--panel);border:1px solid var(--fio2)}
+.p-docs-cabeca{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s2);margin-bottom:var(--s1)}
+.p-docs-cabeca h2{margin:2px 0 0;font-size:var(--t-subtitulo);line-height:var(--linha-subtitulo);font-weight:var(--peso-objeto)}
+.p-docs-cabeca h2 a{color:inherit;text-decoration:none}
+.p-docs-cabeca h2 a:hover{text-decoration:underline;text-underline-offset:3px}
+.p-docs-id{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.p-docs-cabeca .c-chip{flex:none;text-decoration:none}
+.p-docs-lista{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
+.p-docs-lista li{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);padding:10px 0;border-top:1px solid var(--fio2)}
+.p-docs-doc{display:flex;flex-direction:column;gap:2px;min-width:0;color:var(--ink);text-decoration:none}
+.p-docs-doc b{font-size:var(--t-interface);font-weight:var(--peso-interface)}
+.p-docs-doc span{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:var(--t-espec);color:var(--mute)}
+.p-docs-doc em{font-style:normal;font-size:12px;padding:1px 8px;border-radius:var(--r-redondo)}
+.p-docs-doc em[data-tom="ok"]{color:var(--estado);background:color-mix(in srgb, var(--estado) 10%, var(--panel))}
+.p-docs-doc em[data-tom="rascunho"]{color:var(--accent-forte);background:var(--lift);border:1px dashed color-mix(in srgb, var(--accent) 55%, transparent)}
+.p-docs-doc:hover b{text-decoration:underline;text-underline-offset:3px}
+.p-docs-botoes{display:flex;flex:none;align-items:center;gap:var(--s1)}
+.p-docs-botoes .c-chip{text-decoration:none}
+
+.p-pessoas{display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:var(--s2);margin-top:var(--s2)}
+.p-pessoa{display:flex;flex-direction:column;gap:var(--s1);padding:var(--s3);border-radius:var(--r-cela);background:var(--panel);border:1px solid var(--fio2)}
+.p-pessoa[data-nao-contatar]{border-color:color-mix(in srgb, var(--ember) 45%, transparent)}
+.p-pessoa header{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1)}
+.p-pessoa-nome{font-size:var(--t-subtitulo);font-weight:var(--peso-objeto);color:var(--ink);text-decoration:none}
+.p-pessoa-nome:hover{text-decoration:underline;text-underline-offset:3px}
+.p-pessoa-papel{padding:1px 8px;border-radius:var(--r-redondo);font-size:12px;color:var(--soft);background:var(--fio2)}
+.p-pessoa-onde{margin:0;font-size:var(--t-interface);color:var(--soft)}
+.p-pessoa-alerta{margin:0;font-size:var(--t-espec);color:var(--ember);font-weight:var(--peso-interface)}
+.p-pessoa-bloco{display:flex;flex-direction:column;gap:2px;padding:var(--s1) var(--s2);border-radius:var(--r-objeto);background:var(--cela)}
+.p-pessoa-bloco > span{font-size:var(--t-rotulo);letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.p-pessoa-bloco p{margin:0;font-size:var(--t-espec);line-height:var(--linha-espec)}
+.p-pessoa-contato{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1)}
+.p-pessoa-contato .c-chip{text-decoration:none}
+.p-pessoa-canal{font-size:var(--t-espec);color:var(--mute)}
+.p-pessoa-ultimo{margin:0;padding-top:var(--s1);border-top:1px solid var(--fio2);font-size:var(--t-espec);color:var(--soft)}
+.p-pessoa-ultimo time{color:var(--mute);font-variant-numeric:tabular-nums;margin-right:4px}
+
+.p-arq-topo{display:flex;flex-direction:column;gap:var(--s2);padding-bottom:var(--s2);border-bottom:1px solid var(--fio2)}
+.p-arq-indice{display:flex;flex-wrap:wrap;gap:6px}
+.p-arq-origem{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-espec);color:var(--soft);cursor:pointer}
+.p-arq-secao{scroll-margin-top:var(--s5)}
+.p-arq-sub{display:flex;flex-direction:column;gap:var(--s1);padding:var(--s2) var(--s3);border-radius:var(--r-objeto);background:var(--panel);border:1px solid var(--fio2)}
+.p-arq-sub h3{margin:0;font-size:var(--t-interface);line-height:var(--linha-interface);font-weight:var(--peso-objeto)}
+.p-arq-nota{margin:0;font-size:12.5px;color:var(--mute)}
+
+/* ── O RECADO E O COMENTÁRIO (D259) ───────────────────────────────────
+   O recado geral fica acima dos botões da tarefa; o comentário de um campo
+   ou item abre por um link discreto, porque a maior parte não é comentada. */
+.p-recado{display:flex;flex-direction:column;gap:var(--s1)}
+.p-recado textarea,.p-comentario{resize:vertical;font-size:var(--t-espec)}
+.p-item-comentario{grid-column:2;margin-top:var(--s1);display:flex}
+.p-comentar{
+  font:inherit;font-size:var(--t-espec);color:var(--soft);background:none;border:0;padding:0;
+  text-decoration:underline;text-decoration-color:var(--fio-forte);text-underline-offset:3px;cursor:pointer;
+}
+.p-comentar:hover{color:var(--ink)}
+.p-comentar:focus-visible{outline:2px solid var(--accent-forte);outline-offset:2px}

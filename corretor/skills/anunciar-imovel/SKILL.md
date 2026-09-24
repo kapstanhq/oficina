@@ -293,7 +293,7 @@ Joana, achei uma com o pátio que você queria.
 Casa de 3 dormitórios na Azenha, 120 m², dois quarteirões do Rosário. O pátio
 dos fundos pega sol a tarde inteira. A cozinha é pequena, já aviso.
 
-https://fontesimoveis.com.br/imovel/8812
+https://fontesimoveis.example/imovel/8812
 
 Consigo te mostrar sábado de manhã. Prefere 10h ou 11h?
 ```
@@ -309,7 +309,7 @@ Casa 3 dormitórios na Azenha, com pátio.
 120 m², duas vagas, dois quarteirões do Colégio Rosário. O pátio dos fundos
 pega o sol da tarde inteira.
 
-https://fontesimoveis.com.br/imovel/8812
+https://fontesimoveis.example/imovel/8812
 
 Quer ver por dentro?
 ```

@@ -1,9 +1,9 @@
 # C-019 (Rita Camargo)
 
-telefone: +55 51 99222-3344  ← corretor, 2026-08-05
+telefone: +55 51 90000-0010  ← corretor, 2026-08-05
 e-mail: ?
 canal: WhatsApp
-etapa: em conversa · desde 2026-08-05
+etapa: em atendimento · desde 2026-08-05
 origem: indicação de cliente antigo  ← corretor, 2026-08-05
 não contatar: não
 

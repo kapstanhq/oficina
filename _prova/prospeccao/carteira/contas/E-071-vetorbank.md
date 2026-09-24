@@ -1,6 +1,6 @@
 # E-071 (VetorBank, Porto Alegre)
 
-site: https://vetorbank.com.br  ← prospector, 2026-08-12
+site: https://vetorbank.example  ← prospector, 2026-08-12
 estado: a abordar
 setor: crédito para pequena empresa  ← site, 2026-08-12
 cidade: Porto Alegre, RS  ← site, 2026-08-12

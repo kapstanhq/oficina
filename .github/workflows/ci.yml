@@ -1,0 +1,45 @@
+name: provas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  provas:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # o gerado commitado tem de ser o que a fonte gera
+      - run: npm run painel
+      - run: npm run montar -- --escrever
+      - name: gerado igual à fonte
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git status --porcelain
+            echo "::error::o gerado divergiu da fonte — rode 'npm run painel' e 'npm run montar -- --escrever' e commite"
+            exit 1
+          fi
+
+      - run: npm run prova:guardas
+      - run: npm run prova:vigia
+      - run: npm run prova:conectores
+      - run: npm run prova:documentos
+      - run: npm run prova:tela
+      - name: provas secas dos packs (sem modelo)
+        shell: bash
+        run: |
+          for p in $(node -p 'require("./.claude-plugin/marketplace.json").plugins.map(p=>p.name).join(" ")'); do
+            npm run provar -- --seco --pack "$p"
+          done

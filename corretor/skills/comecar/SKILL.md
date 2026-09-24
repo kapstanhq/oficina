@@ -337,7 +337,7 @@ No Claude Code:
   6. volte para cá
 
 No Claude do navegador ou no Desktop:
-  Configurações → Conectores → “Google Calendar” → “Conectar”, e a mesma tela
+  Configurações → Integrações → “Google Calendar” → “Conectar”, e a mesma tela
   do Google.
 ```
 
@@ -486,6 +486,18 @@ a cadeia de lá; o `references/vocabulario.txt` ao lado é o que o degrau 7.5
 manda instalar, e é o que faz a transcrição acertar as palavras do ofício. Se não quiser, ou se aqui não houver linha de comando, siga em
 frente e não toque mais no assunto.
 
+**E o resto do que se liga mora num lugar só.** Se as ferramentas
+`conectores_*` existem nesta sessão, chame `conectores_estado` UMA vez, aqui, e
+leia `references/conectores.md`: ele devolve o que este pack pode ligar — fonte
+pública, navegador, e-mail, serviço pago —, o estado de cada coisa e a linha
+pronta de `como_ligar`. Mostre a lista como ela veio, em três colunas (o que é,
+como está, o que custa), e diga **uma vez** que quem liga é ele, num terminal
+dele. Não ligue nada por ele, não insista, e não repita o aviso de conector
+nenhum: o aviso aparece para ele, no ato de ligar. O que ele quiser ligar agora
+entra em `## O que está conectado` com a data do teste; o que não quiser vira
+uma linha de `## Pulado no começo`. Sem as ferramentas na sessão, este parágrafo
+não existe — não o mencione.
+
 Este passo é pulável, mas ele emenda no passo 7: se ele já tiver uma conversa à
 mão agora, o passo 7 usa essa mesma.
 
@@ -631,7 +643,7 @@ Contrato §7, os quatro passos, sem atalho:
    porque, se algo der errado no meio, o material dele já está salvo.
 2. **Os fatos** para o arquivo do cliente — `C-001` numa carteira nova —, cada
    campo com `← _bruto/<arquivo>`. Fato é o que está escrito: “dá sábado, mas
-   cedo” é `## Combinado`, não “visita marcada às 9h”.
+   cedo” é `## Combinado`, não “visita agendada às 9h”.
 3. **As vistas**: uma linha em `clientes/_indice.md`, uma linha no `funil.md` na
    etapa que a conversa mostrar (na dúvida, `novo lead`), e o `## Quanto tem`.
 4. **Diga onde guardou**, no `## Guardei`.

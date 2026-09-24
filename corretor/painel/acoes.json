@@ -1,0 +1,139 @@
+{
+  "pack": "corretor",
+  "pastas": {
+    "item": "imoveis",
+    "pessoa": "clientes"
+  },
+  "item": "Imóvel",
+  "base": "carteira",
+  "fila": "/corretor:gravar-o-que-marquei",
+  "comeco": [],
+  "proximo": {},
+  "destaque": [],
+  "resumo": [],
+  "motivos": [],
+  "completar": "/corretor:completar-ficha",
+  "rotulos": {},
+  "grupos": [
+    {
+      "rotulo": "",
+      "acoes": [
+        {
+          "sobre": [],
+          "comando": "/corretor:comecar",
+          "nome": "Começar",
+          "oque": "Monta a carteira e testa o que está conectado"
+        },
+        {
+          "sobre": [],
+          "comando": "/corretor:importar-a-conversa",
+          "nome": "Importar a conversa",
+          "oque": "Enche a carteira com o que já está no seu WhatsApp"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/corretor:anunciar-imovel",
+          "nome": "Anunciar imóvel",
+          "oque": "Escreve o anúncio a partir do link ou da ficha"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/corretor:conferir-matricula",
+          "nome": "Conferir a matrícula do imóvel",
+          "oque": "Lista o que pode travar a venda"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/corretor:gravar-video-do-imovel",
+          "nome": "O roteiro do vídeo do imóvel",
+          "oque": "Monta o roteiro do vídeo, plano a plano"
+        },
+        {
+          "sobre": [],
+          "comando": "/corretor:responder-lead",
+          "nome": "Responder o lead que chegou",
+          "oque": "Escreve a resposta e diz o que falta perguntar"
+        },
+        {
+          "sobre": [
+            "pessoa"
+          ],
+          "comando": "/corretor:montar-visita",
+          "nome": "Montar a visita",
+          "oque": "Escolhe o que mostrar, em que ordem e a que horas"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/corretor:retomar-contato",
+          "nome": "Retomar contato",
+          "oque": "Acha quem sumiu e escreve a mensagem de volta"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/corretor:o-que-fazer-hoje",
+          "nome": "O que fazer hoje",
+          "oque": "Monta a lista do dia a partir da sua carteira"
+        },
+        {
+          "sobre": [
+            "item",
+            "pessoa"
+          ],
+          "comando": "/corretor:documentos-do-negocio",
+          "nome": "Documentos do negócio",
+          "oque": "Diz que papel pedir, de quem e em que ordem"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/corretor:cobrar-o-que-falta",
+          "nome": "Cobrar o que falta",
+          "oque": "Cobra quem ficou de mandar e não mandou"
+        },
+        {
+          "sobre": [
+            "pessoa"
+          ],
+          "comando": "/corretor:compartilhar-com-cliente",
+          "nome": "Compartilhar com o cliente",
+          "oque": "Monta a vista do que o cliente pode ver"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/corretor:organizar-carteira",
+          "nome": "Organizar a carteira",
+          "oque": "Guarda o que chegou e arquiva o que morreu"
+        },
+        {
+          "sobre": [
+            "nada"
+          ],
+          "comando": "/corretor:laudo-da-carteira",
+          "nome": "O laudo da carteira",
+          "oque": "Diz o que está errado na carteira, sem mexer nela"
+        },
+        {
+          "sobre": [
+            "item"
+          ],
+          "comando": "/corretor:completar-ficha",
+          "nome": "Completar o que falta",
+          "oque": "Procura o que falta na ficha do imóvel nas fontes que você tem, e grava com a origem"
+        }
+      ]
+    }
+  ]
+}

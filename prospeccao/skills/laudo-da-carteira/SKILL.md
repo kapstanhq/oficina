@@ -25,7 +25,7 @@ allowed-tools: Read Glob Grep
 ---
 <!-- CÓPIA GERADA · não edite este arquivo.
 
-     A fonte é oficina/_motor/skills/laudo-da-carteira/SKILL.md, e ela vale para
+     A fonte é oficina/_motor/skills/laudo-da-{pasta-base}/SKILL.md, e ela vale para
      QUALQUER profissão: o que muda de ofício está escrito em marcas — {item},
      {pessoa}, /{plugin}: — resolvidas na geração pelo vocabulario.json do
      pack. Correção feita aqui é perdida no próximo

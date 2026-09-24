@@ -132,7 +132,7 @@ escrito, a data é a que o corretor disser (ou a de hoje, e a procedência diz
    porque, se algo der errado no meio, o material do corretor já está salvo.
 2. **Extrai os fatos** para os arquivos donos — cliente e imóvel —, cada campo
    com `← _bruto/<aquele arquivo>`. Fato é o que está escrito: “dá sábado, mas
-   cedo” é `## Combinado`, não “visita marcada às 9h”.
+   cedo” é `## Combinado`, não “visita agendada às 9h”.
 3. **Atualiza as vistas** que mudaram: `funil.md` se a etapa mudou,
    `_indice.md` se entrou item ou mudou o último contato.
 4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.

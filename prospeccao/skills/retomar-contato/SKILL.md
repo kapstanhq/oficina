@@ -17,7 +17,7 @@ description: >-
 license: MIT
 compatibility: >-
   Precisa da carteira, numa pasta do computador — ela conta os dias de
-  silêncio de cada contato e lê as retomadas anteriores no histórico dele. Sem
+  silêncio de cada contato e lê as retomadas anteriores no `## Histórico`. Sem
   carteira, NÃO funciona: não há o que varrer, nem onde gravar a tentativa para
   a próxima execução não repetir o ângulo. Não abre link. Sem conector de
   WhatsApp — que é o normal — escreve o texto e para; com o conector ligado,
@@ -159,7 +159,7 @@ arquivo vence a vista** — se o `_indice.md` diz 5 de agosto e o histórico do
 contato tem uma linha de 12, vale a do arquivo, e o `_indice.md` entra na lista
 do que reescrever.
 
-O que se mede é o **silêncio dele**, não o último toque do prospector. A última
+O que se mede é o **silêncio do outro lado**, não o último toque do prospector. A última
 vez que o contato falou está, em ordem de busca:
 
 ```
@@ -197,14 +197,14 @@ outro:
 | etapa | entra na lista a partir de | por quê |
 |---|---|---|
 | respondeu | 2 dias | ele te escreveu e você sumiu — é o pior silêncio que existe, e é seu |
-| reunião marcada | só depois que a data passou | antes disso é confirmação, e quem cobra é o `hoje.md` |
+| reunião agendada | só depois que a data passou | antes disso é confirmação, e quem cobra é o `hoje.md` |
 | abordado | 7 dias | uma mensagem não lida em sete dias não vai ser lida |
 | a abordar | não entra | ela nunca foi abordada; é caso de `/prospeccao:escrever-abordagem` |
 | a estudar | não entra | |
-| virou cliente | não entra | |
+| cliente | não entra | |
 
 Passou de **90 dias** sem responder: não é assunto desta skill. Diga em uma
-linha que ele é caso de aposentar pela regra 3 e que quem faz isso é
+linha que é caso de aposentar pela regra 3 e que quem faz isso é
 `/prospeccao:organizar-carteira`. Não aposente aqui.
 
 ### Passo 3 · A ordem da lista
@@ -275,7 +275,7 @@ faz o contato arquivar a conversa.
 ### Passo 6 · Quem sai da lista, e o que se diz
 
 Duas retomadas seguidas sem resposta: **não escreva a terceira.** Ele sai da
-lista de mensagens e vira uma linha em `## Travado` no `hoje.md` (passo 7),
+lista de mensagens e vira uma linha em `## Parado` no `hoje.md` (passo 7),
 sugerindo arquivar. Diga o motivo em uma frase, sem rodeio:
 
 ```
@@ -572,7 +572,7 @@ Quem não respondeu — carteira lida em 2026-08-19
 | P-024 (Paulo Tavares) | respondeu | 2 dias | ele perguntou o preço | a resposta que falta é sua |
 | P-019 (Rui Baptista) | abordado | 8 dias | trocaram de ERP em junho | abriram vaga de controladoria em 15/08 |
 | P-041 (Otávio Prado) | abordado | 14 dias | — | sem gancho |
-| P-031 (Sandra Lisboa) | reunião marcada | — | — | não entra: a data é quinta |
+| P-031 (Sandra Lisboa) | reunião agendada | — | — | não entra: a data é quinta |
 ```
 
 Uma linha por contato, id com apelido sempre, e a coluna `ângulo` já diz quem
@@ -614,7 +614,7 @@ Quando entrei em contato em junho vocês tinham acabado de trocar de ERP — e
 controladoria contratando logo depois costuma ser o mesmo problema: o número
 existe e ninguém confia nele.
 
-https://vasquesanalytics.com.br/casos/fechamento
+https://vasquesanalytics.example/casos/fechamento
 
 Vale 20 minutos na semana que vem para eu te mostrar como duas indústrias do
 mesmo porte resolveram? Terça ou quinta?
@@ -642,7 +642,7 @@ que sai é **este**, byte a byte, porque é ele que a prévia carimbou.
 - o que o P-041 (Otávio Prado) procura — o arquivo da conta dele não mudou desde maio
 
 ## Decidi sozinho
-- Escrevi para os três mais quentes e deixei a P-031 (Sandra Lisboa) de fora — ela tem reunião marcada para quinta, e quem cobra a véspera é o hoje.md. Para incluir, me diga.
+- Escrevi para os três mais quentes e deixei a P-031 (Sandra Lisboa) de fora — ela tem reunião agendada para quinta, e quem cobra a véspera é o hoje.md. Para incluir, me diga.
 - Usei a vaga do E-083 (Móveis Bertoldo, Bento Gonçalves) como está no arquivo, de 15 de agosto. Se ela já fechou, me diga e eu refaço a mensagem.
 ```
 
@@ -711,7 +711,7 @@ pela seção 9 — linhas de mais de 90 dias viram uma por mês. Fato corrente n
 
 ### 2 · A sugestão de arquivar, no `hoje.md`
 
-Quem bateu as duas retomadas vira uma caixa em `## Travado` — a seção existe
+Quem bateu as duas retomadas vira uma caixa em `## Parado` — a seção existe
 para o que está parado esperando decisão:
 
 ```

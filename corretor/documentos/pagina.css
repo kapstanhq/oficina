@@ -1,0 +1,48 @@
+/* ═══ A PÁGINA DE UM DOCUMENTO (D270) — do motor, igual para todo modelo ══
+   A4, margens, a fonte embutida e as regras de quebra. O modelo do pack vem
+   DEPOIS desta folha e muda o que quiser; o que ele não diz, vale daqui.
+
+   ── NA TELA E NO PAPEL ────────────────────────────────────────────────
+   A prévia do painel é este mesmo HTML. Na tela a `.folha` é uma folha A4
+   sobre fundo cinza, com as margens por dentro; na impressão ela some, e
+   quem dá a margem é o `@page`. Um desenho só, para a prévia não mentir. */
+@page { size: A4; margin: 15mm 17mm 14mm; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0; color: #1d1d1f;
+  font-family: "Plex Documento", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 9.6pt; line-height: 1.4; font-kerning: normal;
+}
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.2; }
+p { margin: 0 0 4pt; }
+ul, ol { margin: 0 0 3pt; padding-left: 12pt; }
+li { margin: 0 0 2.2pt; }
+hr { border: 0; border-top: .75pt solid #c9c9ce; margin: 8pt 0; }
+
+/* ── AS QUEBRAS ─────────────────────────────────────────────────────────
+   Título não fica sozinho no pé da página, item não se parte ao meio, e o
+   bloco (um `###` com o que vem abaixo) pode se dividir — mas o título leva
+   os dois primeiros itens, e o último não vai sozinho para a página seguinte.
+   As duas medidas de 22/09: sem regra, o último item de uma experiência caía
+   sozinho no topo da página 2; com o bloco inteiro (`break-inside: avoid`),
+   a experiência longa pulava de página, deixava um buraco de dez linhas e o
+   currículo de duas páginas saía com três. */
+h1, h2, h3, h4 { break-after: avoid; }
+li, p { break-inside: avoid; orphans: 2; widows: 2; }
+.bloco li:nth-of-type(2), .bloco li:last-of-type { break-before: avoid; }
+
+/* ── A FOLHA NA TELA ──────────────────────────────────────────────────── */
+@media screen {
+  html { background: #e9e7e2; }
+  body { padding: 24px 12px; }
+  .folha {
+    width: 210mm; min-height: 297mm; max-width: 100%; margin: 0 auto;
+    padding: 15mm 17mm 14mm; background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 12px 32px -16px rgba(0,0,0,.28);
+  }
+}
+@media print {
+  .folha { padding: 0; }
+}

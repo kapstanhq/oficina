@@ -1,22 +1,22 @@
 ---
 name: importar-a-conversa
 description: >-
-  Enche a carteira com o que já está no WhatsApp: lê o histórico pelo conector,
+  Enche a {base} com o que já está no WhatsApp: lê o histórico pelo conector,
   separa o que é do ofício do que é vida pessoal, e transforma conversa em
   {pessoas} e {itens} com procedência em cada campo. Mostra o que vai entrar
   ANTES de gravar, e escreve no INDICE.md o que leu e o que descartou. Sem
   conector ela ensina a exportar e processa o que for colado — o resultado é o
   mesmo arquivo. Use no primeiro dia, depois de /{plugin}:comecar, e quando o
-  {profissional} disser — está tudo no meu WhatsApp · minha carteira está vazia
+  {profissional} disser — está tudo no meu WhatsApp · minha {base} está vazia
   e eu tenho anos de conversa · importa as minhas conversas · puxa o histórico ·
   eu não vou digitar tudo isso · dá pra pegar do WhatsApp? · tenho conversa com
   gente que nem lembro. Também depois de trocar de computador. Ela só LÊ: não
   manda mensagem e não responde ninguém em nenhum modo. Quem arruma o que já
-  entrou é /{plugin}:organizar-carteira, e quem confere se ficou bom é
-  /{plugin}:laudo-da-carteira.
+  entrou é /{plugin}:organizar-{pasta-base}, e quem confere se ficou bom é
+  /{plugin}:laudo-da-{pasta-base}.
 license: MIT
 compatibility: >-
-  Precisa da carteira montada; sem ela manda rodar /{plugin}:comecar primeiro.
+  Precisa da {base} montada; sem ela manda rodar /{plugin}:comecar primeiro.
   Com o conector do WhatsApp ela lê o histórico — e a PRIMEIRA chamada é sempre
   estado_da_ponte, porque ponte parada congela o histórico sem avisar. Sem
   conector ela funciona igual pelo caminho colado, uma conversa por vez, e diz
@@ -29,12 +29,10 @@ allowed-tools: Read Glob Grep Write Edit
 
 ## 1 · O que ela faz, e o que ela não faz
 
-**A carteira não precisa nascer vazia.** O histórico do negócio já está escrito:
-quem é cada {pessoa}, o que foi combinado, quanto foi cobrado, quem prometeu
-mandar o quê. Está na conversa, com data, escrito pelas duas partes. Esta skill
+**A {base} não precisa nascer vazia.** {o-que-a-conversa-ja-guarda} Está na conversa, com data, escrito pelas duas partes. Esta skill
 é a que traz isso para dentro.
 
-É o que separa uma carteira que serve no primeiro dia de uma que serve no
+É o que separa uma {base} que serve no primeiro dia de uma que serve no
 trigésimo — e o trigésimo dia é onde a maioria desiste.
 
 **Três coisas que ela é:**
@@ -51,8 +49,8 @@ conversa. Ela **só lê** o conector, em todos os modos, sem exceção.
 
 ## 2 · Antes de tudo
 
-1. `~/carteira/INDICE.md`. Não existe: **pare** e mande rodar
-   `/{plugin}:comecar`. Esta skill enche uma carteira; ela não monta uma.
+1. `~/{pasta-base}/INDICE.md`. Não existe: **pare** e mande rodar
+   `/{plugin}:comecar`. Esta skill enche uma {base}; ela não monta uma.
 2. A linha `modo:` e a linha `WhatsApp:`.
 3. `references/contrato/07-0-a-conversa-entra.md` — **inteira, antes do primeiro
    passo**. É ela que governa os dois caminhos, os dois formatos de exportação,
@@ -68,13 +66,13 @@ conversa. Ela **só lê** o conector, em todos os modos, sem exceção.
    linha dizendo que nada foi gravado e por quê.
 
    **Medido nesta skill, na primeira prova:** ela fez tudo certo — descobriu a
-   carteira cheia, leu a linha do conector, parou no pré-voo, pediu o
+   {base} cheia, leu a linha do conector, parou no pré-voo, pediu o
    consentimento e não gravou nada — e reprovou por escrever `## Não gravei
    nada`. O contrato prevê esse erro pelo nome, e ela não o tinha por perto.
 
 **O pré-voo é obrigatório e é a primeira chamada ao conector:**
 `estado_da_ponte`. Ponte parada devolve um retrato do passado com cara de
-presente, e uma importação inteira sobre isso enche a carteira de um estado que
+presente, e uma importação inteira sobre isso enche a {base} de um estado que
 não existe mais. A tabela dos três estados está no contrato §7; siga-a.
 
 **É um TODO**, e dos grandes: listar, triar, mostrar, gravar.
@@ -115,7 +113,7 @@ alguém é ler tudo — família, saúde, dinheiro, briga. A regra é uma:
 
 Três grupos, e o terceiro é o que exige julgamento:
 
-**Entra** — a conversa cujo nome bate com {um-pessoa} que já está na carteira; a
+**Entra** — a conversa cujo nome bate com {um-pessoa} que já está na {base}; a
 que tem, no que já se sabe dela, palavra do ofício; a que o {profissional}
 nomear.
 
@@ -155,11 +153,15 @@ que está no meio de um fato que entrou.
 Mostre o que vai entrar **antes de escrever qualquer arquivo**:
 
 - quantas conversas foram lidas, e quantas ficaram de fora, por qual regra
-- quem entra na carteira e quem já estava lá, pelo nome
+- quem entra na {base} e quem já estava lá, pelo nome
 - que campos vão ser preenchidos, com o valor e a procedência
 - que {itens} foram MENCIONADOS mas não entram (§7 do contrato: {item} sem link
   nem ficha não entra)
 - quanto vai para `_bruto/`, em número de arquivos
+[[se etapa-de:item]]
+- que `etapa:` muda, em que arquivo {do-item}, e por qual conversa — e que
+  andamento ficou SEM destino, porque a conversa não diz de que {item} fala
+[[fim]]
 
 **Nada de mensagem inteira na prévia.** A prévia mostra o FATO extraído e a data
 de onde ele veio, não o texto da conversa. O texto vai para `_bruto/`, que é
@@ -178,6 +180,22 @@ Duas coisas que só aparecem no volume:
 - **Se der errado no meio, o que já entrou fica.** Ela relata onde parou e o que
   falta, e a próxima execução continua — importação que desfaz tudo ao falhar
   faz o {profissional} perder uma hora e a confiança junto.
+[[se etapa-de:item]]
+
+**E uma terceira, porque aqui a etapa é {do-item} e a conversa é com gente:**
+
+- **O fato de quem falou vai para o arquivo de quem falou** — nome, canal, o
+  que foi combinado —, e esse arquivo **não tem `etapa:`**, nem o que nasce
+  agora.
+- **O andamento vai para {o-item}.** Se a conversa mostra que a coisa andou —
+  com as palavras dela, não por dedução (§7) —, o `etapa:` que muda é o do
+  arquivo {do-item} que nomeia essa pessoa em `{campo-da-pessoa-no-item}`.
+- **Sem {item} para receber, nada se inventa.** Ninguém nomeia essa pessoa,
+  mais de um arquivo a nomeia e a conversa não diz de qual se fala, ou ela
+  fala de {um-item} que não está na {base}: a pessoa entra, etapa nenhuma
+  muda, e o andamento vira linha em `## Falta saber` — com a data da conversa
+  e o que ela disse. Em volume isto acontece muito, e é o resultado certo.
+[[fim]]
 
 ### Passo 6 · Escrever o que leu, e o que não leu
 
@@ -187,13 +205,13 @@ quantas conversas entraram e quantas ficaram de fora.
 Isso não é burocracia — é o que impede a segunda execução de reabrir tudo, e é o
 que responde à única pergunta que o {profissional} vai fazer depois:
 **"você leu as minhas conversas?"** A resposta precisa estar escrita, na
-carteira dele, com data.
+{base} dele, com data.
 
 ## 5 · O que perguntar, e como
 
 **Uma pergunta antes de tudo, e ela nunca é pulada:**
 
-> "Vou ler o seu histórico do WhatsApp para encher a carteira. Eu abro só as
+> "Vou ler o seu histórico do WhatsApp para encher a {base}. Eu abro só as
 > conversas que parecem de trabalho e escrevo aqui o que li e o que não li.
 > Posso começar?"
 
@@ -219,12 +237,12 @@ Período: os últimos 12 meses (padrão).
 
 ## Entraram — 8 {pessoas}, mais 4 que já existiam e foram atualizadas
 
-- {exemplo-pessoa} — entrou agora · telefone, o que procura, última conversa em 12/08
+- {exemplo-pessoa} — entrou agora · {exemplo-do-que-entrou-da-pessoa}
 - … uma linha por pessoa, com os campos e nada do texto
 
 ## Mencionaram {itens} que não entraram — 3
 
-- uma conversa cita {um-item} que não está na carteira e não tem link
+- uma conversa cita {um-item} que não está na {base} e não tem link
   → mande o link, ou ele não entra (contrato §7)
 
 ## Não abri — 25
@@ -240,9 +258,9 @@ Período: os últimos 12 meses (padrão).
 - 2 estão no meio de um fato que entrou, e viraram `?`
 
 ## Guardei
-- ~/carteira/_bruto/ — 12 arquivos, um por conversa
-- ~/carteira/{pasta-pessoas}/ — 8 criados, 4 atualizados
-- ~/carteira/INDICE.md — a linha do que li e do que não li
+- ~/{pasta-base}/_bruto/ — 12 arquivos, um por conversa
+- ~/{pasta-base}/{pasta-pessoas}/ — 8 criados, 4 atualizados
+- ~/{pasta-base}/INDICE.md — a linha do que li e do que não li
 
 ## Falta saber
 - o que o áudio de 12/08 dizia — está no meio do que foi combinado
@@ -264,10 +282,10 @@ que foi combinado, não uma etapa nova. Em volume a tentação é maior, porque
 trinta conversas parecem um padrão — e padrão não é procedência.
 
 **Ela não cria {item} que a conversa menciona.** Sem link nem ficha, ele não
-entra. Preço dito em conversa de março é o pior dado possível: parece apurado,
+entra. {Valor-dito-em-conversa} em conversa de março é o pior dado possível: parece apurado,
 tem data, e está errado.
 
 **Ela não apaga nada do WhatsApp e não muda nada lá.** O que ela faz é copiar
-para a carteira. Se o {profissional} quiser que algo saia da carteira depois,
-quem tira é ele ou `/{plugin}:organizar-carteira` — e o `_bruto/` tem prazo de
+para a {base}. Se o {profissional} quiser que algo saia da {base} depois,
+quem tira é ele ou `/{plugin}:organizar-{pasta-base}` — e o `_bruto/` tem prazo de
 expurgo, que é do contrato e não desta skill.

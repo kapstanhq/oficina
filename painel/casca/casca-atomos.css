@@ -1,0 +1,122 @@
+/* ═══ casca-atomos · o vocabulário de peça da casca ═══════════════════════
+   As classes que as DUAS famílias usam — o rótulo mono, a etiqueta, a ação,
+   a escala de título e a prosa com marcação em linha. Elas moram aqui e não
+   em `casca.css` por um motivo mecânico: são compostas com `@apply` sobre os
+   utilitários e os tokens do `@theme`, e `@apply` só existe dentro de uma
+   folha que o Tailwind processa.
+
+   Este arquivo NÃO é servido: ele é `@import`-ado pelas duas entradas do
+   Tailwind (`oficina-tw.css` e `artigo-tw.css`), e o que vai ao ar é o
+   derivado de cada uma. Duas cópias das mesmas regras em dois documentos
+   diferentes não é duplicação — é a mesma regra, em duas páginas que nunca
+   se abrem juntas.
+
+   ── POR QUE ELAS TÊM NOME, E NÃO SÃO UTILITÁRIO SOLTO ─────────────────
+   Regra medida no D167: marcação que nasce N vezes ganha nome. O parágrafo
+   de utilitário (~600 bytes) repetido num `<li>` que nasce uma vez por seção
+   levou um guia de 24,2 para 26,3 kB contra um teto de 26. `@apply` faz a
+   REGRA nascer uma vez em vez de uma vez por instância, composta do MESMO
+   vocabulário de utilitário. O que fica solto no componente é o que aparece
+   uma ou duas vezes na página inteira. */
+
+/* ── O RÓTULO MONO, a peça mais repetida da página (≈30 vezes) ────────── */
+.c-selo{
+  @apply font-mono text-[11.5px] tracking-[.12em] uppercase text-mute;
+  font-weight:var(--peso-interface);
+}
+.c-selo-tinta{@apply text-ink;}
+.c-selo-ambar{@apply text-accent-forte;}
+.c-selo-verd{@apply text-verd;}
+
+/* ── A ETIQUETA, o selo com pele (o "Jeito 1", o "Comece por aqui") ──── */
+.c-etiqueta{
+  @apply inline-block font-mono text-[10.5px] tracking-[.14em] uppercase
+    px-[9px] py-[5px] rounded-fio border border-fio-forte text-mute;
+}
+.c-etiqueta-tinta{@apply bg-ink text-creme border-ink;}
+/* `--soft` e não `--mute`: o véu de 7% da própria etiqueta clareia o fundo
+   debaixo do texto, e `--mute` cai para 4,32 ali. Com `--soft` dá 5,85. */
+.c-etiqueta-cinza{@apply bg-[color-mix(in_srgb,var(--ink)_7%,transparent)] border-transparent text-soft;}
+.c-etiqueta-ambar{@apply bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] border-transparent text-accent-forte;}
+
+/* ── A AÇÃO ──────────────────────────────────────────────────────────── */
+/* ── O CORPO SOBE E O TRACKING DESCE, e os dois pela mesma razão ──────
+   Eram 11,5 px com .18em: a ação dos quinze documentos era a menor letra
+   clicável da página, e a cápsula que ela ganhou (`--r-acao` virou pílula)
+   deixou isso visível — caixa grande com letra miúda lê como caixa vazia.
+
+   13 px e .14em. O tracking desce junto porque é a conta que o `.botao` do
+   telefone já registra: corpo maior com o mesmo espalhamento come a largura
+   de uma coluna, e no documento essa coluna é medida em `ch`.
+
+   O peso 500 é o TETO da mono — a Plex tem 400 e 500, e não há degrau acima
+   dele sem baixar outro arquivo de fonte. Quem pedir "mais peso" de novo
+   está pedindo outra família, e essa é a conversa do `.artigo .botao`. */
+.c-acao{
+  @apply inline-flex items-center justify-center gap-s1 min-h-tecla
+    font-mono text-[13px] tracking-[.14em] uppercase no-underline
+    px-s3 rounded-acao border border-ink text-ink bg-transparent cursor-pointer
+    transition-colors duration-(--default-transition-duration) ease-curva;
+  font-weight:500;
+}
+.c-acao:hover:not(:disabled){@apply bg-ink text-creme;}
+.c-acao-cheia{@apply bg-ink text-creme;}
+.c-acao-cheia:hover:not(:disabled){@apply bg-[color-mix(in_srgb,var(--ink)_88%,var(--paper))] text-creme;}
+.c-acao-ambar{@apply border-accent-forte text-accent-forte;}
+.c-acao-ambar:hover:not(:disabled){@apply bg-accent-forte text-lift;}
+.c-acao-clara{@apply border-[color-mix(in_srgb,var(--creme)_40%,transparent)] text-creme;}
+.c-acao-clara:hover:not(:disabled){@apply bg-creme text-noite;}
+
+/* ── UM DESABILITADO SÓ ────────────────────────────────────────────────
+   `:hover` CASA com botão desabilitado: o clique não vale, mas a regra
+   pinta. Sem o `:not(:disabled)` acima, o "salvo" da barra do Estúdio
+   (`disabled` enquanto não há dívida) ficava preto com letra creme sob o
+   ponteiro — um botão que se acende e não faz nada.
+
+   E cada tela inventava o próprio apagado: `opacity-45` na barra e na
+   figura, `disabled:opacity-30` nas setas do editor e do celular,
+   `border-fio2 text-fio` no voltar ao código. Três cinzas para um estado.
+
+   SEM `pointer-events:none`, e de propósito: o navegador já barra o clique,
+   e desligar o ponteiro leva junto o `title` — que num botão desligado
+   costuma ser a única coisa que diz POR QUE ele está desligado.
+
+   `<a class="c-acao">` não casa `:disabled` (é a forma que a Oficina usa nas
+   seis ações dela), então lá nada muda. */
+.c-acao:disabled{@apply opacity-45 cursor-default;}
+
+/* ── A TIPOGRAFIA DA PÁGINA ──────────────────────────────────────────── */
+.c-h2{
+  @apply m-0 font-sans text-[28px] leading-[1.25] tracking-[-.014em] text-ink;
+  font-weight:var(--peso-objeto);
+}
+.c-h3{
+  @apply m-0 font-sans text-[20px] leading-[1.3] tracking-[-.012em] text-ink;
+  font-weight:var(--peso-objeto);
+}
+.c-chamada{
+  @apply m-0 text-[20px] leading-[1.5] text-soft;
+  font-weight:var(--peso-chamada);
+}
+.c-corpo{@apply m-0 text-[15.5px] leading-[1.55] text-soft;}
+.c-nota{@apply m-0 text-[14.5px] leading-[1.55] text-mute;}
+
+/* ── A PROSA COM MARCAÇÃO EM LINHA ───────────────────────────────────
+   O `[texto](href)`, o `**forte**` e o `` `código` `` do manifesto viram
+   `<a>`, `<b>` e `<code>` dentro de um `{@html}` — e nó de dentro de
+   `{@html}` não carrega classe. Por isso os três se pintam por descendência,
+   que é justamente o caso em que uma folha bate um utilitário. */
+.c-prosa a{@apply underline underline-offset-[3px] decoration-fio-forte;}
+.c-prosa a:hover{@apply text-accent-forte decoration-accent-forte;}
+.c-prosa b{font-weight:var(--peso-objeto);}
+.c-prosa code{
+  @apply font-mono text-[.92em] px-s0 py-px rounded-fio
+    bg-[color-mix(in_srgb,var(--ink)_7%,transparent)];
+}
+
+
+/* ── A MEDIDA MONO, para o que é comando, caminho ou nome de arquivo ─── */
+.c-mono{font-family:var(--mono);font-size:14px;color:var(--ink)}
+.c-mono-alto{font-size:16px}
+.c-nota-alta{margin-top:var(--s2)}
+.c-nota-ambar{margin-top:14px;color:var(--accent-forte)}

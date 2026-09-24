@@ -1,0 +1,7 @@
+node_modules/
+proc/
+# derivados do `npm run painel`; o que o pack instala é a cópia em <pack>/painel/
+painel/painel.html
+painel/estilo.generated.css
+painel/app/entrada.generated.*
+*.tmp

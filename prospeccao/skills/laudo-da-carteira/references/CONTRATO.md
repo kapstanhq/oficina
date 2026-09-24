@@ -11,9 +11,9 @@
 
 # O contrato da carteira
 
-Este arquivo é o padrão comum das dez skills do pack. Ele não é leitura de
+Este arquivo é o padrão comum das doze skills do pack. Ele não é leitura de
 apoio: é onde estão os formatos literais, e formato inventado por uma skill
-quebra as outras nove.
+quebra as outras onze.
 
 Quem lê isto é o Claude executando uma skill. Quem lê o que sai dela é um
 prospector B2B com pressa, que não é técnico e não vai depurar nada.
@@ -330,7 +330,7 @@ seta, origem, vírgula, data:
 
 ```
 preço: R$ 520.000  ← link, 2026-08-12
-telefone: +55 51 99999-0000  ← _bruto/2026-08-12-linkedin-carla.md
+telefone: +55 51 90000-0001  ← _bruto/2026-08-12-linkedin-carla.md
 área: 120 m²  ← ficha colada, 2026-08-12
 prazo: quer mudar até dezembro  ← prospector, 2026-08-19
 ```
@@ -397,7 +397,7 @@ qualquer outro motivo é decisão do prospector, mesmo no automático.
 Este pack existe para escrever a alguém que não pediu para ser escrito. Isso é
 legal no Brasil, e é legal sob **condições** — e as condições não são
 formalidade: elas são o que separa prospecção de spam, e é a mesma linha que
-separa a resposta de uma reunião marcada.
+separa a resposta de uma reunião agendada.
 
 **A base é o legítimo interesse** (LGPD, art. 7º, IX) — não o consentimento.
 Consentimento é o que você não tem e não vai ter: ninguém consente antes de
@@ -507,11 +507,11 @@ atualizado: 2026-08-19
 ## Quem sou — é esta a voz das mensagens
 nome: Renata Vasques
 cargo: sócia
-telefone: +55 11 99888-7766
+telefone: +55 11 90000-0002
 empresa: Vasques Analytics
 o que eu vendo: painel de dados e automação de fechamento
 setores em que já vendi: financeiro, indústria moveleira, saúde
-assinatura de e-mail: Renata Vasques · Vasques Analytics · vasquesanalytics.com.br
+assinatura de e-mail: Renata Vasques · Vasques Analytics · vasquesanalytics.example
 
 ## Onde está o quê
 perfil.md        quem vale a pena, por quê, e o que desqualifica
@@ -569,15 +569,15 @@ apelido.
 - [ ] Reunião 15h com P-017 (Carla Menezes), E-071 (VetorBank, Porto Alegre) — confirmar antes
 - [ ] Responder P-024 (Paulo Tavares) — respondeu ontem e não teve retorno
 
-## Travado
+## Parado
 - [ ] E-083 (Móveis Bertoldo, Bento Gonçalves) — estudada em 2026-08-11 e sem abordagem desde então
 - [ ] P-019 (Rui Baptista) — sem e-mail; a abordagem só sai pelo LinkedIn
 
-## Prometido e não chegou
+## Aguardando retorno
 - [ ] P-031 (Sandra Lisboa) — ia levar a proposta ao jurídico em 2026-08-13, seis dias
 - [ ] P-017 (Carla Menezes) — ia dizer se o time de risco entra na reunião, três dias
 
-## Feito nos últimos sete dias
+## Concluído nos últimos 7 dias
 - [x] 2026-08-15 — abordagem enviada à P-017 (Carla Menezes)
 ```
 
@@ -590,7 +590,7 @@ Vista derivada do campo `etapa:` dos arquivos de contato. As etapas são estas
 seis, nesta ordem, e **nenhuma skill cria etapa nova**:
 
 ```
-a estudar · a abordar · abordado · respondeu · reunião marcada · virou cliente
+a estudar · a abordar · abordado · respondeu · reunião agendada · cliente
 ```
 
 Quem diz não, some por 90 dias ou sai do perfil não vira etapa: vira
@@ -616,10 +616,10 @@ coisa (seção 4.4).
 ## respondeu
 - P-017 (Carla Menezes) · E-071 (VetorBank, Porto Alegre) · desde 2026-08-16 · perguntou o preço · próximo: propor terça ou quinta
 
-## reunião marcada
+## reunião agendada
 - P-031 (Sandra Lisboa) · E-083 (Móveis Bertoldo, Bento Gonçalves) · desde 2026-08-17 · quinta 9h, com o time de compras · próximo: confirmar na véspera
 
-## virou cliente
+## cliente
 - P-008 (Diego Furtado) · E-052 (Clínica Sanare, Curitiba) · 2026-08-01
 ```
 
@@ -633,7 +633,7 @@ Teto: **40 linhas**.
 ```markdown
 # E-071 (VetorBank, Porto Alegre)
 
-site: https://vetorbank.com.br  ← prospector, 2026-08-12
+site: https://vetorbank.example  ← prospector, 2026-08-12
 estado: a abordar
 setor: crédito para pequena empresa  ← site, 2026-08-12
 cidade: Porto Alegre, RS  ← site, 2026-08-12
@@ -660,7 +660,7 @@ de onde veio: post meu no LinkedIn, ela comentou  ← _bruto/2026-08-12-linkedin
 - 2026-08-18 estudada, três fatos novos  ← _bruto/2026-08-18-site-vetorbank.md
 ```
 
-`estado:` é um destes: `a estudar`, `a abordar`, `em conversa`, `virou cliente`,
+`estado:` é um destes: `a estudar`, `a abordar`, `em conversa`, `cliente`,
 `disse não`, `fechou com outro`, `fora do perfil`. Os três últimos disparam a
 regra 3.
 
@@ -681,7 +681,7 @@ Teto: **60 linhas**.
 # P-017 (Carla Menezes)
 
 cargo: head de dados  ← LinkedIn, 2026-08-12
-e-mail: carla.menezes@vetorbank.com.br  ← site, página de imprensa, 2026-08-18
+e-mail: carla.menezes@vetorbank.example  ← site, página de imprensa, 2026-08-18
 telefone: ?
 linkedin: https://linkedin.com/in/carlamenezes  ← prospector, 2026-08-12
 canal: e-mail
@@ -932,7 +932,7 @@ Carla, vi que o VetorBank abriu vaga para analista de risco de crédito.
 Montei painel de inadimplência por safra para duas financeiras do mesmo porte —
 nos dois casos o fechamento do mês caiu de nove dias para dois.
 
-https://vasquesanalytics.com.br/casos/safra
+https://vasquesanalytics.example/casos/safra
 
 Vale uma conversa de 20 minutos na semana que vem? Terça ou quinta?
 ```
@@ -1109,7 +1109,7 @@ escrito, a data é a que o prospector disser (ou a de hoje, e a procedência diz
    porque, se algo der errado no meio, o material do prospector já está salvo.
 2. **Extrai os fatos** para os arquivos donos — contato e conta —, cada campo
    com `← _bruto/<aquele arquivo>`. Fato é o que está escrito: “dá sábado, mas
-   cedo” é `## Combinado`, não “reunião marcada para terça”.
+   cedo” é `## Combinado`, não “reunião agendada para terça”.
 3. **Atualiza as vistas** que mudaram: `funil.md` se a etapa mudou,
    `_indice.md` se entrou item ou mudou o último contato.
 4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.
@@ -1121,8 +1121,30 @@ entra — dado que se adivinhou vira preço errado na mensagem para o contato.
 ---
 ## 7.1 · Como a mensagem sai
 
-Isto vale **só com o conector** (`WhatsApp: sim` no `INDICE.md`). Sem ele, a
-skill entrega o bloco e para — e não pede desculpa por isso.
+**Sair é uma porta só, e o canal é o que muda.** Tudo o que vai para um
+terceiro em nome do prospector — mensagem, e-mail, formulário preenchido — passa
+pelas mesmas quatro garantias, e nenhum canal as dispensa:
+
+```
+ele vê antes      o destinatário pelo nome e o texto INTEIRO, como vai sair
+uma de cada vez   nunca o mesmo texto para vários, em canal nenhum
+ele pode parar    `não contatar` e a lista de silêncio valem em todo canal
+fica escrito      o que saiu, para quem, quando — e só o que SAIU de verdade
+```
+
+```
+WhatsApp          pelo conector, com o par de ferramentas descrito abaixo
+e-mail            pelo conector de e-mail dele. A tela é a mesma; o que o
+                  conector de e-mail oferece de melhor é o RASCUNHO na caixa
+                  dele — e rascunho não é envio: não se registra como saído
+formulário        pelo navegador dele, e a skill PARA antes do botão que
+                  envia. Quem aperta é ele, em qualquer modo
+sem conector      o bloco para copiar, que é a saída que nunca falta
+```
+
+O resto desta seção é o canal que mais tem regra, o WhatsApp — e vale **só com
+o conector** (`WhatsApp: sim` no `INDICE.md`). Sem ele, a skill entrega o bloco
+e para — e não pede desculpa por isso.
 
 **A regra que governa tudo aqui: a ferramenta informa, e o prospector decide.**
 Ela recusa o que ele não pediu, nunca o que ele pediu. Isso separa três coisas
@@ -1210,10 +1232,34 @@ WhatsApp recusa**, e salvar o número na agenda não muda nada. Quem abre a
 conversa tem que ser o aplicativo do celular, uma vez; depois disso o conector
 responde como em qualquer outra.
 
-A prévia diz isso **antes**, quando vê que a conversa não existe. Ao ouvir,
-a skill não insiste e não tenta outro caminho: ela entrega o **bloco para
-copiar** — que é o padrão do pack de qualquer forma — e diz, em uma linha, que
-a primeira mensagem sai do celular dele.
+A prévia diz isso **antes**, quando vê que a conversa não existe.
+
+**E o formato dessa primeira mensagem é um LINK.** Com conector, a prévia já vem
+com ele montado; sem conector, a skill o escreve, porque é uma URL e não uma
+ferramenta:
+
+```
+https://wa.me/<número com país, só dígitos>?text=<a mensagem>
+```
+
+O texto vai codificado — espaço é `%20`, quebra de linha é `%0A`. O link abre o
+WhatsApp do prospector na conversa certa, **com a mensagem já escrita**: ele só
+aperta enviar. Não é contorno da recusa; é o caminho oficial da Meta, e quem
+abre a conversa continua sendo o aplicativo, que é o que o WhatsApp exige.
+
+**O bloco para copiar continua junto, e não é redundância.** O link falha com
+número errado, com aplicativo que não abre no computador, e com mensagem longa
+demais para caber numa URL. O bloco é o plano B que funciona sempre.
+
+**A guarda vale igual para o link.** Uma pessoa por vez, o texto inteiro na tela
+antes, e quem está na lista de silêncio não recebe link nenhum: a recusa da
+plataforma não é a nossa régua, e entregar dez links numa hora é o mesmo disparo
+que a ponte não faz. Com conector isso é contado como envio; sem ele, quem conta
+é a skill.
+
+E o registro **fecha sozinho**: quando a mensagem sai do celular, ela volta ao
+conector no sync, e o que era "link entregue" passa a ser "enviada". É o que
+separa preparar de ter mandado.
 
 Não é raro: é como quase todo contato chega da primeira vez — o que deixou o telefone
 numa lista de evento e nunca escreveu.
@@ -1230,12 +1276,12 @@ na carteira   o arquivo do contato ganha  não contatar: sim  ← origem, data
 na ponte      um comando, e é ele que escreve o arquivo — o diretório dela
               não é o da carteira, e a skill não tem como adivinhar onde é:
 
-                  whatsapp-reader nao-contatar 5551999998888 "pediu em 12/08"
+                  whatsapp-reader nao-contatar 5551900000012 "pediu em 12/08"
 
               sem argumento ele lista; `--tirar <número>` desfaz
 ```
 
-A carteira é o que as dez skills leem; a ponte é o que segura o envio mesmo se
+A carteira é o que as doze skills leem; a ponte é o que segura o envio mesmo se
 alguém esquecer. **Nenhuma skill escreve mensagem para quem tem `não contatar:
 sim`**, nem para retomar, nem para avisar do que entrou, nem para desejar
 feliz aniversário. Não é preferência de canal: é pedido de silêncio.
@@ -1296,14 +1342,14 @@ nunca encolhe. É o art. 18 da LGPD virado arquivo, e é a única leitura que
 |---|---|---|---|---|
 | P-036 (Vera Lins) | e-mail | 2026-07-02 | ela | “me tira dessa lista” |
 | P-042 (Bia Nogueira) | LinkedIn | 2026-07-19 | ela | “não temos interesse, obrigada” |
-| carla.menezes@antigaempresa.com.br | e-mail | 2026-06-11 | volta automática | caixa desativada |
-| todo @grupobrasa.com.br | e-mail | 2026-08-02 | jurídico deles | pediu por escrito, domínio inteiro |
+| carla.menezes@antigaempresa.example | e-mail | 2026-06-11 | volta automática | caixa desativada |
+| todo @grupobrasa.example | e-mail | 2026-08-02 | jurídico deles | pediu por escrito, domínio inteiro |
 ```
 
 Quatro coisas que este formato resolve, e as quatro já quebraram uma carteira
 em algum lugar:
 
-- **a linha vale mesmo sem ficha.** `carla.menezes@antigaempresa.com.br` não é
+- **a linha vale mesmo sem ficha.** `carla.menezes@antigaempresa.example` não é
   um `P-` — é um endereço que voltou. A skill compara pelo **endereço e pelo
   telefone**, não só pelo id: pessoa que trocou de empresa ou de número
   continua sendo a mesma pessoa
@@ -1437,6 +1483,12 @@ faz toda skill reler 200 linhas para achar um e-mail, em toda execução.
 
 1. lê `~/carteira/INDICE.md`. Não existe: uma linha e `/prospeccao:comecar`
 2. lê a linha `modo:`
+   — e, se a ferramenta `painel_inicio` existe nesta sessão, chama-a UMA vez,
+   com o caminho da linha `carteira:`. É o que põe a página inicial de pé;
+   o endereço se diz uma vez por dia, e onde a ferramenta não existe nada
+   disto se menciona. **Se ela devolver `fila`, grave-a ANTES de qualquer
+   outra coisa** — são decisões que o prospector marcou no painel sem você
+   estar perguntando (`references/painel.md`, "A fila de decisões")
 3. desce a ordem de busca da seção 8 até ter o que precisa
 4. tarefa de **três ou mais passos demorados**: mostra o TODO na tela.
    Demorado é passo que abre link, lê muitos arquivos ou escreve mais de um
@@ -1463,7 +1515,7 @@ que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 seção 4 proíbe. Medido: duas skills inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
-**Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o
+**Seis skills não têm bloco para colar, e a razão é a mesma nas seis: o
 trabalho delas não é um texto para o contato.**
 
 ```
@@ -1472,6 +1524,7 @@ trabalho delas não é um texto para o contato.**
 /prospeccao:organizar-carteira   o trabalho é o relatório do que mudou
 /prospeccao:laudo-da-carteira    o trabalho é o laudo, e ele não sai daqui
 /prospeccao:importar-a-conversa  o trabalho é o relatório do que entrou
+/prospeccao:gravar-o-que-marquei o trabalho é gravar o que já foi decidido
 ```
 
 **Quatro delas acrescentam seção ao fecho, e a seção acrescentada É o
@@ -1482,7 +1535,7 @@ da régua, e a `importar-a-conversa` um por destino do que leu — inclusive o d
 que ela **não** leu, que é o mais importante dos dela.
 
 **Fora essas quatro, nenhuma skill acrescenta seção ao fecho**, e nenhuma das
-cinco oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
+seis oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
 
 A ordem dos três títulos fixos não muda em nenhuma delas: o que a skill
 acrescenta vem ANTES do `## Guardei`, nunca entre ele e o `## Falta saber`.

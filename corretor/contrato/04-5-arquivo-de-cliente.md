@@ -5,10 +5,10 @@ Teto: **60 linhas**.
 ```markdown
 # C-017 (Joana Ribeiro)
 
-telefone: +55 51 99123-4567  ← _bruto/2026-08-12-whatsapp-joana.md
+telefone: +55 51 90000-0004  ← _bruto/2026-08-12-whatsapp-joana.md
 e-mail: ?
 canal: WhatsApp
-etapa: visita marcada · desde 2026-08-14
+etapa: visita agendada · desde 2026-08-14
 origem: anúncio do V-071 (casa 3 dorm, Azenha) no Zap  ← _bruto/2026-08-12-whatsapp-joana.md
 
 ## O que procura

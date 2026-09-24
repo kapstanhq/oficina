@@ -1,6 +1,6 @@
 # Pack do corretor de imóveis
 
-**Catorze skills de IA, em português, para quem vende e aluga imóvel.**
+**Dezesseis skills de IA, em português, para quem vende e aluga imóvel.**
 
 Elas escrevem o anúncio, respondem o lead, montam a visita, cobram o documento e
 lembram de quem sumiu — usando o que você já contou antes. Você não repete a
@@ -30,7 +30,7 @@ E digita:
 > É 2 dormitórios com vaga, e entrou outro parecido essa semana, a duas quadras
 > daí.
 >
-> https://imobiliaria.com.br/imovel/8812
+> https://imobiliaria.example/imovel/8812
 >
 > Quer ver os dois no sábado de manhã?
 
@@ -58,7 +58,7 @@ abre pastas do seu computador?**
 
 | Onde você usa IA | Por onde entrar |
 |---|---|
-| Claude Code, Codex, ChatGPT do computador, Copilot, Cursor | **Porta 1** — o agente instala as catorze ferramentas |
+| Claude Code, Codex, ChatGPT do computador, Copilot, Cursor | **Porta 1** — o agente instala as dezesseis ferramentas |
 | ChatGPT na web ou no celular, Gemini, Claude no navegador | **Porta 2** — você cola um prompt |
 
 ---
@@ -82,8 +82,12 @@ Ele instala sozinho. Você não precisa baixar nada nem procurar pasta nenhuma.
 Instale o pack do corretor da Oficina Kapstan, que está no repositório público
 https://github.com/kapstanhq/oficina
 
-São arquivos de texto — SKILL.md e referências em markdown. Não há script para
-executar e nada para compilar: a instalação é copiar pastas.
+O pack tem duas partes: as skills, que são arquivos de texto, e três
+servidores locais em Node.js — o painel, os conectores e os documentos.
+Pelo marketplace do Claude Code as duas entram juntas e não há nada para
+compilar. Pela cópia manual (passos 2 a 6) entram só as skills, sem o painel.
+Os servidores precisam do Node.js 20.19 ou mais novo: confira com
+`node --version` e, se faltar, instale de https://nodejs.org.
 
 1. Se você for o Claude Code, o caminho curto é o marketplace:
        /plugin marketplace add https://github.com/kapstanhq/oficina.git
@@ -103,7 +107,7 @@ executar e nada para compilar: a instalação é copiar pastas.
 
 3. Baixe o repositório para uma pasta temporária.
 
-4. Copie as catorze pastas de corretor/skills/ para a pasta de skills, inteiras —
+4. Copie as dezesseis pastas de corretor/skills/ para a pasta de skills, inteiras —
    inclusive a subpasta references/, que as skills leem para funcionar.
 
 5. Confira: cada pasta copiada tem um SKILL.md e um references/CONTRATO.md.
@@ -162,7 +166,7 @@ anexar ou colar, e o que ela escreve sai na conversa.
 
 ---
 
-## As catorze ferramentas
+## As dezesseis ferramentas
 
 | Comando | O que faz |
 |---|---|
@@ -180,6 +184,8 @@ anexar ou colar, e o que ela escreve sai na conversa.
 | `/corretor:compartilhar-com-cliente` | Monta a vista do que o cliente pode ver |
 | `/corretor:organizar-carteira` | Guarda o que chegou e arquiva o que morreu |
 | `/corretor:laudo-da-carteira` | Diz o que está errado na carteira, sem mexer nela |
+| `/corretor:completar-ficha` | Procura o que falta na ficha do imóvel nas fontes que você tem, e grava com a origem |
+| `/corretor:gravar-o-que-marquei` | Grava na carteira o que você marcou no painel, e mais nada |
 
 Você também pode simplesmente escrever o que quer, em português — “escreve o
 anúncio desse imóvel”, “o que eu faço hoje” — e a ferramenta certa é escolhida
@@ -422,6 +428,20 @@ O que outra pessoa ficou de mandar e não mandou.
 escreve a mensagem de cada cobrança. **Cobrança boa devolve o caminho, não a
 culpa:** a mensagem diz o que falta e como mandar, sem cobrar explicação.
 
+---
+
+### `/corretor:completar-ficha`
+
+O que a ficha de um imóvel não diz, procurado nas fontes que você tem.
+
+**Você digita:** o comando e o código do imóvel — ou aperta “Completar
+informações” no painel.
+
+**Ela procura** cada campo em `?` na origem guardada, no link do anúncio e na
+página de quem anunciou, grava o que achar com a origem, e deixa o resto em `?`
+dizendo onde procurou. **Ela não estima:** metragem ou valor que nenhuma fonte
+diz continua `?`.
+
 Ela não cobra o que ainda não venceu, não cobra o que **você** ficou de fazer,
 e grava a cobrança na carteira antes de você mandar.
 
@@ -467,7 +487,7 @@ carteira: local · C:\Users\seu-nome\carteira
 ```
 
 `local` é o seu computador, e depois do `·` vem a pasta. Quem escreve essa linha
-é o `/corretor:comecar`, e as catorze ferramentas leem e obedecem.
+é o `/corretor:comecar`, e as dezesseis ferramentas leem e obedecem.
 
 São arquivos de texto comuns. Você abre no Bloco de Notas, imprime, copia para
 um pendrive. **Nenhum passa por servidor da Kapstan**: eles não saem da sua
@@ -520,7 +540,7 @@ anúncio não ligou para o que sai no seu nome.
 
 ## Em que programas isto roda
 
-O passo a passo acima é o do Claude Code, que é o caminho testado. As mesmas catorze
+O passo a passo acima é o do Claude Code, que é o caminho testado. As mesmas dezesseis
 ferramentas também carregam no Codex e no ChatGPT do computador
 (`~/.agents/skills`), no Copilot e no Cursor (`.agents/skills`) — e quem
 descobre a pasta e escreve nela é o pedido colado da porta 1.
@@ -531,7 +551,7 @@ não existe pasta**: lá não há carteira, e o que a ferramenta sabe é o que v
 anexar — no Gemini, os arquivos que você põe em **Conhecimento** do Gem.
 
 Sem carteira nenhuma — chat da web, só o [`PROMPT.md`](PROMPT.md) colado —
-cinco ferramentas <!-- de 14 --> continuam entregando o trabalho, com o que você colar na
+cinco ferramentas <!-- de 15 --> continuam entregando o trabalho, com o que você colar na
 conversa:
 
 | Ainda funciona | Com o quê |
@@ -544,9 +564,11 @@ conversa:
 
 E aí elas avisam, no fim: `nada foi gravado — você está sem carteira aqui`.
 
-As outras cinco — `comecar`, `o-que-fazer-hoje`, `retomar-contato`,
-`montar-visita` e `organizar-carteira` — não funcionam sem carteira, porque o
-trabalho delas **é** a carteira. Cada uma diz isso em uma linha e para.
+As outras sete — `comecar`, `o-que-fazer-hoje`, `retomar-contato`,
+`montar-visita`, `organizar-carteira`, `gravar-o-que-marquei` e
+`completar-ficha` — não funcionam
+sem carteira, porque o trabalho delas **é** a carteira. Cada uma diz isso em uma
+linha e para.
 
 ---
 

@@ -1,0 +1,17 @@
+{
+  "pack": "prospeccao",
+  "pastas": {
+    "item": "contas",
+    "pessoa": "contatos"
+  },
+  "item": "Conta",
+  "base": "carteira",
+  "fila": "/prospeccao:gravar-o-que-marquei",
+  "comeco": [],
+  "proximo": {},
+  "destaque": [],
+  "resumo": [],
+  "motivos": [],
+  "rotulos": {},
+  "grupos": []
+}

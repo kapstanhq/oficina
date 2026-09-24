@@ -122,6 +122,55 @@ expôs porque “imóvel” é masculino.
 `{item} que veio de ficha`, e não `{item} vindo de ficha`. É a única regra
 que só se vê depois de gerar, e nenhuma régua a pega.
 
+**`{base}` é o lugar, e é feminina.** O motor não diz mais “carteira”: diz
+`{base}` na prosa e `{pasta-base}` onde a palavra é caminho — a pasta, o campo
+do `INDICE.md`, o nome de skill e de seção. O padrão é `base`; o pack declara a
+dele. Ela é **feminina por contrato**, e o `conferir` cobra: o motor concorda
+com ela a distância (“a {base} está montada”), e isso nenhuma flexão alcança.
+
+**Quem tem etapa não é, necessariamente, quem recebe a mensagem.** Os dois
+primeiros packs eram de venda e nos dois a etapa é da pessoa; o terceiro — a
+busca de vaga — expôs que eram duas ideias na mesma marca. O pack declara
+`etapa-de` (`pessoa`, o padrão, ou `item`), e o motor escolhe a marca pela
+PERGUNTA que a frase responde:
+
+```
+{andante}   quem tem `etapa:`, quem aparece em linha do funil.md, quem fica
+            “parado”, quem é aposentado por sumir — o DONO DA ETAPA
+{pessoa}    quem fala, quem recebe a mensagem, quem tem telefone, quem pede
+            silêncio — GENTE
+{item}      a coisa de que se fala — o que se mostra, se estuda, se anuncia
+```
+
+`{andante}` é apelido, não um terceiro tipo: resolve para a palavra da pessoa
+ou do item, com todas as flexões (`{o-andante}`, `{do-andante}`,
+`{pasta-andantes}`). Quem lê a skill gerada lê “cliente” ou “vaga”, nunca
+“andante”.
+
+Onde o apelido não basta — o passo muda de NATUREZA —, usa-se o bloco, com as
+duas marcas sozinhas na linha, sem aninhar:
+
+```
+[[se etapa-de:item]]
+…o que só vale quando a etapa é {do-item}…
+[[fim]]
+```
+
+E o que o ramo `etapa-de:item` tem de dizer, em toda skill que mexe com funil:
+
+```
+a etapa mora no arquivo {do-item}      o arquivo {do-pessoa} não tem `etapa:`
+a linha do funil.md é {do-item}        e traz {o-pessoa} ligada, quando há
+{item} pode não ter {pessoa}           não é defeito: é o caso comum
+o silêncio se mede no {item}           a última linha do ## Histórico dele
+a mensagem vai para {o-pessoa} ligada  pelo campo `{campo-da-pessoa-no-item}`
+{item} parado e sem {pessoa}           NÃO entra em lista de mensagem: vira
+                                       “achar com quem falar”, no hoje.md
+```
+
+**O invariante de quem mexe no motor:** com `etapa-de: pessoa`, os packs que
+existem não mudam um byte. `npm run oficina` sem `--escrever` diz se mudou.
+
 **E o pack pode recusar.** Nem toda skill do motor serve a todo ofício; quem
 não a quer a declara em `_skills-do-motor-fora`, com o motivo ao lado.
 

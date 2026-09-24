@@ -28,7 +28,7 @@ Escolhe e segue. Ao fim da saída, **sempre**, com este título exato:
 ```markdown
 ## Decidi sozinho
 - Usei o preço do link, R$ 520.000, e não o que estava na conversa de junho — o link é mais novo. Para trocar, me diga o valor.
-- Marquei a Joana como “visita marcada” porque ela aceitou o sábado. Se ela ainda não confirmou, me diga que eu volto para “em conversa”.
+- Marquei a Joana como “visita agendada” porque ela aceitou o sábado. Se ela ainda não confirmou, me diga que eu volto para “em atendimento”.
 ```
 
 Uma linha por escolha: **o que fiz — por que — como desfazer.** Sem essa

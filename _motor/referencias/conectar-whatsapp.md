@@ -236,7 +236,7 @@ disto.** Sem ele, nota de voz continua sendo buraco declarado, que é como o
 pack viveu até agora.
 
 O que muda com ele: nota de voz de conversa individual passa a chegar
-transcrita, e o que {o-pessoa} combinou falando entra na carteira como entra o
+transcrita, e o que {o-pessoa} combinou falando entra na {base} como entra o
 que ele escreveu.
 
 **Nada sai da máquina** — a transcrição roda num programa local, e é o padrão.
@@ -338,14 +338,14 @@ confirmar   o comando responde, mesmo que a lista esteja vazia
 Não há nada a fazer aqui hoje: o degrau existe para o comando ter sido **visto
 uma vez**. Quando {um-pessoa} pedir para não ser contatado, o contrato (seção
 7.1) manda escrever em dois lugares, e um deles é este — um arquivo no diretório
-da ponte, que a carteira não alcança:
+da ponte, que a {base} não alcança:
 
 ```
-whatsapp-reader nao-contatar 5551999998888 "pediu em 12/08"
+whatsapp-reader nao-contatar 5551900000012 "pediu em 12/08"
 ```
 
 Diga ao {profissional} que ele mesmo pode rodá-lo, e que `--tirar` desfaz. Pedido
-de silêncio que fica só na carteira continua valendo para as skills, mas não
+de silêncio que fica só na {base} continua valendo para as skills, mas não
 segura o envio se alguém esquecer — e é para isso que os dois lugares existem.
 
 ---

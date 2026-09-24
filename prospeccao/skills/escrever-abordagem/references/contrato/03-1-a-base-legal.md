@@ -5,7 +5,7 @@
 Este pack existe para escrever a alguém que não pediu para ser escrito. Isso é
 legal no Brasil, e é legal sob **condições** — e as condições não são
 formalidade: elas são o que separa prospecção de spam, e é a mesma linha que
-separa a resposta de uma reunião marcada.
+separa a resposta de uma reunião agendada.
 
 **A base é o legítimo interesse** (LGPD, art. 7º, IX) — não o consentimento.
 Consentimento é o que você não tem e não vai ter: ninguém consente antes de

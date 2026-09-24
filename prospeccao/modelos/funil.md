@@ -19,8 +19,8 @@
 ## respondeu
 - nada aqui.
 
-## reunião marcada
+## reunião agendada
 - nada aqui.
 
-## virou cliente
+## cliente
 - nada aqui.

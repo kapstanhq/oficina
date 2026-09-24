@@ -39,7 +39,7 @@ campo que sair dela leva `← _bruto/AAAA-MM-DD-planilha-<nome-curto>.csv`,
 que é a regra 2 sem origem nova. Coluna que não tem campo no gabarito não
 inventa campo (seção 4), e linha que a skill não conseguiu ler vira `?` na
 ficha e uma linha em `## Falta saber` — nunca um valor adivinhado. Quem importa
-é `/{plugin}:comecar`, no primeiro dia, e `/{plugin}:organizar-carteira`, para
+é `/{plugin}:comecar`, no primeiro dia, e `/{plugin}:organizar-{pasta-base}`, para
 o `.csv` que apareceu em `_bruto/` depois.
 
 ---

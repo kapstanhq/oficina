@@ -8,7 +8,7 @@
 # <E-000 (empresa, cidade)>
 
 site:
-estado: <a estudar · a abordar · em conversa · virou cliente · disse não · fechou com outro · fora do perfil>
+estado: <a estudar · a abordar · em conversa · cliente · disse não · fechou com outro · fora do perfil>
 setor:
 cidade:
 funcionários: ?

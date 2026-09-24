@@ -4,7 +4,7 @@ Vista derivada do campo `etapa:` dos arquivos de contato. As etapas são estas
 seis, nesta ordem, e **nenhuma skill cria etapa nova**:
 
 ```
-a estudar · a abordar · abordado · respondeu · reunião marcada · virou cliente
+a estudar · a abordar · abordado · respondeu · reunião agendada · cliente
 ```
 
 Quem diz não, some por 90 dias ou sai do perfil não vira etapa: vira
@@ -30,10 +30,10 @@ coisa (seção 4.4).
 ## respondeu
 - P-017 (Carla Menezes) · E-071 (VetorBank, Porto Alegre) · desde 2026-08-16 · perguntou o preço · próximo: propor terça ou quinta
 
-## reunião marcada
+## reunião agendada
 - P-031 (Sandra Lisboa) · E-083 (Móveis Bertoldo, Bento Gonçalves) · desde 2026-08-17 · quinta 9h, com o time de compras · próximo: confirmar na véspera
 
-## virou cliente
+## cliente
 - P-008 (Diego Furtado) · E-052 (Clínica Sanare, Curitiba) · 2026-08-01
 ```
 

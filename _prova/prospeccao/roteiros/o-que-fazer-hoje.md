@@ -35,9 +35,9 @@ que a prova mede:
 - **contato sem e-mail** — o P-019 (Rui Baptista), que trava a abordagem do
   E-083
 
-E tem um que **não** deve aparecer: a P-031 tem reunião marcada para quinta, e
+E tem um que **não** deve aparecer: a P-031 tem reunião agendada para quinta, e
 reunião com data futura não é item de hoje — é confirmação de véspera, e a
 véspera não é hoje na fixture.
 
 As caixas marcadas do `hoje.md` de ontem **não são desmarcadas**: a linha de
-15/08 já está em `## Feito nos últimos sete dias` e continua lá.
+15/08 já está em `## Concluído nos últimos 7 dias` e continua lá.

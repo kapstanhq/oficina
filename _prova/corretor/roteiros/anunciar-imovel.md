@@ -6,7 +6,7 @@ entrada: |
   Casa 3 dormitórios, 95 m², bairro Tristeza, Porto Alegre.
   Preço R$ 398.000. Uma vaga de garagem, sem suíte.
   Endereço: rua Wenceslau Escobar, 1450.
-  Contato do proprietário: Beatriz Nunes, 51 99123-8877.
+  Contato do proprietário: Beatriz Nunes, 51 90000-0011.
   Não é exclusividade, ela também anuncia com outra imobiliária.
 pode_mudar:
   - _bruto/**

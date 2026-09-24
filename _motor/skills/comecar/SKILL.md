@@ -2,24 +2,24 @@
 name: comecar
 description: >-
   A primeira skill do pack, e a que todas as outras nove pressupõem: monta a
-  carteira do {profissional} do zero, em oito passos, no computador ou no Google
+  {base} do {profissional} do zero, em oito passos, no computador ou no Google
   Drive. Cria as pastas, copia os sete modelos, escreve quem ele é, grava o modo
   — copiloto ou automático — e conecta Google Agenda, Gmail e Drive explicando
   cada botão e TESTANDO antes de escrever “sim”. Ensina a trazer conversa do
-  WhatsApp, que entra colada. Termina com a carteira cheia: {um-item} de
+  WhatsApp, que entra colada. Termina com a {base} cheia: {um-item} de
   verdade, vindo de um link — ou a planilha inteira de {itens}, em CSV —, e um
   {pessoa}, vindo de uma conversa colada. Todo passo é pulável, e se ele fechar
   no meio ela volta de onde parou. Use na primeira vez, e quando ele disser
   “instalei, e agora”, “como eu começo”, “configura isso pra mim”, “não tenho
-  carteira nenhuma”, “importa minha planilha”, “tenho tudo numa planilha”,
+  {base} nenhuma”, “importa minha planilha”, “tenho tudo numa planilha”,
   “quero ligar minha agenda”, “parei no meio da configuração”, “pulei o Gmail e
   quero ligar agora”, “mudei de computador” — e sempre que outra skill disser
-  que não achou o INDICE.md da carteira.
+  que não achou o INDICE.md da {base}.
 license: MIT
 compatibility: >-
-  Precisa de um lugar para montar a carteira, numa pasta do computador, com
+  Precisa de um lugar para montar a {base}, numa pasta do computador, com
   ferramenta de arquivo. Sem ela — chat na web — ela não funciona, e diz isso
-  em uma linha: o trabalho dela é montar a carteira. Google Agenda e Gmail são
+  em uma linha: o trabalho dela é montar a {base}. Google Agenda e Gmail são
   opcionais; sem eles, os passos 3 e 4 ficam anotados como pulados.
 allowed-tools: Read Glob Grep Write Edit
 ---
@@ -28,14 +28,21 @@ allowed-tools: Read Glob Grep Write Edit
 
 ## 1 · O que ela faz, e o que ela não faz
 
-Ela monta a carteira no lugar que ele escolher no passo 1 — uma pasta no
-computador ou a pasta `carteira` no Google Drive — e a entrega **cheia**: as
+Ela monta a {base} no lugar que ele escolher no passo 1 — uma pasta no
+computador ou a pasta `{pasta-base}` no Google Drive — e a entrega **cheia**: as
 sete peças do contrato criadas, o modo escolhido, o que dá para conectar
+[[se etapa-de:pessoa]]
 conectado e testado, e dentro dela {um-item} e {um-pessoa} de verdade — não
 exemplos.
+[[fim]]
+[[se etapa-de:item]]
+conectado e testado, e dentro dela {um-item} de verdade — não um exemplo.
+{Um-pessoa} entra se houver conversa à mão; {base} sem ninguém em
+`{pasta-pessoas}/` é começo normal, porque aqui quem anda no funil é {o-item}.
+[[fim]]
 
 **Ela não pede argumento.** Rodar sem nada é o normal: ela pergunta o que
-precisa, um passo por vez. Com a carteira já montada, ou com “continuar”, é
+precisa, um passo por vez. Com a {base} já montada, ou com “continuar”, é
 retomada — seção 4.
 
 Ela **executa o que dá e só pede o que só ele pode fazer.** Criar pasta, copiar
@@ -48,13 +55,13 @@ Ela não escreve {exemplo-trabalho}, não escreve mensagem para {pessoa} nenhum,
 **nenhum passo dela pede senha**: a autorização do Google acontece na tela do
 Google, no navegador dele, e ela não vê nada disso.
 
-**Por que ela tem `Write` e `Edit`.** É a skill que cria a carteira: sete
+**Por que ela tem `Write` e `Edit`.** É a skill que cria a {base}: sete
 arquivos novos a partir de `references/modelos/` (`Write`), mais o arquivo do
 {do-primeiro-item}, o {do-primeiro-pessoa} e o primeiro bruto (`Write`), e as vistas
 que eles mexem — os dois `_indice.md`, o `funil.md`, o
 `## Quanto tem` e o `## O que está conectado` do `INDICE.md` (`Edit`).
 **`Write` só em arquivo que não existe.** Sobrescrever é o único jeito de esta
-skill fazer estrago, e o estrago seria a carteira inteira. A UI de perguntas e o
+skill fazer estrago, e o estrago seria a {base} inteira. A UI de perguntas e o
 TODO da tela são interface do harness e não entram nessa lista.
 
 No `drive` os verbos são os mesmos e as ferramentas são as do conector, pela
@@ -71,7 +78,7 @@ Leia, nesta ordem:
 1. **O contrato, por seção.** Ele é a lei do pack, e ler o documento inteiro
    custa vinte a trinta mil tokens antes da primeira pergunta. Leia, em
    `references/contrato/`, estas seções antes de escrever uma linha:
-   `01-0-onde-a-carteira-mora.md` (os dois transportes, e quem é dono de qual
+   `01-0-onde-a-{pasta-base}-mora.md` (os dois transportes, e quem é dono de qual
    fato), `02-0-id-e-apelido.md` (o id, o apelido e o nome do arquivo),
    `03-0-as-tres-regras.md` (procedência é a que mais aparece aqui),
    `04-0-os-formatos.md` e os sete que o seguem, de `04-1-indice.md` a
@@ -85,11 +92,11 @@ Leia, nesta ordem:
    contrato vence.
 
 2. **`references/modelos/`** — os sete arquivos que ela vai copiar. Leia antes
-   de escrever o primeiro: o que vai para a carteira é o que está neles, sem
+   de escrever o primeiro: o que vai para a {base} é o que está neles, sem
    invenção.
 
-3. **O `INDICE.md` da carteira, se já existir.** Faça a primeira leitura do
-   contrato §1: procure no computador, e depois a pasta `carteira` no Drive.
+3. **O `INDICE.md` da {base}, se já existir.** Faça a primeira leitura do
+   contrato §1: procure no computador, e depois a pasta `{pasta-base}` no Drive.
    **Achou? Ela não sobrescreve nada:** é retomada, e a seção 4 diz por onde
    continuar. Achou nos dois lugares, isso é bifurcação: mostre as duas, com o
    lugar de cada uma, e pergunte qual fica — **não funde as duas**.
@@ -97,17 +104,17 @@ Leia, nesta ordem:
 **No `local`, a pasta pessoal.** O harness já diz o diretório de trabalho e o
 sistema da sessão; dele sai o começo do caminho — `C:\Users\<nome>` no Windows,
 `/Users/<nome>` no Mac, `/home/<nome>` no Linux. **Toda chamada de ferramenta
-usa caminho absoluto.** Ao falar com o {profissional}, escreva `~/carteira/…`, que é
+usa caminho absoluto.** Ao falar com o {profissional}, escreva `~/{pasta-base}/…`, que é
 curto e ele entende. Não teve certeza do caminho? A pergunta do passo 1 já pede
 — mostre o que você achou como sugestão e deixe ele corrigir.
 
 **No `drive` não existe caminho.** Pasta é um item com id, arquivo é filho de
-pasta, e `/carteira` é o nome da pasta na raiz do Drive dele. Guarde o id de
+pasta, e `/{pasta-base}` é o nome da pasta na raiz do Drive dele. Guarde o id de
 cada pasta que criar ou abrir, e **prenda toda busca à pasta** — `_indice.md`
 existe duas vezes, e o nome solto devolve os dois. Ao falar com o {profissional},
-escreva “a pasta `carteira` do seu Drive”.
+escreva “a pasta `{pasta-base}` do seu Drive”.
 
-Como no contrato, **`~/carteira/…` neste arquivo é o modo curto de nomear o
+Como no contrato, **`~/{pasta-base}/…` neste arquivo é o modo curto de nomear o
 lugar, qualquer que seja o transporte** — inclusive na lista do passo 1 e no
 fecho da seção 7.
 
@@ -120,18 +127,23 @@ que nenhuma frase faz: mostra que a configuração acaba, e mostra onde ela est�
 enquanto demora. Demorar sem mostrar é onde o leigo acha que travou.
 
 ```
-1  onde fica a carteira, e quem é você
+1  onde fica a {base}, e quem é você
 2  o modo: copiloto ou automático
 3  a agenda
 4  e-mail e Drive          opcionais
 5  as conversas do WhatsApp
 6  {o-primeiro-item}, ou a planilha inteira
+[[se etapa-de:pessoa]]
 7  {o-primeiro-pessoa}
+[[fim]]
+[[se etapa-de:item]]
+7  {o-primeiro-pessoa}     se houver conversa — opcional
+[[fim]]
 8  o que pedir agora
 ```
 
 **Grave ao fim de cada passo, não no fim de tudo.** O que está gravado na
-carteira é o que sobrevive a ele fechar a janela — e é o que a retomada vai ler.
+{base} é o que sobrevive a ele fechar a janela — e é o que a retomada vai ler.
 Passo que fica só na conversa é passo que se perde.
 
 ---
@@ -141,17 +153,22 @@ Passo que fica só na conversa é passo que se perde.
 Nenhum campo novo guarda o progresso. **O progresso é derivável do que está
 gravado** (contrato, regra 1), e um `passo: 4` no `INDICE.md` seria a única cópia
 de uma coisa que os arquivos já dizem — e mentiria no dia em que ele mexesse na
-carteira à mão.
+{base} à mão.
 
-| passo | está pronto quando, na carteira |
+| passo | está pronto quando, na {base} |
 |---|---|
-| 1 | o `INDICE.md` da carteira existe, com a linha `carteira:`, e o título tem o nome dele |
+| 1 | o `INDICE.md` da {base} existe, com a linha `{pasta-base}:`, e o título tem o nome dele |
 | 2 | a linha `modo:` vale `copiloto` ou `automatico` |
 | 3 | `Google Agenda:` tem `sim  ← testado <data>`, **ou** há linha de agenda em `## Pulado no começo` |
 | 4 | o mesmo para `Gmail:` e `Google Drive:` |
 | 5 | há qualquer arquivo em `_bruto/`, **ou** há linha em `## Pulado no começo` |
 | 6 | a tabela de `{pasta-itens}/_indice.md` tem ao menos uma linha |
+[[se etapa-de:pessoa]]
 | 7 | a tabela de `{pasta-pessoas}/_indice.md` tem ao menos uma linha |
+[[fim]]
+[[se etapa-de:item]]
+| 7 | a tabela de `{pasta-pessoas}/_indice.md` tem ao menos uma linha, **ou** há linha do passo 7 em `## Pulado no começo` — `{pasta-pessoas}/` vazia é estado normal, não passo pela metade |
+[[fim]]
 | 8 | não grava nada — sempre acontece |
 
 Retomando, faça três coisas e nada mais: diga em uma linha o que já está pronto,
@@ -159,7 +176,7 @@ vá para o primeiro passo que falta, e **não refaça o que já está**. Pergunt
 novo o que ele já respondeu é o defeito mais caro do pack.
 
 Ele pulou um passo e agora quer aquele passo? Rode só ele. `comecar` chamada com
-a carteira já montada é isso: a lista do que falta, e o item que ele escolher.
+a {base} já montada é isso: a lista do que falta, e o item que ele escolher.
 
 ---
 
@@ -196,24 +213,24 @@ cada, do segundo em diante até gravar arquivo volta a pedir autorização.
 Isso não é defeito e não se conserta: diga uma vez, quando a primeira aparecer,
 que é assim que o programa mostra o que está sendo feito, e que aprovar é rápido.
 O que **não** se faz é pedir a ele que desligue as perguntas — a skill está
-escrevendo na carteira dele, e ver isso acontecer na primeira vez é o que
+escrevendo na {base} dele, e ver isso acontecer na primeira vez é o que
 constrói a confiança que as outras nove vão gastar.
 
 ---
 
 ## 6 · Os oito passos
 
-### Passo 1 · Onde fica a carteira, e quem é você
+### Passo 1 · Onde fica a {base}, e quem é você
 
 **Primeiro, a pergunta do lugar.** É aqui que o transporte se escolhe, uma vez,
 e o caminho que você achou já vai preenchido:
 
 ```
-Onde eu monto a sua carteira?
+Onde eu monto a sua {base}?
 
-  No computador       C:\Users\{exemplo-usuario}\carteira · você abre em qualquer editor,
+  No computador       C:\Users\{exemplo-usuario}\{base} · você abre em qualquer editor,
                       e é onde as outras nove vão procurar sozinhas
-  No Google Drive     a pasta carteira no seu Drive · funciona também no chat
+  No Google Drive     a pasta {base} no seu Drive · funciona também no chat
                       do navegador, e precisa do conector do Drive ligado
   Outro lugar         você me diz onde · funciona, mas toda skill vai precisar
                       que você diga onde é
@@ -232,16 +249,16 @@ parece arquivo pela metade — e com `<AAAA-MM-DD>` na primeira linha parece
 formulário em branco.
 
 ```
-modelos/INDICE.md            → ~/carteira/INDICE.md
-modelos/hoje.md              → ~/carteira/hoje.md
-modelos/funil.md             → ~/carteira/funil.md
-modelos/_indice-{pasta-itens}.md   → ~/carteira/{pasta-itens}/_indice.md
-modelos/_indice-{pasta-pessoas}.md  → ~/carteira/{pasta-pessoas}/_indice.md
+modelos/INDICE.md            → ~/{pasta-base}/INDICE.md
+modelos/hoje.md              → ~/{pasta-base}/hoje.md
+modelos/funil.md             → ~/{pasta-base}/funil.md
+modelos/_indice-{pasta-itens}.md   → ~/{pasta-base}/{pasta-itens}/_indice.md
+modelos/_indice-{pasta-pessoas}.md  → ~/{pasta-base}/{pasta-pessoas}/_indice.md
 ```
 
 **E a linha `envio:` do modelo sai junto com os comentários.** Ela governa
 quanto a skill pergunta antes de mandar mensagem, e **só existe onde há
-conector** (contrato §7.1). A carteira nasce com `WhatsApp: não`, então ela
+conector** (contrato §7.1). A {base} nasce com `WhatsApp: não`, então ela
 ainda não tem o que governar — quem a escreve é o passo 5, se ele ligar a
 ponte.
 
@@ -249,18 +266,18 @@ ponte.
 arquivo nos passos 6 e 7, um por item, com id e apelido no nome.
 
 **A primeira linha do `INDICE.md` é a do transporte**, antes de `modo:`, no
-formato do contrato §1 — `carteira: local · C:\Users\{exemplo-usuario}\carteira` ou
-`carteira: drive · /carteira`. É ela que as outras nove leem para saber por onde
+formato do contrato §1 — `{pasta-base}: local · C:\Users\{exemplo-usuario}\{pasta-base}` ou
+`{pasta-base}: drive · /{pasta-base}`. É ela que as outras nove leem para saber por onde
 ler e gravar; sem ela, cada skill vai adivinhar pelo lugar em que o arquivo
 apareceu.
 
 {comecar--as-pastas-vazias} **Diga isso em uma linha**, senão ele abre a
-carteira, não as vê, e acha que faltou. No `drive` dá para criar pasta vazia, e
-mesmo assim vale o mesmo: a carteira fica igual nos dois.
+{base}, não as vê, e acha que faltou. No `drive` dá para criar pasta vazia, e
+mesmo assim vale o mesmo: a {base} fica igual nos dois.
 
 **A prova.** Depois de escrever, mostre a lista na tela, com o lugar de verdade:
-no `local`, um `Glob` em `~/carteira/**/*.md`; no `drive`, liste a pasta
-`carteira` e as de dentro pelo conector, e mostre os nomes. Dizer que criou não
+no `local`, um `Glob` em `~/{pasta-base}/**/*.md`; no `drive`, liste a pasta
+`{pasta-base}` e as de dentro pelo conector, e mostre os nomes. Dizer que criou não
 é a mesma coisa que mostrar criado — e é o mesmo princípio do passo 3.
 
 **Depois, o nome.** Uma pergunta, com o motivo dentro:
@@ -269,7 +286,7 @@ no `local`, um `Glob` em `~/carteira/**/*.md`; no `drive`, liste a pasta
 > escrever, e é como eu vou saber quem é você quando você colar uma conversa.
 
 O nome é a única coisa obrigatória do passo. Escreva `nome:` e o título
-`# Carteira de <nome>`.
+`# {Base} de <nome>`.
 
 **Depois, o resto da identidade — uma pergunta só, em texto livre, e pulável:**
 
@@ -325,7 +342,7 @@ No Claude Code:
   6. volte para cá
 
 No Claude do navegador ou no Desktop:
-  Configurações → Conectores → “Google Calendar” → “Conectar”, e a mesma tela
+  Configurações → Integrações → “Google Calendar” → “Conectar”, e a mesma tela
   do Google.
 ```
 
@@ -364,15 +381,15 @@ Três resultados, e os três têm resposta:
 
 **Nunca escreva `sim` sem o teste.** “Conectado” sem prova é o erro que só
 aparece três dias depois, no meio de outra coisa — e aí o {profissional} não está
-configurando nada, está com {um-pessoa} esperando.
+configurando nada, {consequencia-de-conexao-sem-prova}.
 
 Pulou ou falhou: diga em uma linha {comecar--a-agenda-volta}.
 
 ### Passo 4 · E-mail e Drive
 
 Opcionais, mesma mecânica do passo 3 — olhar antes, explicar, esperar, testar,
-gravar com a data. **A carteira está no Drive?** Então o Drive já está ligado e
-testado — a carteira que abriu é o teste (contrato §1). Grave
+gravar com a data. **A {base} está no Drive?** Então o Drive já está ligado e
+testado — a {base} que abriu é o teste (contrato §1). Grave
 `Google Drive: sim  ← testado <data>` e pergunte só do Gmail.
 
 **Uma pergunta só para os dois**, senão viram duas telas seguidas de
@@ -411,7 +428,7 @@ empresa, e ele atende do número pessoal. A ponte é colar ou exportar, e é iss
 que este passo ensina.
 
 **E há um terceiro caminho, que só existe com o conector ligado:**
-`/{plugin}:importar-a-conversa` lê o histórico e enche a carteira de uma vez —
+`/{plugin}:importar-a-conversa` lê o histórico e enche a {base} de uma vez —
 ela abre só as conversas que parecem de trabalho e escreve no `INDICE.md` o que
 leu e o que não leu. É o que troca a primeira semana de digitação por uma
 execução. Se o Passo 6 tiver ligado o conector, ofereça-a aqui, em uma linha, e
@@ -441,11 +458,11 @@ Android   abra a conversa → ⋮ (os três pontinhos, canto de cima à direita)
 ```
 
 **“Sem mídia”, sempre.** Com mídia sai um arquivo pesado, demora, e as fotos não
-entram na carteira de qualquer jeito. O resultado é um `.txt` — o jeito mais
+entram na {base} de qualquer jeito. O resultado é um `.txt` — o jeito mais
 simples de trazer para o computador é mandar para você mesmo por e-mail ou pelo
 Drive, abrir, e colar aqui.
 
-**Onde o arquivo mora:** na pasta `_bruto/` da carteira, com o nome
+**Onde o arquivo mora:** na pasta `_bruto/` da {base}, com o nome
 `AAAA-MM-DD-whatsapp-<apelido>.md` — a data é a da conversa, não a de hoje. Mas
 diga o principal: **ele não precisa fazer isso à mão.** Cola aqui, e a skill
 grava com o nome certo. `_bruto/` é a origem, não a verdade: nada lá se corrige,
@@ -472,6 +489,18 @@ a cadeia de lá; o `references/vocabulario.txt` ao lado é o que o degrau 7.5
 manda instalar, e é o que faz a transcrição acertar as palavras do ofício. Se não quiser, ou se aqui não houver linha de comando, siga em
 frente e não toque mais no assunto.
 
+**E o resto do que se liga mora num lugar só.** Se as ferramentas
+`conectores_*` existem nesta sessão, chame `conectores_estado` UMA vez, aqui, e
+leia `references/conectores.md`: ele devolve o que este pack pode ligar — fonte
+pública, navegador, e-mail, serviço pago —, o estado de cada coisa e a linha
+pronta de `como_ligar`. Mostre a lista como ela veio, em três colunas (o que é,
+como está, o que custa), e diga **uma vez** que quem liga é ele, num terminal
+dele. Não ligue nada por ele, não insista, e não repita o aviso de conector
+nenhum: o aviso aparece para ele, no ato de ligar. O que ele quiser ligar agora
+entra em `## O que está conectado` com a data do teste; o que não quiser vira
+uma linha de `## Pulado no começo`. Sem as ferramentas na sessão, este parágrafo
+não existe — não o mencione.
+
 Este passo é pulável, mas ele emenda no passo 7: se ele já tiver uma conversa à
 mão agora, o passo 7 usa essa mesma.
 
@@ -489,7 +518,7 @@ dois — está no fim do passo.
 #### O link
 
 > Me manda o link de {um-item} seu. Qualquer um que esteja no ar. É com ele que
-> eu monto a primeira ficha, e você vê como a carteira fica.
+> eu monto a primeira ficha, e você vê como a {base} fica.
 
 **Abrir o link é com a ferramenta de web do harness, que NÃO está em
 `allowed-tools`.** Avise antes: ela pede permissão, e é bom que peça — ele vê
@@ -509,7 +538,7 @@ ele não tem link         ele digita o básico: {basico-do-item}.
 Depois, nesta ordem, e ela importa:
 
 1. **Escolha o id e o apelido antes de gravar o bruto**, porque o cabeçalho do
-   bruto leva `sobre:` e `_bruto/` não se edita depois. Carteira nova: o
+   bruto leva `sobre:` e `_bruto/` não se edita depois. {Base} nova: o
    primeiro é {o-primeiro-id}. O apelido é
    {formato-do-apelido}: `{exemplo-item-novo}`.
 2. **Grave o bruto**, com o cabeçalho de três linhas do contrato §4.7 e o que
@@ -519,6 +548,11 @@ Depois, nesta ordem, e ela importa:
    O que não veio entra `?`, nunca uma estimativa.
 4. **Uma linha na tabela** de `{pasta-itens}/_indice.md`, e o `## Quanto tem` do
    `INDICE.md` recontado.
+[[se etapa-de:item]]
+5. **Uma linha no `funil.md`**, na etapa `{etapa-inicial}`. É o arquivo {do-item}
+   que leva `etapa:`, e o funil é vista dele (contrato §1). A linha sai sem
+   {pessoa}: o nome de quem responde entra nela quando existir.
+[[fim]]
 
 #### A planilha
 
@@ -553,7 +587,7 @@ Depois, nesta ordem, e ela importa:
    Li 18 linhas da sua planilha. É isto?
 
    {mapa-de-colunas}
-   ficam de fora: “{profissional} responsável”, “data do {exemplo-trabalho}”
+   ficam de fora: {colunas-que-ficam-de-fora}
 
      Está certo         eu gravo as 18 fichas agora
      Mudo uma coluna    você diz qual, e eu mostro de novo antes de gravar
@@ -561,19 +595,30 @@ Depois, nesta ordem, e ela importa:
 
    Coluna que não tem campo no gabarito **não cria campo** — regra zero do
    contrato. É descrição? O texto vai para {secao-descricao-do-item}. Não é? Fica de
+[[se etapa-de:pessoa]]
    fora, e a resposta diz quais colunas ficaram. `estado:` só recebe um dos
    seis valores do §4.4: {estado-da-planilha}, e o que não casar entra `?`.
+[[fim]]
+[[se etapa-de:item]]
+   fora, e a resposta diz quais colunas ficaram. `etapa:` só recebe uma das
+   etapas do §4.3: {estado-da-planilha}, e o que não casar entra em
+   `{etapa-inicial}` — etapa não fica `?`, porque o funil é derivado dela. Diga
+   quantas linhas entraram assim.
+[[fim]]
 3. **Uma ficha por linha**, pelo gabarito de `modelos/{modelo-item}`, cada campo
    com `← _bruto/<o csv>`. O id é sequencial (contrato §2) — `{exemplo-id-novo}`,
-   `{exemplo-id-novo-2}`… numa carteira nova —, e {o-prefixo-e-o-apelido}
+   `{exemplo-id-novo-2}`… numa {base} nova —, e {o-prefixo-e-o-apelido}
    O que a linha não tem entra `?`. Linha vazia não vira ficha, e linha
    repetida — mesmo link ou mesmo endereço — não vira duas.
 4. **Uma linha por {item}** em `{pasta-itens}/_indice.md`, o `## Quanto tem` do
    `INDICE.md` recontado, e em cada ficha uma linha no `## Histórico`:
-   `- AAAA-MM-DD entrou na carteira  ← _bruto/AAAA-MM-DD-planilha-<nome>.csv`.
+   `- AAAA-MM-DD entrou na {base}  ← _bruto/AAAA-MM-DD-planilha-<nome>.csv`.
+[[se etapa-de:item]]
+5. **Uma linha por {item} no `funil.md`**, na etapa que a ficha levou.
+[[fim]]
 
 **Teto: 200 linhas por vez.** Passou disso, pergunte se importa tudo ou só as
-linhas marcadas como disponíveis. E na tela vai **a primeira ficha inteira e a
+{filtro-da-planilha}. E na tela vai **a primeira ficha inteira e a
 contagem do resto** — nunca as duzentas.
 
 #### Nos dois caminhos
@@ -587,12 +632,22 @@ Aponte o `?` que ficou — “o {campo-que-falta} eu não tenho, {por-que-ele-fa
 não está na planilha, ficou ? em 18 fichas” — e diga que o **{exemplo-trabalho}** é de
 `/{plugin}:{skill-anunciar}`. Esta aqui só põe {o-item} dentro.
 
-**Se ele quiser pular**, diga o custo em uma linha antes de aceitar: carteira
+**Se ele quiser pular**, diga o custo em uma linha antes de aceitar: {base}
 vazia não faz ninguém voltar, e as outras nove leem essa pasta. Insistiu: anote
 em `## Pulado no começo` e siga.
 
 ### Passo 7 · {O-primeiro-pessoa}
 
+[[se etapa-de:item]]
+**É o mais pulável dos oito, e pular aqui não tem custo para dizer.** Quem anda
+no funil é {o-item}, {item} sem {pessoa} é o caso comum, e a {base} já está
+cheia desde o passo 6. Pergunte uma vez se ele já fala com alguém sobre {um-item}
+que entrou. Ainda não fala com ninguém: anote o passo em
+`## Pulado no começo` e vá para o passo 8 — sem insistir, e sem tratar
+`{pasta-pessoas}/` vazia como coisa que faltou. Fala, e não tem a conversa à
+mão: o fim deste passo diz o que fazer.
+
+[[fim]]
 Peça **uma conversa colada** — a do passo 5, se ele já trouxe, ou qualquer
 outra:
 
@@ -603,11 +658,19 @@ Contrato §7, os quatro passos, sem atalho:
 
 1. **O bruto primeiro**, em `_bruto/AAAA-MM-DD-whatsapp-<apelido>.md`. Primeiro
    porque, se algo der errado no meio, o material dele já está salvo.
-2. **Os fatos** para o arquivo {do-pessoa} — `{exemplo-id-pessoa-novo}` numa carteira nova —, cada
+2. **Os fatos** para o arquivo {do-pessoa} — `{exemplo-id-pessoa-novo}` numa {base} nova —, cada
    campo com `← _bruto/<arquivo>`. Fato é o que está escrito: “dá sábado, mas
    cedo” é `## Combinado`, não “{exemplo-etapa-deduzida}”.
+[[se etapa-de:pessoa]]
 3. **As vistas**: uma linha em `{pasta-pessoas}/_indice.md`, uma linha no `funil.md` na
    etapa que a conversa mostrar (na dúvida, `{etapa-inicial}`), e o `## Quanto tem`.
+[[fim]]
+[[se etapa-de:item]]
+3. **As vistas**: uma linha em `{pasta-pessoas}/_indice.md` e o `## Quanto tem`. O
+   arquivo {do-pessoa} **não leva `etapa:`**, e não há linha {do-pessoa} no
+   `funil.md`. Se a conversa mostra que {o-item} andou, o que muda é o `etapa:`
+   no arquivo {do-item} e a linha {do-item} no funil — com a mesma procedência.
+[[fim]]
 4. **Diga onde guardou**, no `## Guardei`.
 
 Três coisas que este passo resolve e que valem uma linha cada:
@@ -619,19 +682,32 @@ Três coisas que este passo resolve e que valem uma linha cada:
 - **Buraco é buraco.** `<Mídia oculta>`, mensagem apagada e figurinha viram
   linha declarada ou pergunta, nunca palpite. De ouvido não se transcreve nada:
   pelo conector o áudio já vem transcrito, e colado ele vira pergunta.
+[[se etapa-de:pessoa]]
 - **Se a conversa fala {do-item} do passo 6, ligue os dois** — uma linha em
   `{secao-itens-mostrados}` {no-pessoa} e uma em `{secao-mostrado-a}` {no-item}. É a
-  primeira vez que a carteira mostra o que ela é, e vale mostrar as duas linhas
+  primeira vez que a {base} mostra o que ela é, e vale mostrar as duas linhas
   na tela.
 
 Sem conversa à mão? Ele digita o básico — nome, telefone, o que procura — e o
 resto entra `?`. Mostre o arquivo, aponte os `?`, e diga que a resposta ao {jargao-minusculo} é
 de `/{plugin}:{skill-atender}`.
+[[fim]]
+[[se etapa-de:item]]
+- **Se a conversa fala {do-item} do passo 6, ligue os dois** — o campo
+  `{campo-da-pessoa-no-item}` {no-item} ganha o id com apelido {do-pessoa}, e a
+  linha {do-item} no `funil.md` passa a trazer esse nome. É a primeira vez que a
+  {base} mostra o que ela é, e vale mostrar as duas linhas na tela.
+
+Sem conversa, mas ele sabe com quem fala sobre {o-item}? Ele digita o básico —
+nome, telefone ou e-mail, e por que essa pessoa importa — e o resto entra `?`.
+Mostre o arquivo e aponte os `?`. Escrever a mensagem não é daqui: é de
+`/{plugin}:{skill-atender}`.
+[[fim]]
 
 ### Passo 8 · O que pedir agora
 
 Feche com **três coisas que ele pode digitar hoje**, cada uma usando o que
-acabou de entrar na carteira — e com o id e o apelido de verdade, não os do
+acabou de entrar na {base} — e com o id e o apelido de verdade, não os do
 exemplo:
 
 ```
@@ -650,22 +726,22 @@ que ele acredita. Dois caminhos, nesta ordem:
 
 1. **Onde há ferramenta de arquivo** — as dez moram lado a lado, uma pasta cada:
    um `Glob` em `../*/SKILL.md` a partir da pasta desta.
-2. **Onde não há** — chat da web, com a carteira no Drive: a lista das dez está
+2. **Onde não há** — chat da web, com a {base} no Drive: a lista das dez está
    em `references/contrato/11-0-onde-roda.md`, que veio junto com esta skill. Leia
-   de lá, e leia também a classificação: no chat da web sem carteira, cinco das
+   de lá, e leia também a classificação: no chat da web sem {base}, cinco das
    dez não funcionam, e mostrar as dez como se todas funcionassem é a mesma
    promessa quebrada por outro caminho.
 
 Ele já tem material de antes — planilha, agenda de papel, um monte de conversa?
-Uma linha: ponha na pasta `_bruto/` da carteira e rode
-`/{plugin}:organizar-carteira`, que lê o que está lá e transforma em ficha.
+Uma linha: ponha na pasta `_bruto/` da {base} e rode
+`/{plugin}:organizar-{pasta-base}`, que lê o que está lá e transforma em ficha.
 
 ---
 
 ## 7 · A saída
 
 O fecho é o do contrato §10, com os títulos exatos. Não há bloco para colar
-nesta skill: o trabalho dela é a carteira.
+nesta skill: o trabalho dela é a {base}.
 
 **O `## Guardei` sai sempre, inclusive quando ela não gravou nada** — e é o
 caso de quem a chama só para retomar um item de `## Pulado no começo` e o
@@ -680,7 +756,7 @@ teste da conexão não passa. Aí o fecho é este, e o título é este:
 - ligar o Google Drive — continua em “Pulado no começo”, com a data de lá
 ```
 
-`## Não gravei nada` e `## A carteira está como estava` são títulos
+`## Não gravei nada` e `## A {base} está como estava` são títulos
 inventados, e a seção 4 do contrato os proíbe: quem lê o fecho procura os três
 títulos fixos, e um quarto nome quebra quem vier atrás. Medido na prova: esta
 skill inventou o próprio na primeira execução, tendo feito a coisa certa.
@@ -695,10 +771,10 @@ Veio da planilha? As linhas {do-item} trocam por estas, e o resto fica:
 {comecar--saida-curta}
 ```
 
-O exemplo acima é o de uma carteira no computador. **No `drive`, o mesmo fecho
-troca o lugar:** “Ela mora na pasta `carteira` do seu Drive”, e cada linha do
+O exemplo acima é o de uma {base} no computador. **No `drive`, o mesmo fecho
+troca o lugar:** “Ela mora na pasta `{pasta-base}` do seu Drive”, e cada linha do
 `## Guardei` nomeia a pasta e o arquivo — `{pasta-itens}/{exemplo-item-arquivo-novo}, na
-pasta carteira do seu Drive — criado`. O {profissional} precisa saber onde a coisa foi
+pasta {base} do seu Drive — criado`. O {profissional} precisa saber onde a coisa foi
 parar nos dois.
 
 Ao falar com o {profissional}, data em prosa — “12 de agosto”. **Nos arquivos, sempre
@@ -721,16 +797,16 @@ não é ela.
 conectou, nem porque a ferramenta apareceu na sessão. O que vale é a chamada que
 voltou.
 
-**Ela não sobrescreve carteira que já existe.** `Write` só em arquivo novo.
-Carteira montada e ela rodando de novo é retomada, não recomeço — e o passo que
+**Ela não sobrescreve {base} que já existe.** `Write` só em arquivo novo.
+{Base} montada e ela rodando de novo é retomada, não recomeço — e o passo que
 já está feito não se refaz.
 
 **Ela não apaga nada, nunca.** Nem arquivo, nem linha, nem `_bruto/`. Se ele
-quiser mover a carteira de lugar depois, quem move a pasta é ele — no computador
+quiser mover a {base} de lugar depois, quem move a pasta é ele — no computador
 dele ou no Drive dele. Mover não é trabalho desta skill.
 
 **Ela não chuta dado de {item}.** Link que não abriu vira ficha colada ou vira
-`?`. Nem para “ilustrar”, nem para a carteira parecer mais cheia no fim do
+`?`. Nem para “ilustrar”, nem para a {base} parecer mais cheia no fim do
 setup — que é justamente onde a tentação existe.
 
 **Ela não escreve {exemplo-trabalho} nem mensagem.** {comecar--quem-escreve-o-que}
@@ -748,12 +824,12 @@ quem manda é a skill do dia, com o texto e o destinatário na tela dele antes
 **Ela não instala nada.** Não roda `/plugin`, não edita configuração do Claude
 Code, não mexe em MCP. No passo 3 ela diz o que digitar; quem digita é ele.
 
-**Ela não sai da carteira** nem toca em pasta nenhuma fora dela, em transporte
+**Ela não sai da {base}** nem toca em pasta nenhuma fora dela, em transporte
 nenhum.
 
 **Sem nenhum dos dois transportes ela não funciona**, e diz isso em uma linha, sem pedir
-desculpa duas vezes: “Isto monta a sua carteira, e aqui eu não tenho onde
-montar. No Claude Code, ou com a carteira no Drive, funciona.” Nada é gravado, e
+desculpa duas vezes: “Isto monta a sua {base}, e aqui eu não tenho onde
+montar. No Claude Code, ou com a {base} no Drive, funciona.” Nada é gravado, e
 ela não finge que foi.
 
 **Ela não insiste.** Passo pulado é passo anotado, e a oferta volta uma vez, na

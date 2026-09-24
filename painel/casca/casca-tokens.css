@@ -1,0 +1,59 @@
+/* ═══ casca-tokens · o `@theme` que as duas entradas compartilham ═════════
+   Ele aponta para os MESMOS tokens de `base.css` (que o `DESIGN.md` governa)
+   em vez de declarar paleta própria: duas fontes de token para a mesma cor é
+   como a página ganhou o segundo preto (D111). Não há valor duplicado aqui —
+   só o NOME que o Tailwind precisa para gerar a classe.
+
+   ── E ELE É UM ARQUIVO, e não dois blocos iguais ──────────────────────
+   Enquanto cada entrada declarava o seu, as duas divergiram: `--font-serif`
+   saiu com valores diferentes nas duas folhas — uma herdou o padrão do
+   próprio Tailwind — e quem pegou foi o `npm run conferir`, não a olho. Um
+   arquivo só torna a divergência impossível em vez de detectável. */
+@theme {
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-lift: var(--lift);
+  --color-cela: var(--cela);
+  --color-creme: var(--creme);
+  --color-carvao: var(--carvao);
+  --color-noite: var(--noite);
+  --color-ink: var(--ink);
+  --color-fio: var(--fio);
+  --color-fio-forte: var(--fio-forte);
+  --color-fio-controle: var(--fio-controle);
+  --color-mute: var(--mute);
+  --color-apagado: var(--apagado);
+  --color-accent: var(--accent);
+  --color-accent-forte: var(--accent-forte);
+  --color-verd: var(--verd);
+  --color-soft: var(--soft);
+  --color-estado: var(--estado);
+
+  --spacing-tecla: var(--tecla);
+  --ease-curva: var(--curva);
+  --default-transition-duration: var(--rap);
+
+  --radius-fio: var(--r-fio);
+  --radius-acao: var(--r-acao);
+  --radius-entrada: var(--r-entrada);
+  --radius-objeto: var(--r-objeto);
+  --radius-cela: var(--r-cela);
+  --radius-redondo: var(--r-redondo);
+
+  --shadow-objeto: var(--sombra-objeto);
+
+  --font-sans: var(--sans);
+  --font-mono: var(--mono);
+  --font-serif: var(--serif);
+  --font-marca: var(--marca);
+
+  --spacing-s0: var(--s0);
+  --spacing-s1: var(--s1);
+  --spacing-s2: var(--s2);
+  --spacing-s3: var(--s3);
+  --spacing-s4: var(--s4);
+  --spacing-s5: var(--s5);
+  --spacing-s6: var(--s6);
+  --spacing-s7: var(--s7);
+  --spacing-s8: var(--s8);
+}

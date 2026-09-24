@@ -2,7 +2,7 @@ aposentado: 2026-08-01 · motivo: vendido para C-002 (Léo Antunes)
 
 # V-039 (casa 2 dorm, Tristeza)
 
-link: https://fontesimoveis.com.br/imovel/6620  ← corretor, 2026-07-02
+link: https://fontesimoveis.example/imovel/6620  ← corretor, 2026-07-02
 estado: vendido
 tipo: casa · 88 m²  ← link, 2026-07-02
 preço: R$ 410.000  ← link, 2026-07-02
@@ -10,7 +10,7 @@ condomínio: —
 iptu: ?
 dormitórios: 2 · suíte: 0 · vagas: 1  ← link, 2026-07-02
 endereço: rua Otávio Rocha, Tristeza, Porto Alegre  ← link, 2026-07-02
-proprietário: Nilton Duarte, +55 51 99444-1010  ← corretor, 2026-07-02
+proprietário: Nilton Duarte, +55 51 90000-0008  ← corretor, 2026-07-02
 exclusividade: ?
 
 ## O que vende

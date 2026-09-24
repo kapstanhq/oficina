@@ -1,0 +1,20 @@
+/* ═══ O CURRÍCULO (D270) — por cima da página do motor ═══════════════════
+   Uma coluna, títulos convencionais, texto que se seleciona: é o que o
+   sistema de triagem da empresa lê e o que o recrutador lê em trinta
+   segundos. Nada de tabela, ícone, foto ou barra de habilidade. */
+h1 { font-size: 21pt; letter-spacing: -.2pt; line-height: 1.1; margin-bottom: 3pt; }
+.contato { margin: 0 0 10pt; font-size: 8.8pt; color: #4a4a4f; text-wrap: balance; }
+.contato .pedaco { white-space: nowrap; }
+.contato .sep { color: #9a9aa0; }
+h2 {
+  margin: 12pt 0 5pt; padding-bottom: 2.5pt; border-bottom: .75pt solid #b9b9bf;
+  font-size: 9.6pt; text-transform: uppercase; letter-spacing: .9pt; color: #2b2b30;
+}
+h3 {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12pt;
+  margin: 8pt 0 2.5pt; font-size: 10pt; font-weight: 400;
+}
+h3 strong { font-weight: 600; }
+h3 .direita { flex: none; font-size: 9pt; color: #55555b; }
+li::marker { color: #8a8a90; }
+.bloco { padding-bottom: .5pt; }

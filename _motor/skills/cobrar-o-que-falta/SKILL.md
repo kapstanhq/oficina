@@ -1,7 +1,7 @@
 ---
 name: cobrar-o-que-falta
 description: >-
-  Varre a carteira e lista o que está parado esperando OUTRA PESSOA — quem
+  Varre a {base} e lista o que está parado esperando OUTRA PESSOA — quem
   ficou de mandar, o que era, quando foi pedido e há quantos dias não chega — e
   escreve, para cada um, a cobrança que dá um jeito de ser fácil de responder em
   vez de constranger. Ordena por quem trava mais. Nunca cobra duas vezes na
@@ -16,7 +16,7 @@ description: >-
   /{plugin}:o-que-fazer-hoje.
 license: MIT
 compatibility: >-
-  Precisa da carteira; sem ela diz isso em uma linha e manda rodar
+  Precisa da {base}; sem ela diz isso em uma linha e manda rodar
   /{plugin}:comecar. Sem o conector ela escreve as cobranças para copiar e quem
   manda é o {profissional} — o trabalho sai inteiro do mesmo jeito. Com o
   conector ela manda uma por vez, e só para quem já escreveu antes: primeira
@@ -48,7 +48,7 @@ Quatro coisas que ela é, e uma que ela não é:
 
 ## 2 · Antes de tudo
 
-1. `~/carteira/INDICE.md`. Não existe: uma linha e `/{plugin}:comecar`.
+1. `~/{pasta-base}/INDICE.md`. Não existe: uma linha e `/{plugin}:comecar`.
 2. A linha `modo:`.
 3. `references/contrato/07-1-a-mensagem-sai.md` — **antes de escrever a primeira
    mensagem**, não depois. É ela que governa o par de ferramentas do envio, a
@@ -136,11 +136,20 @@ sentir devedora. O tom é o de quem está resolvendo junto.
 ### Passo 5 · Gravar antes de mandar
 
 A tentativa vai para o arquivo de quem deve — **antes** do envio, não depois. Se
-gravar depois, um envio que falha no meio deixa a carteira dizendo que cobrou
+gravar depois, um envio que falha no meio deixa a {base} dizendo que cobrou
 quando não cobrou, e a próxima execução pula quem nunca foi cobrado.
 
 Uma linha, com data, canal e o que foi pedido. É ela que faz o Passo 2
 funcionar na próxima rodada.
+[[se etapa-de:item]]
+
+**Quem deve pode não ter arquivo.** Aqui {um-item} anda com o campo
+`{campo-da-pessoa-no-item}:` vazio, e a pendência é de uma empresa, de um
+setor, de um endereço genérico. Nesse caso a tentativa vai para o
+`## Histórico` {do-item} de que a pendência trata — com a mesma linha —, e é
+lá que o Passo 2 a procura na próxima rodada. Não crie {pessoa} só para ter
+onde gravar: {pessoa} nasce de nome e canal de verdade, não de uma cobrança.
+[[fim]]
 
 ## 5 · O que perguntar, e como
 
@@ -168,7 +177,7 @@ A fila primeiro, e cada mensagem no seu bloco de código, sozinha — o
 ## Trava esta semana
 
 **1 · {exemplo-pendencia}**
-há 27 dias · sem ela o negócio não anda
+há 27 dias · sem ela {o-que-a-pendencia-trava} não anda
 ```
 <a mensagem, sozinha, pronta para colar>
 ```
@@ -184,8 +193,8 @@ há 27 dias · sem ela o negócio não anda
 - {exemplo-pessoa} · já respondeu em 2026-09-05; tirei a pendência
 
 ## Guardei
-- ~/carteira/{pasta-pessoas}/{exemplo-pessoa-arquivo} — a tentativa de hoje
-- ~/carteira/hoje.md — as pendências que saíram da fila
+- ~/{pasta-base}/{pasta-pessoas}/{exemplo-pessoa-arquivo} — a tentativa de hoje
+- ~/{pasta-base}/hoje.md — as pendências que saíram da fila
 
 ## Falta saber
 - o prazo combinado para {exemplo-pendencia} — usei o padrão de 7 dias
@@ -197,7 +206,7 @@ podem virar uma mensagem, mas duas pessoas nunca dividem um bloco.
 
 ## 7 · Onde ela para
 
-**Ela não cobra dinheiro.** Parcela, honorário e comissão atrasada não são
+**Ela não cobra dinheiro.** {exemplos-de-dinheiro-devido} não são
 pendência de documento: envolvem contrato, juros e uma conversa que não cabe
 numa varredura. Ela lista, marca como financeiro e **não escreve a mensagem** —
 quem escreve é o {profissional}, que sabe o que foi combinado.
@@ -214,6 +223,6 @@ cobrar quem entregou.
 
 **Ela não decide que a pendência morreu.** Se o campo continua `?` mas há uma
 conversa em `_bruto/` que parece respondê-lo, ela **não fecha**: aponta a
-conversa e manda `/{plugin}:organizar-carteira`, que é quem extrai fato com
+conversa e manda `/{plugin}:organizar-{pasta-base}`, que é quem extrai fato com
 procedência. Fechar por dedução é inventar dado, e a regra 2 não abre exceção
 para conveniência.

@@ -22,7 +22,7 @@ seta, origem, vírgula, data:
 
 ```
 preço: R$ 520.000  ← link, 2026-08-12
-telefone: +55 51 99999-0000  ← _bruto/2026-08-12-linkedin-carla.md
+telefone: +55 51 90000-0001  ← _bruto/2026-08-12-linkedin-carla.md
 área: 120 m²  ← ficha colada, 2026-08-12
 prazo: quer mudar até dezembro  ← prospector, 2026-08-19
 ```

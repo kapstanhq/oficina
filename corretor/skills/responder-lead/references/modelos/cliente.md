@@ -10,7 +10,7 @@ telefone:
 e-mail: ?
 canal: WhatsApp
 <!-- etapa mora AQUI; funil.md só reflete. As seis, nesta ordem: novo lead ·
-     em conversa · visita marcada · visitou · proposta · fechado. -->
+     em conversa · visita agendada · visitou · proposta · fechado. -->
 etapa: novo lead · desde <AAAA-MM-DD>
 origem:
 <!-- Só existe se ele PEDIU silêncio, e aí vale para todas as skills: nenhuma

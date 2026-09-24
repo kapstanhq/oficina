@@ -216,14 +216,14 @@ campo inventado não é gatilho:
 | gatilho | onde está escrito | vai para | quem resolve |
 |---|---|---|---|
 | reunião hoje | `## Combinado` do contato, ou a agenda | Vence hoje | — |
-| confirmação da véspera | reunião marcada para amanhã | Vence hoje | — |
+| confirmação da véspera | reunião agendada para amanhã | Vence hoje | — |
 | respondeu e não teve retorno | `etapa: respondeu` e nenhuma linha minha depois em `## O que já mandei` | Vence hoje | `/prospeccao:escrever-abordagem` |
 | proposta parada | `## Combinado` com proposta enviada há 3 dias ou mais | Vence hoje | `/prospeccao:cobrar-o-que-falta` |
-| prometido e não chegou | `## Combinado` com promessa de data já passada | Prometido e não chegou | `/prospeccao:cobrar-o-que-falta` |
-| conta estudada e não abordada | `estado: a abordar` há 7 dias ou mais | Travado | `/prospeccao:escrever-abordagem` |
-| contato sem e-mail | `etapa: a abordar` e `e-mail: ?` | Travado | `/prospeccao:estudar-conta` |
-| parado tempo demais | abordado há mais de 7 dias sem resposta | Travado | `/prospeccao:retomar-contato` |
-| conta sem estudo | `estado: a estudar` há 7 dias ou mais | Travado | `/prospeccao:estudar-conta` |
+| prometido e não chegou | `## Combinado` com promessa de data já passada | Aguardando retorno | `/prospeccao:cobrar-o-que-falta` |
+| conta estudada e não abordada | `estado: a abordar` há 7 dias ou mais | Parado | `/prospeccao:escrever-abordagem` |
+| contato sem e-mail | `etapa: a abordar` e `e-mail: ?` | Parado | `/prospeccao:estudar-conta` |
+| parado tempo demais | abordado há mais de 7 dias sem resposta | Parado | `/prospeccao:retomar-contato` |
+| conta sem estudo | `estado: a estudar` há 7 dias ou mais | Parado | `/prospeccao:estudar-conta` |
 
 Os cortes de dia são estes, e **não se inventa outro**: véspera é 1 dia;
 promessa vence no dia seguinte ao prometido; parado é 7 dias; conta sem estudo é
@@ -330,15 +330,15 @@ Leia o arquivo velho **antes** de gravar por cima. Ele guarda duas coisas que
 não existem em nenhum outro lugar:
 
 - **caixa marcada `- [x]`** — é o prospector dizendo que fez. Ela vai para
-  `## Feito nos últimos sete dias` com a data do título daquele arquivo.
+  `## Concluído nos últimos 7 dias` com a data do título daquele arquivo.
   **Caixa marcada nunca é desmarcada por reescrita**, nem quando a skill roda
   duas vezes no mesmo dia: item que ele marcou de manhã não volta para
   `## Vence hoje` à tarde. Este é o defeito que mais rápido faz o prospector
   parar de marcar caixa.
 - **linha que outra skill acrescentou** — e são duas, não três:
   `/prospeccao:cobrar-o-que-falta` escreve o que pedir em `## Vence hoje` e o
-  que prometeram em `## Prometido e não chegou`, e
-  `/prospeccao:retomar-contato` escreve a sugestão de arquivar em `## Travado`.
+  que prometeram em `## Aguardando retorno`, e
+  `/prospeccao:retomar-contato` escreve a sugestão de arquivar em `## Parado`.
   Esta skill reescreve o arquivo INTEIRO, então lista incompleta aqui é linha
   apagada em silêncio. Reconstrua-a a partir do arquivo dono. Não achou o
   fato em arquivo nenhum? **Carregue a linha como está**, na mesma seção, e
@@ -590,15 +590,15 @@ O formato é o da seção 4.2, e nada além dele:
 - [ ] Responder P-024 (Paulo Tavares) — respondeu ontem perguntando o preço e não teve retorno
 - [ ] Cobrar da P-031 (Sandra Lisboa) o retorno da proposta do E-083 (Móveis Bertoldo, Bento Gonçalves) — parada desde 2026-08-13
 
-## Travado
+## Parado
 - [ ] E-083 (Móveis Bertoldo, Bento Gonçalves) — estudada em 2026-08-11 e sem abordagem desde então
 - [ ] P-019 (Rui Baptista) — sem e-mail; é caso de /prospeccao:estudar-conta
 - [ ] P-041 (Otávio Prado) — abordado há 14 dias, sem resposta; é caso de /prospeccao:retomar-contato
 
-## Prometido e não chegou
+## Aguardando retorno
 - [ ] P-031 (Sandra Lisboa) — ia levar a proposta ao jurídico em 2026-08-13, seis dias
 
-## Feito nos últimos sete dias
+## Concluído nos últimos 7 dias
 - [x] 2026-08-15 — abordagem enviada à P-017 (Carla Menezes)
 ```
 

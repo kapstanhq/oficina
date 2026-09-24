@@ -13,7 +13,7 @@ telefone: ?
 linkedin: ?
 canal: e-mail
 <!-- etapa mora AQUI; funil.md só reflete. As seis, nesta ordem: a estudar ·
-     a abordar · abordado · respondeu · reunião marcada · virou cliente. -->
+     a abordar · abordado · respondeu · reunião agendada · virou cliente. -->
 etapa: a estudar · desde <AAAA-MM-DD>
 <!-- De onde veio o nome, e quando. É a regra 2 e é a prova de que ele não
      saiu de lista comprada — seção 3.1. -->

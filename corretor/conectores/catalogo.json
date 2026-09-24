@@ -1,0 +1,88 @@
+{
+  "_": "O catálogo BASE: o que existe para ligar em QUALQUER ofício. O pack acrescenta o dele em <pack>/conectores.json, e nome repetido entre as duas camadas é erro. O formato de uma entrada está em nucleo/catalogo.mjs, que é quem a confere ao subir. Quem tem `aviso` ou `chave` nasce DESLIGADO, e quem liga é a pessoa, pela CLI de servidor.mjs — nunca o agente.",
+  "whatsapp": {
+    "rotulo": "WhatsApp",
+    "para_voce": "Lê as suas conversas e áudios do WhatsApp e manda uma mensagem por vez — sempre mostrando antes para você aprovar.",
+    "tipo": "mcp",
+    "oque": "ler as conversas e os áudios da pessoa no WhatsApp, e mandar uma mensagem por vez, com prévia",
+    "prova": "estado_da_ponte",
+    "guia": "conectar-whatsapp.md — a cadeia inteira está lá, com o que a pessoa precisa ouvir antes de instalar"
+  },
+  "email-do-agente": {
+    "rotulo": "E-mail do assistente",
+    "para_voce": "Uma caixa de e-mail só do assistente, para receber alertas e confirmações de cadastro sem encher a sua.",
+    "tipo": "mcp",
+    "oque": "uma caixa de e-mail que é DO AGENTE (AgentMail): recebe alertas, confirmações de cadastro e boletins que ele mesmo lê. Ele cria a caixa com `create_inbox`",
+    "prova": "list_inboxes",
+    "guia": "Conecte o AgentMail nos conectores da conta (claude.ai → Configurações → Conectores) e reinicie a sessão. A caixa se cria depois, com `create_inbox` — e o endereço dela se mostra à pessoa antes de ser usado em qualquer cadastro"
+  },
+  "email-pessoal": {
+    "rotulo": "Seu e-mail (Gmail)",
+    "para_voce": "Lê o que chegou no seu Gmail e escreve respostas em seu nome — você aprova antes de sair.",
+    "tipo": "mcp",
+    "oque": "o Gmail da própria pessoa: ler o que chegou e escrever em nome dela",
+    "aviso": "O que sai por aqui sai NO SEU NOME, do seu endereço, e fica na sua caixa de enviados. O agente prepara e mostra cada mensagem antes; o programa que você usa vai perguntar se pode enviar, e a opção 'não perguntar de novo' vale para TODAS as seguintes. Ele também passa a poder LER a sua caixa de entrada inteira.",
+    "prova": "list_labels",
+    "guia": "Conecte o Gmail nos conectores da conta (claude.ai → Configurações → Conectores) e reinicie a sessão"
+  },
+  "navegador": {
+    "rotulo": "Navegador",
+    "para_voce": "Deixa o assistente abrir páginas e agir nelas por você, inclusive nas que pedem login. Senha e verificação em duas etapas continuam sendo suas.",
+    "tipo": "mcp",
+    "oque": "agir em páginas da web — inclusive as que exigem login — por um navegador seu, com as sessões que você já tem abertas",
+    "aviso": "O agente passa a agir DENTRO de contas logadas como você: o que ele clicar, clicou você. Sites que proíbem automação em conta logada podem restringir a conta, e conta restrita é caro de recuperar. QUEM DECIDE O QUE ELE PODE APERTAR É VOCÊ, skill a skill: cada uma declara onde para, e a que age em conta sua traz a linha de configuração que muda isso — o padrão é sempre ela preencher e parar antes do botão final. Fechar a janela, ou a aba, corta o acesso na hora.",
+    "prova": "browser_snapshot",
+    "ferramentas": "mcp__playwright",
+    "guia": "O jeito certo é o da SESSÃO SALVA (D272): cada assistente abre o próprio navegador, isolado, já com os logins que a pessoa fez UMA vez pelo painel (Integrações → \"Onde o assistente entra com a sua conta\"). Configure uma vez, no escopo do usuário: `claude mcp add -s user playwright -- npx @playwright/mcp@latest --isolated --storage-state \"<arquivo_das_sessoes>\"` — o caminho vem em `arquivo_das_sessoes` do `conectores_estado`, e o arquivo precisa existir (o painel o cria no primeiro login). Se já houver um `playwright` configurado, remova antes (`claude mcp remove -s user playwright`) e mantenha o comando que a pessoa usa, trocando só os argumentos. Reinicie a sessão. Sem `--storage-state` o navegador abre sem login nenhum; com perfil fixo (sem `--isolated`), dois assistentes ao mesmo tempo não abrem. Alternativa, para usar o navegador que a pessoa já tem aberto: a extensão “Playwright MCP Bridge” e `--extension` — são as abas e os logins todos dela. Em nenhum caso ele digita senha, resolve captcha ou faz verificação em duas etapas: isso é da pessoa, na janela de login do painel."
+  },
+  "apify": {
+    "rotulo": "Apify (coleta paga)",
+    "para_voce": "Serviço pago por uso que coleta dados públicos em volume. Só gasta até o limite que você escrever.",
+    "tipo": "http",
+    "oque": "rodar um ator da Apify — coletores prontos de dado público, pagos por uso. É o conector pago de referência: custo medido pelo próprio serviço",
+    "aviso": "Apify COBRA por uso, na sua conta de lá. Nada roda sem um teto escrito por você, e cada corrida passa por um orçamento que o agente mostra antes. O teto daqui impede de COMEÇAR corrida nova acima dele; para garantir que nenhuma passe, escreva o mesmo limite no console da Apify (Settings → Usage limits). A coleta é de dado público, e os termos de cada site coletado são com você.",
+    "chave": {
+      "nome": "APIFY_TOKEN",
+      "como": "cabecalho Authorization: Bearer <chave>"
+    },
+    "como_obter_chave": [
+      "Entre em apify.com e crie uma conta de graça — não pede cartão",
+      "No site da Apify: Settings → API & Integrations → copie o “Personal API token”",
+      "Se quiser um segundo cinto: Settings → Usage limits, e ponha lá o mesmo teto que você escreveu aqui"
+    ],
+    "teto_sugerido": 5,
+    "teste": {
+      "oque": "pergunta à Apify de quem é esta chave. Não roda ator nenhum e não custa nada",
+      "url": "https://api.apify.com/v2/users/me",
+      "mostra": "data.username"
+    },
+    "custo": {
+      "modelo": "medido",
+      "moeda": "USD",
+      "estimativa": 0.05,
+      "porItem": 0.005
+    },
+    "ritmo": {
+      "porMinuto": 4
+    },
+    "adaptador": "adaptadores/apify.mjs",
+    "operacoes": {
+      "rodar": {
+        "oque": "roda um ator até o fim e devolve o que ele coletou",
+        "parametros": {
+          "ator": {
+            "oque": "o ator, na forma usuario~nome-do-ator",
+            "obrigatorio": true
+          },
+          "entrada": {
+            "oque": "o objeto de entrada do ator, como a página dele documenta"
+          },
+          "limite": {
+            "oque": "quantos itens no máximo — entra na estimativa"
+          }
+        },
+        "limite": 100
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-# O contrato da carteira
+# O contrato da {base}
 
 Este arquivo é o padrão comum das {n-skills} skills do pack. Ele não é leitura de
 apoio: é onde estão os formatos literais, e formato inventado por uma skill
@@ -9,7 +9,7 @@ Quem lê isto é o Claude executando uma skill. Quem lê o que sai dela é um
 
 **Regra zero — leia antes de escrever.** Nenhuma skill inventa nome de arquivo,
 nome de campo, nome de etapa ou nome de seção. Tudo o que se escreve na
-carteira tem gabarito aqui embaixo. O que não tem gabarito não se escreve: se
+{base} tem gabarito aqui embaixo. O que não tem gabarito não se escreve: se
 pergunta.
 
 **Onde este arquivo está.** Cada skill traz a própria cópia em

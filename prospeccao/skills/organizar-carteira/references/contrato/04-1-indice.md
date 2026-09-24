@@ -15,11 +15,11 @@ atualizado: 2026-08-19
 ## Quem sou — é esta a voz das mensagens
 nome: Renata Vasques
 cargo: sócia
-telefone: +55 11 99888-7766
+telefone: +55 11 90000-0002
 empresa: Vasques Analytics
 o que eu vendo: painel de dados e automação de fechamento
 setores em que já vendi: financeiro, indústria moveleira, saúde
-assinatura de e-mail: Renata Vasques · Vasques Analytics · vasquesanalytics.com.br
+assinatura de e-mail: Renata Vasques · Vasques Analytics · vasquesanalytics.example
 
 ## Onde está o quê
 perfil.md        quem vale a pena, por quê, e o que desqualifica

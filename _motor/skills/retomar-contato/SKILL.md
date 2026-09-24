@@ -1,24 +1,23 @@
 ---
 name: retomar-contato
 description: >-
-  Varre a carteira e lista quem parou de responder — há quantos dias, em que
+  Varre a {base} e lista quem parou de responder — há quantos dias, em que
   etapa parou e o que já viu — e escreve, para cada um, a mensagem de retomada
   que traz uma novidade concreta em vez de cobrar resposta. Nunca repete o
   ângulo da última tentativa, deixa em paz quem já foi retomado duas vezes sem
-  responder, e grava a tentativa no arquivo {do-pessoa} para a próxima execução
+  responder, e grava a tentativa no arquivo {do-andante} para a próxima execução
   saber. Com o conector de WhatsApp ligado ela também manda — uma por uma,
   depois de mostrar na tela para quem vai, o texto inteiro e por que aquela
   pessoa está na lista. Use quando o {profissional} diz “quem sumiu?”, “quem parou
   de responder”, “preciso dar um toque em alguém”, “semana fraca, quem eu
-  chamo”, “o que eu
-  mando pra quem visitou e não voltou”, “quero reativar {pessoa} de muito tempo atrás”, “tem
+  chamo”, “{gatilho-de-quem-parou}”, “quero reativar {pessoa} de muito tempo atrás”, “tem
   gente parada há tempo demais aí?” ou pede a mensagem para {um-pessoa}
   específico que ficou sem resposta.
 license: MIT
 compatibility: >-
-  Precisa da carteira, numa pasta do computador — ela conta os dias de
-  silêncio de cada {pessoa} e lê as retomadas anteriores no histórico dele. Sem
-  carteira, NÃO funciona: não há o que varrer, nem onde gravar a tentativa para
+  Precisa da {base}, numa pasta do computador — ela conta os dias de
+  silêncio de cada {andante} e lê as retomadas anteriores no `## Histórico`. Sem
+  {base}, NÃO funciona: não há o que varrer, nem onde gravar a tentativa para
   a próxima execução não repetir o ângulo. Não abre link. Sem conector de
   WhatsApp — que é o normal — escreve o texto e para; com o conector ligado,
   manda uma por vez, e só depois de mostrar na tela o texto inteiro e para
@@ -30,16 +29,21 @@ allowed-tools: Read Glob Grep Write Edit
 
 ## 1 · O que ela faz, e o que ela não faz
 
-Ela varre a carteira, lista quem parou de responder — há quantos dias, em que
+Ela varre a {base}, lista quem parou de responder — há quantos dias, em que
 etapa parou e o que já viu — e escreve, para cada um, uma mensagem que traz
 **novidade** e usa um ângulo diferente do da última tentativa.
 
 O {profissional} pode chamar com o nome de {um-pessoa}, e aí ela olha só esse; sem
-nome nenhum, varre a carteira inteira.
+nome nenhum, varre a {base} inteira.
+[[se etapa-de:item]]
+
+Aqui quem tem etapa é {o-item}, e quem recebe a mensagem é {o-pessoa} que o
+arquivo {do-item} nomeia. Chamar com {um-item} também vale, e aí ela olha só {esse-item}.
+[[fim]]
 
 Ela não escreve mensagem sem novidade (retomada sem novidade é cobrança, e
 cobrança queima o contato), não insiste com quem já foi retomado duas vezes sem
-responder, e não inventa {item}, preço nem prazo para ter o que dizer.
+responder, e não inventa {item}, {o-que-nao-se-inventa} para ter o que dizer.
 
 **Mandar é a segunda saída, e ela só existe com o conector.** Sem ele — o caso
 normal, e o de toda ferramenta de chat na web — ela entrega os blocos prontos
@@ -57,28 +61,35 @@ padrão comum das dez skills do pack, e nada de formato se decide aqui; o
 inteiro está em `references/CONTRATO.md`. O que esta usa direto:
 
 ```
-1    onde a carteira mora — os dois transportes — e a primeira leitura
+1    onde a {base} mora — os dois transportes — e a primeira leitura
 2    id e apelido — {exemplo-item}, sempre os dois juntos
 3    as três regras: não duplicar, procedência, aposentar
 4.2  hoje.md          4.5  o arquivo {do-pessoa}        4.7  _bruto/
+[[se etapa-de:item]]
+     e o arquivo {do-item} — é nele que moram a etapa e a tentativa
+[[fim]]
 6    o que sai para o WhatsApp, e o que sai por e-mail
 8    a ordem de busca, e o teto de três perguntas
 9    os tetos          10   como uma skill começa e termina
 ```
 
-Os arquivos: `01-0-onde-a-carteira-mora.md`, `02-0-id-e-apelido.md`,
+Os arquivos: `01-0-onde-a-{pasta-base}-mora.md`, `02-0-id-e-apelido.md`,
 `03-0-as-tres-regras.md`, `04-2-hoje.md`, `04-5-arquivo-de-{pessoa}.md`,
 `04-7-o-bruto.md`, `06-0-o-que-sai.md`, `08-0-quando-perguntar.md`,
 `09-0-os-tetos.md` e `10-0-comeca-e-termina.md`.
+[[se etapa-de:item]]
+E `{secao-arquivo-item}`: a etapa é {do-item}, e a tentativa fica gravada no
+`## Histórico` {do-item}.
+[[fim]]
 
-Depois leia o **`INDICE.md` da carteira**, pela primeira leitura da seção 1 do
-contrato: procura no computador e, não achando, a pasta `carteira` no Drive. A
-linha `carteira:` dele diz o transporte — `local` ou `drive` —, e **toda
+Depois leia o **`INDICE.md` da {base}**, pela primeira leitura da seção 1 do
+contrato: procura no computador e, não achando, a pasta `{pasta-base}` no Drive. A
+linha `{pasta-base}:` dele diz o transporte — `local` ou `drive` —, e **toda
 leitura e toda gravação desta execução vão por ele**. Se não há `INDICE.md` em
-lugar nenhum, a carteira não existe: diga isto e pare, sem criar pasta nenhuma.
+lugar nenhum, a {base} não existe: diga isto e pare, sem criar pasta nenhuma.
 
 ```
-Não achei a carteira, nem no computador nem no seu Drive. Rode
+Não achei a {base}, nem no computador nem no seu Drive. Rode
 /{plugin}:comecar — ele monta com você e termina com {um-item} e {um-pessoa}
 de verdade lá dentro. Depois isto aqui funciona.
 ```
@@ -104,7 +115,7 @@ responder sem perguntar   não muda nada aqui — retomada não é resposta a
 não                       a skill nem oferece: entrega os blocos e para
 ```
 
-**A data de hoje vem do ambiente, não da carteira.** A última linha do
+**A data de hoje vem do ambiente, não da {base}.** A última linha do
 `hoje.md` pode ser de duas semanas atrás, e todo o cálculo de silêncio desta
 skill depende de hoje estar certo.
 
@@ -138,33 +149,57 @@ que faça retomada sair sem ser mostrada.
 
 ## 4 · O passo a passo
 
-É tarefa de três ou mais passos demorados — lê a carteira inteira e escreve em
+É tarefa de três ou mais passos demorados — lê a {base} inteira e escreve em
 vários arquivos. **Mostre o TODO na tela** com os passos 1 a 7. O passo 8 entra
 no TODO só quando há conector: sem ele, não existe.
 
 ### Passo 1 · Quem está parado
 
+[[se etapa-de:pessoa]]
 Leia, nesta ordem: `funil.md` (dá a etapa e o `desde`), `{pasta-pessoas}/_indice.md`
 (dá a coluna `último contato`) e depois o arquivo de cada {pessoa} da lista. **O
 arquivo vence a vista** — se o `_indice.md` diz 5 de agosto e o histórico do
 {pessoa} tem uma linha de 12, vale a do arquivo, e o `_indice.md` entra na lista
 do que reescrever.
 
-O que se mede é o **silêncio dele**, não o último toque do {profissional}. A última
+[[fim]]
+[[se etapa-de:item]]
+Leia, nesta ordem: `funil.md` (dá a etapa e o `desde` de cada {item}),
+`{pasta-itens}/_indice.md` e depois o arquivo de cada {item} da lista. **O
+arquivo vence a vista** — se o `_indice.md` diz 5 de agosto e o `## Histórico`
+{do-item} tem uma linha de 12, vale a do arquivo, e o `_indice.md` entra na
+lista do que reescrever.
+
+**Quem anda no funil é {o-item}; quem recebe a mensagem é gente.** Para cada
+{item} que parou, leia o campo `{campo-da-pessoa-no-item}`: é ele que nomeia
+{o-pessoa}, e é o arquivo {do-pessoa} que dá o telefone, o `canal:` e o
+`não contatar:`. Campo vazio ou `?` é o caso comum, e não é defeito: {o-item}
+**não entra na lista de mensagens** — não há para quem escrever — e sai em
+“quem ficou de fora” com o motivo literal `sem {pessoa}: o próximo passo é achar
+com quem falar`. Quem transforma essa linha em caixa do `hoje.md` é
+`/{plugin}:o-que-fazer-hoje`, não esta skill.
+
+[[fim]]
+O que se mede é o **silêncio do outro lado**, não o último toque do {profissional}. A última
 vez que {o-pessoa} falou está, em ordem de busca:
 
 ```
 {retomar--quem-esta-parado}
 ```
 
-Não deu para saber quem falou por último, em nenhum dos seis: {o-pessoa} entra
+Não deu para saber quem falou por último, em nenhum dos seis: {o-andante} entra
 na lista com `parado há ?` e vira uma linha em `## Falta saber`. Não estime.
+[[se etapa-de:item]]
 
-**O conector viu o que a carteira não sabia?** Acontece, e é informação nova,
+Onde não há {pessoa}, quem “falou” é o outro lado inteiro: a última resposta
+que o `## Histórico` {do-item} registra, de quem quer que tenha vindo.
+[[fim]]
+
+**O conector viu o que a {base} não sabia?** Acontece, e é informação nova,
 não defeito: {o-pessoa} respondeu e ninguém anotou. Diga na lista — “respondeu
-dia 19, e a carteira não registrou” — e ponha uma linha em `## Falta saber`.
+dia 19, e a {base} não registrou” — e ponha uma linha em `## Falta saber`.
 **Não grave a conversa aqui**: quem traz conversa para `_bruto/` é
-`/{plugin}:organizar-carteira`, e uma skill que grava fora do escopo dela é a
+`/{plugin}:organizar-{pasta-base}`, e uma skill que grava fora do escopo dela é a
 que ninguém desconfia quando o arquivo aparece estranho.
 
 E o contrário também vale: sem telefone no arquivo {do-pessoa}, o conector não
@@ -178,13 +213,12 @@ outro:
 {retomar--prazos-por-etapa}
 
 Passou de **{prazo-de-silencio}** sem responder: não é assunto desta skill. Diga em uma
-linha que ele é caso de aposentar pela regra 3 e que quem faz isso é
-`/{plugin}:organizar-carteira`. Não aposente aqui.
+linha que é caso de aposentar pela regra 3 e que quem faz isso é
+`/{plugin}:organizar-{pasta-base}`. Não aposente aqui.
 
 ### Passo 3 · A ordem da lista
 
-Primeiro pela etapa, na ordem da tabela acima — quem visitou vale mais que quem
-nunca respondeu, e é por isso que a lista não é cronológica. Empate entre dois
+Primeiro pela etapa, na ordem da tabela acima — {exemplo-etapa-que-vale-mais}, e é por isso que a lista não é cronológica. Empate entre dois
 da mesma etapa: sobe quem **tem novidade** para receber (passo 4); persistindo,
 sobe quem está parado há mais tempo.
 
@@ -196,23 +230,30 @@ Para cada um, procure novidade nesta ordem e **pare na primeira que existir**:
 {retomar--o-angulo}
 ```
 
+[[se etapa-de:pessoa]]
 **O filtro do ângulo 1**, e ele é literal: {filtro-do-angulo}; e {o-item} **não** está em `{secao-itens-mostrados}` nem foi
 citado em retomada anterior. Faltou qualquer um desses campos {no-pessoa} — está
 como `?` — o ângulo 1 não se usa: mandar {item} que “parece” bater é como
 recomeçar do zero.
+[[fim]]
+[[se etapa-de:item]]
+**O filtro do ângulo 1**, e ele é literal: {filtro-do-angulo}; e a novidade **não**
+foi citada em retomada anterior {do-item}. Faltou qualquer um desses campos —
+está como `?` — o ângulo 1 não se usa: mandar novidade que “parece” servir é
+como recomeçar do zero.
+[[fim]]
 
-Só chame de **novo** o que entrou na carteira depois do último contato dele. O
-que é antigo e nunca foi mostrado é “não te mostrei ainda”, e a mensagem diz
+Só chame de **novo** o que entrou na {base} depois do último contato dele. O
+que é antigo e {o-antigo-que-nao-e-novidade}, e a mensagem diz
 assim.
 
-**Escassez que não está escrita no arquivo não se escreve na mensagem.** “Já
-tem outro interessado”, “é o último dessa faixa”, “vai sair rápido”: só se
-`estado: reservado` ou uma linha de `## Histórico` disser isso, com data. Sem
+**{Pressao-inventada} que não está escrita no arquivo não se escreve na mensagem.** {exemplos-de-pressao-inventada}: só se
+{campo-que-prova-a-pressao} ou uma linha de `## Histórico` disser isso, com data. Sem
 isso, é pressão inventada — e é o {profissional} que atende o telefone depois.
 
 ### Passo 5 · O que já foi tentado
 
-Antes de escrever, leia no `## Histórico` {do-pessoa} as linhas que começam com
+Antes de escrever, leia no `## Histórico` {do-andante} as linhas que começam com
 `retomada` (formato no passo 7) e conte **quantas vieram depois da última
 manifestação dele**:
 
@@ -223,17 +264,26 @@ manifestação dele**:
 ```
 
 O ângulo repetido é o defeito que esta skill existe para não cometer. Se o
-único ângulo disponível é o mesmo da última vez, {o-pessoa} vai para “sem ângulo
+único ângulo disponível é o mesmo da última vez, {o-andante} vai para “sem ângulo
 novo” — não se manda o mesmo assunto com outras palavras.
 
 **Cadência mínima: 7 dias.** Quem recebeu retomada há menos de uma semana não
 entra na lista, mesmo com ângulo novo. Duas mensagens na mesma semana é o que
 faz {o-pessoa} arquivar a conversa.
 
+[[se etapa-de:item]]
+**A contagem é {do-item}; a cadência é {do-pessoa}.** Duas retomadas sem resposta
+fecham {aquele-item}, e a conta não passa para {outro-item}. Os 7 dias valem para a GENTE: quando {o-pessoa}
+responde por mais de {um-item}, procure linha de `retomada` dos últimos 7 dias
+no `## Histórico` de cada {item} que nomeia {esse-pessoa} no campo
+`{campo-da-pessoa-no-item}`. Achou: {o-item} desta vez espera a semana seguinte,
+e sai em “quem ficou de fora” dizendo por quê.
+
+[[fim]]
 ### Passo 6 · Quem sai da lista, e o que se diz
 
 Duas retomadas seguidas sem resposta: **não escreva a terceira.** Ele sai da
-lista de mensagens e vira uma linha em `## Travado` no `hoje.md` (passo 7),
+lista de mensagens e vira uma linha em `## Parado` no `hoje.md` (passo 7),
 sugerindo arquivar. Diga o motivo em uma frase, sem rodeio:
 
 ```
@@ -269,11 +319,11 @@ pergunta fácil  sobre a novidade, nunca sobre a demora. Sim ou não, ou duas
 Abertura proibida, e cada uma pela mesma razão — todas fazem do silêncio o
 assunto: “tudo bem?”, “passando para saber se ainda tem interesse”, “não sei se
 você viu minha mensagem”, “desculpa insistir”, “faz tempo que a gente não
-fala”, “ainda está procurando?”.
+fala”, {pergunta-vazia-de-retomada}.
 
-Toda afirmação da mensagem sai de um campo com procedência. Preço com mais de
+Toda afirmação da mensagem sai de um campo com procedência. {Dado-que-envelhece} com mais de
 30 dias entra na mensagem assim mesmo, e **fora do bloco** vai a linha: “o
-preço do {exemplo-item-2} é de 12 de julho — confira antes de
+{dado-que-envelhece} do {exemplo-item-2} é de 12 de julho — confira antes de
 mandar”.
 
 ### Passo 8 · A tela do envio
@@ -309,7 +359,11 @@ aguardando”: o que ele aprova é o texto, não a contagem.
 
 ```
 id com apelido      {exemplo-pessoa}, sempre os dois juntos
-etapa e silêncio    visitou · parada há 4 dias
+[[se etapa-de:item]]
+de que se fala      {exemplo-item} — id com apelido também, porque a etapa
+                    e o silêncio da linha de baixo são {do-item}
+[[fim]]
+etapa e silêncio    {exemplo-etapa-e-silencio}
 a última palavra    de quem foi, quando, e o que foi dito
 qual tentativa      retomada 1, ou retomada 2 · a última
 o ângulo            o que esta mensagem traz de novo
@@ -351,18 +405,18 @@ chegada: quem controla o intervalo é a ponte.
 
 #### 8.2 · `ultima_interacao` imediatamente antes de cada envio
 
-A lista foi montada com o que está **escrito na carteira**; a conversa é outra
+A lista foi montada com o que está **escrito na {base}**; a conversa é outra
 coisa e anda sozinha. Entre a leitura e o envio passaram minutos, e é nesses
 minutos que {o-pessoa} responde.
 
-Voltou palavra dele depois do que a carteira registra: **a retomada não sai.**
+Voltou palavra dele depois do que a {base} registra: **a retomada não sai.**
 Ela vira aviso, e o aviso é mais útil que a mensagem seria:
 
 ```
-{exemplo-pessoa} — ela respondeu 14 minutos atrás e a carteira não sabe.
+{exemplo-pessoa} — ela respondeu 14 minutos atrás e a {base} não sabe.
 Não mandei a retomada: retomar quem já voltou é o que queima o contato. A
 conversa está esperando resposta, e quem traz ela para dentro é
-/{plugin}:organizar-carteira.
+/{plugin}:organizar-{pasta-base}.
 ```
 
 A linha entra em `## Falta saber`. **Não grave a conversa aqui** — a regra do
@@ -422,7 +476,7 @@ contatar             lista desta execução e escreva no arquivo dela, se ainda
 **Quem tem `não contatar: sim` no arquivo não entra nesta lista, ponto** — e
 não aparece nem em “fora hoje”, porque nomear alguém que pediu silêncio é
 oferecer que se insista. A ponte recusa de novo se passar, mas essa recusa é a
-segunda rede, não a primeira: quem lê a carteira é esta skill.
+segunda rede, não a primeira: quem lê a {base} é esta skill.
 
 Recusa que não diz o número nem como mudá-lo está impedindo em vez de informar
 (contrato, 7.1).
@@ -436,7 +490,7 @@ vem antes dele, junto do trabalho:
 {retomar--a-tela-depois}
 ```
 
-O que saiu vira linha no `## Histórico` {do-pessoa} (seção 7, com o fim de linha
+O que saiu vira linha no `## Histórico` {do-andante} (seção 7, com o fim de linha
 que o envio muda). O que não saiu **não vira nada**.
 
 ---
@@ -452,18 +506,18 @@ lista antes de perguntar é o que impede o {profissional} de esperar por nada. U
 UI de perguntas do harness, com o custo escrito em cada opção:
 
 ```
-Quatro {pasta-pessoas} sem resposta. Escrevo a mensagem de quem?
+Quatro {pasta-andantes} sem resposta. Escrevo a mensagem de quem?
 
-  Os três mais quentes   proposta, visitou e visitou · pronto agora
+  Os três mais quentes   {exemplo-as-tres-mais-quentes} · pronto agora
   Escolher na lista      você diz os nomes · uma volta a mais
-  Só a lista hoje        nada escrito, nada gravado {no-pessoa}
+  Só a lista hoje        nada escrito, nada gravado {no-andante}
 ```
 
 Rótulo de até quatro palavras; a descrição declara o custo, não vende a opção.
 
 **A tela do passo 8 não conta neste teto.** Ela não é pergunta de busca — é a
 confirmação do ato, e sem ela não há envio. Perguntar “mando?” não é gastar uma
-das três; perguntar de novo o que já está escrito na carteira, é.
+das três; perguntar de novo o que já está escrito na {base}, é.
 
 Pergunte só isto, e só quando faltar de verdade:
 
@@ -491,7 +545,7 @@ títulos exatos.
 {retomar--saida-a-lista}
 ```
 
-Uma linha por {pessoa}, id com apelido sempre, e a coluna `ângulo` já diz quem
+Uma linha por {andante}, id com apelido sempre, e a coluna `ângulo` já diz quem
 recebe mensagem e quem não recebe.
 
 ### Quem ficou de fora
@@ -537,26 +591,41 @@ Saiu pela ponte, o `## Guardei` diz isso na mesma linha — `— retomada enviad
 14:32, e a linha no histórico`. O que ficou só escrito continua como está: o
 arquivo guarda a tentativa, não o envio que não houve.
 
+[[se etapa-de:pessoa]]
 Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
 nomeia a pasta e o arquivo — `{pasta-pessoas}/{exemplo-pessoa-arquivo-2}, na pasta
-carteira do seu Drive — uma linha de retomada no histórico`.
+{base} do seu Drive — uma linha de retomada no histórico`.
+[[fim]]
+[[se etapa-de:item]]
+Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
+nomeia a pasta e o arquivo — `{pasta-itens}/{exemplo-item-arquivo}, na pasta
+{base} do seu Drive — uma linha de retomada no histórico`.
+[[fim]]
 
 ---
 
-## 7 · O que gravar na carteira
+## 7 · O que gravar na {base}
 
 Esta skill tem `Write` e `Edit` porque **a tentativa gravada é o que faz a
 próxima execução não repetir o ângulo** — sem isso ela é um chat que esquece, e
 o pack inteiro perde a razão. Ela escreve em três lugares, e em nenhum outro.
 
 **No `drive`, atualizar reescreve o arquivo inteiro** (contrato, seção 1): leia
-o arquivo {do-pessoa}, o `hoje.md` ou o `_indice.md` antes de gravar e devolva o
+o arquivo {do-andante}, o `hoje.md` ou o `_indice.md` antes de gravar e devolva o
 texto inteiro com a linha nova dentro.
 
-### 1 · A tentativa, no `## Histórico` {do-pessoa}
+### 1 · A tentativa, no `## Histórico` {do-andante}
 
+[[se etapa-de:pessoa]]
 Uma linha, no formato abaixo. É seção do gabarito (contrato, 4.5): não se cria
 campo nem seção nova.
+[[fim]]
+[[se etapa-de:item]]
+Uma linha, no formato abaixo. É seção do gabarito (contrato,
+`{secao-arquivo-item}`): não se cria campo nem seção nova. No arquivo
+{do-pessoa} não entra linha de retomada — esse arquivo diz quem a pessoa é, e
+não o andamento de cada {item}.
+[[fim]]
 
 ```
 {retomar--linha-do-historico}
@@ -567,6 +636,7 @@ incluída; ele zera quando {o-pessoa} responde. O número é para o {profissiona
 a contagem que governa o passo 5 vem de contar as linhas, não de confiar no
 número escrito.
 
+[[se etapa-de:pessoa]]
 `mensagem escrita, envio com o {profissional}` fica porque é o que é verdade quando a
 skill não mandou — e é o caso normal. Por isso **não** se escreve `enviado` em
 `{secao-itens-mostrados}` agora: `enviado` é fato, e o fato ainda não aconteceu.
@@ -574,6 +644,14 @@ Depois do bloco, uma linha só, sem insistir: “mandou? me diga e eu marco o
 {exemplo-item-2} como enviado no arquivo dela.” Enquanto ele não
 disser, a linha do histórico já basta para a próxima execução não mandar o mesmo
 {item} de novo.
+[[fim]]
+[[se etapa-de:item]]
+`mensagem escrita, envio com o {profissional}` fica porque é o que é verdade quando a
+skill não mandou — e é o caso normal: `enviado` é fato, e o fato ainda não
+aconteceu. Depois do bloco, uma linha só, sem insistir: “mandou? me diga e eu
+troco o fim da linha no histórico.” Enquanto ele não disser, a linha que está lá
+já basta para a próxima execução não repetir o ângulo.
+[[fim]]
 
 **Saiu pela ponte, o fim da linha muda**, porque o fato mudou:
 
@@ -581,21 +659,23 @@ disser, a linha do histórico já basta para a próxima execução não mandar o
 {retomar--linha-do-historico-2}
 ```
 
+[[se etapa-de:pessoa]]
 E aí, **e só aí**, {o-item} que a mensagem cita vira `enviado` em `{secao-itens-mostrados}`:
 agora é fato, e não precisa mais perguntar.
 
+[[fim]]
 Grave depois do `enviar_mensagem` voltar, nunca antes. Recusado — prévia
 vencida, teto da hora, mensagem nova por cima —, **não grave nada**: não houve
 retomada, e uma linha falsa de retomada tranca {aquele-pessoa} por sete dias de
 cadência e queima uma das duas tentativas dele.
 
-Confira o teto de **60 linhas** ao gravar. Estourou: condense o `## Histórico`
+Confira o teto de **{teto-andante} linhas** ao gravar. Estourou: condense o `## Histórico`
 pela seção 9 — linhas de mais de 90 dias viram uma por mês. Fato corrente nunca
 é cortado para caber.
 
 ### 2 · A sugestão de arquivar, no `hoje.md`
 
-Quem bateu as duas retomadas vira uma caixa em `## Travado` — a seção existe
+Quem bateu as duas retomadas vira uma caixa em `## Parado` — a seção existe
 para o que está parado esperando decisão:
 
 ```
@@ -604,7 +684,7 @@ para o que está parado esperando decisão:
 
 Três cuidados. O `hoje.md` é vista derivada e quem o reescreve é
 `/{plugin}:o-que-fazer-hoje` — a linha sobrevive à próxima reescrita porque o
-fato que a origina está no histórico {do-pessoa}, que é o dono. Se o título do
+fato que a origina está no histórico {do-andante}, que é o dono. Se o título do
 arquivo tiver data anterior à de hoje, acrescente a linha e **não mexa no
 título**: o resto da página é de outro dia, e dizer o contrário seria mentir
 sobre o que já foi feito. E se as caixas já forem quinze (teto da seção 9), não
@@ -613,6 +693,7 @@ lista desta execução.
 
 ### 3 · A vista que estava errada
 
+[[se etapa-de:pessoa]]
 Achou divergência entre `{pasta-pessoas}/_indice.md` e o arquivo {do-pessoa} — coluna
 `último contato` atrasada, {pessoa} faltando: corrija a vista a partir do
 arquivo e diga em `## Guardei`. Nunca o contrário.
@@ -620,10 +701,21 @@ arquivo e diga em `## Guardei`. Nunca o contrário.
 **Não se grava mais nada.** Não se muda `etapa:` (silêncio não é mudança de
 etapa), não se cria {pessoa}, não se mexe em arquivo de {item}, não se toca em
 `_bruto/`, não se apaga coisa alguma.
+[[fim]]
+[[se etapa-de:item]]
+Achou divergência entre `{pasta-itens}/_indice.md` e o arquivo {do-item} — a
+data da última linha do histórico atrasada, {item} faltando: corrija a vista a
+partir do arquivo e diga em `## Guardei`. Nunca o contrário.
+
+**Não se grava mais nada.** Não se muda `etapa:` (silêncio não é mudança de
+etapa), não se cria {item} nem {pessoa}, não se toca em `_bruto/`, não se apaga
+coisa alguma. No arquivo {do-pessoa} entra uma coisa só, e só quando ela
+acontece: o `não contatar: sim` do passo 8.5.
+[[fim]]
 
 Se o {profissional} colar uma conversa durante a execução, a ordem é a da seção 7 do
 contrato: **grava o bruto primeiro**, em
-`_bruto/AAAA-MM-DD-<canal>-<apelido-curto>.md` da carteira — arquivo novo no
+`_bruto/AAAA-MM-DD-<canal>-<apelido-curto>.md` da {base} — arquivo novo no
 `local`, arquivo criado dentro da pasta `_bruto/` no `drive` — com o cabeçalho
 de três linhas, e só depois extrai fato.
 
@@ -637,35 +729,48 @@ Sete limites, e é melhor saber deles antes de mandar a mensagem.
 respondeu no WhatsApp e a conversa não foi colada, ela vai propor retomar quem
 já voltou — e uma retomada em cima de uma resposta ignorada é pior que
 nenhuma. O sinal é arquivo com muitos `?` e histórico curto; o conserto é colar
-a conversa e rodar `/{plugin}:organizar-carteira` antes. Na dúvida, ela
+a conversa e rodar `/{plugin}:organizar-{pasta-base}` antes. Na dúvida, ela
 pergunta uma vez, e é a pergunta que mais paga nesta skill. Com conector o
 passo 8.2 pega isso no último segundo — mas só de quem ia receber, e só na hora
 do envio: a lista continua sendo a do que está escrito.
 
+[[se etapa-de:pessoa]]
 **Sem `## O que procura` preenchido, não há novidade computável.** {Pessoa} cujo
 {campos-do-filtro} estão em `?` não recebe {item} que entrou depois, por mais
 que a semelhança convença. Ela devolve o que falta em vez de chutar — {item} fora do que a
 pessoa quer não retoma o contato, encerra o assunto.
+[[fim]]
+[[se etapa-de:item]]
+**Sem os campos do filtro preenchidos, não há novidade computável.** Onde
+{campos-do-filtro} estão em `?`, o ângulo 1 não existe, por mais que a
+semelhança convença. Ela devolve o que falta em vez de chutar — novidade que
+não serve a quem lê não retoma o contato, encerra o assunto.
+
+**E sem {pessoa}, não há mensagem.** {Item} que parou e não nomeia ninguém em
+`{campo-da-pessoa-no-item}` é a maior parte de “quem ficou de fora”, e está
+certo que seja: esta skill escreve para gente. Achar com quem falar é trabalho
+de outra, e ela só diz que falta.
+[[fim]]
 
 **Ela não abre link nenhum.** Não há ferramenta de web no `allowed-tools` dela,
-e é de propósito: ela trabalha com o que já está apurado na carteira, com a data
-da procedência, e avisa quando o dado passou de 30 dias. Preço desatualizado ela
-declara; preço novo ela não busca — quem busca é `/{plugin}:{skill-anunciar}`.
+e é de propósito: ela trabalha com o que já está apurado na {base}, com a data
+da procedência, e avisa quando o dado passou de 30 dias. {Dado-que-ela-nao-busca} desatualizado ela
+declara; {dado-que-ela-nao-busca} novo ela não busca — quem busca é `/{plugin}:{skill-que-abre-link}`.
 Dado de {item} não se chuta, nem para ilustrar.
 
-**Ela não sabe por que {o-pessoa} sumiu.** Silêncio longo em quem visitou
-costuma ser {motivos-de-sumico} — e nenhuma dessas coisas está na carteira. Por isso a
+**Ela não sabe por que {o-pessoa} sumiu.** Silêncio longo em {exemplo-de-quem-some}
+costuma ser {motivos-de-sumico} — e nenhuma dessas coisas está na {base}. Por isso a
 mensagem pergunta sobre a novidade, e nunca afirma o que ele estaria pensando.
 
 **Ela lê o fim das conversas longas.** Em `_bruto/` com centenas de linhas, ela
 busca as últimas trocas para achar o ângulo, e diz que leu só o fim. O que está
-no meio e importa tem de estar no arquivo {do-pessoa}, que é o dono do fato —
+no meio e importa tem de estar no arquivo {do-andante}, que é o dono do fato —
 essa é a regra 1 e é o que impede a skill de reler quarenta quilobytes por
 telefone.
 
-**Ela não decide o que é do {profissional}.** Não sugere baixar preço, não avalia se
+**Ela não decide o que é do {profissional}.** Não sugere {exemplo-de-concessao}, não avalia se
 a proposta é boa, não promete prazo {terceiros-de-prazo}, e
-não aposenta ninguém — os {prazo-de-silencio} são de `/{plugin}:organizar-carteira`.
+não aposenta ninguém — os {prazo-de-silencio} são de `/{plugin}:organizar-{pasta-base}`.
 
 **E ela só manda o que o {profissional} leu.** Sem conector ela escreve, diz onde
 guardou e para. Com conector ela manda uma por vez, depois da tela do passo 8, e

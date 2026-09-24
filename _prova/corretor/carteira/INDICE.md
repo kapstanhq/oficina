@@ -7,7 +7,7 @@ atualizado: 2026-08-19
 ## Quem sou — é esta a voz das mensagens
 nome: Marcelo Fontes
 creci: 12345-F RS
-telefone: +55 51 99888-7766
+telefone: +55 51 90000-0002
 imobiliária: Fontes Imóveis
 região: Porto Alegre — Azenha, Menino Deus, Cidade Baixa
 assinatura de e-mail: Marcelo Fontes · CRECI 12345-F · Fontes Imóveis

@@ -4,7 +4,7 @@ sobre: P-031 (Sandra Lisboa), E-083 (Móveis Bertoldo, Bento Gonçalves)
 
 ---
 
-De: Sandra Lisboa <sandra.lisboa@moveisbertoldo.com.br>
+De: Sandra Lisboa <sandra.lisboa@moveisbertoldo.example>
 Para: Renata Vasques
 Assunto: Enc: painel de fechamento — indicação do Rui
 
@@ -14,7 +14,7 @@ O Rui me encaminhou o seu contato. Trocamos de ERP em junho e o sistema novo
 não fecha o mês sozinho — continuamos fechando na planilha, com três pessoas
 conferindo, e a meta é fechar o ano com o ERP funcionando de verdade.
 
-Meu telefone é +55 54 99777-1122. Quem decide isso comigo é o Rui, e passa
+Meu telefone é +55 54 90000-0003. Quem decide isso comigo é o Rui, e passa
 pelo jurídico antes de assinar qualquer coisa.
 
 Consegue me mandar uma proposta?

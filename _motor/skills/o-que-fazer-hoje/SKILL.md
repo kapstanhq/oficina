@@ -1,9 +1,9 @@
 ---
 name: o-que-fazer-hoje
 description: >-
-  Monta a lista do dia lendo a carteira inteira — {gatilhos-do-dia}, quem prometeu
+  Monta a lista do dia lendo a {base} inteira — {gatilhos-do-dia}, quem prometeu
   documento e não mandou, quem está parado tempo demais e {item} sem {exemplo-trabalho}.
-  Ordena por consequência, não por data — o que faz perder negócio hoje vem
+  Ordena por consequência, não por data — o que faz perder {o-que-se-perde} hoje vem
   primeiro —, diz a razão da ordem, dá o id com o apelido e uma frase acionável
   em cada item, e oferece executar o primeiro ali mesmo. Reescreve o hoje.md e
   mais nenhum arquivo. Use de manhã, ou quando o {profissional} diz “o que eu faço
@@ -11,15 +11,15 @@ description: >-
   que tá pegando fogo”, “{frase-do-dia-do-oficio}”, “fiquei três dias fora, o que
   perdi”, “o que ficou pendente”, “estou perdido, é muita coisa” — ou abre a
   sessão sem dizer nada e quer o dia. Não é para escrever a mensagem de quem
-  sumiu, que é /{plugin}:retomar-contato, nem para arrumar a carteira, que é
-  /{plugin}:organizar-carteira.
+  sumiu, que é /{plugin}:retomar-contato, nem para arrumar a {base}, que é
+  /{plugin}:organizar-{pasta-base}.
 license: MIT
 compatibility: >-
-  Precisa da carteira do {profissional}, numa pasta do computador — ela lê a
-  carteira inteira para ordenar o dia. Sem carteira, não funciona; diz isso em
+  Precisa da {base} do {profissional}, numa pasta do computador — ela lê a
+  {base} inteira para ordenar o dia. Sem {base}, não funciona; diz isso em
   uma linha, manda rodar /{plugin}:comecar e não grava nada. A agenda é opcional — com o
   conector do Google Agenda ela lê hoje e amanhã; sem ele, a lista sai só da
-  carteira, e ela avisa.
+  {base}, e ela avisa.
 allowed-tools: Read Glob Grep Write Edit
 ---
 
@@ -27,15 +27,15 @@ allowed-tools: Read Glob Grep Write Edit
 
 ## 1 · O que ela faz, e o que ela não faz
 
-**Não se passa nada para ela:** é só chamar, que ela lê a carteira inteira.
+**Não se passa nada para ela:** é só chamar, que ela lê a {base} inteira.
 
-Ela lê a carteira inteira, monta a lista do dia ordenada por **consequência** —
-o que faz perder negócio hoje vem primeiro —, diz a razão da ordem em uma
-linha, e reescreve o `hoje.md` da carteira com o que achou.
+Ela lê a {base} inteira, monta a lista do dia ordenada por **consequência** —
+o que faz perder {o-que-se-perde} hoje vem primeiro —, diz a razão da ordem em uma
+linha, e reescreve o `hoje.md` da {base} com o que achou.
 
 Ela não escreve mensagem, não muda etapa, não aposenta ninguém, não abre link,
 não inventa compromisso que não está escrito e não toca em nenhum arquivo da
-carteira além do `hoje.md`. Cada item aponta a skill que resolve, e ela oferece
+{base} além do `hoje.md`. Cada item aponta a skill que resolve, e ela oferece
 chamar a primeira.
 
 **Mensagem nenhuma sai daqui.** Com o conector ligado, quatro itens da lista
@@ -71,20 +71,20 @@ das dez skills do pack, e nada de formato se decide aqui; o inteiro está em
 10   como uma skill começa e termina
 ```
 
-Os arquivos: `01-0-onde-a-carteira-mora.md`, `02-0-id-e-apelido.md`,
+Os arquivos: `01-0-onde-a-{pasta-base}-mora.md`, `02-0-id-e-apelido.md`,
 `04-2-hoje.md`, `04-3-funil.md`, `{secao-arquivo-item}`,
 `04-5-arquivo-de-{pessoa}.md`, `07-1-a-mensagem-sai.md`,
 `08-0-quando-perguntar.md`, `09-0-os-tetos.md` e `10-0-comeca-e-termina.md`.
 
-Depois ache e leia **o `INDICE.md` da carteira**, pelos seis degraus da primeira
-leitura (contrato, seção 1). A linha `carteira:` dele diz o transporte e o
+Depois ache e leia **o `INDICE.md` da {base}**, pelos seis degraus da primeira
+leitura (contrato, seção 1). A linha `{pasta-base}:` dele diz o transporte e o
 lugar, e **toda leitura e toda gravação desta execução vão por ele** — no
-`local` é caminho absoluto; no `drive` é a pasta `carteira`, pelo conector, e o
-arquivo é filho dela. Não achou o `INDICE.md` em transporte nenhum? A carteira
+`local` é caminho absoluto; no `drive` é a pasta `{pasta-base}`, pelo conector, e o
+arquivo é filho dela. Não achou o `INDICE.md` em transporte nenhum? A {base}
 não existe: diga isto e pare, sem montar nada.
 
 ```
-Não achei a sua carteira. Rode /{plugin}:comecar — ele monta com você, pergunta
+Não achei a sua {base}. Rode /{plugin}:comecar — ele monta com você, pergunta
 onde ela fica e termina com {um-item} e {um-pessoa} de verdade lá dentro. Depois
 isto aqui abre o seu dia em dez segundos.
 ```
@@ -103,10 +103,10 @@ cala, que é o caso de `envio: não`.
 pode ser de duas semanas atrás, e a lista inteira desta skill é uma conta de
 datas: hoje errado é lista errada, item por item.
 
-O `hoje.md` não existe, mas a carteira existe? Liste a pasta da carteira antes
+O `hoje.md` não existe, mas a {base} existe? Liste a pasta da {base} antes
 de concluir que ele não está lá (contrato, seção 1) — busca vazia não prova
 ausência. Não está mesmo: copie `references/modelos/hoje.md`, apague o
-comentário `<!-- MODELO · … -->` e siga. Isso não é criar a carteira: é repor a
+comentário `<!-- MODELO · … -->` e siga. Isso não é criar a {base}: é repor a
 vista que ela deveria ter.
 
 ---
@@ -120,7 +120,7 @@ Qualquer outro valor, linha ausente ou arquivo ilegível: **copiloto**.
 |---|---|---|
 | a lista do dia | entrega sempre, antes de qualquer pergunta | idem |
 | o `hoje.md` | reescreve | idem |
-| o primeiro item | **oferece** na UI de perguntas | **executa**, se o insumo já estiver na carteira (passo 6) |
+| o primeiro item | **oferece** na UI de perguntas | **executa**, se o insumo já estiver na {base} (passo 6) |
 | data em prosa sem dia (“sábado de manhã”) | pergunta, se o item for do topo | resolve pelo dia mais próximo e declara; havendo dois igualmente prováveis, deixa `?` |
 | linha órfã do `hoje.md` velho | pergunta, se o item for do topo | carrega e declara |
 | fecho | `## Guardei` e `## Falta saber` | mais `## Decidi sozinho` |
@@ -140,7 +140,7 @@ automático para o {exemplo-trabalho} não ligou para a boca dele.
 
 ## 4 · O passo a passo
 
-Ela lê a carteira inteira e reescreve um arquivo: é tarefa de passos demorados,
+Ela lê a {base} inteira e reescreve um arquivo: é tarefa de passos demorados,
 então **mostre o TODO na tela**. Ele tem duas vidas. Enquanto ela varre, são os
 quatro passos do trabalho; assim que a lista fica pronta **com mais de três
 itens**, o TODO passa a ser a lista do dia, na ordem da escada — o que o
@@ -154,7 +154,8 @@ mora na caixa do `hoje.md`.
 Nesta ordem, e o arquivo dono sempre vence a vista (contrato, seção 1):
 
 ```
-1  funil.md               etapa, · desde e · próximo: de cada {pessoa} na carteira
+[[se etapa-de:pessoa]]
+1  funil.md               etapa, · desde e · próximo: de cada {pessoa} na {base}
 2  {pasta-pessoas}/_indice.md    último contato — dá a fila de quem abrir
 3  cada arquivo de {pessoa} que a fila apontar
                           ## Combinado · ## Histórico · etapa: · canal:
@@ -162,18 +163,41 @@ Nesta ordem, e o arquivo dono sempre vence a vista (contrato, seção 1):
 5  cada arquivo de {item} que a fila cita, mais {os-itens} em
                           {estados-vivos}
                           {campos-lidos-do-item}
+[[fim]]
+[[se etapa-de:item]]
+1  funil.md               etapa, · desde e · próximo: de cada {item} na {base},
+                          e {o-pessoa} que a linha traz, quando traz
+2  {pasta-itens}/_indice.md     estado e atualizado — dá a fila de quem abrir
+3  cada arquivo de {item} que a fila apontar, mais {os-itens} em
+                          {estados-vivos}
+                          etapa: · ## Combinado · ## Histórico ·
+                          {campo-da-pessoa-no-item}:
+                          {campos-lidos-do-item}
+4  {pasta-pessoas}/_indice.md    último contato — só de quem o passo 3 ligou
+5  cada arquivo de {pessoa} que um {campo-da-pessoa-no-item}: aponta
+                          ## Combinado · ## Histórico · canal:
+[[fim]]
 6  o hoje.md de ontem      as caixas marcadas e as linhas que outras skills
                           acrescentaram (passo 5)
 7  a agenda, se houver     só hoje e amanhã (passo 2)
 ```
 
 No `drive`, cada `_indice.md` se procura **dentro** da pasta que a linha nomeia:
-há dois arquivos com esse nome na carteira, e o nome solto devolve os dois
+há dois arquivos com esse nome na {base}, e o nome solto devolve os dois
 (contrato, seção 1).
 
+[[se etapa-de:item]]
+**Aqui quem tem `etapa:` é {o-item}, e a fila sai {dos-itens}.** O arquivo
+{do-pessoa} não tem etapa, e só é aberto quando um arquivo de {item} aponta
+para ele pelo campo `{campo-da-pessoa-no-item}:`. Campo vazio ali **não é
+defeito**: é o caso comum, e {o-item} entra na lista do mesmo jeito. O silêncio
+se mede na última linha do `## Histórico` {do-item} — e, quando o campo
+aponta {um-pessoa}, vale a data mais nova entre os dois arquivos.
+
+[[fim]]
 Divergiu vista e arquivo — o `_indice.md` diz 5 de agosto e o histórico do
 {pessoa} tem linha de 12? Vale o arquivo, e a divergência vira uma linha em
-`## Falta saber` com o nome de `/{plugin}:organizar-carteira`. **Esta skill não
+`## Falta saber` com o nome de `/{plugin}:organizar-{pasta-base}`. **Esta skill não
 conserta vista**, pelo motivo do passo 7.
 
 ### Passo 2 · A agenda, quando ela está ligada
@@ -186,15 +210,21 @@ está em `allowed-tools` e a primeira chamada pede permissão — isso é normal
 
 - **só leitura.** `create_event`, `update_event` e `delete_event` não se usam
   nesta skill, em nenhum modo.
-- **evento sem {pessoa} na carteira** entra na lista como está, com `?` no lugar
+- **evento sem {pessoa} na {base}** entra na lista como está, com `?` no lugar
   do id, e vira uma linha em `## Falta saber`. Não se cria {pessoa} a partir de
   um título de evento.
-- **hora divergente** entre a agenda e o `## Combinado` {do-pessoa}: mostre as
-  duas na mesma linha e **não escolha**. A agenda não é vista da carteira nem
+[[se etapa-de:item]]
+- **evento que nomeia {um-item} da {base}** é {do-item}, com o campo
+  `{campo-da-pessoa-no-item}:` preenchido ou vazio: entra com o id e o apelido
+  {do-item}. O `?` fica para o evento que não bate com arquivo nenhum, nem de
+  {item} nem de {pessoa}.
+[[fim]]
+- **hora divergente** entre a agenda e o `## Combinado` {do-andante}: mostre as
+  duas na mesma linha e **não escolha**. A agenda não é vista da {base} nem
   arquivo dono — escolher errado faz ele chegar na hora errada.
 
 **`Google Agenda: não`, linha ausente, ou a ferramenta não está na sessão:** a
-lista sai só da carteira e ela diz isso em uma linha. Não trava, não pergunta e
+lista sai só da {base} e ela diz isso em uma linha. Não trava, não pergunta e
 **não mexe na linha `Google Agenda:`** — `## O que está conectado` é
 configuração do {profissional}.
 
@@ -211,7 +241,7 @@ promessa vence no dia seguinte ao prometido; parado é 7 dias; {hoje--os-cortes-
 **O corte de 7 dias do “parado” é grosso de propósito.** Quem mede silêncio
 direito é `/{plugin}:retomar-contato`, que tem prazo por etapa — aqui basta o
 sinal, e a linha diz de quem é o assunto. Passou de {prazo-de-silencio}, é caso de
-aposentar pela regra 3, e quem aposenta é `/{plugin}:organizar-carteira`: esta
+aposentar pela regra 3, e quem aposenta é `/{plugin}:organizar-{pasta-base}`: esta
 skill nem sugere, só aponta.
 
 `## Combinado` com data em prosa — “sábado de manhã”, “semana que vem” — sem
@@ -222,7 +252,7 @@ marcar {momento-encontro} sozinho.
 ### Dois gatilhos que o conector corrige
 
 Com `WhatsApp: sim` em `## O que está conectado` do `INDICE.md`, confirme estes
-dois antes de escrevê-los — os dois afirmam que **nada chegou**, e a carteira
+dois antes de escrevê-los — os dois afirmam que **nada chegou**, e a {base}
 só sabe o que alguém anotou:
 
 ```
@@ -233,10 +263,17 @@ parado tempo demais      ultima_interacao dá a data exata e de quem foi a
                          última palavra, no lugar da conta por dias sem registro
 ```
 
-Chegou e a carteira não sabia? O item **não entra** em `## Prometido e não
+Chegou e a {base} não sabia? O item **não entra** em `## Prometido e não
 chegou`. Ele vira uma linha em `## Falta saber` dizendo que a conversa tem algo
-que os arquivos não têm — e o conserto é `/{plugin}:organizar-carteira`, que é
+que os arquivos não têm — e o conserto é `/{plugin}:organizar-{pasta-base}`, que é
 quem traz conversa para dentro. Esta skill não grava conversa.
+[[se etapa-de:item]]
+
+Arquivo de {item} com o campo `{campo-da-pessoa-no-item}:` vazio não tem
+conversa para reler, com conector ou sem: os dois gatilhos valem pelo que está
+escrito no `## Histórico` {do-item}. Não procure a conversa pelo apelido
+{do-item} — conversa se acha por telefone, e telefone é de gente.
+[[fim]]
 
 A releitura paga duas vezes: ela tira da lista o item que já se resolveu, e é o
 que entrega à skill dona o texto certo para mostrar. Cobrar documento que já
@@ -259,6 +296,15 @@ por isso que a linha deles na lista diz `sai daqui` (seção 6):
 Os outros não terminam em mensagem, e o motivo é diferente em cada um: {hoje--os-outros-gatilhos}
 Item sem skill dona não ganha `sai daqui`, nem com o conector ligado — inventar
 uma para ele é o lote entrando pela porta dos fundos.
+[[se etapa-de:item]]
+
+**Arquivo de {item} que parou, com o campo `{campo-da-pessoa-no-item}:`
+vazio, não termina em mensagem, em gatilho nenhum** — não há para quem mandar.
+Ele continua na lista, no degrau que o gatilho dá, e a frase acionável é
+**achar com quem falar**: quem responde por {esse-item}, e por onde. É assim
+que a linha sai, na tela e no `hoje.md`, e ela nunca ganha `sai daqui`.
+Inventar destinatário para fechar a linha é pior que deixá-la aberta.
+[[fim]]
 
 ### Passo 4 · A escada da consequência
 
@@ -279,7 +325,7 @@ Leia o arquivo velho **antes** de gravar por cima. Ele guarda duas coisas que
 não existem em nenhum outro lugar:
 
 - **caixa marcada `- [x]`** — é o {profissional} dizendo que fez. Ela vai para
-  `## Feito nos últimos sete dias` com a data do título daquele arquivo.
+  `## Concluído nos últimos 7 dias` com a data do título daquele arquivo.
   **Caixa marcada nunca é desmarcada por reescrita**, nem quando a skill roda
   duas vezes no mesmo dia: item que ele marcou de manhã não volta para
   `## Vence hoje` à tarde. Este é o defeito que mais rápido faz o {profissional}
@@ -325,7 +371,7 @@ aprovação: ele responde sete vezes e saem sete mensagens que ele não leu. É 
 defeito que a seção 7.1 do contrato existe para impedir.
 
 **No automático**, chame a skill do primeiro item — e só quando **todo o insumo
-dela já estiver na carteira**. Falta conversa colada, link, documento ou
+dela já estiver na {base}**. Falta conversa colada, link, documento ou
 decisão do {profissional}: não chame, e a linha do item diz o que falta. Quatro
 travas, e elas não se negociam:
 
@@ -364,14 +410,14 @@ motivo na mesma frase (contrato, seção 8). Só estas três existem aqui:
 - **a bifurcação do passo 6**, na UI de perguntas, com o custo escrito.
 
 Não pergunte: se ele quer a lista; se pode gravar o `hoje.md` (é a vista dela);
-o que já está escrito na carteira; se pode mandar a mensagem, que é pergunta da
+o que já está escrito na {base}; se pode mandar a mensagem, que é pergunta da
 skill do item e aqui seria a mesma pergunta duas vezes; nem gosto que
 `## Como eu trabalho` já decidiu. Em modo automático não se pergunta: escolhe e
 declara.
 
 **Dia vazio** — nenhum item em nenhum degrau. Diga em uma linha, sem sermão:
 que não há nada vencendo, e que {captacao-do-oficio}. Ofereça `/{plugin}:retomar-contato` ou
-`/{plugin}:{skill-anunciar}`, uma vez.
+`/{plugin}:{skill-do-dia-vazio}`, uma vez.
 
 ---
 
@@ -424,9 +470,9 @@ nunca o que entra ou o que sobe.
 Depois da lista, uma linha e não mais que uma:
 
 ```
-Isto é o que está escrito na carteira. Se você fechou negócio, mandou mensagem
+Isto é o que está escrito na {base}. Se você {exemplo-do-que-nao-se-anotou}, mandou mensagem
 ou recebeu documento e não anotou, eu vou cobrar de novo amanhã — passe o que
-aconteceu para /{plugin}:organizar-carteira e a lista de amanhã sai certa.
+aconteceu para /{plugin}:organizar-{pasta-base} e a lista de amanhã sai certa.
 ```
 
 ### O fecho
@@ -436,8 +482,8 @@ aconteceu para /{plugin}:organizar-carteira e a lista de amanhã sai certa.
 ```
 
 O `## Guardei` diz o lugar do jeito que o {profissional} reconhece, e o jeito muda com
-o transporte: no `local`, `~/carteira/hoje.md`; no `drive`, `hoje.md, na pasta
-carteira do seu Drive`. O resto da linha é o mesmo.
+o transporte: no `local`, `~/{pasta-base}/hoje.md`; no `drive`, `hoje.md, na pasta
+{base} do seu Drive`. O resto da linha é o mesmo.
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**. A única exceção é a mensagem que saiu: ali não há
@@ -448,13 +494,13 @@ prometer um desfazer que não existe.
 
 ## 7 · O que ela grava, e onde
 
-Ela tem `Write` e `Edit` por um arquivo só: **o `hoje.md` da carteira, que é a
+Ela tem `Write` e `Edit` por um arquivo só: **o `hoje.md` da {base}, que é a
 vista dela e a única que se refaz inteira todo dia.** As outras skills
 acrescentam linha nele; esta reescreve.
 
-A gravação vai pelo transporte da linha `carteira:` (contrato, seção 1): no
+A gravação vai pelo transporte da linha `{pasta-base}:` (contrato, seção 1): no
 `local`, escrita de arquivo com caminho absoluto; no `drive`, atualizar o
-arquivo com o conteúdo inteiro, ou criá-lo com a pasta `carteira` declarada como
+arquivo com o conteúdo inteiro, ou criá-lo com a pasta `{pasta-base}` declarada como
 pai quando ele ainda não existe. Como ela reescreve o arquivo todo, e sempre
 depois de ler o velho (passo 5), o “leia antes de atualizar” do contrato já está
 no passo a passo — o que não pode é gravar o dia sem ter lido o de ontem.
@@ -499,7 +545,7 @@ Quatro coisas ao gravar, e as quatro já quebraram um arquivo em algum lugar:
 
 Se o {profissional} colar uma conversa no meio da execução, a ordem é a da seção 7 do
 contrato e **não é esta skill que faz isso**: grave o bruto primeiro no
-`_bruto/` da carteira, em `AAAA-MM-DD-<canal>-<apelido-curto>.md`, com o
+`_bruto/` da {base}, em `AAAA-MM-DD-<canal>-<apelido-curto>.md`, com o
 cabeçalho de três linhas, e mande extrair fato com
 {quem-extrai-fato}.
 
@@ -509,12 +555,11 @@ cabeçalho de três linhas, e mande extrair fato com
 
 Sete limites. Ler os sete custa menos que descobrir um no meio da semana.
 
-**Ela só sabe o que está escrito.** Negócio que você fechou ontem no telefone e
-não anotou continua na lista de hoje como proposta parada — ela vai cobrar, com
+**Ela só sabe o que está escrito.** {exemplo-do-que-ja-acabou} — ela vai cobrar, com
 toda a segurança do mundo, uma coisa que já acabou. É o limite mais caro do
 pack, e a saída dela diz isso todo dia em uma linha, com o convite de passar o
-que aconteceu para `/{plugin}:organizar-carteira`. A lista de amanhã só é boa
-se a carteira de hoje for.
+que aconteceu para `/{plugin}:organizar-{pasta-base}`. A lista de amanhã só é boa
+se a {base} de hoje for.
 
 **O áudio saiu desse limite, e só ele.** Com o conector de pé, nota de voz
 chega transcrita e conta como qualquer mensagem escrita. O que ficou fora
@@ -522,21 +567,21 @@ continua fora: telefone, conversa presencial, áudio de grupo e o que é
 anterior à ponte.
 
 **A escada é escrita, não medida.** Os seis degraus e os cortes de dia vieram
-do que costuma fazer perder negócio, não do seu mês. Dois itens do mesmo degrau
+do que costuma fazer perder {o-que-se-perde}, não do seu mês. Dois itens do mesmo degrau
 podem estar na ordem errada para o seu dia — diga qual sobe, que a lista se
 refaz na hora. O que ela não faz é fingir que a ordem é um cálculo.
 
 **Da agenda ela só lê, e só enxerga o que está escrito lá.** Compromisso que
 você guarda na cabeça, ou marcado no papel, não aparece — e a agenda ligada dá
 a impressão contrária, que é o que torna isso perigoso. Sem conector, a lista
-sai só da carteira, e ela avisa.
+sai só da {base}, e ela avisa.
 
-**Ela não abre link e não confere preço.** Ela não desce ao degrau 5 da ordem
+**Ela não abre link e não confere {o-que-ela-nao-confere}.** Ela não desce ao degrau 5 da ordem
 de busca: a lista do dia não precisa de dado novo de {item}, e site que monta a
 página por JavaScript devolveria nada de qualquer jeito. {campos-que-nao-mudam} saem do arquivo, com a data que está lá.
 
 **Sem o conector, ela não sabe se {o-pessoa} respondeu por fora.** A última
-mensagem dele só entra na carteira quando alguém cola a conversa, e por isso
+mensagem dele só entra na {base} quando alguém cola a conversa, e por isso
 “parado há 14 dias” quer dizer *quatorze dias sem nada escrito* — e ela escreve
 assim. Com `WhatsApp: sim`, o `ultima_interacao` dá a data de verdade, e é o que
 “Dois gatilhos que o conector corrige” manda conferir antes de escrever — e é a
@@ -548,16 +593,16 @@ primeiro `ultima_interacao`, chame `estado_da_ponte`. Ponte parada devolve o
 retrato do dia em que ela parou, e esta skill é a que transforma esse retrato em
 ordem de trabalho — “ninguém respondeu” vira lista de cobrança para gente que
 respondeu ontem. Parada há mais de um dia: diga há quanto tempo, trate a
-carteira como a única fonte (é o comportamento “sem conector”, que já está
+{base} como a única fonte (é o comportamento “sem conector”, que já está
 escrito acima) e siga. **Não pare a skill por isso** — o dia dele continua
 existindo.
 
 **O silêncio ela mede grosso.** Sete dias em qualquer etapa, e é de propósito:
-quem tem prazo por etapa é `/{plugin}:retomar-contato`. Um {pessoa} pode aparecer
+quem tem prazo por etapa é `/{plugin}:retomar-contato`. {Um-andante} pode aparecer
 aqui um dia antes ou um dia depois do que aquela skill diria.
 
 **Ela não decide nada que é seu.** Não diz se a proposta é boa, não sugere
-baixar preço, não promete prazo {terceiros-de-prazo}, não
+{exemplo-de-concessao}, não promete prazo {terceiros-de-prazo}, não
 aposenta ninguém e **não manda mensagem nenhuma, nem com o conector ligado**.
 Ela mostra o dia e aponta a porta de cada item; quem entra é você — e onde a
 porta é uma mensagem, quem manda é você também, na tela da skill que a escreveu,

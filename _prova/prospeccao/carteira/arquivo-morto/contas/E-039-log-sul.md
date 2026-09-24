@@ -2,7 +2,7 @@
 
 aposentado: 2026-08-01 · motivo: disse não — acabaram de assinar com outro fornecedor
 
-site: https://logsulcargas.com.br  ← prospector, 2026-05-14
+site: https://logsulcargas.example  ← prospector, 2026-05-14
 estado: fechou com outro
 setor: transporte  ← site, 2026-05-14
 cidade: Canoas, RS  ← site, 2026-05-14

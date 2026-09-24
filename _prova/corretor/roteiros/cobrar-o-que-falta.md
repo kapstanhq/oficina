@@ -26,7 +26,7 @@ automática:
 passa; "conforme solicitado em 13/08, reitero o pedido" reprova. É a regra de
 ouro da seção 4 da skill, e é o que separa esta de um robô de lembrete.
 
-**Ela não cobra a Joana.** A C-017 não deve nada — ela tem visita marcada. Uma
+**Ela não cobra a Joana.** A C-017 não deve nada — ela tem visita agendada. Uma
 cobrança para ela é o erro mais grave possível, porque prova que a skill não
 olhou quem deve o quê.
 

@@ -4,7 +4,7 @@ Vista derivada do campo `etapa:` dos arquivos de cliente. As etapas são estas
 seis, nesta ordem, e **nenhuma skill cria etapa nova**:
 
 ```
-novo lead · em conversa · visita marcada · visitou · proposta · fechado
+novo lead · em atendimento · visita agendada · visita realizada · proposta · fechado
 ```
 
 Quem sai do funil sem fechar não vira etapa: vira `arquivo-morto/` pela regra 3.
@@ -15,13 +15,13 @@ Quem sai do funil sem fechar não vira etapa: vira `arquivo-morto/` pela regra 3
 ## novo lead
 - C-024 (Paulo Menezes) · desde 2026-08-18 · veio do V-071 (casa 3 dorm, Azenha) no Zap · próximo: responder hoje
 
-## em conversa
+## em atendimento
 - C-019 (Rita Camargo) · desde 2026-08-05 · procura 2 dorm no Menino Deus · próximo: mandar A-014 (apto 2 dorm, Menino Deus)
 
-## visita marcada
+## visita agendada
 - C-017 (Joana Ribeiro) · desde 2026-08-14 · V-071 (casa 3 dorm, Azenha), sábado 10h · próximo: confirmar
 
-## visitou
+## visita realizada
 - nada aqui.
 
 ## proposta

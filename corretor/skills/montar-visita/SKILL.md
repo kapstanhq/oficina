@@ -77,7 +77,7 @@ toda busca é presa à pasta pai, e a pasta que se abre tem o id guardado
 (CONTRATO §1). Ao falar com o corretor, escreva `~/carteira/…` no `local` e “a
 pasta `carteira` do seu Drive” no `drive`.
 
-**Por que esta skill tem `Write` e `Edit`:** visita marcada é fato do cliente, e
+**Por que esta skill tem `Write` e `Edit`:** visita agendada é fato do cliente, e
 fato mora no arquivo dono. Ela grava em `clientes/<id>-<apelido>.md`, atualiza
 `## Mostrado a` no arquivo de cada imóvel da saída, reflete no `funil.md` e — só
 quando a véspera cai hoje — acrescenta uma linha no `hoje.md`. Não escreve em
@@ -354,7 +354,7 @@ trânsito — o passo 8 diz o que eu não sei aqui.
 título      Visita — C-017 (Joana Ribeiro) — V-071 (casa 3 dorm, Azenha)
 quando      2026-08-22, 10h00 às 10h40
 onde        rua José do Patrocínio, Azenha, Porto Alegre
-descrição   https://fontesimoveis.com.br/imovel/8812
+descrição   https://fontesimoveis.example/imovel/8812
             mostrar o pátio dos fundos · a cozinha é pequena, ela já falou
             o marido decide junto e vem nesta
 ```
@@ -424,7 +424,7 @@ enviar_mensagem   a prévia, a MESMA conversa e o MESMO texto, batendo byte a
 O que a tela mostra, e resumo não serve (CONTRATO §7.1):
 
 ```
-para      Joana Ribeiro · C-017 (Joana Ribeiro) · +55 51 99999-0000 · falou
+para      Joana Ribeiro · C-017 (Joana Ribeiro) · +55 51 90000-0001 · falou
           por último em 15 de agosto (ultima_interacao)
 texto     a mensagem INTEIRA, do jeito que vai sair — nunca “a confirmação que
           a gente combinou”
@@ -477,11 +477,11 @@ com a sua mudança dentro (CONTRATO §1).
 ### No arquivo do cliente — `clientes/<id>-<apelido>.md`, o dono
 
 ```markdown
-etapa: visita marcada · desde 2026-08-19
+etapa: visita agendada · desde 2026-08-19
 
 ## Imóveis mostrados
-- V-071 (casa 3 dorm, Azenha) · enviado 2026-08-12 · visita marcada 2026-08-22 10h
-- A-014 (apto 2 dorm, Menino Deus) · visita marcada 2026-08-22 11h
+- V-071 (casa 3 dorm, Azenha) · enviado 2026-08-12 · visita agendada 2026-08-22 10h
+- A-014 (apto 2 dorm, Menino Deus) · visita agendada 2026-08-22 11h
 
 ## Combinado
 - visita sábado 2026-08-22, 10h, três imóveis, com o marido  ← corretor, 2026-08-19
@@ -491,7 +491,7 @@ etapa: visita marcada · desde 2026-08-19
 - 2026-08-19 saída de sábado montada, três imóveis
 ```
 
-- **`etapa:` só vira `visita marcada` depois do sim do cliente.** Sem o sim, a
+- **`etapa:` só vira `visita agendada` depois do sim do cliente.** Sem o sim, a
   etapa fica onde está e o `## Combinado` recebe
   `- proposto sábado 2026-08-22, 10h — aguardando o sim  ← corretor, 2026-08-19`.
 - **Ter mandado a mensagem não é o sim.** Enviada pelo conector ou colada por
@@ -509,7 +509,7 @@ Uma linha em `## Mostrado a`, no mesmo formato do gabarito (CONTRATO §4.4):
 
 ```markdown
 ## Mostrado a
-- C-017 (Joana Ribeiro) · visita marcada 2026-08-22
+- C-017 (Joana Ribeiro) · visita agendada 2026-08-22
 ```
 
 Nada mais muda no imóvel. `estado:` não vira `reservado` por causa de visita.
@@ -520,7 +520,7 @@ Vista derivada: reflete o `etapa:` que você acabou de gravar, uma linha por
 cliente, com `· desde AAAA-MM-DD` e `· próximo:` (CONTRATO §4.3).
 
 ```markdown
-## visita marcada
+## visita agendada
 - C-017 (Joana Ribeiro) · desde 2026-08-19 · V-071 (casa 3 dorm, Azenha), sábado 10h · próximo: confirmar na sexta
 ```
 
@@ -552,7 +552,7 @@ Escreveu, diz onde — caminho por caminho, com o que mudou em cada um:
 ## Guardei
 - ~/carteira/clientes/C-017-joana-ribeiro.md — etapa, a visita e o lembrete da véspera
 - ~/carteira/imoveis/V-071-casa-3d-azenha.md — uma linha em Mostrado a
-- ~/carteira/funil.md — a C-017 (Joana Ribeiro) foi para “visita marcada”
+- ~/carteira/funil.md — a C-017 (Joana Ribeiro) foi para “visita agendada”
 - ~/carteira/hoje.md — não mexi: o arquivo é de 2026-08-15, e quem o refaz é /corretor:o-que-fazer-hoje
 
 ## Falta saber

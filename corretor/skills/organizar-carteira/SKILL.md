@@ -26,7 +26,7 @@ allowed-tools: Read Glob Grep Write Edit
 ---
 <!-- CÓPIA GERADA · não edite este arquivo.
 
-     A fonte é oficina/_motor/skills/organizar-carteira/SKILL.md, e ela vale para
+     A fonte é oficina/_motor/skills/organizar-{pasta-base}/SKILL.md, e ela vale para
      QUALQUER profissão: o que muda de ofício está escrito em marcas — {item},
      {pessoa}, /{plugin}: — resolvidas na geração pelo vocabulario.json do
      pack. Correção feita aqui é perdida no próximo
@@ -260,7 +260,7 @@ Contrato, seção 7, e nada além dela. Para cada bruto não lido:
   comportamento de outra skill, e por isso ele nunca fica para depois.
 - **Cada campo com `← _bruto/<arquivo>`**, e a data é a do material, não a de
   hoje. Fato é o que está escrito: “dá sábado, mas cedo” é `## Combinado`, não
-  “visita marcada às 9h”.
+  “visita agendada às 9h”.
 
 **A planilha é o bruto que gera mais de uma ficha**, e o desenho é o de
 `/corretor:comecar`: uma ficha por linha, e nada gravado antes de ele confirmar

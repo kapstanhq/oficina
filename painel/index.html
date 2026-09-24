@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel da Oficina</title>
+<link rel="stylesheet" href="/estilo.generated.css">
+<link rel="stylesheet" href="/app/entrada.generated.css">
+<!--
+  O PAINEL — a janela do modo copiloto.
+
+  ── ESTA PÁGINA É A FONTE, E NÃO É O QUE VAI AO AR ────────────────────
+  `npm run painel` a junta com o JS e o CSS compilados num ÚNICO
+  `painel.html` autocontido, e é esse arquivo que é copiado para dentro de
+  cada pack e instalado por `/plugin install`. Aqui os três derivados entram
+  por `<link>`/`<src>` porque é assim que se trabalha — com o `--watch` do
+  Tailwind e do esbuild de pé, editar um `.svelte` aparece ao recarregar.
+
+  ── POR QUE AUTOCONTIDO ───────────────────────────────────────────────
+  Quem instala o pack não roda build e pode não ter rede. Um HTML que busca
+  folha ou script de qualquer lugar é um HTML que abre quebrado na primeira
+  vez que alguma dessas coisas falta — e quem está do outro lado não é
+  desenvolvedor e não vai abrir o console para descobrir por quê.
+
+  É também o que a política de segurança do servidor permite ser estreita:
+  com tudo embutido, a página não precisa buscar NADA, e a CSP de
+  `nucleo/http.mjs` pode proibir toda origem externa. Um dado da base
+  que chegue a esta tela não tem por onde sair.
+
+  ── E NÃO HÁ FONTE DO SITE AQUI ───────────────────────────────────────
+  O site carrega Manrope e Lora por `@font-face`. O painel não: embutir os
+  woff2 como data URI custaria ~100 kB por pack, em disco de quem instala,
+  para uma ferramenta que fica aberta dois minutos. A pilha de fontes do
+  sistema é o que está em `estilo.css`, e o desenho foi feito para ela.
+-->
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+<div id="painel"></div>
+<script type="module" src="/app/entrada.generated.js"></script>
+</body>
+</html>

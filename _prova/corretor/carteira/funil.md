@@ -3,14 +3,14 @@
 ## novo lead
 - nada aqui.
 
-## em conversa
+## em atendimento
 - C-019 (Rita Camargo) · desde 2026-08-05 · procura 2 dorm até R$ 400.000, Menino Deus · próximo: mandar opção de compra
 - C-031 (Sr. Almeida) · desde 2026-08-12 · proprietário do V-071 (casa 3 dorm, Azenha) · próximo: cobrar o IPTU
 
-## visita marcada
+## visita agendada
 - C-017 (Joana Ribeiro) · desde 2026-08-14 · V-071 (casa 3 dorm, Azenha), sábado 10h · próximo: confirmar
 
-## visitou
+## visita realizada
 - nada aqui.
 
 ## proposta

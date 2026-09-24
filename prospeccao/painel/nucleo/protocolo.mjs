@@ -74,6 +74,16 @@ export const registrar = (...partes) => {
   process.stderr.write("[painel] " + partes.join(" ") + "\n");
 };
 
+/* ── OCUPADO FORA DO STDIO (D234) ─────────────────────────────────────
+   Uma notificação JSON-RPC que só o vigia ouve, e que ele engole: ver
+   `AVISO_DE_OCUPADO` em `vigia.mjs`. Sem vigia não sai nada — um cliente MCP
+   de verdade receberia um método que não conhece. */
+export const avisarOcupado = (ocupado) => {
+  if (!process.env.KAPSTAN_VIGIADO) return;
+  process.stdout.write(JSON.stringify({ jsonrpc: "2.0",
+    method: "notifications/kapstan/ocupado", params: { ocupado: Boolean(ocupado) } }) + "\n");
+};
+
 /**
  * Sobe um servidor MCP legacy sobre stdin/stdout.
  *
@@ -135,10 +145,11 @@ export function servirPorStdio({ servidor, instrucoes = "", ferramentas = [] }) 
           `· pediu ${pedida} · vai ${versao}`);
         return comResultado(id, {
           protocolVersion: versao,
-          /* declaramos SÓ o que temos. `listChanged: false` é literal: a lista
-             de ferramentas deste servidor é fixa, e prometer notificação de
-             mudança que nunca vem faria um cliente esperar por ela. */
-          capabilities: { tools: { listChanged: false } },
+          /* declaramos SÓ o que temos. Sozinho, a lista de ferramentas deste
+             servidor é fixa, e prometer notificação de mudança que nunca vem
+             faria um cliente esperar por ela. VIGIADO (`nucleo/vigia.mjs`) a
+             lista muda quando o código muda, e quem avisa é o vigia. */
+          capabilities: { tools: { listChanged: Boolean(process.env.KAPSTAN_VIGIADO) } },
           serverInfo: servidor,
           ...(instrucoes ? { instructions: instrucoes } : {}),
         });

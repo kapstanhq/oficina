@@ -1,7 +1,7 @@
 ## 5 · Os dois modos
 
 A skill descobre o modo lendo a linha `modo:` do `INDICE.md`. É a segunda coisa
-que ela faz, depois de conferir que a carteira existe.
+que ela faz, depois de conferir que a {base} existe.
 
 ```
 modo: copiloto      para nas bifurcações e devolve o trabalho pronto até ali

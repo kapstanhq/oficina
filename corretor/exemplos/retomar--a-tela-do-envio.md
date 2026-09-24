@@ -6,7 +6,7 @@ Três para retomar — carteira lida agora, conversas conferidas agora
 
 <o bloco do passo 7, inteiro, na cerca de código dele>
 
-2 · C-017 (Joana Ribeiro) · visitou · parada há 4 dias
+2 · C-017 (Joana Ribeiro) · visita realizada · parada há 4 dias
     você falou por último, 15/08 — ela não responde desde a visita
     retomada 2 · a última · ângulo: o IPTU chegou
 

@@ -5,16 +5,16 @@ Sete arquivos, sete gabaritos. O que vale como formato é o que está abaixo, e
 gabarito não se inventa: se o {profissional} trouxe um fato que não cabe em lugar nenhum, ele vai
 para `## Histórico` com a data.
 
-Nenhum arquivo da carteira tem frontmatter YAML. O cabeçalho é linha de
+Nenhum arquivo da {base} tem frontmatter YAML. O cabeçalho é linha de
 `campo: valor`, que o {profissional} lê sem saber que é um formato.
 
 Os gabaritos ficam em `references/modelos/`, dentro da própria skill, e vão para
 cá:
 
 ```
-modelos/INDICE.md             → ~/carteira/INDICE.md
-modelos/hoje.md               → ~/carteira/hoje.md
-modelos/funil.md              → ~/carteira/funil.md
+modelos/INDICE.md             → ~/{pasta-base}/INDICE.md
+modelos/hoje.md               → ~/{pasta-base}/hoje.md
+modelos/funil.md              → ~/{pasta-base}/funil.md
 {modelos-do-oficio}
 ```
 
@@ -27,7 +27,7 @@ o que se preenche: `<AAAA-MM-DD>`, `<nome do {profissional}>`, `<{exemplo-gabari
 pela regra do não-apurado (seção 3) — e data nunca vira `?`, porque a data de
 hoje sempre se sabe.
 
-Isto é regra e não zelo: medido montando uma carteira do zero, o `hoje.md`
+Isto é regra e não zelo: medido montando uma {base} do zero, o `hoje.md`
 nascia com `# Hoje — <AAAA-MM-DD>` e ficava assim, porque nenhum passo o toca
 depois de copiá-lo. Os outros três só escapavam quando o {profissional} NÃO pulava
 os passos que preenchem as vistas — e esses passos são puláveis. O comentário

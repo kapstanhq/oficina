@@ -26,19 +26,50 @@
  *   3 · validar `Origin` quando ele vem — é o que derruba a página de outro
  *       site que tente escrever aqui, mesmo sem rebinding
  *
- * E uma quarta, que é nossa e não da especificação: **um segredo por
- * execução**. As três acima protegem contra um site; o segredo protege
- * contra qualquer outro programa da mesma máquina que varra portas. Ele
- * nasce a cada execução, viaja no fragmento da URL que o agente entrega, e
- * nunca é escrito em disco.
+ * E uma quarta, que é nossa e não da especificação: **uma chave**. As três
+ * acima protegem contra um site; a chave protege contra qualquer outro
+ * programa da mesma máquina que varra portas. Ela viaja no fragmento da URL
+ * que o agente entrega, e o navegador não a manda ao servidor — quem a manda
+ * de volta é a página, em cabeçalho.
+ *
+ * ── A CHAVE DEIXOU DE NASCER A CADA EXECUÇÃO (D230) ───────────────────
+ * Ela nascia por processo, e isso tinha um preço que só apareceu no uso: o
+ * endereço mudava toda vez, então NÃO HAVIA endereço — havia uma linha para
+ * copiar do terminal a cada sessão. A página inicial existe para ser o lugar
+ * de onde se volta, e um lugar tem endereço.
+ *
+ * Agora ela é FIXA POR MÁQUINA e mora em `~/.kapstan/painel/chave`. **É o
+ * único arquivo que o painel escreve**, e ele não é na base — ver
+ * `nucleo/base.mjs` sobre a propriedade que isso preserva. Se o disco
+ * recusar a escrita, o painel volta a uma chave por processo e diz isso: uma
+ * ferramenta que não abre por causa de uma permissão de HOME é pior que uma
+ * que abre com endereço novo.
+ *
+ * ── E NA PRIMEIRA ABERTURA ELA VIRA COOKIE ────────────────────────────
+ * `POST /entrar` troca a chave do cabeçalho por um cookie
+ * `HttpOnly; SameSite=Strict`, e dali em diante `http://127.0.0.1:4180/`
+ * abre sozinho — o que libera o `#` para ser ROTA da página, que é o que a
+ * página inicial precisava dele.
+ *
+ * O que vai no cookie NÃO é a chave: é um BILHETE derivado dela. A razão é
+ * mecânica e pouca gente a tem na ponta da língua — **cookie não distingue
+ * porta**. Um cookie posto em `127.0.0.1` é enviado a QUALQUER servidor de
+ * 127.0.0.1 que o navegador visite, em qualquer porta. Com a chave crua lá
+ * dentro, visitar um servidor local qualquer entregaria a ele a chave que
+ * mora no HOME e vale para todas as execuções futuras. O bilhete vale só
+ * contra este painel, e a chave do disco nunca viaja em cabeçalho que outra
+ * porta possa ler.
  */
 import { createServer } from "node:http";
-import { randomBytes } from "node:crypto";
+import { createHmac, randomBytes } from "node:crypto";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
 
 /* ── A PORTA ──────────────────────────────────────────────────────────
    3000 é o `npm run dev`, 3001 o `--dist`, 4173 a auditoria. O painel começa
    em 4180 e ANDA quando a porta está ocupada, em vez de morrer: duas
-   carteiras abertas ao mesmo tempo é o caso normal de quem usa dois packs, e
+   bases abertas ao mesmo tempo é o caso normal de quem usa dois packs, e
    "porta em uso" é a mensagem mais inútil que uma ferramenta pode dar a quem
    não é desenvolvedor. */
 /* ── E HÁ PORTAS QUE O NAVEGADOR SE RECUSA A ABRIR ────────────────────
@@ -69,6 +100,76 @@ const TIPOS = {
   ".svg": "image/svg+xml",
 };
 
+/* ── A CHAVE DA MÁQUINA ───────────────────────────────────────────────
+   `KAPSTAN_PAINEL_DIR` existe para a prova: sem ele, provar a criação do
+   arquivo exigiria escrever no HOME de quem roda o teste.
+
+   O formato é conferido ao LER, e não só ao escrever: um arquivo truncado
+   pela metade por um desligamento no meio da gravação daria uma chave curta
+   que continuaria funcionando, com a entropia que sobrou. Chave que não
+   passa no formato é refeita. */
+const FORMATO_DA_CHAVE = /^[A-Za-z0-9_-]{32,}$/;
+
+export const pastaDaChave = () =>
+  process.env.KAPSTAN_PAINEL_DIR || join(homedir(), ".kapstan", "painel");
+
+/* o atalho que põe o painel solto no login do Windows (D243): a pasta
+   Inicializar do usuário. Quem escreve é `sempre.mjs --instalar`; o servidor
+   só confere se ele existe, para a página Conta dizer */
+export const atalhoDoLogin = () => join(process.env.KAPSTAN_INICIALIZAR_DIR
+  || join(process.env.APPDATA || "", "Microsoft", "Windows", "Start Menu", "Programs", "Startup"), "kapstan-painel.vbs");
+
+/**
+ * A chave fixa desta máquina — lida do disco, ou criada na primeira vez.
+ *
+ * Nunca lança: quem não consegue escrever recebe uma chave de processo e o
+ * aviso. Ver a nota do topo sobre por que a degradação é essa.
+ */
+export async function chaveDaMaquina({ aoRegistrar = () => {} } = {}) {
+  const arquivo = join(pastaDaChave(), "chave");
+  try {
+    const guardada = (await readFile(arquivo, "utf8")).trim();
+    if (FORMATO_DA_CHAVE.test(guardada)) return guardada;
+    aoRegistrar(`a chave guardada não tem o formato esperado · refazendo`);
+  } catch { /* não existe ainda: o caminho normal da primeira execução */ }
+
+  const nova = randomBytes(24).toString("base64url");
+  try {
+    await mkdir(pastaDaChave(), { recursive: true });
+    /* `.tmp` + rename, como todo o resto do repositório: no Windows um
+       `writeFile` sobre um arquivo que outro processo tem aberto lança
+       `UNKNOWN` de forma intermitente, e dois painéis subindo juntos é o
+       caso normal de quem usa dois packs. `mode` é 0600 porque isto é um
+       segredo — no Windows o bit é ignorado, e no resto não. */
+    await writeFile(arquivo + ".tmp", nova + "\n", { encoding: "utf8", mode: 0o600 });
+    await rename(arquivo + ".tmp", arquivo);
+    aoRegistrar(`chave desta máquina criada em ${arquivo}`);
+  } catch (e) {
+    aoRegistrar(`não consegui guardar a chave (${e?.message || e}) · ` +
+      "ela vale só enquanto este processo viver");
+  }
+  return nova;
+}
+
+/* ── O BILHETE, e por que ele é derivado e não sorteado ───────────────
+   Derivado da chave, o bilhete é o MESMO em toda execução do painel nesta
+   máquina — então o cookie sobrevive a fechar o terminal e abrir de novo,
+   que é justamente o que faz o endereço curto valer a pena. Sorteado, ele
+   morreria com o processo e a pessoa teria de recolar a URL com `#` toda
+   vez, que é o defeito que o D230 foi consertar. */
+const NOME_DO_COOKIE = "painel_bilhete";
+const bilheteDe = (chave) =>
+  createHmac("sha256", chave).update("painel:cookie:v1").digest("base64url");
+
+const doCookie = (cabecalho, nome) => {
+  for (const parte of String(cabecalho || "").split(";")) {
+    const i = parte.indexOf("=");
+    if (i < 0) continue;
+    if (parte.slice(0, i).trim() === nome) return parte.slice(i + 1).trim();
+  }
+  return null;
+};
+
 /** o corpo de um pedido, com teto — sem teto, um POST grande é um jeito de
     derrubar o processo que segura o painel */
 const TETO_DE_CORPO = 2 * 1024 * 1024;
@@ -92,12 +193,17 @@ async function corpoDe(req) {
  * @param {object} opcoes
  * @param {string} opcoes.html      a página inteira, autocontida
  * @param {object} opcoes.rotas     { "GET /documento": (req,res,url)=>… }
- * @returns {Promise<{url:string, porta:number, segredo:string, fechar:()=>void}>}
+ * @param {string} [opcoes.segredo] a chave. Sem ela, uma por processo — é o
+ *                                  que a prova usa, e o que sobra quando o
+ *                                  disco recusa guardar a da máquina
+ * @returns {Promise<{url:string, curto:string, porta:number, segredo:string,
+ *                    fechar:()=>void}>}
  */
-export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {} }) {
-  /* 32 bytes de aleatoriedade criptográfica. Em base64url ele cabe numa URL
-     sem escape e não convida ninguém a digitá-lo à mão. */
-  const segredo = randomBytes(24).toString("base64url");
+export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {}, segredo }) {
+  /* 24 bytes de aleatoriedade criptográfica. Em base64url ela cabe numa URL
+     sem escape e não convida ninguém a digitá-la à mão. */
+  if (!segredo) segredo = randomBytes(24).toString("base64url");
+  const bilhete = bilheteDe(segredo);
   let porta = PORTA_INICIAL;
 
   const anfitrioesValidos = (p) => new Set([
@@ -145,9 +251,14 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {} }) 
        `X-Content-Type-Options` e a CSP não são enfeite: a página é
        autocontida (todo o JS e o CSS estão nela), então uma política que
        proíbe buscar qualquer coisa de fora não tira nada e fecha a porta de
-       exfiltração — se um dado da carteira chegar aqui, ele não sai. */
+       exfiltração — se um dado da base chegar aqui, ele não sai. */
     if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/index.html")) {
-      const corpo = Buffer.from(html, "utf8");
+      /* `html` pode ser uma FUNÇÃO: aí a página é lida a cada pedido, e o
+         painel reconstruído aparece com um F5 — sem reiniciar o processo, que
+         é o servidor MCP de uma sessão do Claude. São 190 kB de disco local
+         por abertura de aba; guardar em memória economizava isso e custava
+         fechar o Claude a cada mudança de tela. */
+      const corpo = Buffer.from(typeof html === "function" ? await html() : html, "utf8");
       res.writeHead(200, {
         "Content-Type": TIPOS[".html"],
         "Content-Length": corpo.length,
@@ -161,15 +272,41 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {} }) 
       return res.end(corpo);
     }
 
-    /* ── GUARDA 4 · o segredo, em toda rota de dado ───────────────────
-       Comparação de tempo constante não vale a pena aqui — o segredo tem 192
+    /* ── GUARDA 4 · a chave, em toda rota de dado ─────────────────────
+       Comparação de tempo constante não vale a pena aqui — a chave tem 192
        bits e o atacante não tem o oráculo de repetição que um ataque de
-       tempo exige —, mas o formato é conferido antes para não comparar
-       string de tamanho arbitrário. */
+       tempo exige.
+
+       DUAS portas, e as duas são a mesma chave: o cabeçalho, que é o que a
+       página manda quando ainda tem o `#` na URL, e o cookie, que é o que
+       sobra depois de `POST /entrar`. Sem a segunda, o endereço curto não
+       existiria; sem a primeira, a primeira abertura não teria como
+       acontecer. */
     const dado = req.headers["x-painel-chave"] || url.searchParams.get("chave");
-    if (dado !== segredo) {
+    const entrou = doCookie(req.headers.cookie, NOME_DO_COOKIE) === bilhete;
+    if (dado !== segredo && !entrou) {
       aoRegistrar(`401 · ${req.method} ${url.pathname} sem a chave`);
       return negar(401, "chave ausente ou errada");
+    }
+
+    /* ── A TROCA ──────────────────────────────────────────────────────
+       Ela mora aqui, no núcleo, e não na tabela de rotas de quem chamou:
+       é assunto das guardas, não da aplicação. Chegar até esta linha já
+       significa que as quatro passaram — inclusive a `Origin`, que é o que
+       impede uma página de outro site de pedir o cookie.
+
+       `Max-Age` de um ano e não cookie de sessão: sem ele, fechar o
+       navegador apagaria o cookie e o endereço curto pararia de abrir na
+       manhã seguinte — que é exatamente o incômodo que o D230 veio tirar. */
+    if (req.method === "POST" && url.pathname === "/entrar") {
+      req.resume();                                   // o corpo não interessa
+      res.writeHead(200, {
+        "Content-Type": TIPOS[".json"],
+        "Cache-Control": "no-store",
+        "Set-Cookie": `${NOME_DO_COOKIE}=${bilhete}; Max-Age=31536000; ` +
+          "Path=/; HttpOnly; SameSite=Strict",
+      });
+      return res.end(JSON.stringify({ entrou: true }));
     }
 
     const rota = rotas[`${req.method} ${url.pathname}`];
@@ -188,8 +325,15 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {} }) 
       });
       res.end(texto);
     } catch (e) {
-      aoRegistrar(`500 · ${url.pathname} · ${e?.message || e}`);
-      if (!res.writableEnded) negar(500, String(e?.message || e));
+      /* ── O `codigo` DA ROTA VALE MAIS QUE O 500 ─────────────────────
+         A leitura da base recusa por três razões diferentes — fora da raiz,
+         extensão que não se lê, arquivo que não existe — e as três saíam
+         como 500 antes. Um 500 diz "o servidor quebrou", e quem lê a prova
+         não consegue distinguir a guarda tendo funcionado de um defeito.
+         Ver `nucleo/base.mjs`, que carimba 403, 404 e 413. */
+      const codigo = Number(e?.codigo) || 500;
+      aoRegistrar(`${codigo} · ${url.pathname} · ${e?.message || e}`);
+      if (!res.writableEnded) negar(codigo, String(e?.message || e));
     }
   });
 
@@ -223,7 +367,15 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {} }) 
   return {
     porta,
     segredo,
+    /* ANDOU ou não. Quem avisa a pessoa é o `diga` do agente, e ele não pode
+       comparar com 4180 na mão: `PAINEL_PORTA` existe, e nessas execuções a
+       frase sairia dizendo que 4180 estava ocupada quando ninguém tentou
+       4180 — medido, e ele mentiu na primeira vez em que foi usado. */
+    andou: porta !== PORTA_INICIAL,
+    /* o endereço INTEIRO, que abre sempre — a página troca o `#` por cookie
+       na primeira vez —, e o CURTO, que é o que passa a valer depois dela */
     url: `http://127.0.0.1:${porta}/#${segredo}`,
+    curto: `http://127.0.0.1:${porta}/`,
     fechar: () => servidor.close(),
   };
 }

@@ -17,7 +17,7 @@ description: >-
 license: MIT
 compatibility: >-
   Precisa da carteira, numa pasta do computador — ela conta os dias de
-  silêncio de cada cliente e lê as retomadas anteriores no histórico dele. Sem
+  silêncio de cada cliente e lê as retomadas anteriores no `## Histórico`. Sem
   carteira, NÃO funciona: não há o que varrer, nem onde gravar a tentativa para
   a próxima execução não repetir o ângulo. Não abre link. Sem conector de
   WhatsApp — que é o normal — escreve o texto e para; com o conector ligado,
@@ -159,7 +159,7 @@ arquivo vence a vista** — se o `_indice.md` diz 5 de agosto e o histórico do
 cliente tem uma linha de 12, vale a do arquivo, e o `_indice.md` entra na lista
 do que reescrever.
 
-O que se mede é o **silêncio dele**, não o último toque do corretor. A última
+O que se mede é o **silêncio do outro lado**, não o último toque do corretor. A última
 vez que o cliente falou está, em ordem de busca:
 
 ```
@@ -197,14 +197,14 @@ outro:
 | etapa | entra na lista a partir de | por quê |
 |---|---|---|
 | proposta | 3 dias | proposta parada esfria e vira “vou pensar” |
-| visitou | 5 dias | viu o imóvel e sumiu — é o contato mais quente que existe |
-| visita marcada | só depois que a data passou | antes disso é confirmação, e quem cobra é o `hoje.md` |
-| em conversa | 7 dias | |
+| visita realizada | 5 dias | viu o imóvel e sumiu — é o contato mais quente que existe |
+| visita agendada | só depois que a data passou | antes disso é confirmação, e quem cobra é o `hoje.md` |
+| em atendimento | 7 dias | |
 | novo lead | 3 dias | lead sem resposta em três dias já falou com outro corretor |
 | fechado | não entra | |
 
 Passou de **120 dias** sem responder: não é assunto desta skill. Diga em uma
-linha que ele é caso de aposentar pela regra 3 e que quem faz isso é
+linha que é caso de aposentar pela regra 3 e que quem faz isso é
 `/corretor:organizar-carteira`. Não aposente aqui.
 
 ### Passo 3 · A ordem da lista
@@ -272,7 +272,7 @@ faz o cliente arquivar a conversa.
 ### Passo 6 · Quem sai da lista, e o que se diz
 
 Duas retomadas seguidas sem resposta: **não escreva a terceira.** Ele sai da
-lista de mensagens e vira uma linha em `## Travado` no `hoje.md` (passo 7),
+lista de mensagens e vira uma linha em `## Parado` no `hoje.md` (passo 7),
 sugerindo arquivar. Diga o motivo em uma frase, sem rodeio:
 
 ```
@@ -368,7 +368,7 @@ Três para retomar — carteira lida agora, conversas conferidas agora
 
 <o bloco do passo 7, inteiro, na cerca de código dele>
 
-2 · C-017 (Joana Ribeiro) · visitou · parada há 4 dias
+2 · C-017 (Joana Ribeiro) · visita realizada · parada há 4 dias
     você falou por último, 15/08 — ela não responde desde a visita
     retomada 2 · a última · ângulo: o IPTU chegou
 
@@ -527,7 +527,7 @@ UI de perguntas do harness, com o custo escrito em cada opção:
 ```
 Quatro clientes sem resposta. Escrevo a mensagem de quem?
 
-  Os três mais quentes   proposta, visitou e visitou · pronto agora
+  Os três mais quentes   proposta, visita realizada e visita realizada · pronto agora
   Escolher na lista      você diz os nomes · uma volta a mais
   Só a lista hoje        nada escrito, nada gravado no cliente
 ```
@@ -566,8 +566,8 @@ Quem parou de responder — carteira lida em 2026-08-19
 | cliente | etapa | parado há | já viu | ângulo |
 |---|---|---|---|---|
 | C-008 (Família Duarte) | proposta | 3 dias | V-052 (apto 3 dorm, Cidade Baixa) | o proprietário respondeu |
-| C-017 (Joana Ribeiro) | visitou | 4 dias | V-071 (casa 3 dorm, Azenha) | o IPTU chegou |
-| C-019 (Rita Camargo) | em conversa | 14 dias | — | imóvel novo — V-083 (apto 2 dorm, Menino Deus) |
+| C-017 (Joana Ribeiro) | visita realizada | 4 dias | V-071 (casa 3 dorm, Azenha) | o IPTU chegou |
+| C-019 (Rita Camargo) | em atendimento | 14 dias | — | imóvel novo — V-083 (apto 2 dorm, Menino Deus) |
 | C-024 (Paulo Menezes) | novo lead | 8 dias | V-071 (casa 3 dorm, Azenha) | sem ângulo |
 ```
 
@@ -610,7 +610,7 @@ Rita, entrou um dois dormitórios no Menino Deus.
 sem prédio na frente. Diferente do primeiro que te mandei, esse tem vaga
 coberta.
 
-https://fontesimoveis.com.br/imovel/9014
+https://fontesimoveis.example/imovel/9014
 
 Consigo te mostrar quinta à noite. Prefere 18h ou 19h?
 ```
@@ -706,7 +706,7 @@ pela seção 9 — linhas de mais de 90 dias viram uma por mês. Fato corrente n
 
 ### 2 · A sugestão de arquivar, no `hoje.md`
 
-Quem bateu as duas retomadas vira uma caixa em `## Travado` — a seção existe
+Quem bateu as duas retomadas vira uma caixa em `## Parado` — a seção existe
 para o que está parado esperando decisão:
 
 ```

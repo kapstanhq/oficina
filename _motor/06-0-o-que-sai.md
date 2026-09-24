@@ -29,8 +29,7 @@ pré-visualização do WhatsApp não abre, e é a pré-visualização que faz a 
 
 O que não entra: emoji (a não ser que a conversa colada mostre o {profissional}
 usando, e aí no máximo um); `*negrito*` mais de uma vez, e só em hora ou
-valor; saudação de escritório (“espero que esteja bem”, “tudo bem?”); preço em
-maiúsculas; “imperdível”, “oportunidade única”, “corre que voa”; assinatura, que
+valor; saudação de escritório (“espero que esteja bem”, “tudo bem?”); {vicios-de-mensagem}; assinatura, que
 o WhatsApp já dá; e mais de uma pergunta.
 
 O bloco sai **sozinho, pronto para copiar**, sem comentário dentro dele. O que a

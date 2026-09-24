@@ -1,8 +1,8 @@
 # O contrato da carteira
 
-Este arquivo é o padrão comum das catorze skills do pack. Ele não é leitura de
+Este arquivo é o padrão comum das dezesseis skills do pack. Ele não é leitura de
 apoio: é onde estão os formatos literais, e formato inventado por uma skill
-quebra as outras treze.
+quebra as outras quinze.
 
 Quem lê isto é o Claude executando uma skill. Quem lê o que sai dela é um
 corretor de imóveis com pressa, que não é técnico e não vai depurar nada.
@@ -309,7 +309,7 @@ seta, origem, vírgula, data:
 
 ```
 preço: R$ 520.000  ← link, 2026-08-12
-telefone: +55 51 99999-0000  ← _bruto/2026-08-12-whatsapp-joana.md
+telefone: +55 51 90000-0001  ← _bruto/2026-08-12-whatsapp-joana.md
 área: 120 m²  ← ficha colada, 2026-08-12
 prazo: quer mudar até dezembro  ← corretor, 2026-08-19
 ```
@@ -426,7 +426,7 @@ atualizado: 2026-08-19
 ## Quem sou — é esta a voz das mensagens
 nome: Marcelo Fontes
 creci: 12345-F RS
-telefone: +55 51 99888-7766
+telefone: +55 51 90000-0002
 imobiliária: Fontes Imóveis
 região: Porto Alegre — Azenha, Menino Deus, Cidade Baixa
 assinatura de e-mail: Marcelo Fontes · CRECI 12345-F · Fontes Imóveis
@@ -478,15 +478,15 @@ ordem, e nenhuma outra. Toda linha é uma caixa de marcar e cita id com apelido.
 - [ ] Confirmar a visita de sábado com C-017 (Joana Ribeiro) — combinado em 2026-08-14
 - [ ] Responder C-024 (Paulo Menezes) — entrou ontem pelo Zap e não teve resposta
 
-## Travado
+## Parado
 - [ ] V-071 (casa 3 dorm, Azenha) — matrícula não conferida, e a proposta é sexta
 - [ ] A-014 (apto 2 dorm, Menino Deus) — sem foto da sala; anúncio parado desde 2026-08-11
 
-## Prometido e não chegou
+## Aguardando retorno
 - [ ] C-031 (Sr. Almeida) — ia mandar o IPTU do V-071 (casa 3 dorm, Azenha) em 2026-08-13, seis dias
 - [ ] C-017 (Joana Ribeiro) — ia dizer se o marido pode sábado, três dias
 
-## Feito nos últimos sete dias
+## Concluído nos últimos 7 dias
 - [x] 2026-08-15 — visita do C-017 (Joana Ribeiro) ao V-071 (casa 3 dorm, Azenha)
 ```
 
@@ -499,7 +499,7 @@ Vista derivada do campo `etapa:` dos arquivos de cliente. As etapas são estas
 seis, nesta ordem, e **nenhuma skill cria etapa nova**:
 
 ```
-novo lead · em conversa · visita marcada · visitou · proposta · fechado
+novo lead · em atendimento · visita agendada · visita realizada · proposta · fechado
 ```
 
 Quem sai do funil sem fechar não vira etapa: vira `arquivo-morto/` pela regra 3.
@@ -510,13 +510,13 @@ Quem sai do funil sem fechar não vira etapa: vira `arquivo-morto/` pela regra 3
 ## novo lead
 - C-024 (Paulo Menezes) · desde 2026-08-18 · veio do V-071 (casa 3 dorm, Azenha) no Zap · próximo: responder hoje
 
-## em conversa
+## em atendimento
 - C-019 (Rita Camargo) · desde 2026-08-05 · procura 2 dorm no Menino Deus · próximo: mandar A-014 (apto 2 dorm, Menino Deus)
 
-## visita marcada
+## visita agendada
 - C-017 (Joana Ribeiro) · desde 2026-08-14 · V-071 (casa 3 dorm, Azenha), sábado 10h · próximo: confirmar
 
-## visitou
+## visita realizada
 - nada aqui.
 
 ## proposta
@@ -536,7 +536,7 @@ Teto: **40 linhas**.
 ```markdown
 # V-071 (casa 3 dorm, Azenha)
 
-link: https://fontesimoveis.com.br/imovel/8812  ← corretor, 2026-08-12
+link: https://fontesimoveis.example/imovel/8812  ← corretor, 2026-08-12
 estado: à venda
 tipo: casa · 120 m²  ← link, 2026-08-12
 preço: R$ 520.000  ← link, 2026-08-12
@@ -544,7 +544,7 @@ condomínio: —
 iptu: ?  ← pedir ao proprietário
 dormitórios: 3 · suíte: 1 · vagas: 2  ← link, 2026-08-12
 endereço: rua José do Patrocínio, Azenha, Porto Alegre  ← link, 2026-08-12
-proprietário: Sr. Almeida, +55 51 99777-1122  ← corretor, 2026-08-12
+proprietário: Sr. Almeida, +55 51 90000-0003  ← corretor, 2026-08-12
 exclusividade: sim, até 2026-11-30  ← corretor, 2026-08-12
 
 ## O que vende
@@ -581,10 +581,10 @@ Teto: **60 linhas**.
 ```markdown
 # C-017 (Joana Ribeiro)
 
-telefone: +55 51 99123-4567  ← _bruto/2026-08-12-whatsapp-joana.md
+telefone: +55 51 90000-0004  ← _bruto/2026-08-12-whatsapp-joana.md
 e-mail: ?
 canal: WhatsApp
-etapa: visita marcada · desde 2026-08-14
+etapa: visita agendada · desde 2026-08-14
 origem: anúncio do V-071 (casa 3 dorm, Azenha) no Zap  ← _bruto/2026-08-12-whatsapp-joana.md
 
 ## O que procura
@@ -812,7 +812,7 @@ Escolhe e segue. Ao fim da saída, **sempre**, com este título exato:
 ```markdown
 ## Decidi sozinho
 - Usei o preço do link, R$ 520.000, e não o que estava na conversa de junho — o link é mais novo. Para trocar, me diga o valor.
-- Marquei a Joana como “visita marcada” porque ela aceitou o sábado. Se ela ainda não confirmou, me diga que eu volto para “em conversa”.
+- Marquei a Joana como “visita agendada” porque ela aceitou o sábado. Se ela ainda não confirmou, me diga que eu volto para “em atendimento”.
 ```
 
 Uma linha por escolha: **o que fiz — por que — como desfazer.** Sem essa
@@ -858,7 +858,7 @@ Joana, achei uma que tem o pátio que você queria.
 São 3 dormitórios na Azenha, dois quarteirões do Rosário, dentro da sua faixa.
 O pátio pega sol da tarde inteira.
 
-https://fontesimoveis.com.br/imovel/8812
+https://fontesimoveis.example/imovel/8812
 
 Consigo te mostrar sábado de manhã. Prefere 10h ou 11h?
 ```
@@ -1035,7 +1035,7 @@ escrito, a data é a que o corretor disser (ou a de hoje, e a procedência diz
    porque, se algo der errado no meio, o material do corretor já está salvo.
 2. **Extrai os fatos** para os arquivos donos — cliente e imóvel —, cada campo
    com `← _bruto/<aquele arquivo>`. Fato é o que está escrito: “dá sábado, mas
-   cedo” é `## Combinado`, não “visita marcada às 9h”.
+   cedo” é `## Combinado`, não “visita agendada às 9h”.
 3. **Atualiza as vistas** que mudaram: `funil.md` se a etapa mudou,
    `_indice.md` se entrou item ou mudou o último contato.
 4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.
@@ -1047,8 +1047,30 @@ entra — dado que se adivinhou vira preço errado na mensagem para o cliente.
 ---
 ## 7.1 · Como a mensagem sai
 
-Isto vale **só com o conector** (`WhatsApp: sim` no `INDICE.md`). Sem ele, a
-skill entrega o bloco e para — e não pede desculpa por isso.
+**Sair é uma porta só, e o canal é o que muda.** Tudo o que vai para um
+terceiro em nome do corretor — mensagem, e-mail, formulário preenchido — passa
+pelas mesmas quatro garantias, e nenhum canal as dispensa:
+
+```
+ele vê antes      o destinatário pelo nome e o texto INTEIRO, como vai sair
+uma de cada vez   nunca o mesmo texto para vários, em canal nenhum
+ele pode parar    `não contatar` e a lista de silêncio valem em todo canal
+fica escrito      o que saiu, para quem, quando — e só o que SAIU de verdade
+```
+
+```
+WhatsApp          pelo conector, com o par de ferramentas descrito abaixo
+e-mail            pelo conector de e-mail dele. A tela é a mesma; o que o
+                  conector de e-mail oferece de melhor é o RASCUNHO na caixa
+                  dele — e rascunho não é envio: não se registra como saído
+formulário        pelo navegador dele, e a skill PARA antes do botão que
+                  envia. Quem aperta é ele, em qualquer modo
+sem conector      o bloco para copiar, que é a saída que nunca falta
+```
+
+O resto desta seção é o canal que mais tem regra, o WhatsApp — e vale **só com
+o conector** (`WhatsApp: sim` no `INDICE.md`). Sem ele, a skill entrega o bloco
+e para — e não pede desculpa por isso.
 
 **A regra que governa tudo aqui: a ferramenta informa, e o corretor decide.**
 Ela recusa o que ele não pediu, nunca o que ele pediu. Isso separa três coisas
@@ -1136,10 +1158,34 @@ WhatsApp recusa**, e salvar o número na agenda não muda nada. Quem abre a
 conversa tem que ser o aplicativo do celular, uma vez; depois disso o conector
 responde como em qualquer outra.
 
-A prévia diz isso **antes**, quando vê que a conversa não existe. Ao ouvir,
-a skill não insiste e não tenta outro caminho: ela entrega o **bloco para
-copiar** — que é o padrão do pack de qualquer forma — e diz, em uma linha, que
-a primeira mensagem sai do celular dele.
+A prévia diz isso **antes**, quando vê que a conversa não existe.
+
+**E o formato dessa primeira mensagem é um LINK.** Com conector, a prévia já vem
+com ele montado; sem conector, a skill o escreve, porque é uma URL e não uma
+ferramenta:
+
+```
+https://wa.me/<número com país, só dígitos>?text=<a mensagem>
+```
+
+O texto vai codificado — espaço é `%20`, quebra de linha é `%0A`. O link abre o
+WhatsApp do corretor na conversa certa, **com a mensagem já escrita**: ele só
+aperta enviar. Não é contorno da recusa; é o caminho oficial da Meta, e quem
+abre a conversa continua sendo o aplicativo, que é o que o WhatsApp exige.
+
+**O bloco para copiar continua junto, e não é redundância.** O link falha com
+número errado, com aplicativo que não abre no computador, e com mensagem longa
+demais para caber numa URL. O bloco é o plano B que funciona sempre.
+
+**A guarda vale igual para o link.** Uma pessoa por vez, o texto inteiro na tela
+antes, e quem está na lista de silêncio não recebe link nenhum: a recusa da
+plataforma não é a nossa régua, e entregar dez links numa hora é o mesmo disparo
+que a ponte não faz. Com conector isso é contado como envio; sem ele, quem conta
+é a skill.
+
+E o registro **fecha sozinho**: quando a mensagem sai do celular, ela volta ao
+conector no sync, e o que era "link entregue" passa a ser "enviada". É o que
+separa preparar de ter mandado.
 
 Não é raro: é como quase todo cliente chega da primeira vez — o que deixou o telefone
 num portal e nunca escreveu.
@@ -1156,12 +1202,12 @@ na carteira   o arquivo do cliente ganha  não contatar: sim  ← origem, data
 na ponte      um comando, e é ele que escreve o arquivo — o diretório dela
               não é o da carteira, e a skill não tem como adivinhar onde é:
 
-                  whatsapp-reader nao-contatar 5551999998888 "pediu em 12/08"
+                  whatsapp-reader nao-contatar 5551900000012 "pediu em 12/08"
 
               sem argumento ele lista; `--tirar <número>` desfaz
 ```
 
-A carteira é o que as catorze skills leem; a ponte é o que segura o envio mesmo se
+A carteira é o que as dezesseis skills leem; a ponte é o que segura o envio mesmo se
 alguém esquecer. **Nenhuma skill escreve mensagem para quem tem `não contatar:
 sim`**, nem para retomar, nem para avisar do que entrou, nem para desejar
 feliz aniversário. Não é preferência de canal: é pedido de silêncio.
@@ -1304,6 +1350,12 @@ faz toda skill reler 200 linhas para achar um telefone, em toda execução.
 
 1. lê `~/carteira/INDICE.md`. Não existe: uma linha e `/corretor:comecar`
 2. lê a linha `modo:`
+   — e, se a ferramenta `painel_inicio` existe nesta sessão, chama-a UMA vez,
+   com o caminho da linha `carteira:`. É o que põe a página inicial de pé;
+   o endereço se diz uma vez por dia, e onde a ferramenta não existe nada
+   disto se menciona. **Se ela devolver `fila`, grave-a ANTES de qualquer
+   outra coisa** — são decisões que o corretor marcou no painel sem você
+   estar perguntando (`references/painel.md`, "A fila de decisões")
 3. desce a ordem de busca da seção 8 até ter o que precisa
 4. tarefa de **três ou mais passos demorados**: mostra o TODO na tela.
    Demorado é passo que abre link, lê muitos arquivos ou escreve mais de um
@@ -1330,7 +1382,7 @@ que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 seção 4 proíbe. Medido: duas skills inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
-**Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o
+**Seis skills não têm bloco para colar, e a razão é a mesma nas seis: o
 trabalho delas não é um texto para o cliente.**
 
 ```
@@ -1339,6 +1391,7 @@ trabalho delas não é um texto para o cliente.**
 /corretor:organizar-carteira   o trabalho é o relatório do que mudou
 /corretor:laudo-da-carteira    o trabalho é o laudo, e ele não sai daqui
 /corretor:importar-a-conversa  o trabalho é o relatório do que entrou
+/corretor:gravar-o-que-marquei o trabalho é gravar o que já foi decidido
 ```
 
 **Quatro delas acrescentam seção ao fecho, e a seção acrescentada É o
@@ -1349,7 +1402,7 @@ da régua, e a `importar-a-conversa` um por destino do que leu — inclusive o d
 que ela **não** leu, que é o mais importante dos dela.
 
 **Fora essas quatro, nenhuma skill acrescenta seção ao fecho**, e nenhuma das
-cinco oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
+seis oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
 
 A ordem dos três títulos fixos não muda em nenhuma delas: o que a skill
 acrescenta vem ANTES do `## Guardei`, nunca entre ele e o `## Falta saber`.

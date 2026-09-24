@@ -19,10 +19,7 @@ Todo campo leva de onde veio e quando. O formato é fixo — valor, dois espaço
 seta, origem, vírgula, data:
 
 ```
-preço: R$ 520.000  ← link, 2026-08-12
-telefone: +55 51 99999-0000  ← _bruto/{exemplo-bruto}
-área: 120 m²  ← ficha colada, 2026-08-12
-prazo: quer mudar até dezembro  ← {profissional}, 2026-08-19
+{exemplos-de-procedencia}
 ```
 
 As origens possíveis, e não há outras:
@@ -59,7 +56,7 @@ escreva `12 de agosto`; ao ESCREVER no arquivo, `2026-08-12`.
 
 ### Regra 3 · O que morre é aposentado com data e motivo
 
-Gaveta, não lixeira. **Nenhuma skill apaga arquivo da carteira, nunca.**
+Gaveta, não lixeira. **Nenhuma skill apaga arquivo da {base}, nunca.**
 
 Aposentar é isto, nesta ordem:
 
@@ -70,8 +67,14 @@ Aposentar é isto, nesta ordem:
    com o desfecho em uma linha
 4. some do `funil.md` e do `hoje.md`, que são vistas dos vivos
 
+[[se etapa-de:pessoa]]
 Quando aposentar, sem inventar outros critérios: {criterios-de-aposentar}. {Pessoa} parado há menos que isso
 não é morto — é assunto de `/{plugin}:retomar-contato`.
+[[fim]]
+[[se etapa-de:item]]
+Quando aposentar, sem inventar outros critérios: {criterios-de-aposentar}. {Andante} que parou há menos que isso
+não vai para o arquivo morto — é assunto de `/{plugin}:retomar-contato`.
+[[fim]]
 
 Aposentar em modo automático é permitido para o prazo de {prazo-de-silencio}. Aposentar por
 qualquer outro motivo é decisão do {profissional}, mesmo no automático.

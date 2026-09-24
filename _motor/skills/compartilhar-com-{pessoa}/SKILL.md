@@ -1,21 +1,21 @@
 ---
 name: compartilhar-com-{pessoa}
 description: >-
-  Monta uma vista — o pedaço da carteira que {um-pessoa} pode ver — e a
+  Monta uma vista — o pedaço da {base} que {um-pessoa} pode ver — e a
   compartilha com ele no Drive, só para leitura. O que falta, de quem, desde
-  quando; o que já chegou; o que foi combinado. É derivada da carteira e refeita
+  quando; o que já chegou; o que foi combinado. É derivada da {base} e refeita
   a cada execução, então o {profissional} não mantém dois lugares. Mostra o que
   vai ficar visível e para quem ANTES de aplicar a permissão. Use quando o
   {profissional} disser — manda pra ele o que falta · ele fica perguntando toda
   semana como está · queria que ele visse o andamento · como eu mostro isso pra
   ele sem ficar mandando print · faz um resumo pra mandar · ele pediu um
-  relatório · quero que ele acompanhe. Ela não dá acesso à carteira: cria uma
+  relatório · quero que ele acompanhe. Ela não dá acesso à {base}: cria uma
   vista separada. Não é a cobrança em si, que é /{plugin}:cobrar-o-que-falta,
   nem a lista do dia, que é /{plugin}:o-que-fazer-hoje.
 license: MIT
 compatibility: >-
   Monta a vista nos dois transportes; COMPARTILHAR só existe no Drive, porque no
-  computador não há com quem. No `local` ela salva em ~/carteira/vistas/, diz que
+  computador não há com quem. No `local` ela salva em ~/{pasta-base}/vistas/, diz que
   o compartilhamento precisa do Drive, e para aí — o trabalho sai inteiro do
   mesmo jeito e nada é prometido a mais. Precisa do
   conector do Drive com permissão de compartilhar; sem ela, entrega a vista para
@@ -37,11 +37,11 @@ aplicativo, não é um portal e não é um login: é um arquivo de texto no Driv
 {profissional}, com permissão de leitura para uma pessoa, refeito a cada
 execução.
 
-**A carteira passa a ter duas pontas.** A de dentro continua igual — os
+**A {base} passa a ter duas pontas.** A de dentro continua igual — os
 arquivos, o `_bruto/`, as três regras. A de fora é a vista, e ela é derivada:
 
 ```
-        a carteira                      a vista
+        a {base}                      a vista
         ──────────                      ───────
    {pasta-pessoas}/…  ──┐
    {pasta-itens}/…    ──┼──▶  derivar  ──▶  vistas/{exemplo-pessoa-arquivo}
@@ -50,14 +50,14 @@ arquivos, o `_bruto/`, as três regras. A de fora é a vista, e ela é derivada:
    _bruto/            ──✕  nunca
 ```
 
-**O que ela não é:** não é acesso à carteira, não é uma pasta compartilhada, e
+**O que ela não é:** não é acesso à {base}, não é uma pasta compartilhada, e
 não é colaboração. O {pessoa} **lê**; quem escreve é o {profissional}, sempre.
-Duas pessoas escrevendo no mesmo lugar é o ponto em que a carteira deixa de ter
+Duas pessoas escrevendo no mesmo lugar é o ponto em que a {base} deixa de ter
 dono — e o contrato inteiro se apoia nela ter um.
 
 ## 2 · Antes de tudo
 
-1. `~/carteira/INDICE.md`. Não existe: uma linha e `/{plugin}:comecar`.
+1. `~/{pasta-base}/INDICE.md`. Não existe: uma linha e `/{plugin}:comecar`.
 2. A linha `modo:` e **a linha do transporte**. Se for `local`, leia a seção 7
    antes de seguir: ela monta a vista e não compartilha.
 3. `references/contrato/04-8-a-vista.md` — **inteira**. É ela que diz o formato,
@@ -101,7 +101,7 @@ Leia o arquivo {do-pessoa}, {os-itens} que o histórico dele cita, o `funil.md` 
 Três coisas na hora de escrever, e as três são de tradução:
 
 - **Sem sigla e sem id solto.** `{exemplo-item}` vira o apelido. Quem lê não
-  conhece o vocabulário da carteira e não deveria precisar conhecer.
+  conhece o vocabulário da {base} e não deveria precisar conhecer.
 - **Sem etapa de funil.** "Em negociação" é palavra de dentro. Vira uma frase em
   português que diz o que está acontecendo.
 - **Sem o que ele não sabe.** A régua do §4.8: entra o que essa pessoa já sabe
@@ -129,7 +129,7 @@ compartilha com um estranho, e ninguém descobre.
 
 ### Passo 4 · Gravar e compartilhar, nesta ordem
 
-1. **Grave a vista** em `~/carteira/vistas/`. Ela é derivada, então sobrescrever
+1. **Grave a vista** em `~/{pasta-base}/vistas/`. Ela é derivada, então sobrescrever
    é o certo — não versione, não acumule.
 2. **Só então aplique a permissão**, e só a do arquivo. **Nunca a da pasta**: a
    pasta `vistas/` tem a vista de todas as pessoas, e compartilhá-la mostra a de
@@ -187,13 +187,13 @@ Atualizado em 2026-09-09 por {profissional}.
 
 ## A permissão que vou aplicar
 
-arquivo   ~/carteira/vistas/{exemplo-pessoa-arquivo}
+arquivo   ~/{pasta-base}/vistas/{exemplo-pessoa-arquivo}
 quem      <e-mail por extenso>
 acesso    leitura · só quem tem este e-mail
 
 ## Guardei
-- ~/carteira/vistas/{exemplo-pessoa-arquivo} — refeita
-- ~/carteira/{pasta-pessoas}/{exemplo-pessoa-arquivo} — a data e para quem
+- ~/{pasta-base}/vistas/{exemplo-pessoa-arquivo} — refeita
+- ~/{pasta-base}/{pasta-pessoas}/{exemplo-pessoa-arquivo} — a data e para quem
 
 ## Falta saber
 - o e-mail de {exemplo-pessoa} — sem ele a vista fica só no Drive dele
@@ -214,7 +214,7 @@ linha e faz o que ele mandar — a decisão é dele, mas informada (a régua do
 `informar em vez de impedir`).
 
 **No `local` ela para no Passo 4.** Monta a vista, salva em
-`~/carteira/vistas/`, e diz que compartilhar precisa do Drive. Não tenta anexar,
+`~/{pasta-base}/vistas/`, e diz que compartilhar precisa do Drive. Não tenta anexar,
 não tenta mandar arquivo por WhatsApp e não sugere serviço de terceiro — o
 transporte é uma escolha do {profissional}, feita uma vez, e não é esta skill que
 a muda.
@@ -225,5 +225,5 @@ descartou não volta por citação.
 
 **Ela não revoga sozinha.** Se o {profissional} quiser tirar o acesso, ela mostra
 como e faz quando ele mandar — mas não decide que uma relação acabou porque o
-{pessoa} foi aposentado na carteira. Aposentar é da carteira; revogar é da
+{pessoa} foi aposentado na {base}. Aposentar é da {base}; revogar é da
 relação, e as duas coisas não andam juntas.

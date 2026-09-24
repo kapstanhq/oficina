@@ -191,7 +191,7 @@ permuta    cada lado é vendedor de um imóvel e comprador do outro, e entrega
 ```
 
 **Papel sem id não trava a skill.** O proprietário costuma estar só como linha no
-arquivo do imóvel (`proprietário: Sr. Almeida, +55 51 99777-1122`). Nesse caso,
+arquivo do imóvel (`proprietário: Sr. Almeida, +55 51 90000-0003`). Nesse caso,
 cite-o pelo nome que está lá e ancore no imóvel: “Sr. Almeida, proprietário do
 V-071 (casa 3 dorm, Azenha)”. **Não abra ficha de cliente para ele** — quem
 organiza a carteira é `/corretor:organizar-carteira` — e deixe uma linha em
@@ -223,7 +223,7 @@ Onde procurar cada marca:
    concluir que o documento não está lá.
 3. **`clientes/<id>-<apelido>.md`, `## Combinado`** — “ia mandar o IPTU em
    2026-08-13” é `falta` **já pedido**, e o destino dele no `hoje.md` é
-   `## Prometido e não chegou`, não `## Vence hoje`.
+   `## Aguardando retorno`, não `## Vence hoje`.
 4. **`hoje.md`** — leia as caixas que já estão lá antes de acrescentar qualquer
    uma. Caixa repetida faz o corretor parar de ler o arquivo, e aí ele para de
    ler as que importam.
@@ -770,7 +770,7 @@ ela é derivável, e o arquivo do imóvel tem teto de 40 linhas.
 ```
 
 É daqui que a próxima execução sabe que já foi pedido — e é o que faz a caixa
-mudar de `## Vence hoje` para `## Prometido e não chegou` quando o prazo passar.
+mudar de `## Vence hoje` para `## Aguardando retorno` quando o prazo passar.
 
 **Saiu pelo conector?** Isso é fato com hora, e a linha diz: `mandei pelo
 WhatsApp` no fim, antes da procedência. “Eu mesmo mando” não vira isso —
@@ -789,16 +789,16 @@ motivo curto:
 - [ ] Pedir a certidão da matrícula do V-071 (casa 3 dorm, Azenha) ao C-031 (Sr. Almeida), proprietário — o banco não abre o processo sem ela
 - [ ] Pedir a negativa de condomínio do V-071 (casa 3 dorm, Azenha) à administradora — a dívida acompanha o imóvel
 
-## Prometido e não chegou
+## Aguardando retorno
 - [ ] C-031 (Sr. Almeida) — ia mandar o IPTU do V-071 (casa 3 dorm, Azenha) em 2026-08-13, seis dias
 ```
 
 Quatro regras ao escrever no `hoje.md`:
 
-- **Documento já pedido vai para `## Prometido e não chegou`**, com a data em que
+- **Documento já pedido vai para `## Aguardando retorno`**, com a data em que
   foi prometido e quantos dias faz. O que ainda não foi pedido vai para
   `## Vence hoje`.
-- **Documento cuja falta trava algo com data marcada** vai para `## Travado`, com
+- **Documento cuja falta trava algo com data marcada** vai para `## Parado`, com
   a data do que trava: “a proposta é sexta”.
 - **Teto de 15 caixas** no arquivo (CONTRATO §9). Confira **antes** de escrever.
   Não cabe? Entram só as do primeiro degrau da ordem — o que derruba o negócio —

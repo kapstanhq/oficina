@@ -1,9 +1,9 @@
 # C-031 (Sr. Almeida)
 
-telefone: +55 51 99777-1122  ← corretor, 2026-08-12
+telefone: +55 51 90000-0003  ← corretor, 2026-08-12
 e-mail: ?
 canal: telefone
-etapa: em conversa · desde 2026-08-12
+etapa: em atendimento · desde 2026-08-12
 origem: proprietário do V-071 (casa 3 dorm, Azenha)  ← corretor, 2026-08-12
 não contatar: não
 

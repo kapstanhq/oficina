@@ -13,15 +13,15 @@ apelido.
 - [ ] Reunião 15h com P-017 (Carla Menezes), E-071 (VetorBank, Porto Alegre) — confirmar antes
 - [ ] Responder P-024 (Paulo Tavares) — respondeu ontem e não teve retorno
 
-## Travado
+## Parado
 - [ ] E-083 (Móveis Bertoldo, Bento Gonçalves) — estudada em 2026-08-11 e sem abordagem desde então
 - [ ] P-019 (Rui Baptista) — sem e-mail; a abordagem só sai pelo LinkedIn
 
-## Prometido e não chegou
+## Aguardando retorno
 - [ ] P-031 (Sandra Lisboa) — ia levar a proposta ao jurídico em 2026-08-13, seis dias
 - [ ] P-017 (Carla Menezes) — ia dizer se o time de risco entra na reunião, três dias
 
-## Feito nos últimos sete dias
+## Concluído nos últimos 7 dias
 - [x] 2026-08-15 — abordagem enviada à P-017 (Carla Menezes)
 ```
 

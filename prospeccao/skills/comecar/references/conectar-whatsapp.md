@@ -348,7 +348,7 @@ uma vez**. Quando um contato pedir para não ser contatado, o contrato (seção
 da ponte, que a carteira não alcança:
 
 ```
-whatsapp-reader nao-contatar 5551999998888 "pediu em 12/08"
+whatsapp-reader nao-contatar 5551900000012 "pediu em 12/08"
 ```
 
 Diga ao prospector que ele mesmo pode rodá-lo, e que `--tirar` desfaz. Pedido

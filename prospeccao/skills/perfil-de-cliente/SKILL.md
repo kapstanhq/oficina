@@ -229,5 +229,5 @@ compra; o que se vende está no `INDICE.md`, e mudar isso é decisão dele.
 
 **Ela não usa o que a carteira mostra como se fosse evidência.** Vinte contas
 de um setor na carteira provam que ele procurou vinte, não que aquele setor
-compra. Só `virou cliente` e `disse não` contam — e ela diz isso quando ele
+compra. Só `cliente` e `disse não` contam — e ela diz isso quando ele
 perguntar por que não usou o resto.

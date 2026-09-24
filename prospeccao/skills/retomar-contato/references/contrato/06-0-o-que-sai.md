@@ -27,7 +27,7 @@ Carla, vi que o VetorBank abriu vaga para analista de risco de crédito.
 Montei painel de inadimplência por safra para duas financeiras do mesmo porte —
 nos dois casos o fechamento do mês caiu de nove dias para dois.
 
-https://vasquesanalytics.com.br/casos/safra
+https://vasquesanalytics.example/casos/safra
 
 Vale uma conversa de 20 minutos na semana que vem? Terça ou quinta?
 ```

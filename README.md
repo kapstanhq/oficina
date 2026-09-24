@@ -17,6 +17,7 @@ seu computador. Você não repete a mesma informação duas vezes.
 |---|---|---|---|
 | [**corretor**](corretor/) | Corretor de imóveis | Anúncio, matrícula, resposta de lead, visita, retomada de contato, documentos e a lista do dia | **Disponível** |
 | [**prospeccao**](prospeccao/) | Quem prospecta o próprio cliente — fundador, consultor, dono de agência | Perfil de cliente, estudo da conta com procedência, abordagem escrita, retomada com gancho novo e a lista do dia | **Disponível** |
+| **vagas** | Quem procura emprego, em qualquer profissão | Busca de vagas, triagem contra o seu perfil, currículo a partir da sua trajetória e candidatura preparada campo a campo | Em preparação |
 | **médico e clínica** | Consultório e clínica | Paciente no lugar de cliente, a linha de cuidado no lugar do funil. Dado de saúde é sensível, e é o que faz a carteira em arquivo no computador ser a forma certa | Em estudo |
 | **advogado** | Advogado e escritório | O andamento em português para o cliente, o prazo que não se perde, a minuta a partir das peças que já são suas | Em estudo |
 
@@ -59,8 +60,12 @@ lá em cima.
 Instale o pack <pack> da Oficina Kapstan, que está no repositório público
 https://github.com/kapstanhq/oficina
 
-São arquivos de texto — SKILL.md e referências em markdown. Não há script para
-executar e nada para compilar: a instalação é copiar pastas.
+O pack tem duas partes: as skills, que são arquivos de texto, e três
+servidores locais em Node.js — o painel, os conectores e os documentos.
+Pelo marketplace do Claude Code as duas entram juntas e não há nada para
+compilar. Pela cópia manual (passos 2 a 6) entram só as skills, sem o painel.
+Os servidores precisam do Node.js 20.19 ou mais novo: confira com
+`node --version` e, se faltar, instale de https://nodejs.org.
 
 1. Se você for o Claude Code, o caminho curto é o marketplace:
        /plugin marketplace add https://github.com/kapstanhq/oficina.git
@@ -302,9 +307,14 @@ pior que pack nenhum.
 ## Contribuir
 
 Conte **o que você reescreve toda semana**. É disso que sai a próxima
-ferramenta, e é o que decide qual profissão entra depois.
+ferramenta, e é o que decide qual profissão entra depois. Abra uma questão em
+<https://github.com/kapstanhq/oficina/issues>.
 
-Abra uma questão em <https://github.com/kapstanhq/oficina/issues>.
+O código inteiro está aqui — as skills, o motor que as monta, o painel, os
+conectores e as provas —, e pull request é bem-vindo. Metade do que está
+dentro de cada pack é GERADO a partir de uma fonte, e editar a cópia não
+adianta: o [CONTRIBUTING.md](CONTRIBUTING.md) diz onde fica a fonte de cada
+coisa e como provar a mudança antes de mandar.
 
 ---
 

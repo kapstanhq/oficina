@@ -1,0 +1,6 @@
+{
+  "_": "A carta de apresentação em PDF (D273). Uma página, no máximo: o corpo é de 900 a 1.500 caracteres (D275) e o teto de uma página fica como guarda. O cabeçalho é o do currículo — a linha de contato antes do primeiro ## — para os dois se lerem como um conjunto; o ## é a linha do assunto.",
+  "titulo": "carta de apresentação",
+  "paginas_max": 1,
+  "markdown": { "abertura": "contato" }
+}

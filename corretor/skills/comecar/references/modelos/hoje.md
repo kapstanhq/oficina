@@ -9,11 +9,11 @@
 ## Vence hoje
 - nada aqui hoje.
 
-## Travado
+## Parado
 - nada aqui hoje.
 
-## Prometido e não chegou
+## Aguardando retorno
 - nada aqui hoje.
 
-## Feito nos últimos sete dias
+## Concluído nos últimos 7 dias
 - nada aqui hoje.

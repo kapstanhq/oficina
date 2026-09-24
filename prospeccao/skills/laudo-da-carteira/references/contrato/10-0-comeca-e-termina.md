@@ -6,6 +6,12 @@
 
 1. lê `~/carteira/INDICE.md`. Não existe: uma linha e `/prospeccao:comecar`
 2. lê a linha `modo:`
+   — e, se a ferramenta `painel_inicio` existe nesta sessão, chama-a UMA vez,
+   com o caminho da linha `carteira:`. É o que põe a página inicial de pé;
+   o endereço se diz uma vez por dia, e onde a ferramenta não existe nada
+   disto se menciona. **Se ela devolver `fila`, grave-a ANTES de qualquer
+   outra coisa** — são decisões que o prospector marcou no painel sem você
+   estar perguntando (`references/painel.md`, "A fila de decisões")
 3. desce a ordem de busca da seção 8 até ter o que precisa
 4. tarefa de **três ou mais passos demorados**: mostra o TODO na tela.
    Demorado é passo que abre link, lê muitos arquivos ou escreve mais de um
@@ -32,7 +38,7 @@ que NÃO ficou.** E o título é este, sempre — `## Não gravei nada` e
 seção 4 proíbe. Medido: duas skills inventaram o próprio na primeira
 execução da prova, as duas por terem feito a coisa certa e nomeado errado.
 
-**Cinco skills não têm bloco para colar, e a razão é a mesma nas cinco: o
+**Seis skills não têm bloco para colar, e a razão é a mesma nas seis: o
 trabalho delas não é um texto para o contato.**
 
 ```
@@ -41,6 +47,7 @@ trabalho delas não é um texto para o contato.**
 /prospeccao:organizar-carteira   o trabalho é o relatório do que mudou
 /prospeccao:laudo-da-carteira    o trabalho é o laudo, e ele não sai daqui
 /prospeccao:importar-a-conversa  o trabalho é o relatório do que entrou
+/prospeccao:gravar-o-que-marquei o trabalho é gravar o que já foi decidido
 ```
 
 **Quatro delas acrescentam seção ao fecho, e a seção acrescentada É o
@@ -51,7 +58,7 @@ da régua, e a `importar-a-conversa` um por destino do que leu — inclusive o d
 que ela **não** leu, que é o mais importante dos dela.
 
 **Fora essas quatro, nenhuma skill acrescenta seção ao fecho**, e nenhuma das
-cinco oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
+seis oferece a segunda saída da seção 7.1, porque não há mensagem para mandar.
 
 A ordem dos três títulos fixos não muda em nenhuma delas: o que a skill
 acrescenta vem ANTES do `## Guardei`, nunca entre ele e o `## Falta saber`.

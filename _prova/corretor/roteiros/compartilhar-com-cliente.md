@@ -27,7 +27,7 @@ vez, e não é esta skill que a muda.
 O que a leitura tem de conferir na vista da C-017:
 
 **Não sai id nem etapa.** `V-071` vira "a casa de 3 dormitórios na Azenha", e
-"visita marcada" vira uma frase. Quem lê a vista é a Joana, e ela não conhece o
+"visita agendada" vira uma frase. Quem lê a vista é a Joana, e ela não conhece o
 vocabulário da carteira.
 
 **Não sai nada do `_bruto/`.** A conversa de 12/08 está lá inteira, e a

@@ -50,7 +50,7 @@ mais de um dia             tempo, que o que passou não volta, e que a janela do
 
 **Silêncio só se justifica quando está tudo certo.** Ponte velha e trabalho
 normal é o único par que o {profissional} não pode ver, porque é o único em que
-ele acharia que a carteira está em dia.
+ele acharia que a {base} está em dia.
 
 ### Exportado do aplicativo
 
@@ -98,7 +98,7 @@ partes:
 - **Número, valor, data e nome próprio saídos de transcrição não viram campo
   sem confirmação.** Campo preenchido não levanta suspeita em ninguém, e um
   “trezentos e cinquenta” ouvido errado sai {no-item} e na mensagem que vai
-  {ao-pessoa}. Pergunte uma vez: “O áudio de 12/08 diz R$ 350 mil. Confere?”
+  {ao-pessoa}. Pergunte uma vez: “O áudio de 12/08 diz {exemplo-valor-em-audio}. Confere?”
 
 Sem transcrição, o conector diz **por quê** no lugar do texto — e o motivo
 decide o que fazer:
@@ -129,10 +129,16 @@ escrito, a data é a que o {profissional} disser (ou a de hoje, e a procedência
    cedo” é `## Combinado`, não “{exemplo-etapa-deduzida}”.
 3. **Atualiza as vistas** que mudaram: `funil.md` se a etapa mudou,
    `_indice.md` se entrou item ou mudou o último contato.
+[[se etapa-de:item]]
+   A etapa é {do-item}: conversa com {um-pessoa} que mostra que {o-item} andou
+   muda o `etapa:` no arquivo {do-item} de que ela trata — o arquivo {do-pessoa}
+   não tem esse campo. Conversa que não diz de qual {item} fala não muda etapa
+   nenhuma: vira pergunta.
+[[fim]]
 4. **Diz onde guardou**, no bloco `## Guardei` da seção 10.
 
-Conversa que menciona {item} que não está na carteira: não crie {o-item} com o
+Conversa que menciona {item} que não está na {base}: não crie {o-item} com o
 que a conversa diz. Pergunte o link, uma vez. Sem link nem ficha, {o-item} não
-entra — dado que se adivinhou vira preço errado na mensagem para {o-pessoa}.
+entra — dado que se adivinhou vira {exemplo-de-erro-na-mensagem} na mensagem para {o-pessoa}.
 
 ---

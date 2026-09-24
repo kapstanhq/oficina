@@ -1,10 +1,10 @@
-## 4.8 · A vista, que é a carteira vista de fora
+## 4.8 · A vista, que é a {base} vista de fora
 
-A carteira é do {profissional} e mora com ele. **A vista é o pedaço dela que uma
-pessoa de fora pode ver** — e é a única coisa da carteira que sai do computador.
+A {base} é do {profissional} e mora com ele. **A vista é o pedaço dela que uma
+pessoa de fora pode ver** — e é a única coisa da {base} que sai do computador.
 
 ```
-~/carteira/
+~/{pasta-base}/
   vistas/
     {exemplo-pessoa-arquivo}      uma vista por {pessoa}, o mesmo id e o mesmo apelido
 ```
@@ -64,13 +64,13 @@ diz "nada com você agora", e isso também é informação.
 
 **Sem etapa de funil, sem id solto e sem sigla.** `{exemplo-item}` vira o
 apelido; a etapa vira uma frase. Quem lê a vista não conhece o vocabulário da
-carteira, e não deveria precisar conhecer.
+{base}, e não deveria precisar conhecer.
 
 ### Quem escreve, e quem lê
 
 Escreve o {profissional}, sempre — pela skill. **Quem recebe tem acesso de
 leitura, nunca de escrita.** Duas pessoas escrevendo no mesmo arquivo é o
-momento em que a carteira deixa de ter dono, e o contrato inteiro se apoia em
+momento em que a {base} deixa de ter dono, e o contrato inteiro se apoia em
 ela ter um.
 
 Se a pessoa de fora responder, ela responde pelo canal de sempre — e aquilo

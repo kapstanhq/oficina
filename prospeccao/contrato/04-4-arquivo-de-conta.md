@@ -5,7 +5,7 @@ Teto: **40 linhas**.
 ```markdown
 # E-071 (VetorBank, Porto Alegre)
 
-site: https://vetorbank.com.br  ← prospector, 2026-08-12
+site: https://vetorbank.example  ← prospector, 2026-08-12
 estado: a abordar
 setor: crédito para pequena empresa  ← site, 2026-08-12
 cidade: Porto Alegre, RS  ← site, 2026-08-12
@@ -32,7 +32,7 @@ de onde veio: post meu no LinkedIn, ela comentou  ← _bruto/2026-08-12-linkedin
 - 2026-08-18 estudada, três fatos novos  ← _bruto/2026-08-18-site-vetorbank.md
 ```
 
-`estado:` é um destes: `a estudar`, `a abordar`, `em conversa`, `virou cliente`,
+`estado:` é um destes: `a estudar`, `a abordar`, `em conversa`, `cliente`,
 `disse não`, `fechou com outro`, `fora do perfil`. Os três últimos disparam a
 regra 3.
 

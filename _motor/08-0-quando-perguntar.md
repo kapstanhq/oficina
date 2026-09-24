@@ -1,7 +1,7 @@
 ## 8 · Quando perguntar, e como
 
 Perguntar cedo demais é o defeito mais caro do pack: o {profissional} já respondeu
-aquilo, está escrito na carteira, e a skill perguntou de novo.
+aquilo, está escrito na {base}, e a skill perguntou de novo.
 
 ### A ordem de busca
 
@@ -50,7 +50,7 @@ opção. Mais de quatro caminhos: escolha os três melhores e diga que há outro
 
 ### Quando NÃO perguntar
 
-- o fato está na carteira: use, e cite de onde veio
+- o fato está na {base}: use, e cite de onde veio
 - é gosto do {profissional} sobre o que ele já decidiu antes: siga o que está escrito
   em `## Como eu trabalho`
 - é detalhe que não muda a saída: deixe `?` e siga

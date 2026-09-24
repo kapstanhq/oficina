@@ -1,0 +1,18 @@
+{
+  "_": "Sobre o que cada skill age, para o painel saber ONDE oferecê-la como botão (D232). `nada` = roda sozinha, sem ninguém dizer mais nada; `item` = age sobre UM imóvel; `pessoa` = sobre UM cliente. Skill que não está aqui é CONVERSA (perguntas, texto colado): o painel mostra o comando para copiar e não oferece botão. `completar` é a skill que procura o que falta num item: o painel mostra o botão ao lado dos campos em destaque sem resposta (D245).",
+  "sobre": {
+    "anunciar-imovel": "item",
+    "conferir-matricula": "item",
+    "gravar-video-do-imovel": "item",
+    "montar-visita": "pessoa",
+    "documentos-do-negocio": "item pessoa",
+    "compartilhar-com-cliente": "pessoa",
+    "o-que-fazer-hoje": "nada",
+    "retomar-contato": "nada",
+    "cobrar-o-que-falta": "nada",
+    "organizar-carteira": "nada",
+    "laudo-da-carteira": "nada",
+    "completar-ficha": "item"
+  },
+  "completar": "completar-ficha"
+}

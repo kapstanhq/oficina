@@ -1,6 +1,6 @@
 <!-- ARQUIVO GERADO · não edite.
 
-     A fonte é site/oficina/corretor-de-imoveis/prompt.md, e este arquivo sai dela
+     A fonte é prompts/corretor.md, e este arquivo sai dela
      por `npm run oficina -- --escrever`. Correção feita aqui é perdida na
      próxima geração. -->
 
@@ -8,7 +8,7 @@
 
 O pack inteiro em um texto só, para colar onde não se instala nada: um Gem do
 Gemini, um Projeto ou GPT do ChatGPT, um Projeto do Claude. Cola uma vez e serve
-para as catorze tarefas — não se cria um Gem por skill.
+para todas as tarefas — não se cria um Gem por skill.
 
 O prompt de uma tarefa por vez, pronto para copiar, e o passo a passo para
 instalar o plugin: <https://kapstan.com.br/oficina/corretor-de-imoveis>

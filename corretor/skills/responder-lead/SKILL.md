@@ -182,7 +182,7 @@ ter, o que não aceita, prazo, pagamento, quem decide junto. Cada um com
 `← _bruto/<o arquivo que você acabou de gravar>`, ou `?` se ele não disse.
 
 **Fato é o que está escrito.** “Dá sábado, mas tem que ser cedo” é uma linha de
-`## Combinado`, não `visita marcada às 9h`.
+`## Combinado`, não `visita agendada às 9h`.
 
 ### 4.5 · Cruza com os imóveis da carteira
 
@@ -268,7 +268,7 @@ Os três rótulos são literais: cada um diz o que a PESSOA vai fazer, não o no
 interno da peça. Eles são botões, pela UI de perguntas da seção 5:
 
 ```
-Para: Rafael Prado — C-032 (Rafael Prado), +55 51 99999-4412, número que não
+Para: Rafael Prado — C-032 (Rafael Prado), +55 51 90000-0005, número que não
 está salvo no seu telefone. Ele escreveu há 8 minutos.
 
   Rafael, a casa da Azenha está disponível, sim.
@@ -277,7 +277,7 @@ está salvo no seu telefone. Ele escreveu há 8 minutos.
   inteira. Fica a duas quadras do Colégio Rosário, dentro da faixa que você
   falou.
 
-  https://fontesimoveis.com.br/imovel/8812
+  https://fontesimoveis.example/imovel/8812
 
   Consigo te mostrar sábado de manhã. Prefere 10h ou 11h?
 
@@ -366,7 +366,7 @@ Rafael, a casa da Azenha está disponível, sim.
 São 3 dormitórios e 120 m², com pátio nos fundos que pega o sol da tarde
 inteira. Fica a duas quadras do Colégio Rosário, dentro da faixa que você falou.
 
-https://fontesimoveis.com.br/imovel/8812
+https://fontesimoveis.example/imovel/8812
 
 Consigo te mostrar sábado de manhã. Prefere 10h ou 11h?
 ```
@@ -377,7 +377,7 @@ abaixo. **O bloco não muda** — segue sozinho e sem comentário dentro, porque
 dele que “Eu mesmo mando” copia:
 
 ```
-Para: Rafael Prado — C-032 (Rafael Prado), +55 51 99999-4412, número que não
+Para: Rafael Prado — C-032 (Rafael Prado), +55 51 90000-0005, número que não
 está salvo no seu telefone. Ele escreveu há 8 minutos.
 
 <o bloco, igual ao de cima>
@@ -468,12 +468,12 @@ A etapa mora na ficha do cliente e o `funil.md` só reflete (contrato, 4.3 e
 
 ```
 só a primeira mensagem dele, sem resposta ainda     novo lead
-já teve ida e volta na conversa colada              em conversa
-dia e hora combinados DENTRO da conversa            visita marcada
+já teve ida e volta na conversa colada              em atendimento
+dia e hora combinados DENTRO da conversa            visita agendada
 ```
 
 A mensagem que a skill acabou de escrever **não muda etapa** — nem depois de
-sair. Propor o sábado não é `visita marcada`, e resposta enviada não é resposta
+sair. Propor o sábado não é `visita agendada`, e resposta enviada não é resposta
 recebida: quem move a etapa é o que o cliente fizer com ela.
 
 ### A linha do imóvel, e por que ela diz isso

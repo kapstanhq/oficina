@@ -1,0 +1,52 @@
+/* ═══ casca-pecas · a caixa e o chip, para quem os usa ════════════════════
+   ── POR QUE ESTE ARQUIVO EXISTE, E NÃO `casca-atomos.css` ──────────────
+   Os átomos são importados pelas TRÊS entradas — Oficina, Artigo e Estúdio.
+   A caixa e o chip são usados por DUAS: o Artigo não tem nem um nem outro.
+   Pô-los lá custaria ao guia mais pesado uma regra que ele não desenha, e a
+   folga dele contra o teto de 26 kB gzip é de 0,5 kB (medido pelo
+   `npm run conferir`). Um arquivo por conjunto de consumidores é mais
+   barato que um teto estourado.
+
+   ── E POR QUE ELE EXISTE AGORA ─────────────────────────────────────────
+   O Estúdio ganhou casca de bancada e passou a precisar das duas peças. A
+   primeira versão as COPIOU — um `Chip.svelte` próprio e um `.e-caixa` —,
+   com o original nomeado no comentário e a promessa de que quem mexesse num
+   mexeria no outro. Promessa não é mecanismo: foi exatamente assim que
+   `--r-acao` e `--foco` divergiram entre `base.css` e `carta.css`, e os
+   dois só apareceram quando um botão saiu quadrado e um anel de foco
+   desenhou uma linha no meio de uma carta.
+
+   As regras são as MESMAS de antes, recortadas de `oficina-tw.css` — não
+   redigitadas. O prefixo é `c-`, o mesmo dos átomos: ele quer dizer "peça
+   da casca", e não "arquivo tal".
+
+   Quem consome: `site/css/oficina-tw.css` e `estudio/estilo.css`. Ele não é
+   servido — é composto dentro de cada entrada, como os átomos. */
+
+/* ── A CAIXA BRANCA, a superfície de toda a página (8 instâncias) ────── */
+.c-caixa{
+  @apply bg-panel border border-fio rounded-objeto overflow-clip;
+}
+.c-caixa-ambar{@apply border-[color-mix(in_srgb,var(--accent)_50%,transparent)];}
+/* a goteira das faixas de dentro da caixa. Uma classe e não `p-*` solto
+   porque ela aparece em toda faixa de toda caixa, e é ela que encolhe no
+   telefone (ver `oficina.css`). */
+.c-faixa{@apply px-[28px] py-s3;}
+
+
+/* a goteira estreita, para painel de bancada: a de 28 px foi desenhada para
+   a coluna de leitura de 656, e o inspetor do Estúdio tem 342 */
+.c-faixa-fina{@apply px-s2 py-s2;}
+
+/* ── O CHIP, a fileira de escolha (dois lugares, quinze instâncias) ──── */
+.c-chip{
+  @apply inline-flex items-center gap-s1 min-h-tecla font-mono text-[12px]
+    tracking-[.02em] no-underline px-s2 rounded-acao border border-fio-forte
+    bg-transparent text-mute cursor-pointer
+    transition-colors duration-(--default-transition-duration) ease-curva;
+}
+.c-chip:hover{@apply border-ink text-ink;}
+/* o escolhido: tinta cheia. Não há segundo indicador porque o chip não
+   compete com nada perto dele — o único par de estados da fileira. */
+.c-chip[aria-pressed="true"],
+.c-chip[aria-current]{@apply bg-ink text-creme border-ink;}
