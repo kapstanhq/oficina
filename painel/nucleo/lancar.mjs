@@ -56,7 +56,9 @@ export { MODELO_PADRAO, modeloValido, nomeDoModelo };
 const TETO_MS = 30 * 60_000;
 const TETO_DE_ESPERA_MS = 60 * 60_000;
 const TETO_DE_LINHA = 4 * 1024 * 1024;
-const TETO_DE_PASSOS = 8;
+/* os passos que a tela lista inteiros; a contagem segue além deles */
+const TETO_DE_PASSOS = 40;
+const TETO_DE_GRAVADOS = 12;
 const TETO_DE_TURNOS = 80;
 const TETO_DA_FILA = 10;
 /**
@@ -121,10 +123,53 @@ export function pastaDaExecucao(base) {
 /* o `--effort` do `claude`, declarado por skill no pack (D263) */
 export const ESFORCOS = ["low", "medium", "high", "xhigh", "max"];
 
-/* ── O QUE ELE ESTÁ FAZENDO, EM LÍNGUA DE GENTE (D234) ─────────────────
-   Uma ferramenta usada vira um verbo e, quando é arquivo DA BASE, o caminho
-   relativo. Arquivo de fora — as instruções da skill, no plugin — vira "lendo
-   as instruções": caminho absoluto da máquina não vai para a tela. */
+/* ── O QUE ELE ESTÁ FAZENDO, EM LÍNGUA DE GENTE (D234, D279) ───────────
+   Uma ferramenta usada vira um verbo, um `tipo` — que é o que o mascote da
+   tela interpreta — e, quando há, o `alvo` (arquivo DA BASE, caminho
+   relativo) ou o `detalhe` (o site, o botão, o que o comando faz). Arquivo
+   de fora — as instruções da skill, no plugin — vira "lendo as instruções":
+   caminho absoluto da máquina não vai para a tela. E o que ele DIGITA num
+   formulário não vai também: o detalhe é o campo, nunca o valor. */
+export const TIPOS_DE_PASSO = ["ler", "procurar", "gravar", "navegar", "internet", "esperar", "mostrar",
+  "mensagem", "comando", "conector", "documento", "instrucoes", "organizar", "ajudante", "outro"];
+
+const curto = (t, n = 80) => {
+  const s = String(t ?? "").replace(/\s+/g, " ").trim();
+  return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
+};
+const siteDe = (url) => { try { return new URL(String(url)).hostname.replace(/^www\./, ""); } catch { return ""; } };
+const com = (tipo, verbo, detalhe = "") => ({ tipo, verbo, ...(curto(detalhe) ? { detalhe: curto(detalhe) } : {}) });
+
+/* o navegador, por qualquer servidor que o traga (`…browser_click`) */
+const DO_NAVEGADOR = {
+  navigate: (e) => com("navegar", "abrindo no navegador", siteDe(e.url)),
+  navigate_back: () => com("navegar", "voltando uma página"),
+  click: (e) => com("navegar", "clicando", e.element),
+  type: (e) => com("navegar", "digitando", e.element),
+  fill_form: (e) => com("navegar", "preenchendo o formulário",
+    Array.isArray(e.fields) ? `${e.fields.length} ${e.fields.length === 1 ? "campo" : "campos"}` : ""),
+  select_option: (e) => com("navegar", "escolhendo uma opção", e.element),
+  file_upload: (e) => com("navegar", "anexando um arquivo", basename(String(e.paths?.[0] || ""))),
+  press_key: (e) => com("navegar", "apertando uma tecla", e.key),
+  hover: (e) => com("navegar", "passando o mouse", e.element),
+  drag: () => com("navegar", "arrastando na página"),
+  snapshot: () => com("navegar", "lendo a página"),
+  evaluate: () => com("navegar", "lendo a página"),
+  take_screenshot: () => com("navegar", "olhando a página"),
+  wait_for: () => com("navegar", "esperando a página"),
+  tabs: () => com("navegar", "trocando de aba"),
+  handle_dialog: () => com("navegar", "respondendo um aviso da página"),
+  close: () => com("navegar", "fechando o navegador"),
+};
+const DO_WHATSAPP = {
+  listar_conversas: () => com("ler", "lendo as conversas do WhatsApp"),
+  listar_mensagens: () => com("ler", "lendo uma conversa do WhatsApp"),
+  ultima_interacao: () => com("ler", "conferindo a última conversa"),
+  estado_da_ponte: () => com("conector", "conferindo a ponte do WhatsApp"),
+  preparar_envio: () => com("mensagem", "preparando uma mensagem"),
+  enviar_mensagem: () => com("mensagem", "enviando uma mensagem"),
+};
+
 export function passoDe(uso, base = "") {
   const nome = String(uso?.name || "");
   const entrada = uso?.input || {};
@@ -133,25 +178,56 @@ export function passoDe(uso, base = "") {
     const r = relative(base, isAbsolute(c) ? c : join(base, c));
     return r && !r.startsWith("..") && !isAbsolute(r) ? r.replace(/\\/g, "/") : "";
   };
+  /* `mcp__<servidor>__<ferramenta>`: o último pedaço é a ferramenta */
+  const fim = nome.includes("__") ? nome.split("__").pop() : "";
   if (nome === "Read") {
     const alvo = naBase(entrada.file_path);
-    return alvo ? { verbo: "lendo", alvo } : { verbo: "lendo as instruções" };
+    return alvo ? { tipo: "ler", verbo: "lendo", alvo } : com("instrucoes", "lendo as instruções");
   }
   if (/^(Write|Edit|MultiEdit|NotebookEdit)$/.test(nome)) {
     const alvo = naBase(entrada.file_path || entrada.notebook_path);
-    return { verbo: "gravando", alvo: alvo || basename(String(entrada.file_path || "")) };
+    const verbo = nome === "Write" ? "gravando" : "editando";
+    return alvo ? { tipo: "gravar", verbo, alvo } : com("gravar", verbo, basename(String(entrada.file_path || "")));
   }
-  if (/^(Glob|Grep|LS)$/.test(nome)) return { verbo: "procurando na base" };
-  if (nome === "Skill") return { verbo: "abrindo as instruções" };
-  if (/painel_inicio$/.test(nome)) return { verbo: "abrindo a base no painel" };
-  if (/painel_fila$/.test(nome)) return { verbo: "conferindo o que você marcou" };
-  if (/painel_mostrar$/.test(nome)) return { verbo: "mostrando uma tela no painel" };
-  if (/painel_esperar$/.test(nome)) return { verbo: "esperando você no painel" };
-  if (/_conectores__/.test(nome)) return { verbo: "usando um conector" };
-  if (/^Web/.test(nome)) return { verbo: "abrindo uma página da internet" };
-  if (nome === "ToolSearch") return { verbo: "preparando as ferramentas" };
-  if (nome === "TodoWrite") return { verbo: "organizando o trabalho" };
-  return { verbo: "trabalhando" };
+  if (nome === "Glob") return com("procurar", "procurando arquivos", naBase(entrada.path) || entrada.pattern);
+  if (nome === "Grep" || nome === "LS") return com("procurar", "procurando na base", naBase(entrada.path));
+  if (nome === "Bash" || nome === "PowerShell") return com("comando", "rodando um comando", entrada.description);
+  if (nome === "Skill") return com("instrucoes", "abrindo as instruções", String(entrada.skill || "").split(":").pop());
+  if (nome === "Task" || nome === "Agent") return com("ajudante", "chamando um ajudante", entrada.description);
+  if (nome === "WebFetch") return com("internet", "abrindo uma página da internet", siteDe(entrada.url));
+  if (nome === "WebSearch") return com("internet", "pesquisando na internet", entrada.query);
+  if (nome === "ToolSearch") return com("organizar", "preparando as ferramentas");
+  if (nome === "TodoWrite") return com("organizar", "organizando o trabalho");
+  if (/painel_inicio$/.test(nome)) return com("mostrar", "abrindo a base no painel");
+  if (/painel_fila$/.test(nome)) return com("organizar", "conferindo o que você marcou");
+  if (/painel_mostrar$/.test(nome)) return com("mostrar", "mostrando uma tela no painel", entrada.titulo);
+  if (/painel_esperar$/.test(nome)) return com("esperar", "esperando você no painel");
+  const navegador = (nome.match(/browser_([a-z_]+)$/) || [])[1];
+  if (navegador) return (DO_NAVEGADOR[navegador] || (() => com("navegar", "usando o navegador")))(entrada);
+  if (/whatsapp/i.test(nome)) return (DO_WHATSAPP[fim] || (() => com("mensagem", "usando o WhatsApp")))(entrada);
+  if (/_conectores__/.test(nome)) {
+    if (/estado$/.test(nome)) return com("conector", "vendo o que está ligado");
+    if (/orcar$/.test(nome)) return com("conector", "calculando quanto custa");
+    if (/extrato$/.test(nome)) return com("conector", "conferindo o gasto");
+    return com("conector", "consultando uma fonte", entrada.conector || entrada.fonte || entrada.servico || entrada.nome);
+  }
+  if (/_documentos__/.test(nome)) {
+    if (/gerar$/.test(nome)) {
+      const de = entrada.caminho || entrada.arquivo || entrada.origem || entrada.markdown || "";
+      return com("documento", "gerando o PDF", naBase(de) || basename(String(de)));
+    }
+    return com("documento", "vendo os modelos de documento");
+  }
+  if (/gmail/i.test(nome)) {
+    if (/send|reply|forward/.test(fim)) return com("mensagem", "enviando um e-mail");
+    if (/draft/.test(fim)) return com("mensagem", "escrevendo um rascunho de e-mail");
+    return com("ler", "lendo o e-mail");
+  }
+  if (/calendar/i.test(nome)) return /create|update|delete|respond/.test(fim)
+    ? com("conector", "mexendo na agenda") : com("ler", "olhando a agenda");
+  if (/drive/i.test(nome)) return /create|update|copy|trash|share/.test(fim)
+    ? com("gravar", "gravando no Drive") : com("ler", "abrindo o Drive");
+  return com("outro", "trabalhando", fim.replace(/_/g, " "));
 }
 
 /* o fim que não é sucesso, dito para quem não sabe o que é "turno" */
@@ -222,7 +298,9 @@ export function criarLancador({
         disponivel,
         modelo: rodando ? rodando.modelo : resolverModelo({ env, base: ultima?.base || "" }).modelo,
         rodando: rodando ? { o: rodando.o, nome: rodando.nome, desde: rodando.desde,
-          modelo: rodando.modelo, passos: rodando.passos } : null,
+          modelo: rodando.modelo, passos: rodando.passos, fala: rodando.fala, sinal: rodando.sinal,
+          contagem: { ...rodando.contagem, lidos: rodando.lidos.size }, gravados: rodando.gravados,
+          ...rodando.medir(), teto: TETO_MS } : null,
         ultima,
         fila: espera.map(({ n, o, nome, pedido }) => ({ n, o, nome, pedido })),
         pausada,
@@ -329,35 +407,68 @@ export function criarLancador({
       env: { ...process.env, KAPSTAN_LANCADO: "1" },
     });
     const desde = new Date().toISOString();
-    rodando = { o, nome, prompt, desde, filho, modelo, passos: [] };
+    const inicio = Date.now();
+    /* o esperado em `painel_esperar` conta à parte (D276) — é o mesmo número
+       que o teto usa e que a tela mostra como "trabalhando há" */
+    let esperado = 0, esperaDesde = 0, idDaEspera = "";
+    const medir = () => {
+      const agora = Date.now();
+      const parado = esperado + (esperaDesde ? agora - esperaDesde : 0);
+      return { trabalhado: agora - inicio - parado, esperando: esperaDesde ? new Date(esperaDesde).toISOString() : null };
+    };
+    /* ── O QUE A TELA PRECISA PARA DISTINGUIR TRABALHO DE TRAVAMENTO (D279) ──
+       `sinal` é a hora da última linha que o `claude` mandou; cada passo
+       ganha `fim` e `erro` quando o resultado da ferramenta volta — passo sem
+       `fim` é o que está rodando, e todos com `fim` é ele pensando; `fala` é
+       a primeira linha do último texto dele. `lidos` e `gravados` são da BASE. */
+    rodando = { o, nome, prompt, desde, filho, modelo, passos: [], fala: "", sinal: desde, medir,
+      contagem: { passos: 0, gravados: 0, paginas: 0, erros: 0 }, lidos: new Set(), gravados: [] };
     aoRegistrar(`lançou o assistente: ${o} · ${modelo}${de === "padrão" ? "" : ` (${de})`}`);
     aoComecar();
 
     /* um evento por linha; guarda-se o último texto dele e o evento final,
        e nada mais — a saída inteira de meia hora não precisa morar aqui */
     let resto = "", erro = "", final = null, ultimoTexto = "";
-    let esperado = 0, esperaDesde = 0, idDaEspera = "";
     const lerEvento = (linha) => {
       let e;
       try { e = JSON.parse(linha); } catch { return; }
+      const meu = rodando?.filho === filho ? rodando : null;
+      if (meu) meu.sinal = new Date().toISOString();
       if (e?.type === "result") { final = e; return; }
-      if (e?.type === "user" && idDaEspera) {
+      if (e?.type === "user") {
         for (const c of e.message?.content || []) {
-          if (c?.type === "tool_result" && c.tool_use_id === idDaEspera) {
+          if (c?.type !== "tool_result") continue;
+          if (idDaEspera && c.tool_use_id === idDaEspera) {
             esperado += Date.now() - esperaDesde; esperaDesde = 0; idDaEspera = "";
           }
+          const passo = meu?.passos.findLast((p) => p.id && p.id === c.tool_use_id);
+          if (!passo || passo.fim) continue;
+          passo.fim = new Date().toISOString();
+          if (c.is_error) { passo.erro = true; meu.contagem.erros++; continue; }
+          /* conta o que DEU CERTO: gravação que falhou não "gravou" */
+          if (passo.tipo === "ler" && passo.alvo) meu.lidos.add(passo.alvo);
+          if (passo.tipo === "gravar" && passo.alvo && !meu.gravados.includes(passo.alvo)) {
+            meu.contagem.gravados++;
+            meu.gravados = [...meu.gravados, passo.alvo].slice(-TETO_DE_GRAVADOS);
+          }
+          if ((passo.tipo === "navegar" && /^abrindo/.test(passo.verbo)) || passo.tipo === "internet") meu.contagem.paginas++;
         }
         return;
       }
       if (e?.type !== "assistant") return;
       for (const c of e.message?.content || []) {
-        if (c?.type === "text" && c.text?.trim()) ultimoTexto = c.text;
+        if (c?.type === "text" && c.text?.trim()) {
+          ultimoTexto = c.text;
+          if (meu) meu.fala = primeiraLinha(c.text);
+        }
         if (c?.type === "tool_use" && /painel_esperar$/.test(c.name || "")) {
           idDaEspera = c.id || ""; esperaDesde = Date.now();
         }
-        if (c?.type === "tool_use" && rodando?.filho === filho) {
-          rodando.passos.push({ em: new Date().toISOString(), ...passoDe(c, base) });
-          if (rodando.passos.length > TETO_DE_PASSOS) rodando.passos.shift();
+        if (c?.type === "tool_use" && meu) {
+          const passo = { id: c.id || "", em: new Date().toISOString(), ...passoDe(c, base) };
+          meu.passos.push(passo);
+          if (meu.passos.length > TETO_DE_PASSOS) meu.passos.shift();
+          meu.contagem.passos++;
         }
       }
     };
@@ -368,11 +479,10 @@ export function criarLancador({
       if (resto.length > TETO_DE_LINHA) resto = "";
     });
     filho.stderr?.on("data", (d) => { if (erro.length < 8192) erro += d; });
-    const inicio = Date.now();
     const relogio = setInterval(() => {
-      const agora = Date.now();
-      const parado = esperado + (esperaDesde ? agora - esperaDesde : 0);
-      if (agora - inicio - parado > TETO_MS) encerrar("passou de 30 minutos trabalhando");
+      const { trabalhado } = medir();
+      const parado = Date.now() - inicio - trabalhado;
+      if (trabalhado > TETO_MS) encerrar("passou de 30 minutos trabalhando");
       else if (parado > TETO_DE_ESPERA_MS) encerrar("esperou mais de 60 minutos pela sua resposta no painel");
     }, 5_000);
     let motivoDoFim = "";
@@ -402,6 +512,8 @@ export function criarLancador({
         custo,
         modelo,
         base,
+        contagem: { ...rodando.contagem, lidos: rodando.lidos.size },
+        gravados: rodando.gravados,
       };
       rodando = null;
       aoRegistrar(`o assistente terminou: ${o} · ${ultima.ok ? "ok" : ultima.motivo}`);
@@ -482,6 +594,13 @@ function resolverDaLista({ o, item } = {}, { grupos = [], arvore = [], pastas = 
 
 const comandoDe = (prompt) => String(prompt || "").split("\n")[0].trim();
 const ultimaLinha = (t) => String(t || "").trim().split(/\r?\n/).filter(Boolean).pop()?.slice(0, 300) || "";
+/* a fala da tela: a primeira linha com letra, sem a marcação de negrito e
+   código que o texto dele traz, curta */
+const primeiraLinha = (t) => {
+  const l = String(t || "").split(/\r?\n/).map((x) => x.replace(/\*\*|`/g, "").replace(/^[#>\s-]+/, "").trim())
+    .find((x) => /\p{L}/u.test(x)) || "";
+  return l.length > 220 ? l.slice(0, 219).trimEnd() + "…" : l;
+};
 
 function recusa(mensagem) {
   return Object.assign(new Error(mensagem), { codigo: 409 });

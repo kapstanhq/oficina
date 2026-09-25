@@ -16,43 +16,144 @@
    * O texto final do assistente vai INTEIRO, em texto puro: nada aqui
    * interpreta marcação vinda de fora.
    *
-   * ── E, ENQUANTO RODA, O QUE ELE ESTÁ FAZENDO (D234) ───────────────────
+   * ── E, ENQUANTO RODA, O QUE ELE ESTÁ FAZENDO (D234, D279) ─────────────
    * Sete minutos de "trabalhando" não distinguem trabalho de travamento. O
-   * servidor traduz cada ferramenta usada num verbo — `nucleo/lancar.mjs`,
-   * `passoDe` — e a tela mostra o último, com os anteriores apagados embaixo.
+   * servidor traduz cada ferramenta num passo com tipo e detalhe
+   * (`nucleo/lancar.mjs`, `passoDe`), com começo e fim; daqui sai o ESTADO
+   * dele — lendo, no navegador, pensando, esperando você, sem sinal —, que o
+   * mascote interpreta e a frase diz. O que está acontecendo AGORA vem grande,
+   * o caminho até aqui vem embaixo, repetições juntas, e a lista inteira atrás
+   * de um "ver". A leitura de tela ouve só a frase do agora: o relógio que
+   * anda de segundo em segundo fica fora dela.
    *
    * ── E A FILA (D271) ───────────────────────────────────────────────────
    * O pedido feito com um rodando espera a vez, já confirmado. Falha ou
    * Parar pausa a fila: o que espera fica, e só segue com "Continuar".
    */
-  import { nomeDoArquivo, paraFunil, TODAS } from "../rota.js";
+  import Mascote from "../Mascote.svelte";
+  import { nomeDoArquivo, nomeDeGente, paraArquivo, paraFunil, paraTarefa, TODAS } from "../rota.js";
 
   let { execucao = null, confirmando = null, confirmar = () => {},
     desistir = () => {}, parar = () => {}, mexer = () => {}, recusa = "",
     /* o apelido de um id — "Triar as vagas · V-035" diz de QUAL vaga, e leva a ela */
-    nomeDoItem = () => "" } = $props();
+    nomeDoItem = () => "", pastas = {} } = $props();
 
-  const frase = (p) => {
-    const verbo = String(p?.verbo || "trabalhando");
-    return verbo[0].toUpperCase() + verbo.slice(1) + (p?.alvo ? ": " + nomeDoArquivo(p.alvo) : "");
-  };
-  const passos = $derived([...(execucao?.rodando?.passos || [])].reverse());
+  /* sem linha do `claude` por mais que isto, e sem ele esperar ninguém: a
+     tela deixa de dizer "trabalhando" e diz que está sem sinal */
+  const SEM_SINAL_MS = 90_000;
+  const AVISO_DO_TETO_MS = 5 * 60_000;
 
   let agora = $state(Date.now());
   $effect(() => {
     if (!execucao?.rodando) return;
-    const r = setInterval(() => { agora = Date.now(); }, 5000);
+    const r = setInterval(() => { agora = Date.now(); }, 1000);
     return () => clearInterval(r);
   });
-  const ha = (desde) => {
-    const min = Math.max(0, Math.round((agora - new Date(desde).getTime()) / 60000));
-    return min < 1 ? "agora mesmo" : min === 1 ? "há 1 minuto" : `há ${min} minutos`;
+  /* o `trabalhado` vem do servidor a cada volta; entre uma e outra, anda aqui */
+  let recebido = $state(Date.now());
+  $effect(() => { if (execucao?.rodando) recebido = Date.now(); });
+
+  const rodando = $derived(execucao?.rodando || null);
+  const passos = $derived(rodando?.passos || []);
+  const atual = $derived(passos.at(-1) || null);
+  const ms = (iso) => (iso ? Date.parse(iso) : NaN);
+  const semSinal = $derived(rodando?.sinal ? agora - ms(rodando.sinal) : 0);
+
+  const estado = $derived.by(() => {
+    if (!rodando) return "";
+    if (rodando.esperando) return "esperando";
+    if (semSinal > SEM_SINAL_MS) return "sem-sinal";
+    if (!atual) return "comecando";
+    if (atual.fim) return atual.erro ? "tropecou" : "pensando";
+    return atual.tipo || "outro";
+  });
+  const ANIMACAO = { comecando: "acordando", esperando: "esperando", "sem-sinal": "sem-sinal", pensando: "pensando",
+    tropecou: "confuso", ler: "lendo", instrucoes: "lendo", procurar: "procurando", gravar: "escrevendo",
+    mensagem: "escrevendo", documento: "escrevendo", navegar: "navegando", internet: "navegando", organizar: "pensando" };
+  const SELO = { comecando: "começando", esperando: "esperando você", "sem-sinal": "sem sinal", pensando: "pensando",
+    tropecou: "um passo falhou", ler: "lendo", instrucoes: "lendo as instruções", procurar: "procurando", gravar: "gravando",
+    mensagem: "escrevendo", documento: "fazendo o documento", navegar: "no navegador", internet: "na internet",
+    mostrar: "no painel", organizar: "organizando", conector: "consultando", comando: "trabalhando", ajudante: "com um ajudante" };
+
+  /* ── OS NOMES QUE SE LEEM ─────────────────────────────────────────── */
+  const ID = /^(\p{Lu}{1,4}-\d{1,6})\b/u;
+  /* o arquivo pelo nome de gente: a vaga pelo apelido, o documento dela pela
+     pasta e pelo apelido, e o resto como o menu o chama */
+  const nomeDoAlvo = (alvo) => {
+    const partes = String(alvo || "").split("/");
+    const id = (partes.at(-1).match(ID) || [])[1];
+    const apelido = id ? nomeDoItem(id) : "";
+    const pasta = partes.length > 1 ? partes[0] : "";
+    /* o original datado (`_bruto/2026-09-14-candidatura-V-012.md`) pelo que
+       ele é e pelo dia, e não pela data escrita com espaços */
+    const datado = partes.at(-1).match(/^(\d{4})-(\d{2})-(\d{2})-(.+?)(\.\w+)?$/);
+    if (datado) return `${pasta ? nomeDeGente(pasta) + " · " : ""}${datado[4].replace(/-(?!\d)/g, " ")}, ${datado[3]}/${datado[2]}`;
+    if (!apelido) return nomeDoArquivo(alvo);
+    const doItem = !pasta || pasta === pastas?.item || pasta === pastas?.pessoa;
+    return `${doItem ? "" : nomeDeGente(pasta) + " · "}${id} (${apelido})`;
+  };
+  const maiuscula = (t) => (t ? t[0].toUpperCase() + t.slice(1) : "");
+  const complemento = (p) => (p?.alvo ? nomeDoAlvo(p.alvo) : p?.detalhe || "");
+  const frase = (p) => maiuscula(String(p?.verbo || "trabalhando")) + (complemento(p) ? ": " + complemento(p) : "");
+
+  const duracao = (valor) => {
+    const s = Math.max(0, Math.round(valor / 1000));
+    if (s < 60) return `${s} s`;
+    const m = Math.floor(s / 60), r = s % 60;
+    if (m < 60) return r && m < 10 ? `${m} min ${r} s` : `${m} min`;
+    return `${Math.floor(m / 60)} h ${m % 60} min`;
+  };
+  const ha = (iso) => {
+    const d = agora - ms(iso);
+    return d < 5000 ? "agora mesmo" : `há ${duracao(d)}`;
   };
   const dinheiro = (v) => v < 0.01 ? "menos de US$ 0,01" : "US$ " + v.toFixed(2).replace(".", ",");
+  const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
 
+  /* ── O AGORA, E O CAMINHO ATÉ ELE ──────────────────────────────────── */
+  const agoraDiz = $derived.by(() => {
+    if (!rodando) return { verbo: "", resto: "", desde: "" };
+    /* o separador fica com o verbo: "Clicando: botão Continuar", e o passo que
+       falhou vem depois de um travessão, e não de outros dois-pontos */
+    if (estado === "esperando") return { verbo: "Esperando você no painel", resto: "", desde: rodando.esperando };
+    if (estado === "sem-sinal") return { verbo: "Sem sinal do assistente", resto: "", desde: rodando.sinal };
+    if (estado === "comecando") return { verbo: "Abrindo o trabalho", resto: "", desde: rodando.desde };
+    if (estado === "pensando") return { verbo: "Pensando no próximo passo", resto: "", desde: atual.fim };
+    if (estado === "tropecou") return { verbo: "O último passo não deu certo — ", resto: frase(atual), desde: atual.fim };
+    return { verbo: maiuscula(atual.verbo) + (complemento(atual) ? ": " : ""), resto: complemento(atual), desde: atual.em };
+  });
+  /* passos iguais em seguida viram um só, com as vezes — "Procurando na base
+     ×3" diz mais que três linhas iguais */
+  const chaveDe = (p) => `${p.verbo}|${p.alvo || ""}|${p.detalhe || ""}|${p.erro ? 1 : 0}`;
+  const grupos = $derived.by(() => {
+    const g = [];
+    for (const p of passos) {
+      const ultimo = g.at(-1);
+      if (ultimo && ultimo.chave === chaveDe(p)) { ultimo.vezes++; ultimo.fim = p.fim; ultimo.aberto = !p.fim; continue; }
+      g.push({ chave: chaveDe(p), passo: p, vezes: 1, em: p.em, fim: p.fim, aberto: !p.fim, erro: p.erro });
+    }
+    return g;
+  });
+  /* o caminho: os anteriores ao de agora, do mais novo ao mais velho */
+  const caminho = $derived((atual && !atual.fim ? grupos.slice(0, -1) : grupos).slice(-5).reverse());
+  const tempoDe = (g) => duracao((g.fim ? ms(g.fim) : agora) - ms(g.em));
+
+  const contagem = $derived(rodando?.contagem || {});
+  const resumoDoTrabalho = $derived([
+    contagem.passos ? plural(contagem.passos, "passo", "passos") : "",
+    contagem.lidos ? `leu ${plural(contagem.lidos, "arquivo", "arquivos")}` : "",
+    contagem.gravados ? `gravou ${contagem.gravados}` : "",
+    contagem.paginas ? `abriu ${plural(contagem.paginas, "página", "páginas")}` : "",
+    contagem.erros ? plural(contagem.erros, "passo falhou", "passos falharam") : "",
+  ].filter(Boolean).join(" · "));
+  const trabalhado = $derived(rodando ? (rodando.trabalhado ?? 0) + (rodando.esperando ? 0 : agora - recebido) : 0);
+  const faltaParaOTeto = $derived(rodando?.teto ? rodando.teto - trabalhado : Infinity);
+
+  /* ── O QUE TERMINOU ────────────────────────────────────────────────── */
   /* o resultado some quando a pessoa o dispensa — e volta só com uma execução nova */
   let dispensada = $state("");
   const ultima = $derived(execucao?.ultima && execucao.ultima.ate !== dispensada ? execucao.ultima : null);
+  const parouAPedido = $derived(ultima?.motivo === "você mandou parar");
   const fila = $derived(execucao?.fila || []);
   /* o que a fila já fez só se lista quando houve fila — um pedido só é a `ultima` */
   const feitas = $derived((execucao?.feitas || []).length > 1 || (fila.length && execucao?.feitas?.length)
@@ -74,30 +175,82 @@
 
 {#if recusa}<p class="c-nota p-falta">{recusa}</p>{/if}
 
-{#if execucao?.rodando}
-  <div class="p-execucao" data-tom="vivo" role="status">
-    <span class="p-pulso" data-tom="vivo" aria-hidden="true"></span>
-    <div>
-      <b>O assistente está trabalhando: {@render comItem(execucao.rodando.nome)}</b>
-      <span>Começou {ha(execucao.rodando.desde)}. Pode continuar olhando — a tela se atualiza quando ele terminar.</span>
-      {#if passos.length}
-        <ol class="p-execucao-passos" aria-label="o que ele está fazendo">
-          {#each passos.slice(0, 4) as p, i (p.em + i)}
-            <li data-agora={i === 0 ? "" : undefined}>{i === 0 ? "Agora — " : ""}{frase(p)}</li>
+{#if rodando}
+  <section class="p-execucao p-agente" data-tom="vivo" data-estado={estado} aria-label="o assistente trabalhando">
+    <div class="p-agente-mascote"><Mascote animacao={ANIMACAO[estado] || "trabalhando"} tamanho={76} /></div>
+    <div class="p-agente-corpo">
+      <p class="p-agente-titulo">
+        <b>{@render comItem(rodando.nome)}</b>
+        <span class="p-agente-selo">{SELO[estado] || "trabalhando"}</span>
+      </p>
+
+      <p class="p-agente-agora">
+        <span role="status"><b>{agoraDiz.verbo}</b>{agoraDiz.resto}</span>
+        {#if agoraDiz.desde}<span class="p-agente-tempo">{ha(agoraDiz.desde)}</span>{/if}
+      </p>
+      {#if estado === "esperando"}
+        <p class="p-agente-nota">Ele parou para você decidir. <a href={paraTarefa}>Abrir a tela dele</a> — o tempo parado não conta no limite.</p>
+      {:else if estado === "sem-sinal"}
+        <p class="p-agente-nota">O último sinal foi {ha(rodando.sinal)}. Pode ser um passo longo; se continuar assim, você pode parar.</p>
+      {/if}
+      {#if rodando.fala && estado !== "sem-sinal"}
+        <p class="p-agente-fala"><span class="p-agente-rotulo">Ele disse</span> “{rodando.fala}”</p>
+      {/if}
+
+      {#if caminho.length}
+        <ol class="p-agente-trilha" aria-label="os passos de antes, do mais novo ao mais velho">
+          {#each caminho as g, i (g.em + i)}
+            <li data-erro={g.erro ? "" : undefined}>
+              <span class="p-agente-marca" aria-hidden="true">{g.erro ? "✗" : "✓"}</span>
+              <span class="p-agente-passo">{frase(g.passo)}{#if g.vezes > 1}<span class="p-agente-vezes">{" ×" + g.vezes}</span>{/if}</span>
+              <span class="p-agente-tempo">{tempoDe(g)}</span>
+            </li>
           {/each}
         </ol>
       {/if}
+
+      <p class="p-agente-meta">
+        Começou {ha(rodando.desde)}{#if resumoDoTrabalho}{" · " + resumoDoTrabalho}{/if}
+        {#if estado !== "sem-sinal" && estado !== "esperando"} · último sinal {ha(rodando.sinal)}{/if}
+      </p>
+      {#if faltaParaOTeto < AVISO_DO_TETO_MS}
+        <p class="p-agente-nota" data-tom="falha">Faltam {duracao(Math.max(0, faltaParaOTeto))} para o limite de {duracao(rodando.teto)} trabalhando: aí a execução é encerrada.</p>
+      {/if}
+      {#if rodando.gravados?.length}
+        <p class="p-agente-gravados"><span class="p-agente-rotulo">Gravou</span>
+          {#each rodando.gravados as g, i (g)}{#if i}{", "}{/if}<a href={paraArquivo(g)}>{nomeDoAlvo(g)}</a>{/each}</p>
+      {/if}
+      {#if passos.length > 1}
+        <details class="p-agente-todos">
+          <summary>Ver todos os passos{contagem.passos > passos.length ? ` (os últimos ${passos.length} de ${contagem.passos})` : ` (${passos.length})`}</summary>
+          <ol>
+            {#each passos as p, i (p.id || p.em + i)}
+              <li data-erro={p.erro ? "" : undefined} data-aberto={p.fim ? undefined : ""}>
+                <span class="p-agente-passo">{frase(p)}</span>
+                <span class="p-agente-tempo">{p.fim ? duracao(ms(p.fim) - ms(p.em)) : "agora"}{p.erro ? " · falhou" : ""}</span>
+              </li>
+            {/each}
+          </ol>
+        </details>
+      {/if}
     </div>
     <button type="button" class="c-acao" onclick={parar}>Parar</button>
-  </div>
+  </section>
 {:else if ultima}
-  <div class="p-execucao" data-tom={ultima.ok ? "feito" : "falha"}>
-    <div>
-      <b>{ultima.ok ? "O assistente terminou" : "O assistente não terminou"}: {@render comItem(ultima.nome)}</b>
-      <span>
-        {#if !ultima.ok && ultima.motivo}{ultima.motivo}. {/if}
+  <section class="p-execucao p-agente" data-tom={ultima.ok ? "feito" : parouAPedido ? undefined : "falha"} data-estado={ultima.ok ? "feito" : parouAPedido ? "parado" : "falhou"}
+    aria-label="o que o assistente fez">
+    <div class="p-agente-mascote"><Mascote animacao={ultima.ok ? "comemorando" : parouAPedido ? "dormindo" : "triste"} tamanho={60} /></div>
+    <div class="p-agente-corpo">
+      <p class="p-agente-titulo"><b>{ultima.ok ? "O assistente terminou" : parouAPedido ? "Você parou o assistente" : "O assistente não terminou"}: {@render comItem(ultima.nome)}</b></p>
+      <p class="p-agente-meta">
+        {#if !ultima.ok && ultima.motivo && !parouAPedido}{maiuscula(ultima.motivo)}. {/if}
+        Levou {duracao(ms(ultima.ate) - ms(ultima.desde))}{#if ultima.contagem?.passos}, em {plural(ultima.contagem.passos, "passo", "passos")}{/if}.
         {#if ultima.custo}Custou {dinheiro(ultima.custo)}.{/if}
-      </span>
+      </p>
+      {#if ultima.gravados?.length}
+        <p class="p-agente-gravados"><span class="p-agente-rotulo">Gravou</span>
+          {#each ultima.gravados as g, i (g)}{#if i}{", "}{/if}<a href={paraArquivo(g)}>{nomeDoAlvo(g)}</a>{/each}</p>
+      {/if}
       {#if ultima.resumo}
         <details>
           <summary>ver o que ele disse</summary>
@@ -106,7 +259,7 @@
       {/if}
     </div>
     <button type="button" class="c-acao" onclick={() => { dispensada = ultima.ate; }}>Fechar</button>
-  </div>
+  </section>
 {/if}
 
 {#if fila.length || feitas.length}

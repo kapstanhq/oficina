@@ -1224,10 +1224,16 @@ com `##` e `**` à vista.
 - **A régua e os filtros são os mesmos trechos** (`trechosDoFunil`), e a soma
   fecha.
 - **O montador valida** etapa, nome curto e diferente de etapa, e condições.
+- **O link de um item aponta o trecho dele** (`trechoDe`: a fase que vale, ou
+  a etapa). O endereço que chega com a etapa do arquivo — de link antigo, de
+  outra tela, do agente — ou com trecho que não existe troca pelo do item, sem
+  entrada nova no histórico. Visto em 24/09: a lista do dia levava a vaga
+  pesquisada para a lista de `salva`, e ela não estava lá.
 
 | o que era | por que caiu |
 |---|---|
 | duas etapas novas no `funil.md` | cada skill que move vaga teria de movê-la por mais duas, e a etapa escrita envelhece |
+| o link com a etapa do arquivo (`paraFunil(c.etapa, id)`) | a etapa com fases só lista quem não subiu: o item pesquisado ou com currículo abria a lista sem ele |
 
 ---
 
@@ -1478,3 +1484,41 @@ A F3 da D267. O que decidiu cada frente, em uma linha:
 | ler a página de qualquer link colado | três grandes classificados proíbem por escrito |
 | seguir só com LinkedIn e Gupy | quem não é de escritório não acha vaga ali |
 | aprovação de envio pelo terminal | a promessa é aprovação na tela, e o terminal não a mostra inteira |
+
+---
+
+## D279 · O assistente trabalhando tem rosto: um mascote nosso, e o passo com começo, fim e detalhe
+
+`data: 2026-09-24`
+
+Pedido de 24/09: melhorar a UI, a UX e a granularidade do status do agente,
+com um avatar procedural de mascote — animado, com expressões, e modular para
+outros plugins e skills.
+
+- **O mascote é nosso, e não um pacote.** O avatar procedural que o inspirou
+  (`@bible-strong/avatar-*`) é AGPL-3.0, e o `painel.html` viaja embutido em
+  cada pack MIT. Motor próprio, MIT, e um personagem original — cubo
+  arredondado, olhos que fazem o rosto — no âmbar da marca. Da ideia veio só
+  isto: expressão é um rosto parado, animação é uma lista de passos.
+- **`mascote/`, fora do painel.** `nucleo.js` é conta pura — herança de
+  expressões (`de`, `olhos.ambos`), linha do tempo, piscada, movimento,
+  geometria — e roda no Node; `svg.js` desenha, dorme fora da tela e respeita
+  o movimento reduzido; `elemento.js` é o `<kapstan-mascote>` para qualquer
+  página; `personagens/kap.json` é o boneco. A cor é variável de CSS com a do
+  JSON por reserva: outro plugin veste o mesmo boneco com a marca dele.
+- **O passo tem tipo, detalhe, começo e fim.** `passoDe` dá um dos
+  `TIPOS_DE_PASSO` e o detalhe que PODE ir à tela: o site e não o endereço,
+  o campo e nunca o que foi digitado, a descrição do comando e nunca o
+  comando. O resultado da ferramenta fecha o passo (`fim`, `erro`), e a
+  contagem soma só o que deu certo. Mais `fala`, `sinal` e `esperando`; 40
+  passos guardados, e não 8.
+- **O estado sai dos passos, e o mascote o interpreta**: passo aberto é o
+  tipo dele; todos fechados, pensando; o último com erro, "um passo falhou"; a
+  espera no painel é a vez da pessoa, na cor da marca; 90 s sem sinal fora da
+  espera é "sem sinal" — travado e trabalhando deixam de ler igual. A leitura
+  de tela ouve só a frase do agora.
+
+| o que era | por que caiu |
+|---|---|
+| o avatar AGPL recolorido | mudaria a licença do painel e dos packs que o levam |
+| o último verbo, com três anteriores apagados | navegador, `Bash` e conectores eram todos "trabalhando", e sem fim nem erro o travado e o trabalhando liam igual |

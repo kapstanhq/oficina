@@ -36,7 +36,7 @@
   import { getContext } from "svelte";
   import { paraArquivo, paraTarefa, paraFunil, idsDaLinha, partirLinha, partirId, nomeDoArquivo,
     nomeDeGente, caudaParaLer, ehLinhaVazia, comFicha, pegarDoItem, ordenar as emOrdem,
-    valorCurto, semResposta, fichaDoItem, passosDoItem, faseDe, trechosDoFunil, noTrecho } from "../rota.js";
+    valorCurto, semResposta, fichaDoItem, passosDoItem, faseDe, trechosDoFunil, noTrecho, trechoDe } from "../rota.js";
   import Proximo from "./Proximo.svelte";
   import { textos } from "../textos.svelte.js";
   import { BLOCOS_DO_INICIO } from "../../nucleo/molde.mjs";
@@ -382,7 +382,7 @@
         {#each (todoAgora ? agora : agora.slice(0, TETO_DE_AGORA)) as { c, nota } (c.item)}
           <li class="p-agora-linha" data-marcado={decisoes.some((d) => d.item === c.item) ? "" : undefined}>
             <div class="p-agora-texto">
-              <a href={paraFunil(c.etapa, c.item)}><b>{c.nome}</b><span class="p-id">{c.id}</span></a>
+              <a href={paraFunil(trechoDe(c, fases), c.item)}><b>{c.nome}</b><span class="p-id">{c.id}</span></a>
               <span class="p-agora-etapa">{faseDe(c, fases) ? `${c.etapa} · ${faseDe(c, fases)}` : c.etapa}</span>
               <p>{nota || porqueDe(c) || c.cauda}</p>
             </div>
@@ -429,7 +429,7 @@
       {#each doTopo.slice(0, TETO_DA_PILHA) as c (c.item || c.nome)}
         <li class="p-agora-linha" data-marcado={decisoes.some((d) => d.item === c.item) ? "" : undefined}>
           <div class="p-agora-texto">
-            {#if c.caminho}<a href={paraFunil(pilha.rotulo, c.item)}><b>{c.nome}</b><span class="p-id">{c.id}</span></a>
+            {#if c.caminho}<a href={paraFunil(trechoDe(c, fases), c.item)}><b>{c.nome}</b><span class="p-id">{c.id}</span></a>
             {:else}<b>{c.nome}</b>{/if}
             {#if fatosDe(c).length || propostoDe(c)}<span class="p-agora-etapa">{[propostoDe(c), ...fatosDe(c)].filter(Boolean).join(" · ")}</span>{/if}
             {#if caudaDaPilha(c)}<p>{caudaDaPilha(c)}</p>{/if}

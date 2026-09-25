@@ -612,7 +612,7 @@ console.log(`${forte ? "✓" : "✗"} a chave tem 32+ caracteres de base64url ·
    gasta, e o que ela mede é o que SAI para ele. */
 {
   const { EventEmitter } = await import("node:events");
-  const { criarLancador, resolverLancamento, passoDe } = await import("./nucleo/lancar.mjs");
+  const { criarLancador, resolverLancamento, passoDe, TIPOS_DE_PASSO } = await import("./nucleo/lancar.mjs");
   const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
   const grupos = [{ acoes: [
     { comando: "/x:fazer", nome: "Fazer", sobre: ["nada"] },
@@ -679,6 +679,31 @@ console.log(`${forte ? "✓" : "✗"} a chave tem 32+ caracteres de base64url ·
     l.estado().rodando?.passos.at(-1)?.alvo, "funil.md");
   conferir("lançar · arquivo de fora da base não mostra caminho",
     passoDe({ name: "Read", input: { file_path: join(AQUI, "x.md") } }, daBase.raiz).alvo, undefined);
+  /* ── O PASSO EM DETALHE (D279): o que a tela diz, e o que ela NÃO diz ── */
+  {
+    const pd = (name, input = {}) => passoDe({ name, input }, daBase.raiz);
+    conferir("passo · o navegador diz o site, e não o endereço inteiro",
+      JSON.stringify(pd("mcp__playwright__browser_navigate", { url: "https://www.vagas.example/vaga/123?token=abc" })),
+      JSON.stringify({ tipo: "navegar", verbo: "abrindo no navegador", detalhe: "vagas.example" }));
+    conferir("passo · o clique diz em quê", pd("mcp__playwright__browser_click", { element: "botão Continuar", ref: "e12" }).detalhe, "botão Continuar");
+    conferir("passo · o que ele DIGITA não vai para a tela",
+      JSON.stringify(pd("mcp__playwright__browser_type", { element: "campo Pretensão", text: "R$ 20.000" })).includes("20.000"), false);
+    conferir("passo · o comando diz o que faz, pela descrição dele",
+      pd("Bash", { command: "ls curriculos", description: "Lista os currículos" }).detalhe, "Lista os currículos");
+    conferir("passo · e nunca o comando em si",
+      JSON.stringify(pd("Bash", { command: "cat segredo.txt" })).includes("segredo"), false);
+    conferir("passo · a skill pelo nome curto", pd("Skill", { skill: "x:candidatar" }).detalhe, "candidatar");
+    conferir("passo · editar e gravar se distinguem",
+      `${pd("Edit", { file_path: join(daBase.raiz, "funil.md") }).verbo} · ${pd("Write", { file_path: join(daBase.raiz, "funil.md") }).verbo}`,
+      "editando · gravando");
+    conferir("passo · o WhatsApp, pela ferramenta", pd("mcp__whatsapp__preparar_envio").verbo, "preparando uma mensagem");
+    const todos = ["Read", "Write", "Glob", "Grep", "Bash", "Skill", "Task", "WebFetch", "WebSearch", "ToolSearch", "TodoWrite",
+      "mcp__plugin_x_painel__painel_esperar", "mcp__plugin_x_painel__painel_mostrar", "mcp__playwright__browser_snapshot",
+      "mcp__plugin_x_conectores__conectores_chamar", "mcp__plugin_x_documentos__documento_gerar", "mcp__whatsapp__enviar_mensagem",
+      "mcp__claude_ai_Gmail__search_threads", "mcp__qualquer__coisa_nova", "Inventada"];
+    conferir("passo · todo passo tem um tipo que a tela conhece",
+      todos.filter((n) => !TIPOS_DE_PASSO.includes(pd(n).tipo)).join(",") || "todos", "todos");
+  }
   evento({ type: "result", subtype: "success", result: "feito", total_cost_usd: 0.42, num_turns: 3 });
   um.filho.emit("close", 0);
   conferir("lançar · ao terminar, guarda o que ele disse", l.estado().ultima.resumo, "feito");
@@ -707,6 +732,40 @@ console.log(`${forte ? "✓" : "✗"} a chave tem 32+ caracteres de base64url ·
   conferir("lançar · parar no teto de passos não é sucesso", l.estado().ultima.ok, false);
   conferir("lançar · e o motivo é dito em língua de gente",
     l.estado().ultima.motivo.includes("limite de 80 passos"), true);
+
+  /* ── OS PASSOS COM COMEÇO E FIM (D279) ─────────────────────────────── */
+  {
+    const lg = criarLancador({ pack: "x", pastaDoPack: AQUI, pastaDeRegistro: join(COFRE, "painel-passos"), gerar });
+    lg.lancar({ o: "/x:fazer", nome: "Fazer", prompt: "/x:fazer", base: daBase.raiz });
+    const f = lancados.at(-1);
+    const ev = (e) => f.filho.stdout.emit("data", JSON.stringify(e) + "\n");
+    const resultado = (id, erro = false) => ev({ type: "user", message: { content: [
+      { type: "tool_result", tool_use_id: id, content: "…", ...(erro ? { is_error: true } : {}) }] } });
+    const usa = (id, name, input) => ev({ type: "assistant", message: { content: [{ type: "tool_use", id, name, input }] } });
+    ev({ type: "assistant", message: { content: [{ type: "text", text: "**Vou ler** o `funil.md`.\nDepois gravo." },
+      { type: "tool_use", id: "t1", name: "Read", input: { file_path: join(daBase.raiz, "funil.md") } }] } });
+    let r = lg.estado().rodando;
+    conferir("passos · o que está rodando não tem fim", r.passos.at(-1).fim, undefined);
+    conferir("passos · a fala é a primeira linha dele, sem a marcação", r.fala, "Vou ler o funil.md.");
+    resultado("t1");
+    usa("t2", "Write", { file_path: join(daBase.raiz, "hoje.md") }); resultado("t2");
+    usa("t3", "Edit", { file_path: join(daBase.raiz, "funil.md") }); resultado("t3", true);
+    r = lg.estado().rodando;
+    conferir("passos · o resultado fecha o passo dele", Boolean(r.passos[0].fim), true);
+    conferir("passos · e o erro fica no passo que errou", `${r.passos[1].erro} · ${r.passos[2].erro}`, "undefined · true");
+    conferir("passos · a contagem só soma o que deu certo",
+      JSON.stringify(r.contagem), JSON.stringify({ passos: 3, gravados: 1, paginas: 0, erros: 1, lidos: 1 }));
+    conferir("passos · os gravados são da base, pelo caminho relativo", r.gravados.join(","), "hoje.md");
+    conferir("passos · há sinal, e ninguém está sendo esperado", `${Boolean(r.sinal)} · ${r.esperando}`, "true · null");
+    usa("t4", "mcp__plugin_x_painel__painel_esperar", {});
+    conferir("passos · na espera do painel, a tela sabe desde quando", Boolean(lg.estado().rodando.esperando), true);
+    resultado("t4");
+    conferir("passos · e a espera acaba quando a resposta volta", lg.estado().rodando.esperando, null);
+    ev({ type: "result", subtype: "success", result: "feito", total_cost_usd: 0.1 });
+    f.filho.emit("close", 0);
+    conferir("passos · o fim guarda o que ele gravou e quanto fez",
+      `${lg.estado().ultima.gravados.join(",")} · ${lg.estado().ultima.contagem.passos}`, "hoje.md · 4");
+  }
 
   /* ── A FILA E O QUE A EXECUÇÃO PODE USAR (D271) ─────────────────────── */
   {
@@ -843,6 +902,34 @@ console.log(`${forte ? "✓" : "✗"} a chave tem 32+ caracteres de base64url ·
     "trajetoria.md    a trajetória: o que fiz", "regime: remoto"].join("\n")).secoes[0].itens;
   conferir("menu · dois-pontos na descrição não vira campo", menu[0].tipo, "colunas");
   conferir("menu · controle: o campo continua campo", menu[1].tipo, "campo");
+}
+
+/* ── O LINK DE UM ITEM APONTA O TRECHO DELE (D266) ────────────────────
+   A etapa com fases só lista quem não subiu a nenhuma, e o link com a etapa
+   do arquivo abria a lista sem o item. O que se cobra é a volta: o filtro
+   que `trechoDe` dá é o que lista o item, em todo degrau. */
+{
+  const { trechoDe, noTrecho, trechosDoFunil, TODAS } = await import("./app/rota.js");
+  const fases = { salva: [{ nome: "pesquisada", se: ["ja:completado"] },
+    { nome: "com currículo", se: ["com-documento:curriculos"] }] };
+  const trechos = trechosDoFunil(["nova", "salva", "candidatada"], fases);
+  const item = (etapa, historico = [], docs = []) =>
+    ({ etapa, ficha: true, campos: {}, faltam: [], historico, docs: docs.map((caminho) => ({ caminho })) });
+  const degraus = [
+    ["a etapa sem fases", item("nova"), "nova"],
+    ["a etapa com fases, sem subir", item("salva", ["salva"]), "salva"],
+    ["a fase lida do histórico", item("salva", ["completado: faixa"]), "pesquisada"],
+    ["a última fase que vale", item("salva", ["completado: faixa"], ["curriculos/V-001-cv.md"]), "com currículo"],
+  ];
+  for (const [nome, it, esperado] of degraus) {
+    const t = trechos.find((x) => x.chave === trechoDe(it, fases));
+    conferir(`trecho · ${nome}`, `${trechoDe(it, fases)} · ${Boolean(t && noTrecho(it, t, fases))}`, `${esperado} · true`);
+  }
+  conferir("trecho · controle: a etapa do arquivo NÃO lista quem subiu de fase",
+    noTrecho(degraus[2][1], trechos.find((x) => x.chave === "salva"), fases), false);
+  conferir("trecho · sem ficha, a fase não se lê e vale a etapa",
+    trechoDe({ ...degraus[2][1], ficha: false }, fases), "salva");
+  conferir("trecho · fora do funil é `todas`", trechoDe({ ficha: false }, fases), TODAS);
 }
 
 const mal = casos.filter((c) => !c).length;

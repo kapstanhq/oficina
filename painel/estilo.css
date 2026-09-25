@@ -750,6 +750,65 @@ header .p-etapas{gap:4px}
 .p-execucao .p-pulso{margin-top:6px}
 .p-execucao[data-tom="vivo"]{border-color:var(--estado);background:color-mix(in srgb, var(--estado) 7%, var(--panel))}
 .p-execucao[data-tom="falha"]{border-color:var(--ember)}
+/* ── O ASSISTENTE TRABALHANDO, COM O MASCOTE (D279) ─────────────────────
+   O mascote é o pulso: ele diz o estado com o rosto, e a frase diz em
+   palavras. O agora vem no corpo de chamada; o caminho até ele, miúdo. */
+.p-mascote{display:inline-block;flex:none;line-height:0;
+  width:var(--mascote-tamanho,64px);height:var(--mascote-tamanho,64px)}
+.p-agente{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:start;gap:var(--s1) var(--s3)}
+.p-agente > .p-agente-corpo{min-width:0;gap:var(--s1)}
+/* a regra de `.p-execucao > div` é para o texto: a caixa do boneco não estica */
+.p-agente > .p-agente-mascote{display:block;flex:none;min-width:0;margin:-10px -6px -12px -10px}
+.p-agente-corpo p{margin:0}
+.p-agente-titulo{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s0) var(--s1)}
+.p-agente .p-agente-selo{display:inline-flex;align-items:center;gap:6px;padding:0 9px;border-radius:var(--r-redondo);
+  font-size:var(--t-rotulo);line-height:1.7;font-weight:var(--peso-interface);white-space:nowrap;
+  color:var(--estado);background:color-mix(in srgb, var(--estado) 12%, var(--panel))}
+.p-agente-selo::before{content:"";width:6px;height:6px;border-radius:var(--r-redondo);background:currentColor;
+  animation:p-pulsar 1.8s var(--curva) infinite}
+.p-agente-agora{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px var(--s1);
+  font-size:var(--t-chamada);line-height:var(--linha-chamada);color:var(--ink);overflow-wrap:anywhere}
+.p-agente .p-agente-agora span[role="status"]{font-size:inherit;line-height:inherit;color:inherit}
+.p-agente .p-agente-agora b{font-size:inherit;font-weight:var(--peso-objeto)}
+.p-agente .p-agente-tempo{flex:none;font-size:var(--t-espec);color:var(--mute);font-variant-numeric:tabular-nums;white-space:nowrap}
+.p-agente-fala{font-size:var(--t-espec);line-height:1.5;color:var(--soft);
+  padding-left:var(--s1);border-left:2px solid var(--fio-forte);overflow-wrap:anywhere}
+.p-agente .p-agente-rotulo{font-size:var(--t-sinal);font-weight:var(--peso-interface);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--mute);margin-right:6px}
+.p-agente-nota{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}
+.p-agente-nota[data-tom="falha"]{color:var(--ember)}
+.p-agente-nota a,.p-agente-gravados a{color:var(--accent-forte);font-weight:var(--peso-interface);
+  text-decoration:underline;text-underline-offset:2px;text-decoration-color:color-mix(in srgb, var(--accent-forte) 40%, transparent)}
+.p-agente-trilha,.p-agente-todos ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;max-width:640px}
+.p-agente-trilha li,.p-agente-todos li{display:flex;align-items:baseline;gap:var(--s1);min-width:0;
+  font-size:var(--t-espec);line-height:1.5;color:var(--mute)}
+.p-agente .p-agente-passo{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:inherit;line-height:inherit;color:inherit}
+.p-agente-marca{flex:none;width:1em;color:var(--estado)}
+.p-agente-trilha li[data-erro],.p-agente-todos li[data-erro],.p-agente li[data-erro] .p-agente-marca{color:var(--ember)}
+.p-agente .p-agente-vezes{font-size:inherit;color:var(--apagado)}
+.p-agente-meta{font-size:var(--t-rotulo);line-height:1.5;color:var(--mute);font-variant-numeric:tabular-nums}
+.p-agente-gravados{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}
+.p-agente-todos summary{margin:0}
+.p-agente-todos ol{margin-top:var(--s1);max-height:40vh;overflow-y:auto;counter-reset:passo}
+.p-agente-todos li{counter-increment:passo}
+.p-agente-todos li::before{content:counter(passo);flex:none;min-width:2ch;text-align:right;color:var(--apagado);font-variant-numeric:tabular-nums}
+.p-agente-todos li[data-aberto]{color:var(--ink);font-weight:var(--peso-interface)}
+/* esperando a pessoa é a vez DELA: a cor da marca, como a situação do início */
+.p-agente[data-estado="esperando"]{border-color:var(--accent-forte);background:var(--lift)}
+.p-agente[data-estado="esperando"] .p-agente-selo{color:var(--accent-forte);background:color-mix(in srgb, var(--accent) 18%, var(--panel))}
+.p-agente[data-estado="sem-sinal"]{border-color:var(--fio-forte);background:var(--panel)}
+.p-agente[data-estado="sem-sinal"] .p-agente-selo,.p-agente[data-estado="tropecou"] .p-agente-selo{
+  color:var(--ember);background:color-mix(in srgb, var(--ember) 10%, var(--panel))}
+.p-agente[data-estado="sem-sinal"] .p-agente-selo::before{animation:none}
+@media (max-width:560px){
+  .p-agente{grid-template-columns:auto minmax(0,1fr)}
+  .p-agente > .c-acao{grid-column:2;justify-self:start}
+  .p-agente-mascote .p-mascote{width:56px;height:56px}
+  .p-agente-agora{font-size:var(--t-interface)}
+}
+@media (prefers-reduced-motion:reduce){ .p-agente-selo::before{animation:none} }
+
 /* a fila (D271): um pedido por linha, e o "tirar" é texto, não botão cheio */
 .p-execucao-lista{list-style:none;margin:var(--s1) 0 0;padding:0;display:flex;flex-direction:column;gap:2px}
 .p-execucao-lista li{font-size:var(--t-espec);line-height:1.5;color:var(--soft)}

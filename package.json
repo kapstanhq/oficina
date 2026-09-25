@@ -23,6 +23,7 @@
     "prova:documentos": "node documentos/prova.mjs",
     "prova:sempre": "node painel/prova-sempre.mjs --so-geracao",
     "prova:lancar": "node painel/prova-lancar.mjs",
+    "prova:mascote": "node mascote/prova.mjs",
     "prova:montador": "node scripts/prova-montador.mjs",
     "captura": "node scripts/captura-painel.mjs"
   },

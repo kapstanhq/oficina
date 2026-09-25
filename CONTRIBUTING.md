@@ -13,6 +13,7 @@ a próxima montagem a reescreve. Antes de mexer, ache a fonte na tabela.
 | A tela do painel | `painel/app/*.svelte`, `painel/estilo.css` | `<pack>/painel/painel.html` |
 | O servidor do painel, dos conectores ou dos documentos | `painel/`, `conectores/`, `documentos/` | `<pack>/painel/`, `<pack>/conectores/`, `<pack>/documentos/` |
 | Como o painel se arranja num pack | `<pack>/painel.json` | `<pack>/painel/acoes.json` |
+| O mascote do painel (o boneco, as expressões, as animações) | `mascote/*.js`, `mascote/personagens/*.json` | embutido em `<pack>/painel/painel.html` |
 
 O gerado fica commitado de propósito: quem instala pelo `/plugin install` não
 roda build nenhum. O CI refaz tudo a partir da fonte e recusa o PR em que os
@@ -40,6 +41,7 @@ npm run prova:tela              # o painel no navegador, a 1300 e a 390 px
 npm run prova:montador          # o que o montador recusa num painel.json de pack
 npm run prova:sempre            # os arquivos de login do Windows, Mac e Linux
 npm run prova:lancar            # o botão que lança o assistente: modelo, pasta, fila
+npm run prova:mascote           # o mascote: expressões, animações e geometria, sem navegador
 npm run prova:conectores        # `-- --rede` chama as fontes de verdade
 npm run prova:documentos
 npm run provar -- --seco --pack <pack>

@@ -21,7 +21,7 @@
   import Tabela from "./Tabela.svelte";
   import { partirLinha, idsDaLinha, partirId, passosDoItem, caudaParaLer, ehLinhaVazia,
     paraFunil, TODAS, nomeDoArquivo, comFicha, pegarDoItem, ordenar as emOrdem, ordenacoesDe,
-    sentidoPadrao, semResposta, fichaDoItem, valorCurto, faseDe, trechosDoFunil, noTrecho, ehFim, gestoDoPasso } from "../rota.js";
+    sentidoPadrao, semResposta, fichaDoItem, valorCurto, faseDe, trechosDoFunil, noTrecho, ehFim, gestoDoPasso, trechoDe } from "../rota.js";
 
   let { etapa = TODAS, id = "", funil = null, indice, documentos = null, andamento = null,
     decisoes = [], decidir = async () => {}, anotar = () => {}, acoes = [], proximos = {},
@@ -77,6 +77,16 @@
     ...destaque.filter((d) => !semResposta(it.campos?.[d])).map((d) => `${d}: ${valorCurto(it.campos[d], 60)}`),
     it.ultimo ? "último passo: " + it.ultimo : ""].filter(Boolean).join("\n");
   const itens = $derived(listaDe(etapa).map((it) => ({ ...it, dica: dicaDe(it) })));
+  /* o endereço que abre um item fora do filtro dele — a etapa do arquivo,
+     quando ela tem fases, ou um trecho que não existe — vira o do trecho em
+     que ele está, sem entrada nova no histórico (D266). A ficha chega junto
+     com o funil, e sem ela a fase não se lê */
+  $effect(() => {
+    if (!funil || !id || todas || itens.some((it) => it.chave === id)) return;
+    const it = listaDe(TODAS).find((x) => x.chave === id);
+    const certo = it ? trechoDe(it, fases) : "";
+    if (certo && certo !== etapa) location.replace(paraFunil(certo, id));
+  });
   /* no leitor, o filtro não fecha o item: fica nele se ele é da etapa, senão
      abre o primeiro dela. Etapa vazia cai na tabela, que diz que está vazia */
   function filtrarNoLeitor(qual) {

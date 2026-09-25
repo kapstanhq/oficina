@@ -722,7 +722,7 @@
           </div>
         {/if}
 
-        <Execucao {execucao} {confirmando} {nomeDoItem} recusa={recusaDoLancar}
+        <Execucao {execucao} {confirmando} {nomeDoItem} pastas={pastasDoPack} recusa={recusaDoLancar}
           confirmar={confirmarChamada} desistir={() => { confirmando = null; }}
           parar={pararChamada} mexer={mexerNaFila} />
 

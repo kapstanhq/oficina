@@ -1,0 +1,765 @@
+{
+  "formato": "kapstan/mascote",
+  "versao": 1,
+  "nome": "Kap",
+  "corpo": {
+    "largura": 160,
+    "altura": 142,
+    "raio": 48
+  },
+  "cores": {
+    "corpo": "#c8863c",
+    "luz": "#e2ae70",
+    "sombra": "#ac6e2e",
+    "olhos": "#221e18",
+    "brilho": "#fff9ec",
+    "boca": "#221e18",
+    "bochechas": "#e0735f",
+    "chao": "#221e18"
+  },
+  "neutra": {
+    "olhos": {
+      "afastamento": 56,
+      "y": -8,
+      "ambos": {
+        "largura": 24,
+        "altura": 40
+      }
+    },
+    "boca": {
+      "largura": 16,
+      "curva": 0.35,
+      "y": 30
+    },
+    "bochechas": 0.4
+  },
+  "expressoes": {
+    "atento": {
+      "olhos": {
+        "ambos": {
+          "largura": 25.2,
+          "altura": 43.2
+        }
+      },
+      "boca": {
+        "largura": 13.8,
+        "curva": 0.45
+      },
+      "cabeca": {
+        "y": -1
+      }
+    },
+    "contente": {
+      "olhos": {
+        "ambos": {
+          "baseCurva": 0.35
+        }
+      },
+      "boca": {
+        "largura": 18.4,
+        "curva": 0.6
+      },
+      "bochechas": 0.55
+    },
+    "feliz": {
+      "olhos": {
+        "ambos": {
+          "baseCurva": 0.75,
+          "altura": 36
+        }
+      },
+      "boca": {
+        "largura": 23,
+        "curva": 0.9
+      },
+      "bochechas": 0.75
+    },
+    "radiante": {
+      "de": "feliz",
+      "boca": {
+        "largura": 27.6,
+        "curva": 1,
+        "abertura": 0.55
+      },
+      "cabeca": {
+        "y": -2
+      }
+    },
+    "piscadela": {
+      "de": "radiante",
+      "olhos": {
+        "esquerdo": {
+          "tampa": 0.9,
+          "baseCurva": 0
+        }
+      },
+      "cabeca": {
+        "inclina": -5
+      }
+    },
+    "orgulhoso": {
+      "olhos": {
+        "ambos": {
+          "baseCurva": 0.6
+        }
+      },
+      "boca": {
+        "largura": 20.7,
+        "curva": 0.85
+      },
+      "cabeca": {
+        "y": -3
+      },
+      "bochechas": 0.6
+    },
+    "surpreso": {
+      "olhos": {
+        "ambos": {
+          "largura": 27.6,
+          "altura": 48
+        }
+      },
+      "boca": {
+        "largura": 12.6,
+        "curva": 0,
+        "abertura": 0.9
+      },
+      "cabeca": {
+        "y": -3
+      },
+      "bochechas": 0.2
+    },
+    "pensativo": {
+      "olhar": {
+        "x": 10.4,
+        "y": -9.2
+      },
+      "olhos": {
+        "ambos": {
+          "tampa": 0.15
+        },
+        "direito": {
+          "altura": 36
+        }
+      },
+      "boca": {
+        "largura": 10.4,
+        "curva": -0.05
+      },
+      "cabeca": {
+        "inclina": 5
+      }
+    },
+    "pensativo-esq": {
+      "de": "pensativo",
+      "olhar": {
+        "x": -10.3,
+        "y": -9.2
+      },
+      "cabeca": {
+        "inclina": -5
+      }
+    },
+    "olha-esq": {
+      "olhar": {
+        "x": -17.2,
+        "y": 1.2
+      },
+      "boca": {
+        "largura": 13.8,
+        "curva": 0.2
+      }
+    },
+    "olha-dir": {
+      "olhar": {
+        "x": 17.3,
+        "y": 1.2
+      },
+      "boca": {
+        "largura": 13.8,
+        "curva": 0.2
+      }
+    },
+    "lendo-inicio": {
+      "olhar": {
+        "x": -10.3,
+        "y": 9.2
+      },
+      "olhos": {
+        "ambos": {
+          "tampa": 0.3
+        }
+      },
+      "boca": {
+        "largura": 11.5,
+        "curva": 0.15
+      }
+    },
+    "lendo-fim": {
+      "de": "lendo-inicio",
+      "olhar": {
+        "x": 10.4,
+        "y": 9.2
+      }
+    },
+    "concentrado": {
+      "olhos": {
+        "ambos": {
+          "tampa": 0.3,
+          "tampaAngulo": 9
+        }
+      },
+      "olhar": {
+        "y": 5.8
+      },
+      "boca": {
+        "largura": 10.4,
+        "curva": 0
+      }
+    },
+    "concentrado-dir": {
+      "de": "concentrado",
+      "olhar": {
+        "x": 9.2,
+        "y": 6.9
+      }
+    },
+    "determinado": {
+      "olhos": {
+        "ambos": {
+          "tampa": 0.22,
+          "tampaAngulo": 13
+        }
+      },
+      "boca": {
+        "largura": 15,
+        "curva": 0.25
+      }
+    },
+    "curioso": {
+      "olhos": {
+        "esquerdo": {
+          "altura": 44.4,
+          "largura": 25.2
+        },
+        "direito": {
+          "altura": 33.6,
+          "tampa": 0.14
+        }
+      },
+      "olhar": {
+        "x": 8,
+        "y": -2.3
+      },
+      "cabeca": {
+        "inclina": -8
+      },
+      "boca": {
+        "largura": 11.5,
+        "curva": 0.3,
+        "abertura": 0.15
+      }
+    },
+    "curioso-dir": {
+      "de": "curioso",
+      "olhar": {
+        "x": 16.1,
+        "y": 2.3
+      },
+      "cabeca": {
+        "inclina": -4
+      }
+    },
+    "desconfiado": {
+      "olhos": {
+        "ambos": {
+          "tampa": 0.46,
+          "tampaAngulo": 5
+        }
+      },
+      "olhar": {
+        "x": 11.5
+      },
+      "boca": {
+        "largura": 11.5,
+        "curva": -0.25
+      }
+    },
+    "confuso": {
+      "olhos": {
+        "esquerdo": {
+          "tampa": 0.08,
+          "tampaAngulo": -12,
+          "altura": 42
+        },
+        "direito": {
+          "altura": 30,
+          "y": 3.6,
+          "tampaAngulo": 14,
+          "tampa": 0.18
+        }
+      },
+      "boca": {
+        "largura": 15,
+        "curva": -0.35
+      },
+      "cabeca": {
+        "inclina": 9
+      }
+    },
+    "triste": {
+      "olhos": {
+        "ambos": {
+          "tampa": 0.24,
+          "tampaAngulo": -16
+        }
+      },
+      "olhar": {
+        "y": 8
+      },
+      "boca": {
+        "largura": 17.3,
+        "curva": -0.75
+      },
+      "cabeca": {
+        "inclina": -4,
+        "y": 2
+      },
+      "corpo": {
+        "altura": 0.97,
+        "largura": 1.02
+      },
+      "bochechas": 0.15
+    },
+    "triste-baixo": {
+      "de": "triste",
+      "olhar": {
+        "x": -5.7,
+        "y": 11.5
+      }
+    },
+    "sonolento": {
+      "olhos": {
+        "ambos": {
+          "tampa": 0.62
+        }
+      },
+      "olhar": {
+        "y": 5.8
+      },
+      "boca": {
+        "largura": 9.2,
+        "curva": 0
+      },
+      "cabeca": {
+        "inclina": 3
+      },
+      "bochechas": 0.2
+    },
+    "dormindo": {
+      "olhos": {
+        "ambos": {
+          "tampa": 0.93
+        }
+      },
+      "olhar": {
+        "y": 8
+      },
+      "boca": {
+        "largura": 8,
+        "curva": 0,
+        "abertura": 0.35
+      },
+      "cabeca": {
+        "inclina": 6,
+        "y": 2
+      },
+      "corpo": {
+        "altura": 0.96,
+        "largura": 1.02
+      }
+    },
+    "esperando": {
+      "de": "atento",
+      "boca": {
+        "largura": 17.3,
+        "curva": 0.6
+      },
+      "bochechas": 0.5
+    },
+    "esperando-inclina": {
+      "de": "esperando",
+      "cabeca": {
+        "inclina": -7
+      },
+      "olhar": {
+        "x": -3.4,
+        "y": -2.3
+      }
+    }
+  },
+  "animacoes": {
+    "parado": {
+      "modo": "laco",
+      "movimento": "respira",
+      "piscar": {
+        "min": 2400,
+        "max": 5200,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "neutra",
+          "transicao": 400,
+          "segura": 3200
+        },
+        {
+          "expressao": "contente",
+          "transicao": 500,
+          "segura": 1800
+        }
+      ]
+    },
+    "acordando": {
+      "modo": "uma",
+      "depois": "trabalhando",
+      "movimento": "respira",
+      "piscar": {
+        "min": 1800,
+        "max": 3000,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "sonolento",
+          "transicao": 0,
+          "segura": 500
+        },
+        {
+          "expressao": "surpreso",
+          "transicao": 220,
+          "segura": 450,
+          "curva": "mola"
+        },
+        {
+          "expressao": "atento",
+          "transicao": 300,
+          "segura": 900
+        }
+      ]
+    },
+    "lendo": {
+      "modo": "laco",
+      "movimento": "respira",
+      "piscar": {
+        "min": 3200,
+        "max": 6000,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "lendo-inicio",
+          "transicao": 280,
+          "segura": 200
+        },
+        {
+          "expressao": "lendo-fim",
+          "transicao": 1500,
+          "segura": 160,
+          "curva": "linear"
+        }
+      ]
+    },
+    "procurando": {
+      "modo": "laco",
+      "movimento": "balanca",
+      "piscar": {
+        "min": 2600,
+        "max": 4800,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "olha-esq",
+          "transicao": 420,
+          "segura": 600
+        },
+        {
+          "expressao": "olha-dir",
+          "transicao": 650,
+          "segura": 600
+        },
+        {
+          "expressao": "concentrado",
+          "transicao": 380,
+          "segura": 500
+        }
+      ]
+    },
+    "escrevendo": {
+      "modo": "laco",
+      "movimento": "trabalha",
+      "piscar": {
+        "min": 2800,
+        "max": 5200,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "concentrado",
+          "transicao": 300,
+          "segura": 900
+        },
+        {
+          "expressao": "concentrado-dir",
+          "transicao": 420,
+          "segura": 700
+        },
+        {
+          "expressao": "determinado",
+          "transicao": 300,
+          "segura": 600
+        }
+      ]
+    },
+    "trabalhando": {
+      "modo": "laco",
+      "movimento": "trabalha",
+      "piscar": {
+        "min": 2600,
+        "max": 5000,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "determinado",
+          "transicao": 320,
+          "segura": 1300
+        },
+        {
+          "expressao": "olha-dir",
+          "transicao": 380,
+          "segura": 600
+        },
+        {
+          "expressao": "determinado",
+          "transicao": 380,
+          "segura": 900
+        },
+        {
+          "expressao": "atento",
+          "transicao": 300,
+          "segura": 500
+        }
+      ]
+    },
+    "navegando": {
+      "modo": "laco",
+      "movimento": "flutua",
+      "piscar": {
+        "min": 2400,
+        "max": 4600,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "curioso",
+          "transicao": 360,
+          "segura": 1200
+        },
+        {
+          "expressao": "curioso-dir",
+          "transicao": 420,
+          "segura": 900
+        },
+        {
+          "expressao": "atento",
+          "transicao": 320,
+          "segura": 800
+        }
+      ]
+    },
+    "pensando": {
+      "modo": "laco",
+      "movimento": "balanca",
+      "piscar": {
+        "min": 3600,
+        "max": 7000,
+        "duracao": 170
+      },
+      "passos": [
+        {
+          "expressao": "pensativo",
+          "transicao": 480,
+          "segura": 1700
+        },
+        {
+          "expressao": "pensativo-esq",
+          "transicao": 620,
+          "segura": 1500
+        }
+      ]
+    },
+    "esperando": {
+      "modo": "laco",
+      "movimento": "flutua",
+      "piscar": {
+        "min": 2200,
+        "max": 4200,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "esperando",
+          "transicao": 400,
+          "segura": 2400
+        },
+        {
+          "expressao": "esperando-inclina",
+          "transicao": 520,
+          "segura": 1400
+        },
+        {
+          "expressao": "esperando",
+          "transicao": 480,
+          "segura": 1600
+        }
+      ]
+    },
+    "sem-sinal": {
+      "modo": "laco",
+      "movimento": "respira",
+      "piscar": {
+        "min": 4000,
+        "max": 8000,
+        "duracao": 240
+      },
+      "passos": [
+        {
+          "expressao": "sonolento",
+          "transicao": 700,
+          "segura": 2600
+        },
+        {
+          "expressao": "desconfiado",
+          "transicao": 500,
+          "segura": 1200
+        }
+      ]
+    },
+    "confuso": {
+      "modo": "laco",
+      "movimento": "respira",
+      "piscar": {
+        "min": 1800,
+        "max": 3200,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "confuso",
+          "transicao": 280,
+          "segura": 1200
+        },
+        {
+          "expressao": "olha-esq",
+          "transicao": 300,
+          "segura": 500
+        },
+        {
+          "expressao": "confuso",
+          "transicao": 300,
+          "segura": 900
+        }
+      ]
+    },
+    "comemorando": {
+      "modo": "uma",
+      "depois": "contente",
+      "movimento": "pula",
+      "passos": [
+        {
+          "expressao": "surpreso",
+          "transicao": 140,
+          "segura": 220,
+          "curva": "mola"
+        },
+        {
+          "expressao": "radiante",
+          "transicao": 200,
+          "segura": 650,
+          "curva": "mola"
+        },
+        {
+          "expressao": "piscadela",
+          "transicao": 160,
+          "segura": 520
+        },
+        {
+          "expressao": "radiante",
+          "transicao": 180,
+          "segura": 700
+        }
+      ]
+    },
+    "contente": {
+      "modo": "laco",
+      "movimento": "respira",
+      "piscar": {
+        "min": 2400,
+        "max": 5200,
+        "duracao": 150
+      },
+      "passos": [
+        {
+          "expressao": "contente",
+          "transicao": 450,
+          "segura": 2600
+        },
+        {
+          "expressao": "orgulhoso",
+          "transicao": 500,
+          "segura": 1400
+        }
+      ]
+    },
+    "triste": {
+      "modo": "laco",
+      "movimento": "respira",
+      "piscar": {
+        "min": 3600,
+        "max": 6500,
+        "duracao": 220
+      },
+      "passos": [
+        {
+          "expressao": "triste",
+          "transicao": 500,
+          "segura": 2600
+        },
+        {
+          "expressao": "triste-baixo",
+          "transicao": 600,
+          "segura": 2000
+        }
+      ]
+    },
+    "dormindo": {
+      "modo": "laco",
+      "movimento": "respira",
+      "passos": [
+        {
+          "expressao": "sonolento",
+          "transicao": 600,
+          "segura": 1400
+        },
+        {
+          "expressao": "dormindo",
+          "transicao": 900,
+          "segura": 4200
+        }
+      ]
+    }
+  },
+  "padrao": "parado"
+}

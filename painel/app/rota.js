@@ -313,6 +313,10 @@ export const trechosDoFunil = (etapas = [], fases = {}) => etapas.flatMap((e) =>
 ]);
 /** o item está neste trecho? a etapa com fases só leva quem não subiu a nenhuma */
 export const noTrecho = (it, t, fases = {}) => it.etapa === t.etapa && faseDe(it, fases) === t.fase;
+/** o trecho em que o item ESTÁ — a chave do filtro que o lista. Todo link
+    para um item passa por aqui: a etapa sozinha não serve quando ela tem
+    fases (`#/funil/salva/V-012` abria a lista sem a V-012). Sem etapa, `todas` */
+export const trechoDe = (it, fases = {}) => faseDe(it, fases) || it?.etapa || TODAS;
 
 /** a ficha de um item para as condições, a partir do que a tabela já tem */
 export const fichaDoItem = (it) => (it?.ficha ? { campos: it.campos || {}, faltam: it.faltam || [],
