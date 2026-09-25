@@ -152,6 +152,9 @@
     "/vagas:organizar-busca": "low",
     "/vagas:completar-ficha": "medium"
   },
+  "rodadas": {
+    "/vagas:candidatar": 150
+  },
   "rotulos": {
     "salva": "Salvar",
     "candidatada": "Já me candidatei",

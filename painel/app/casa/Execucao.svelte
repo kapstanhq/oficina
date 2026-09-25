@@ -36,7 +36,7 @@
   let { execucao = null, confirmando = null, confirmar = () => {},
     desistir = () => {}, parar = () => {}, mexer = () => {}, recusa = "",
     /* o apelido de um id — "Triar as vagas · V-035" diz de QUAL vaga, e leva a ela */
-    nomeDoItem = () => "", pastas = {} } = $props();
+    nomeDoItem = () => "", pastas = {}, continuar = () => {} } = $props();
 
   /* sem linha do `claude` por mais que isto, e sem ele esperar ninguém: a
      tela deixa de dizer "trabalhando" e diz que está sem sinal */
@@ -88,11 +88,14 @@
        ele é e pelo dia, e não pela data escrita com espaços */
     const datado = partes.at(-1).match(/^(\d{4})-(\d{2})-(\d{2})-(.+?)(\.\w+)?$/);
     if (datado) return `${pasta ? nomeDeGente(pasta) + " · " : ""}${datado[4].replace(/-(?!\d)/g, " ")}, ${datado[3]}/${datado[2]}`;
-    if (!apelido) return nomeDoArquivo(alvo);
+    /* gente pelo nome como se escreve: o arquivo guarda "helena-prates" */
+    if (!apelido) return pasta === pastas?.pessoa ? deGente(nomeDoArquivo(alvo)) : nomeDoArquivo(alvo);
     const doItem = !pasta || pasta === pastas?.item || pasta === pastas?.pessoa;
     return `${doItem ? "" : nomeDeGente(pasta) + " · "}${id} (${apelido})`;
   };
   const maiuscula = (t) => (t ? t[0].toUpperCase() + t.slice(1) : "");
+  const deGente = (t) => t.replace(/\(([^)]*)\)/, (_, n) =>
+    `(${n.split(" ").map((w, i) => (i && /^(da|de|do|das|dos|e)$/.test(w) ? w : maiuscula(w))).join(" ")})`);
   const complemento = (p) => (p?.alvo ? nomeDoAlvo(p.alvo) : p?.detalhe || "");
   const frase = (p) => maiuscula(String(p?.verbo || "trabalhando")) + (complemento(p) ? ": " + complemento(p) : "");
 
@@ -153,7 +156,33 @@
   /* o resultado some quando a pessoa o dispensa — e volta só com uma execução nova */
   let dispensada = $state("");
   const ultima = $derived(execucao?.ultima && execucao.ultima.ate !== dispensada ? execucao.ultima : null);
-  const parouAPedido = $derived(ultima?.motivo === "você mandou parar");
+  /* o desfecho, e o que dizer depois do motivo: a causa vem do lançador
+     (D279); o resultado guardado antes dela só tem o motivo */
+  const desfecho = $derived(!ultima ? "" : ultima.ok ? "feito"
+    : ultima.causa === "parado" || ultima.motivo === "você mandou parar" ? "parado" : "falhou");
+  const SELO_DO_FIM = { feito: "terminou", parado: "você parou", falhou: "não terminou" };
+  const motivoDito = $derived.by(() => {
+    if (desfecho !== "falhou" || !ultima.motivo) return "";
+    const codigo = ultima.motivo.match(/^saiu com (-?\d+)$/);
+    return maiuscula(codigo ? `o programa do assistente fechou com erro (código ${codigo[1]})` : ultima.motivo);
+  });
+  /* o corte por limite, com a conversa guardada, se continua (D280) */
+  const continuavel = $derived(Boolean(ultima?.retomavel) && !execucao?.rodando);
+  const conselho = $derived.by(() => {
+    if (desfecho !== "falhou") return "";
+    if (continuavel) return ultima.causa === "limite-de-espera"
+      ? "Ele esperou a sua resposta no painel e parou. Continue de onde ele parou quando puder responder."
+      : "Ele parou no meio, sem ter errado: continue de onde parou, com a mesma conversa. O que ele gravou até ali ficou salvo.";
+    if (ultima.causa === "limite-de-espera") return "Ele esperou a sua resposta no painel e desistiu. Peça de novo quando puder responder.";
+    return ultima.gravados?.length
+      ? "O que ele gravou até ali ficou salvo. Confira antes de pedir de novo, para ele não refazer o que já fez."
+      : ultima.causa === "limite-de-rodadas" || ultima.causa === "limite-de-tempo" ? "Nada foi gravado: pedir de novo começa do zero." : "";
+  });
+  const resumoDoFim = $derived(!ultima ? "" : [
+    `Levou ${duracao(ms(ultima.ate) - ms(ultima.desde))}`,
+    ultima.contagem?.passos ? plural(ultima.contagem.passos, "passo", "passos") : "",
+    ultima.custo ? dinheiro(ultima.custo) : "",
+  ].filter(Boolean).join(" · "));
   const fila = $derived(execucao?.fila || []);
   /* o que a fila já fez só se lista quando houve fila — um pedido só é a `ultima` */
   const feitas = $derived((execucao?.feitas || []).length > 1 || (fila.length && execucao?.feitas?.length)
@@ -176,7 +205,7 @@
 {#if recusa}<p class="c-nota p-falta">{recusa}</p>{/if}
 
 {#if rodando}
-  <section class="p-execucao p-agente" data-tom="vivo" data-estado={estado} aria-label="o assistente trabalhando">
+  <section class="p-execucao p-agente" data-estado={estado} aria-label="o assistente trabalhando">
     <div class="p-agente-mascote"><Mascote animacao={ANIMACAO[estado] || "trabalhando"} tamanho={76} /></div>
     <div class="p-agente-corpo">
       <p class="p-agente-titulo">
@@ -217,8 +246,9 @@
         <p class="p-agente-nota" data-tom="falha">Faltam {duracao(Math.max(0, faltaParaOTeto))} para o limite de {duracao(rodando.teto)} trabalhando: aí a execução é encerrada.</p>
       {/if}
       {#if rodando.gravados?.length}
-        <p class="p-agente-gravados"><span class="p-agente-rotulo">Gravou</span>
-          {#each rodando.gravados as g, i (g)}{#if i}{", "}{/if}<a href={paraArquivo(g)}>{nomeDoAlvo(g)}</a>{/each}</p>
+        <div class="p-agente-gravados"><span class="p-agente-rotulo">Gravou</span>
+          <ul>{#each rodando.gravados as g (g)}<li><a href={paraArquivo(g)}>{nomeDoAlvo(g)}</a></li>{/each}</ul>
+        </div>
       {/if}
       {#if passos.length > 1}
         <details class="p-agente-todos">
@@ -237,19 +267,20 @@
     <button type="button" class="c-acao" onclick={parar}>Parar</button>
   </section>
 {:else if ultima}
-  <section class="p-execucao p-agente" data-tom={ultima.ok ? "feito" : parouAPedido ? undefined : "falha"} data-estado={ultima.ok ? "feito" : parouAPedido ? "parado" : "falhou"}
-    aria-label="o que o assistente fez">
-    <div class="p-agente-mascote"><Mascote animacao={ultima.ok ? "comemorando" : parouAPedido ? "dormindo" : "triste"} tamanho={60} /></div>
+  <section class="p-execucao p-agente" data-estado={desfecho} aria-label="o que o assistente fez">
+    <div class="p-agente-mascote"><Mascote animacao={{ feito: "comemorando", parado: "dormindo", falhou: "triste" }[desfecho]} tamanho={60} /></div>
     <div class="p-agente-corpo">
-      <p class="p-agente-titulo"><b>{ultima.ok ? "O assistente terminou" : parouAPedido ? "Você parou o assistente" : "O assistente não terminou"}: {@render comItem(ultima.nome)}</b></p>
-      <p class="p-agente-meta">
-        {#if !ultima.ok && ultima.motivo && !parouAPedido}{maiuscula(ultima.motivo)}. {/if}
-        Levou {duracao(ms(ultima.ate) - ms(ultima.desde))}{#if ultima.contagem?.passos}, em {plural(ultima.contagem.passos, "passo", "passos")}{/if}.
-        {#if ultima.custo}Custou {dinheiro(ultima.custo)}.{/if}
+      <p class="p-agente-titulo">
+        <b>{@render comItem(ultima.nome)}</b>
+        <span class="p-agente-selo">{SELO_DO_FIM[desfecho]}</span>
       </p>
+      {#if motivoDito}<p class="p-agente-motivo">{motivoDito}.</p>{/if}
+      {#if conselho}<p class="p-agente-nota">{conselho}</p>{/if}
+      <p class="p-agente-meta">{resumoDoFim}</p>
       {#if ultima.gravados?.length}
-        <p class="p-agente-gravados"><span class="p-agente-rotulo">Gravou</span>
-          {#each ultima.gravados as g, i (g)}{#if i}{", "}{/if}<a href={paraArquivo(g)}>{nomeDoAlvo(g)}</a>{/each}</p>
+        <div class="p-agente-gravados"><span class="p-agente-rotulo">Gravou</span>
+          <ul>{#each ultima.gravados as g (g)}<li><a href={paraArquivo(g)}>{nomeDoAlvo(g)}</a></li>{/each}</ul>
+        </div>
       {/if}
       {#if ultima.resumo}
         <details>
@@ -258,7 +289,10 @@
         </details>
       {/if}
     </div>
-    <button type="button" class="c-acao" onclick={() => { dispensada = ultima.ate; }}>Fechar</button>
+    <div class="p-agente-botoes">
+      {#if continuavel}<button type="button" class="c-acao c-acao-cheia" onclick={continuar}>Continuar de onde parou</button>{/if}
+      <button type="button" class="c-acao" onclick={() => { dispensada = ultima.ate; }}>Fechar</button>
+    </div>
   </section>
 {/if}
 

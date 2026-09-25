@@ -1518,7 +1518,48 @@ outros plugins e skills.
   espera é "sem sinal" — travado e trabalhando deixam de ler igual. A leitura
   de tela ouve só a frase do agora.
 
+- **O fim diz por quê, e o que fazer.** O evento final do `claude` vem antes
+  do código de saída: no limite de rodadas ele sai com 1, e duas candidaturas
+  cortadas no turno 81 apareciam como "saiu com 1". O resultado ganha `causa`
+  (limite de rodadas, de tempo, de espera, parado, erro), e a tela diz o
+  motivo e, embaixo, o que fazer. "Rodada" e não "passo": passo é cada
+  ferramenta. A caixa perde a borda — a cor do estado mora no selo.
+
 | o que era | por que caiu |
 |---|---|
 | o avatar AGPL recolorido | mudaria a licença do painel e dos packs que o levam |
+| o motivo pelo código de saída ("saiu com 1") | escondia o limite de rodadas, que é o que se pode mudar |
 | o último verbo, com três anteriores apagados | navegador, `Bash` e conectores eram todos "trabalhando", e sem fim nem erro o travado e o trabalhando liam igual |
+
+---
+
+## D280 · O limite é da skill, o corte se continua, e o que é fato se grava primeiro
+
+`data: 2026-09-25`
+
+Duas candidaturas seguidas pararam no turno 81, com o teto em 80: enviaram,
+e o corte veio antes do funil e dos índices. A que terminou tinha levado 95.
+
+- **Rodadas por skill** no `painel.json` do pack (`rodadas`, inteiro de 10 a
+  300), pelo mesmo caminho do esforço (D263); 80 continua o padrão, e o de
+  vagas dá 150 a candidatar. O motivo do corte diz o limite daquela skill.
+- **Continuar de onde parou** só no corte por LIMITE — rodadas, 30 min
+  trabalhando, 60 min esperando —, quando o agente parou sem ter errado.
+  Retoma a mesma conversa (`--resume`, com a sessão guardada no resultado),
+  com um pedido fixo do lançador, 40 rodadas e a confirmação de custo de
+  sempre. Nada da página entra no pedido. Terminou bem, a fila pausada anda
+  sozinha; no livro, a continuação vai marcada e não conta no custo de "da
+  última vez".
+- **Candidatar grava primeiro o que é fato**: confirmado o envio, os cinco
+  arquivos do registro vêm antes de qualquer outro passo; contato novo vem
+  depois deles.
+- **Abaixo do piso, a tela avisa e não impede**: a pretensão que volta do
+  painel abaixo do piso do regime ganha uma nota com o número, só na tela.
+- **A prova pede a porta ao sistema** (`PAINEL_PORTA=0`): subindo na 4180 no
+  instante de uma troca do vigia, ela jogava o painel de quem desenvolve na
+  4181.
+
+| recusado | por que caiu |
+|---|---|
+| subir o teto de todas para 150 | só candidatar chega perto, e uma skill em laço gastaria quase o dobro antes de parar |
+| continuar também depois de "Parar", ou de erro | parar é de propósito, e o erro tende a se repetir gastando de novo |

@@ -453,6 +453,18 @@ export async function acoesDoPack(pack, raiz = OFICINA) {
     }
     esforco[`/${pack}:${skill}`] = valor;
   }
+  /* `rodadas` (D280): o `--max-turns` por skill, para a que precisa de mais
+     que o padrão de 80. Inteiro de 10 a 300, e a skill tem de existir */
+  const rodadas = {};
+  for (const [skill, valor] of Object.entries(declarado.rodadas && typeof declarado.rodadas === "object" ? declarado.rodadas : {})) {
+    if (!Number.isInteger(valor) || valor < 10 || valor > 300) {
+      throw new Error(`${pack}/painel.json: rodadas · “${skill}” pede “${valor}” — é um número inteiro de 10 a 300`);
+    }
+    if (!existsSync(join(raiz, pack, "skills", skill, "SKILL.md"))) {
+      throw new Error(`${pack}/painel.json: rodadas · “${skill}” não é uma skill deste pack`);
+    }
+    rodadas[`/${pack}:${skill}`] = valor;
+  }
   const rotulos = declarado.rotulos && typeof declarado.rotulos === "object" ? declarado.rotulos : {};
   for (const [chave, texto] of Object.entries(rotulos)) {
     if (!etapas.includes(chave) && !existsSync(join(raiz, pack, "skills", chave))) {
@@ -592,6 +604,7 @@ export async function acoesDoPack(pack, raiz = OFICINA) {
     ...(Object.keys(ordens).length ? { ordens } : {}),
     ...(Object.keys(fases).length ? { fases } : {}),
     ...(Object.keys(esforco).length ? { esforco } : {}),
+    ...(Object.keys(rodadas).length ? { rodadas } : {}),
     ...(Object.keys(textos).length ? { textos: Object.fromEntries(Object.entries(textos).map(([k, v]) => [k, v.trim()])) } : {}),
     ...(Object.keys(vistas).length ? { vistas: Object.fromEntries(Object.entries(vistas).map(([k, v]) => [k, v.trim()])) } : {}),
     /* a skill vira o comando, que é a chave que o painel tem na mão */

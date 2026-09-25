@@ -59,8 +59,21 @@ const TETO_DE_LINHA = 4 * 1024 * 1024;
 /* os passos que a tela lista inteiros; a contagem segue além deles */
 const TETO_DE_PASSOS = 40;
 const TETO_DE_GRAVADOS = 12;
-const TETO_DE_TURNOS = 80;
+/* o padrão; a skill que precisa de mais declara no `painel.json` do pack
+   (`rodadas`, D280) — candidatar terminou com 95 e foi cortada duas vezes no 81 */
+export const TETO_DE_TURNOS = 80;
+export const RODADAS = { min: 10, max: 300 };
 const TETO_DA_FILA = 10;
+/* ── CONTINUAR DE ONDE PAROU (D280) ──────────────────────────────────
+   Só o que um LIMITE cortou: o agente parou no meio sem ter errado. A mesma
+   conversa volta (`--resume`), com um pedido fixo DAQUI — nada da página
+   entra — e um orçamento menor, que basta para terminar e contém o custo de
+   retomar a conversa inteira. Cortou de novo? Dá para continuar de novo. */
+const RODADAS_DA_CONTINUACAO = 40;
+const LIMITES = new Set(["limite-de-rodadas", "limite-de-tempo", "limite-de-espera"]);
+const PEDIDO_DE_CONTINUAR = "O painel interrompeu você por um limite antes de terminar. Continue de onde parou: " +
+  "termine o que falta e grave o que ainda não foi gravado. Não refaça o que já está feito, e nada que já " +
+  "saiu — formulário enviado, mensagem mandada — sai de novo.";
 /**
  * O modelo desta execução: ambiente, depois o `painel.json` da base, depois o
  * padrão. Devolve também de onde veio e, se um valor foi recusado, o aviso.
@@ -231,10 +244,14 @@ export function passoDe(uso, base = "") {
 }
 
 /* o fim que não é sucesso, dito para quem não sabe o que é "turno" */
-const MOTIVO_DO_FIM = {
-  error_max_turns: `chegou ao limite de ${TETO_DE_TURNOS} passos sem terminar`,
+/* "rodada", e não "passo": a tela conta como passo cada ferramenta usada, e
+   uma rodada usa várias — "116 passos" e "limite de 80 passos" na mesma tela
+   se desmentiam (D279). A `causa` é o que a tela diz DEPOIS do motivo */
+const dizerOFim = (subtipo, rodadas) => ({
+  error_max_turns: `parou no limite de ${rodadas} rodadas, antes de terminar`,
   error_during_execution: "deu erro no meio do trabalho",
-};
+})[subtipo];
+const CAUSA_DO_FIM = { error_max_turns: "limite-de-rodadas", error_during_execution: "erro" };
 
 export function criarLancador({
   pack = "", pastaDoPack = "", instalado = false, pastaDeRegistro,
@@ -266,10 +283,11 @@ export function criarLancador({
     } catch { /* guardar é conforto: a execução já terminou */ }
   }
 
-  function argumentos(esforco = "", modelo = MODELO_PADRAO) {
+  function argumentos(esforco = "", modelo = MODELO_PADRAO, rodadas = TETO_DE_TURNOS, retomar = "") {
     const args = ["-p", "--model", modelo, ...(ESFORCOS.includes(esforco) ? ["--effort", esforco] : []),
+      ...(retomar ? ["--resume", retomar] : []),
       "--permission-mode", "acceptEdits", "--append-system-prompt", REGRA_DO_TEXTO_DE_FORA,
-      "--max-turns", String(TETO_DE_TURNOS), "--output-format", "stream-json", "--verbose",
+      "--max-turns", String(rodadas), "--output-format", "stream-json", "--verbose",
       "--allowedTools", [`mcp__plugin_${pack}_painel`, `mcp__plugin_${pack}_conectores`,
         `mcp__plugin_${pack}_documentos`, "WebFetch", "WebSearch", ...extras()].join(",")];
     /* pack instalado pelo marketplace já é carregado pelo `claude`; passar a
@@ -313,7 +331,7 @@ export function criarLancador({
      * Devolve na hora: quem acompanha é a página, por `estado()`. Com uma
      * rodando, `naFila` o põe na fila; sem ele, recusa como sempre.
      */
-    lancar({ o, nome, prompt, base, naFila = false, esforco = "" }) {
+    lancar({ o, nome, prompt, base, naFila = false, esforco = "", rodadas = TETO_DE_TURNOS }) {
       if (!disponivel) throw recusa("este painel não tem como chamar o assistente sozinho");
       if (!base) throw recusa("não há base aberta no painel");
       if (lancarDesligado(base)) throw Object.assign(new Error(DESLIGADO), { codigo: 403 });
@@ -324,13 +342,26 @@ export function criarLancador({
           throw recusa(`“${nome}” já está ${rodando.prompt === prompt ? "rodando" : "na fila"}`);
         }
         if (espera.length >= TETO_DA_FILA) throw recusa(`a fila já tem ${TETO_DA_FILA} pedidos — espere andar`);
-        espera.push({ n: ++numero, o, nome, prompt, base, esforco, pedido: new Date().toISOString() });
+        espera.push({ n: ++numero, o, nome, prompt, base, esforco, rodadas, pedido: new Date().toISOString() });
         aoRegistrar(`pôs na fila: ${o}`);
         return { enfileirado: true, posicao: espera.length };
       }
       /* sem nada rodando, começa já — e a fila pausada continua pausada */
       if (!espera.length) feitas = [];
-      return iniciar({ o, nome, prompt, base, esforco });
+      return iniciar({ o, nome, prompt, base, esforco, rodadas });
+    },
+
+    /** o que "Continuar de onde parou" retomaria — ou a recusa, dita */
+    continuacao() {
+      if (!ultima?.retomavel || !ultima.sessao) throw recusa("não há execução cortada por limite para continuar");
+      return { o: ultima.o, nome: ultima.nome, base: ultima.base, esforco: ultima.esforco || "", rodadas: RODADAS_DA_CONTINUACAO };
+    },
+    continuar() {
+      const c = this.continuacao();
+      if (!disponivel) throw recusa("este painel não tem como chamar o assistente sozinho");
+      if (rodando) throw recusa(`o assistente já está trabalhando em “${rodando.nome}” — espere ele terminar`);
+      if (lancarDesligado(c.base)) throw Object.assign(new Error(DESLIGADO), { codigo: 403 });
+      return iniciar({ ...c, prompt: PEDIDO_DE_CONTINUAR, retomar: ultima.sessao, continuacao: true });
     },
 
     /**
@@ -366,7 +397,7 @@ export function criarLancador({
         const linhas = (await readFile(join(pastaDeRegistro, "execucoes.jsonl"), "utf8"))
           .split("\n").filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } });
         /* de mesmo esforço (D263): o custo de antes da declaração não diz o de depois */
-        const achada = linhas.reverse().find((l) => l && l.ok && l.custo > 0 &&
+        const achada = linhas.reverse().find((l) => l && l.ok && l.custo > 0 && !l.continuacao &&
           (l.comando ? l.comando === comando : !comando && l.o === o) && (l.esforco || "") === esforco
           && (!modelo || (l.modelo || MODELO_PADRAO) === modelo));
         if (!achada) return null;
@@ -377,12 +408,12 @@ export function criarLancador({
 
     parar() {
       if (!rodando) return { parado: false };
-      rodando.encerrar("você mandou parar");
+      rodando.encerrar("você mandou parar", "parado");
       return { parado: true };
     },
   };
 
-  function iniciar({ o, nome, prompt, base, esforco = "" }) {
+  function iniciar({ o, nome, prompt, base, esforco = "", rodadas = TETO_DE_TURNOS, retomar = "", continuacao = false }) {
     const win = process.platform === "win32";
     /* lido a cada execução: trocar o modelo vale para o próximo da fila */
     const { modelo, de, avisos } = resolverModelo({ env, base });
@@ -400,7 +431,7 @@ export function criarLancador({
       aoRegistrar(`não lançou: ${o} · ${e.message}`);
       return { lancado: false, motivo: e.message };
     }
-    const args = argumentos(esforco, modelo);
+    const args = argumentos(esforco, modelo, rodadas, retomar);
     const filho = gerar("claude", win ? args.map((a) => (/[ &|<>^]/.test(a) ? `"${a}"` : a)) : args, {
       cwd, shell: win, windowsHide: true, stdio: ["pipe", "pipe", "pipe"],
       /* o painel do pack, lá dentro, sabe que quem pediu já está olhando o painel */
@@ -429,11 +460,14 @@ export function criarLancador({
     /* um evento por linha; guarda-se o último texto dele e o evento final,
        e nada mais — a saída inteira de meia hora não precisa morar aqui */
     let resto = "", erro = "", final = null, ultimoTexto = "";
+    /* a conversa desta execução, para continuar dela se um limite a cortar */
+    let sessao = retomar;
     const lerEvento = (linha) => {
       let e;
       try { e = JSON.parse(linha); } catch { return; }
       const meu = rodando?.filho === filho ? rodando : null;
       if (meu) meu.sinal = new Date().toISOString();
+      if (typeof e?.session_id === "string" && e.session_id) sessao = e.session_id;
       if (e?.type === "result") { final = e; return; }
       if (e?.type === "user") {
         for (const c of e.message?.content || []) {
@@ -482,12 +516,13 @@ export function criarLancador({
     const relogio = setInterval(() => {
       const { trabalhado } = medir();
       const parado = Date.now() - inicio - trabalhado;
-      if (trabalhado > TETO_MS) encerrar("passou de 30 minutos trabalhando");
-      else if (parado > TETO_DE_ESPERA_MS) encerrar("esperou mais de 60 minutos pela sua resposta no painel");
+      if (trabalhado > TETO_MS) encerrar("passou de 30 minutos trabalhando", "limite-de-tempo");
+      else if (parado > TETO_DE_ESPERA_MS) encerrar("esperou mais de 60 minutos pela sua resposta no painel", "limite-de-espera");
     }, 5_000);
-    let motivoDoFim = "";
-    const encerrar = (motivo) => {
+    let motivoDoFim = "", causaDoFim = "";
+    const encerrar = (motivo, causa = "erro") => {
       motivoDoFim = motivo;
+      causaDoFim = causa;
       /* no Windows o filho é o `cmd` que abriu o `claude`: matar só ele
          deixaria o agente vivo, gastando, sem ninguém do outro lado */
       if (win && filho.pid) gerar("taskkill", ["/PID", String(filho.pid), "/T", "/F"], { windowsHide: true });
@@ -501,27 +536,43 @@ export function criarLancador({
       if (resto.trim()) lerEvento(resto);
       const resumo = typeof final?.result === "string" ? final.result : ultimoTexto;
       const custo = Number(final?.total_cost_usd) || null;
-      const doFinal = !final ? "terminou sem dizer que terminou"
-        : final.subtype && final.subtype !== "success" ? MOTIVO_DO_FIM[final.subtype] || final.subtype
+      /* o evento final vem ANTES do código de saída: no limite de rodadas o
+         `claude` sai com 1, e o que dizia por quê ficava de fora (D279) */
+      const errou = final?.subtype && final.subtype !== "success";
+      const doFinal = !final ? (codigo === 0 ? "terminou sem dizer que terminou" : "")
+        : errou ? dizerOFim(final.subtype, rodadas) || final.subtype
         : final.is_error ? "terminou com erro" : "";
+      const motivo = motivoDoFim || falha || doFinal || (codigo === 0 ? ""
+        : ultimaLinha(erro) || `o programa do assistente fechou com erro (código ${codigo})`);
+      const causa = motivoDoFim ? causaDoFim : !motivo ? "" : errou ? CAUSA_DO_FIM[final.subtype] || "erro" : "erro";
       ultima = {
         o, nome, desde, ate: new Date().toISOString(),
-        ok: codigo === 0 && !motivoDoFim && !falha && !doFinal,
-        motivo: motivoDoFim || falha || (codigo === 0 ? doFinal : ultimaLinha(erro) || `saiu com ${codigo}`),
+        ok: codigo === 0 && !motivo,
+        motivo,
+        causa,
         resumo: String(resumo || "").slice(0, 6000),
         custo,
         modelo,
         base,
         contagem: { ...rodando.contagem, lidos: rodando.lidos.size },
         gravados: rodando.gravados,
+        ...(esforco ? { esforco } : {}),
+        ...(continuacao ? { continuacao: true } : {}),
+        /* só o corte por limite se continua, e só com a conversa em mãos */
+        ...(sessao ? { sessao } : {}),
+        retomavel: LIMITES.has(causa) && Boolean(sessao),
       };
       rodando = null;
       aoRegistrar(`o assistente terminou: ${o} · ${ultima.ok ? "ok" : ultima.motivo}`);
+      /* a continuação vai ao livro marcada: o custo dela não diz o de pedir de novo */
       registrarNoLivro({ o, comando: comandoDe(prompt), desde, ate: ultima.ate, ok: ultima.ok, custo, modelo,
-        ...(esforco ? { esforco } : {}), turnos: Number(final?.num_turns) || null });
+        ...(esforco ? { esforco } : {}), ...(continuacao ? { continuacao: true } : {}),
+        turnos: Number(final?.num_turns) || null });
       guardarUltima();
       feitas = [...feitas, { nome, ok: ultima.ok, custo, motivo: ultima.motivo }].slice(-TETO_DA_FILA);
       if (!ultima.ok && espera.length) pausada = ultima.motivo || "a anterior não terminou";
+      /* continuar resolveu o que pausou a fila: ela anda sozinha */
+      if (continuacao && ultima.ok) pausada = "";
       /* a base desligou o botão no meio: o que espera fica na fila, pausado */
       if (!pausada && espera.length && lancarDesligado(espera[0].base)) pausada = DESLIGADO;
       /* o próximo começa ANTES de liberar: o vigia não troca o processo no vão */
@@ -549,7 +600,10 @@ export function resolverLancamento(pedido = {}, onde = {}) {
   /* o esforço declarado pelo pack para o comando (D263); o resto é a lista fechada */
   const r = resolverDaLista(pedido, onde);
   const e = (onde.esforco || {})[comandoDe(r.prompt)];
-  return ESFORCOS.includes(e) ? { ...r, esforco: e } : r;
+  /* e as rodadas (D280): número inteiro na faixa, senão vale o padrão */
+  const n = (onde.rodadas || {})[comandoDe(r.prompt)];
+  const rodadas = Number.isInteger(n) && n >= RODADAS.min && n <= RODADAS.max ? { rodadas: n } : {};
+  return { ...r, ...(ESFORCOS.includes(e) ? { esforco: e } : {}), ...rodadas };
 }
 function resolverDaLista({ o, item } = {}, { grupos = [], arvore = [], pastas = {}, fila = "" } = {}) {
   const todas = grupos.flatMap((g) => g.acoes || []);

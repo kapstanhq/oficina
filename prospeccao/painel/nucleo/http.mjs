@@ -89,7 +89,12 @@ import { join, posix, win32 } from "node:path";
 const PORTAS_BLOQUEADAS = new Set([4045, 4190, 5060, 5061, 6000, 6566]);
 const livre = (p) => (PORTAS_BLOQUEADAS.has(p) ? p + 1 : p);
 
-const PORTA_INICIAL = livre(Number(process.env.PAINEL_PORTA || 4180));
+/* lida na hora de abrir, e não ao carregar o módulo: a prova a troca antes
+   de subir. `0` pede ao sistema uma porta livre — é o que a prova usa, para
+   nunca disputar a faixa do painel aberto de quem desenvolve: com a 4180
+   vaga no instante de uma troca do vigia, ela a tomava, e o painel de
+   verdade subia na 4181 (D280) */
+const portaInicial = () => livre(Number(process.env.PAINEL_PORTA || 4180));
 const TENTATIVAS = 12;
 
 const TIPOS = {
@@ -289,7 +294,8 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {}, se
      sem escape e não convida ninguém a digitá-la à mão. */
   if (!segredo) segredo = randomBytes(24).toString("base64url");
   const bilhete = bilheteDe(segredo);
-  let porta = PORTA_INICIAL;
+  const inicial = portaInicial();
+  let porta = inicial;
 
   const anfitrioesValidos = (p) => new Set([
     `127.0.0.1:${p}`, `localhost:${p}`, `[::1]:${p}`,
@@ -448,6 +454,7 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {}, se
      tempo de vida é o stdin do MCP (ver `protocolo.mjs`). Sem isto, fechar o
      cliente deixaria um node escutando a porta para sempre. */
   servidor.unref();
+  if (!porta) porta = servidor.address().port;
 
   return {
     porta,
@@ -456,7 +463,7 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {}, se
        comparar com 4180 na mão: `PAINEL_PORTA` existe, e nessas execuções a
        frase sairia dizendo que 4180 estava ocupada quando ninguém tentou
        4180 — medido, e ele mentiu na primeira vez em que foi usado. */
-    andou: porta !== PORTA_INICIAL,
+    andou: inicial !== 0 && porta !== inicial,
     /* o endereço INTEIRO, que abre sempre — a página troca o `#` por cookie
        na primeira vez —, e o CURTO, que é o que passa a valer depois dela */
     url: `http://127.0.0.1:${porta}/#${segredo}`,

@@ -1,5 +1,5 @@
 {
-  "_": "Sobre o que cada skill age, para o painel saber ONDE oferecê-la como botão (D232): `nada` roda sozinha, `item` age sobre um item, `pessoa` sobre uma pessoa. Skill que não está aqui é CONVERSA, e o painel só mostra o comando. `completar` é a skill que procura o que falta num item (D245). O resto do que o painel aceita (comeco, proximo, destaque, resumo, motivos, rotulos, fases, ordens, esforco) está em scripts/oficina.mjs, acoesDoPack, e é opcional.",
+  "_": "Sobre o que cada skill age, para o painel saber ONDE oferecê-la como botão (D232): `nada` roda sozinha, `item` age sobre um item, `pessoa` sobre uma pessoa. Skill que não está aqui é CONVERSA, e o painel só mostra o comando. `completar` é a skill que procura o que falta num item (D245). O resto do que o painel aceita (comeco, proximo, destaque, resumo, motivos, rotulos, fases, ordens, esforco, rodadas) está em scripts/oficina.mjs, acoesDoPack, e é opcional.",
   "sobre": {
     "o-que-fazer-hoje": "nada",
     "retomar-contato": "nada",

@@ -71,6 +71,9 @@ import { tmpdir } from "node:os";
    uma leitura no topo de um módulo. A pasta real fica intocada. */
 const COFRE = await mkdtemp(join(tmpdir(), "kapstan-prova-painel-"));
 process.env.KAPSTAN_CONECTORES_DIR = COFRE;
+/* e a porta é a que o sistema der: a prova subia na 4180 no instante de uma
+   troca do vigia, e o painel aberto de quem desenvolve ia para a 4181 (D280) */
+process.env.PAINEL_PORTA = "0";
 
 const { carregarCatalogo } = await import("../conectores/nucleo/catalogo.mjs");
 const { criarConectores } = await import("../conectores/nucleo/conectores.mjs");
@@ -727,11 +730,61 @@ console.log(`${forte ? "✓" : "✗"} a chave tem 32+ caracteres de base64url ·
 
   l.lancar({ o: "/x:fazer", nome: "Fazer", prompt: "/x:fazer", base: daBase.raiz });
   const dois = lancados.at(-1);
+  /* no limite de rodadas o `claude` manda o evento final E sai com 1: o
+     motivo é o do evento, e não o código (D279) — "saiu com 1" era o que a
+     tela dizia de duas candidaturas cortadas no turno 81 */
   dois.filho.stdout.emit("data", JSON.stringify({ type: "result", subtype: "error_max_turns", total_cost_usd: 1 }) + "\n");
-  dois.filho.emit("close", 0);
-  conferir("lançar · parar no teto de passos não é sucesso", l.estado().ultima.ok, false);
-  conferir("lançar · e o motivo é dito em língua de gente",
-    l.estado().ultima.motivo.includes("limite de 80 passos"), true);
+  dois.filho.emit("close", 1);
+  conferir("lançar · parar no teto de rodadas não é sucesso", l.estado().ultima.ok, false);
+  conferir("lançar · e o motivo é o do evento final, mesmo saindo com 1",
+    l.estado().ultima.motivo, "parou no limite de 80 rodadas, antes de terminar");
+  conferir("lançar · e a causa diz qual limite", l.estado().ultima.causa, "limite-de-rodadas");
+  l.lancar({ o: "/x:fazer", nome: "Fazer", prompt: "/x:fazer", base: daBase.raiz });
+  lancados.at(-1).filho.emit("close", 1);
+  conferir("lançar · sem evento final nem erro escrito, o código vai em língua de gente",
+    `${l.estado().ultima.motivo} · ${l.estado().ultima.causa}`, "o programa do assistente fechou com erro (código 1) · erro");
+
+  /* ── AS RODADAS POR SKILL, E CONTINUAR DE ONDE PAROU (D280) ─────────── */
+  {
+    const comRodadas = (n) => resolverLancamento({ o: "/x:fazer" }, { ...onde, rodadas: { "/x:fazer": n } }).rodadas;
+    conferir("rodadas · o que o pack declara para o comando vai junto", comRodadas(150), 150);
+    conferir("rodadas · fora da faixa, ou texto, não vai: vale o padrão",
+      JSON.stringify([comRodadas(5), comRodadas(400), comRodadas("150")]), JSON.stringify([undefined, undefined, undefined]));
+    const lr = criarLancador({ pack: "x", pastaDoPack: AQUI, pastaDeRegistro: join(COFRE, "painel-rodadas"), gerar });
+    const maxDe = (f) => f.args[f.args.indexOf("--max-turns") + 1];
+    const ev = (f, e) => f.filho.stdout.emit("data", JSON.stringify(e) + "\n");
+    lr.lancar({ o: "/x:fazer", nome: "Fazer", prompt: "/x:fazer", base: daBase.raiz, rodadas: 150 });
+    const a = lancados.at(-1);
+    conferir("rodadas · o claude recebe o limite da skill", maxDe(a), "150");
+    ev(a, { type: "system", subtype: "init", session_id: "sessao-a" });
+    lr.lancar({ o: "/x:sobre-item", nome: "Sobre", prompt: "/x:sobre-item\nX-001", base: daBase.raiz, naFila: true });
+    ev(a, { type: "result", subtype: "error_max_turns", total_cost_usd: 2, session_id: "sessao-a" });
+    a.filho.emit("close", 1);
+    let u = lr.estado().ultima;
+    conferir("continuar · o motivo diz o limite desta skill", u.motivo, "parou no limite de 150 rodadas, antes de terminar");
+    conferir("continuar · o corte por limite se continua, com a conversa guardada", `${u.retomavel} · ${u.sessao}`, "true · sessao-a");
+    conferir("continuar · e a fila fica pausada, sem começar o próximo", Boolean(lr.estado().pausada) && lancados.at(-1) === a, true);
+    lr.continuar();
+    const c = lancados.at(-1);
+    conferir("continuar · retoma a MESMA conversa, com 40 rodadas", `${c.args[c.args.indexOf("--resume") + 1]} · ${maxDe(c)}`, "sessao-a · 40");
+    conferir("continuar · o pedido é o fixo daqui, e não vem da página", c.filho.recebeu.startsWith("O painel interrompeu você por um limite"), true);
+    ev(c, { type: "result", subtype: "success", result: "terminei", total_cost_usd: 0.3, session_id: "sessao-a" });
+    c.filho.emit("close", 0);
+    u = lr.estado().ultima;
+    conferir("continuar · termina marcada como continuação, e não se continua de novo", `${u.ok} · ${u.continuacao} · ${u.retomavel}`, "true · true · false");
+    const b = lancados.at(-1);
+    conferir("continuar · e a fila que estava pausada anda sozinha", `${b.filho.recebeu.trim()} · ${lr.estado().pausada}`, "/x:sobre-item\nX-001 · ");
+    b.filho.emit("close", 0);
+    let recusou = "passou";
+    try { lr.continuar(); } catch (e) { recusou = e.codigo; }
+    conferir("continuar · o que terminou (mesmo mal, sem limite) não se continua", recusou, 409);
+    lr.lancar({ o: "/x:fazer", nome: "Fazer", prompt: "/x:fazer", base: daBase.raiz });
+    const p = lancados.at(-1);
+    ev(p, { type: "system", subtype: "init", session_id: "sessao-p" });
+    lr.parar();
+    p.filho.emit("close", 1);
+    conferir("continuar · o que você parou não se continua", `${lr.estado().ultima.causa} · ${lr.estado().ultima.retomavel}`, "parado · false");
+  }
 
   /* ── OS PASSOS COM COMEÇO E FIM (D279) ─────────────────────────────── */
   {

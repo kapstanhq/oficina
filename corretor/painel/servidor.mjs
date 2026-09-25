@@ -431,7 +431,7 @@ const resolver = async (pedido) => {
   const acoes = await lerAcoes();
   return resolverLancamento(pedido, {
     grupos: acoes.grupos, pastas: acoes.pastas || {}, fila: acoes.fila || "",
-    esforco: acoes.esforco || {},
+    esforco: acoes.esforco || {}, rodadas: acoes.rodadas || {},
     arvore: (await base.mapa()).arvore,
   });
 };
@@ -671,7 +671,23 @@ async function garantirAberto() {
         const l = await oLancador();
         if (!base.ligada) throw Object.assign(new Error("não há base aberta no painel"), { codigo: 400 });
         recusarSeDesligado();
-        const { nome, prompt, esforco = "" } = await resolver(corpo || {});
+        /* ── CONTINUAR DE ONDE PAROU (D280) ─────────────────────────────
+           Não passa pela lista: o que se retoma é a última execução que um
+           LIMITE cortou, que o lançador guardou, com o pedido fixo dele. A
+           página só diz "continuar"; o segundo clique é o do custo, igual. */
+        if (corpo?.o === "continuar") {
+          const c = l.continuacao();
+          if (corpo?.confirmo !== true) {
+            return {
+              precisa_confirmar: true, oque: `continuar ${c.nome}`, fila: 0,
+              aviso: `Isto retoma “${c.nome}” de onde parou, com até ${c.rodadas} rodadas a mais, e consome do seu ` +
+                `plano do Claude (modelo ${nomeDoModelo(l.modeloPara(c.base))}). A conversa dele volta inteira: ` +
+                "costuma custar menos que pedir de novo, mas não é de graça. O que já saiu não sai de novo.",
+            };
+          }
+          return l.continuar();
+        }
+        const { nome, prompt, esforco = "", rodadas } = await resolver(corpo || {});
         const agora = l.estado();
         if (corpo?.confirmo !== true) {
           const antes = await l.daUltimaVez(String(corpo?.o), prompt, esforco, base.raiz);
@@ -694,7 +710,7 @@ async function garantirAberto() {
           };
         }
         /* quem ocupa e libera é o lançador, a cada execução — da fila também */
-        return l.lancar({ o: String(corpo.o), nome, prompt, base: base.raiz, naFila: true, esforco });
+        return l.lancar({ o: String(corpo.o), nome, prompt, base: base.raiz, naFila: true, esforco, rodadas });
       },
       "POST /lancar/parar": async () => (await oLancador()).parar(),
       "POST /lancar/fila": async ({ corpo }) => {

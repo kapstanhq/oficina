@@ -46,6 +46,19 @@ try {
   await recusa("motivo vazio", { ...FIM, motivo: "" }, "sem espaço");
   await recusa("campo que não existe", { ...FIM, cor: "verde" }, "“cor” não é campo do fim");
   await recusa("o que não é objeto", "proposta", "um objeto { de, rotulo, motivo }");
+
+  /* ── AS RODADAS POR SKILL (D280) ──────────────────────────────────────── */
+  await mkdir(join(TEMP, "p", "skills", "fazer"), { recursive: true });
+  await writeFile(join(TEMP, "p", "skills", "fazer", "SKILL.md"), "---\nname: fazer\n---\n", "utf8");
+  conferir("rodadas · o certo passa e vai ao acoes.json, pelo comando",
+    (await montar({ rodadas: { fazer: 150 } })).acoes?.rodadas?.["/p:fazer"], 150);
+  const recusaRodadas = async (nome, rodadas, trecho) => {
+    const r = await montar({ rodadas });
+    conferir(`rodadas · recusa ${nome}`, Boolean(r.erro?.includes("painel.json: rodadas ·") && r.erro.includes(trecho)), true);
+  };
+  await recusaRodadas("menos de 10", { fazer: 5 }, "de 10 a 300");
+  await recusaRodadas("número escrito como texto", { fazer: "150" }, "de 10 a 300");
+  await recusaRodadas("skill que o pack não tem", { outra: 150 }, "não é uma skill deste pack");
 } finally {
   await rm(TEMP, { recursive: true, force: true }).catch(() => {});
 }

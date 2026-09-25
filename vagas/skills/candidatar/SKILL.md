@@ -328,7 +328,14 @@ número único  o número da frase do perfil — o do meio, se ela é faixa
 ```
 
 Sem base escrita, não há sugestão: é `?`. E dado sensível (contrato §3.1)
-nunca ganha sugestão. Resposta que esbarra em
+nunca ganha sugestão.
+
+**Abaixo do piso, a tela avisa, e não impede** (D280). Voltou do painel uma
+pretensão abaixo do piso do regime daquele campo (`## Quanto`: CLT ou PJ)?
+Antes do passo 6, mostre o campo mais uma vez com a `nota` “Fica abaixo do seu
+piso de R$ 8 mil CLT.” — uma vez só. Confirmou, sai como ele escreveu. O
+número do piso vai só nessa nota, na tela dele: nunca no `_bruto/`, na vaga
+nem no que sai para a empresa. Resposta que esbarra em
 `## O que NÃO se diz` não sai — diga qual linha da lista ela contrariava.
 
 **A vaga pede o que ele não tem** — pergunta eliminatória, “possui inglês
@@ -606,6 +613,12 @@ funil.md                                  a vaga muda de seção, com
 vagas/_indice.md                          `atualizada`
 INDICE.md                                 `## Quanto tem`, recontado
 ```
+
+**Estes cinco são o PRIMEIRO trabalho depois da confirmação, nesta ordem e antes
+de qualquer outro** — fechar o navegador, criar o contato que a página mostrou,
+conferir, responder (D280). O painel corta a execução no limite dela, e o corte
+já veio entre o arquivo da vaga e o funil: a vaga enviada continuou aparecendo
+como `salva`. Contato novo e o `contatos/_indice.md` vêm DEPOIS dos cinco.
 
 O arquivo de `_bruto/` — grave **antes** dos outros, que é o que sobra se algo
 falhar no meio:

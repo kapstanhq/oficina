@@ -724,7 +724,7 @@
 
         <Execucao {execucao} {confirmando} {nomeDoItem} pastas={pastasDoPack} recusa={recusaDoLancar}
           confirmar={confirmarChamada} desistir={() => { confirmando = null; }}
-          parar={pararChamada} mexer={mexerNaFila} />
+          parar={pararChamada} mexer={mexerNaFila} continuar={() => chamar("continuar")} />
 
         {#if rota.tela === "conectores"}
           <Conectores {recarga} />
