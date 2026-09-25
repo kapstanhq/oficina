@@ -211,8 +211,11 @@ o regime tem linha própria  logo abaixo de "Há N dias · N candidaturas" vem
                             cartão público não mostra, e é daqui que sai
                             `regime:` — com a cidade do cabeçalho ao lado
 dois avisos diferentes      "Não aceita mais candidaturas" é `estado: fechou`;
-                            "Não aceita candidaturas agora" é pausa — a vaga
-                            continua aberta, e o arquivo diz isso
+                            "Não aceita candidaturas agora" é pausa — fica
+                            `estado: aberta`, e a pausa vai numa linha do
+                            `## Histórico`, com a data. Nunca dentro do
+                            `estado:`, que só aceita `aberta` ou `fechou`:
+                            "aberta, mas…" saiu assim em duas vagas de 23/09
 o anúncio vem cortado       o botão "… mais" abre o resto; sem ele, o inglês e
                             o processo, que moram no fim, não são lidos
 ```

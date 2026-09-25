@@ -1,6 +1,6 @@
 {
   "name": "oficina",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "description": "Oficina Kapstan: packs de skills por ofício para o Claude Code, com o painel, os conectores e o montador que os geram.",
   "license": "MIT",

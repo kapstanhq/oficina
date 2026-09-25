@@ -76,9 +76,11 @@ Leia, nesta ordem:
    `01-0-onde-a-{pasta-base}-mora.md` (os dois transportes, e quem é dono de qual
    fato — a vista nunca vence o arquivo), `02-0-id-e-apelido.md` (o id, e por
    que o nome do arquivo não muda), `03-0-as-tres-regras.md` (as três regras,
-   e os quatro passos de aposentar), `04-0-os-formatos.md` e os sete que o
-   seguem, de `04-1-indice.md` a `04-7-o-bruto.md` (os formatos literais —
-   `{secao-arquivo-item}` é o gabarito da ficha que a planilha gera),
+   e os quatro passos de aposentar), `04-0-os-formatos.md`, `04-1-indice.md`,
+   `04-2-hoje.md`, `04-3-funil.md`, `{secao-arquivo-item}`,
+   `{secao-arquivo-pessoa}`, `04-6-os-dois-indices.md` e `04-7-o-bruto.md` (os
+   formatos literais — `{secao-arquivo-item}` é o gabarito da ficha que a
+   planilha gera, e `04-3-funil.md` tem as etapas que valem),
    `07-0-a-conversa-entra.md` (como ler conversa colada, e o que fazer com ela
    depois), `07-1-a-mensagem-sai.md` (o pedido de silêncio, e a lista da
    ponte), `08-0-quando-perguntar.md` (a ordem de busca e o teto de três
@@ -189,11 +191,27 @@ algum arquivo dono.
 ```
 procure   o nome do bruto: {exemplo-bruto}
           em: ~/{pasta-base}/{pasta-itens}/  ~/{pasta-base}/{pasta-pessoas}/  ~/{pasta-base}/arquivo-morto/
+              e os outros donos: os arquivos da raiz da {base} e as pastas que
+              o INDICE.md lista em ## Onde está o quê
           zero ocorrências → ainda não virou fato
 ```
 
-No `local` é busca de conteúdo, com `Grep`. No `drive` não há busca dentro do
-texto: a procura é nos arquivos donos que o passo 1 já leu.
+No `local` é busca de conteúdo, **numa passada só**: um `Grep` com `-o` pelo
+padrão de nome datado (`[0-9]+-[0-9]+-[0-9]+-[^ )·,]+[.](md|csv)`) nos donos devolve
+todo bruto citado, e o que está na pasta e não está nessa lista é o que falta.
+Um `Grep` por bruto são centenas de chamadas: numa {base} de 180 brutos, a
+volta passou de dois minutos e caiu no tempo do terminal (medido em
+2026-09-25). No `drive` não há busca dentro do texto: a procura é nos arquivos
+donos que o passo 1 já leu.
+
+Os donos são todos, e não só as duas pastas: um bruto que alimentou um
+arquivo da raiz ou de outra pasta da {base} é citado lá, e procurá-lo só em
+`{pasta-itens}/` e `{pasta-pessoas}/` o dava como não lido em toda execução.
+
+**Bruto que diz a quem pertence não se relê.** Se o cabeçalho dele diz que o
+fato é de outra skill — `estado: ainda NÃO entrou em <arquivo> — quem leva
+é /{plugin}:<skill>` —, ele não é trabalho desta: vira uma linha só em
+`## Espera você`, com os nomes juntos e a skill que leva, e nada se extrai.
 
 O `arquivo-morto/` entra na busca: bruto de quem foi aposentado já foi lido, e
 relê-lo ressuscitaria a ficha.

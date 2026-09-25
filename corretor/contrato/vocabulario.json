@@ -133,6 +133,7 @@
   "documento-chave": "matrícula",
   "Documento-chave": "Matrícula",
   "secao-arquivo-item": "04-4-arquivo-de-imovel.md",
+  "secao-arquivo-pessoa": "04-5-arquivo-de-cliente.md",
   "sistema-do-oficio": "imobiliária",
   "campos-do-item": "link, estado, tipo, preço, condomínio, iptu, dormitórios, suíte,\n   vagas, endereço, proprietário, exclusividade",
   "campos-do-item-em-linha": "link, estado, tipo, preço, condomínio, iptu, dormitórios, suíte, vagas,\n   endereço, proprietário, exclusividade",

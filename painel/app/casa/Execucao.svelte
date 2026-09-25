@@ -153,8 +153,16 @@
   const faltaParaOTeto = $derived(rodando?.teto ? rodando.teto - trabalhado : Infinity);
 
   /* ── O QUE TERMINOU ────────────────────────────────────────────────── */
-  /* o resultado some quando a pessoa o dispensa — e volta só com uma execução nova */
-  let dispensada = $state("");
+  /* o resultado some quando a pessoa o dispensa — e volta só com uma execução
+     nova. O `ate` da dispensada vai para o `localStorage`: só na memória, o
+     refresh o esquecia e o aviso de falha voltava ao topo (medido em 25/09).
+     O `ate` é o fim daquela execução, então uma chave só basta para todas as bases */
+  const CHAVE_DISPENSADA = "kapstan-painel-dispensada";
+  let dispensada = $state((() => { try { return localStorage.getItem(CHAVE_DISPENSADA) || ""; } catch { return ""; } })());
+  const dispensar = (ate) => {
+    dispensada = ate;
+    try { localStorage.setItem(CHAVE_DISPENSADA, ate); } catch { /* sem armazenamento: some até o refresh */ }
+  };
   const ultima = $derived(execucao?.ultima && execucao.ultima.ate !== dispensada ? execucao.ultima : null);
   /* o desfecho, e o que dizer depois do motivo: a causa vem do lançador
      (D279); o resultado guardado antes dela só tem o motivo */
@@ -291,7 +299,7 @@
     </div>
     <div class="p-agente-botoes">
       {#if continuavel}<button type="button" class="c-acao c-acao-cheia" onclick={continuar}>Continuar de onde parou</button>{/if}
-      <button type="button" class="c-acao" onclick={() => { dispensada = ultima.ate; }}>Fechar</button>
+      <button type="button" class="c-acao" onclick={() => dispensar(ultima.ate)}>Fechar</button>
     </div>
   </section>
 {/if}

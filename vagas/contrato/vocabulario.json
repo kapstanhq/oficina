@@ -106,6 +106,7 @@
   "secao-itens-mostrados": "## Fala por",
   "secao-mostrado-a": "## Candidatura",
   "secao-arquivo-item": "04-4-arquivo-de-vaga.md",
+  "secao-arquivo-pessoa": "04-5-arquivo-de-contato.md",
   "secao-descricao-do-item": "`## O que a vaga pede`",
   "modelo-item": "vaga.md",
   "formato-do-apelido": "`<cargo curto>, <empresa>`",

@@ -69,7 +69,8 @@ perfil, em `references/contrato/04-9-o-perfil.md`; as três regras, em
 `references/contrato/04-7-o-bruto.md`; a linha do índice, em
 `references/contrato/04-6-os-dois-indices.md`; a do funil, em
 `references/contrato/04-3-funil.md`; os tetos, em
-`references/contrato/09-0-os-tetos.md`. Os gabaritos são
+`references/contrato/09-0-os-tetos.md`; o que é seu e o que é dos outros, em
+`references/contrato/03-1-o-que-e-seu.md`. Os gabaritos são
 `references/modelos/vaga.md` e `references/modelos/_indice-vagas.md`. Como se
 fala com os conectores está em `references/conectores.md`, o painel em
 `references/painel.md`, e o roteiro do LinkedIn logado — a URL de busca, como

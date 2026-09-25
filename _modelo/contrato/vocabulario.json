@@ -123,6 +123,7 @@
   "skill-conferir": "<<preencher — corretor: “conferir-matricula” · prospecção: “estudar-conta”>>",
   "documento-chave": "<<preencher — corretor: “matrícula” · prospecção: “CNPJ”>>",
   "secao-arquivo-item": "<<preencher: o nome do arquivo da seção 4.4 DESTE pack, igual ao de contrato/ — corretor: “04-4-arquivo-de-imovel.md” · prospecção: “04-4-arquivo-de-conta.md”>>",
+  "secao-arquivo-pessoa": "<<preencher: o nome do arquivo da seção 4.5 DESTE pack, igual ao de contrato/ — corretor: “04-5-arquivo-de-cliente.md” · prospecção: “04-5-arquivo-de-contato.md”>>",
   "sistema-do-oficio": "<<preencher — corretor: “imobiliária” · prospecção: “empresa”>>",
   "campos-do-item": "<<preencher — corretor: “link, estado, tipo, preço, condomínio, iptu, dormitórios, suíte, vagas, endere…” · prospecção: “site, estado, setor, cidade, funcionários, faturamento, cnpj, sistema que usam…”>>",
   "campos-do-item-em-linha": "<<preencher — corretor: “link, estado, tipo, preço, condomínio, iptu, dormitórios, suíte, vagas, endere…” · prospecção: “site, estado, setor, cidade, funcionários, faturamento, cnpj, sistema que usam…”>>",

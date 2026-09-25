@@ -68,7 +68,8 @@ etapas, em `references/contrato/04-3-funil.md`; o perfil, em
 os quatro passos de aposentar —, em
 `references/contrato/03-0-as-tres-regras.md`; a linha do índice e do arquivo
 morto, em `references/contrato/04-6-os-dois-indices.md`; os tetos, em
-`references/contrato/09-0-os-tetos.md`. O painel está em
+`references/contrato/09-0-os-tetos.md`; o que é seu e o que nunca entra, em
+`references/contrato/03-1-o-que-e-seu.md`. O painel está em
 `references/painel.md`, e os conectores em `references/conectores.md`.
 
 ## 3 · O modo
