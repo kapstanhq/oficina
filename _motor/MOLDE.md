@@ -62,16 +62,24 @@ dentro do trabalho de outra. Escreva o que ela recusa e para quem manda.
 ```
 ## Guardei
 ## Falta saber
+## Próximo passo
 ```
 
-Os dois títulos são **exatos e ancorados em começo de linha** — `### Guardei`
-não vale, `## Guardei —` não vale —, e `## Guardei` vem **antes** de
-`## Falta saber`. O contrato §10 manda; a régua confere; a prova de execução
+Os três títulos são **exatos e ancorados em começo de linha** — `### Guardei`
+não vale, `## Guardei —` não vale —, `## Guardei` vem **antes** de
+`## Falta saber`, e `## Próximo passo` fecha tudo. O contrato §10 manda; a régua confere; a prova de execução
 confere de novo na resposta que sai.
 
 **`## Guardei` não some nunca**, nem quando nada foi gravado. Uma skill que
 não escreveu nada diz isso ali, e é a linha mais importante dela: quem lê
 precisa saber que a carteira **não** mudou.
+
+**E o exemplo é na palavra de quem lê** (D281): o `## Guardei` diz o que ficou
+guardado — o item pelo id e apelido, a pessoa pelo nome, e onde ela vê —, sem
+caminho de arquivo; o `## Próximo passo` diz o que fazer agora, por quê, e a
+frase que a pessoa pode dizer para pedir. O modelo imita o exemplo da skill
+antes de obedecer à regra do contrato: exemplo com caminho é fecho com
+caminho.
 
 ## 4 · O contrato chega por citação, e só a quem cita
 
@@ -196,6 +204,7 @@ real.
 ## 6 · O formato da saída
       ## Guardei              ← cobrado, ancorado
       ## Falta saber          ← cobrado, depois de Guardei
+      ## Próximo passo        ← cobrado, por último
 ## 7 · Onde ela para          ← cobrado
 ```
 

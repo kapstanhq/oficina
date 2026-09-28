@@ -86,7 +86,7 @@ await writeFile(join(PACK, "painel", "painel.html"), await juntarPainel(join(TEM
 
 const servidor = spawn(process.execPath, [join(AQUI, "servidor.mjs"), "--pack", PACK], {
   stdio: ["pipe", "pipe", "pipe"],
-  env: { ...process.env, KAPSTAN_PAINEL_DIR: join(TEMP, "painel"),
+  env: { ...process.env, KAPSTAN_NAO_ABRIR: "1", KAPSTAN_PAINEL_DIR: join(TEMP, "painel"),
     KAPSTAN_CONECTORES_DIR: join(TEMP, "cofre"), PAINEL_PORTA: "4296" },
 });
 servidor.stderr.on("data", () => {});

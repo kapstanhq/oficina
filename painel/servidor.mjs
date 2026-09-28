@@ -54,7 +54,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join, resolve, sep } from "node:path";
 import { servirPorStdio, registrar, avisarOcupado } from "./nucleo/protocolo.mjs";
-import { abrirPainel, atalhoDoLogin, chaveDaMaquina, pastaDaChave } from "./nucleo/http.mjs";
+import { abrirPainel, abrirNoNavegador, atalhoDoLogin, chaveDaMaquina, pastaDaChave } from "./nucleo/http.mjs";
+import { conferirVersao } from "./nucleo/versao.mjs";
 import { criarSessao, conferirTela, TETO_DE_BLOCOS } from "./nucleo/sessao.mjs";
 import { criarBase } from "./nucleo/base.mjs";
 import { criarFila } from "./nucleo/fila.mjs";
@@ -550,7 +551,13 @@ async function garantirAberto() {
 
       /* a aba pergunta o que desenhar e fica pendurada até mudar */
       "GET /documento": async ({ url, res }) => {
-        const doc = await sessao.aguardarDocumento(url.searchParams.get("desde"));
+        /* só a PÁGINA faz este longo poll — o hóspede fala por `/estado` e
+           `/agente/*` —, e é por ele que se sabe se há aba aberta (D281) */
+        abasNaEspera++;
+        ultimaAba = Date.now();
+        let doc;
+        try { doc = await sessao.aguardarDocumento(url.searchParams.get("desde")); }
+        finally { abasNaEspera--; ultimaAba = Date.now(); }
         if (doc === null) {
           res.writeHead(204, { "Cache-Control": "no-store" });
           res.end();
@@ -775,6 +782,32 @@ async function garantirAberto() {
   return aberto;
 }
 
+/* ── HÁ UMA ABA ABERTA? E, SE NÃO HÁ, ABRIR UMA (D281) ─────────────────
+   A página aberta vive pendurada no `GET /documento` (25 s por volta) e volta
+   dois segundos depois de qualquer queda. Então: um poll pendurado agora, ou
+   um que terminou há menos de 35 s, é aba aberta. O servidor que ACABOU de
+   subir espera até três segundos antes de decidir — uma aba de ontem, na
+   mesma porta e com a mesma chave, reconecta nesse intervalo, e abrir outra
+   por cima dela seria a aba em dobro que ninguém pediu.
+
+   Não abre quem foi lançado pelo próprio painel (a pessoa está olhando para
+   ele) nem a prova (`KAPSTAN_NAO_ABRIR`), que não pode encher de abas a
+   máquina de quem a roda. */
+let abasNaEspera = 0;
+let ultimaAba = 0;
+const abaAberta = () => abasNaEspera > 0 || Date.now() - ultimaAba < 35_000;
+async function mostrarNaTela(painel, { recemAberto }) {
+  if (process.env.KAPSTAN_LANCADO || process.env.KAPSTAN_NAO_ABRIR) return abaAberta() ? "aberta" : "nao";
+  for (let i = 0; recemAberto && !abaAberta() && i < 12; i++) await new Promise((r) => setTimeout(r, 250));
+  if (abaAberta()) return "aberta";
+  if (!abrirNoNavegador(painel.url)) return "nao";
+  /* a aba nova leva um instante para pendurar o primeiro poll: sem esta
+     marca, uma segunda chamada logo depois abriria outra */
+  ultimaAba = Date.now();
+  registrar("abri o painel no navegador padrão");
+  return "abri";
+}
+
 /* ── A FRASE QUE O AGENTE REPASSA ─────────────────────────────────────
    Ela diz o endereço CURTO, que é o que passa a valer, e o inteiro, que é o
    que precisa ser aberto uma vez para o curto começar a valer. Dizer só o
@@ -788,6 +821,12 @@ const comoAbrir = ({ url, curto, andou, porta }) =>
   (andou ? `a porta de sempre estava ocupada, então o painel subiu na ${porta}. ` : "") +
   `Abra ${url} — desta vez inteiro, com o que vem depois do #. ` +
   `Depois disso ${curto} abre sozinho.`;
+/* quando o próprio servidor abriu, a frase é uma só e não pede nada */
+const comoFicou = (tela, painel, titulo) =>
+  tela === "abri" ? `Abri ${titulo ? `${titulo} ` : "o painel "}no seu navegador. ` +
+    `Se fechar a aba, ${painel.curto} traz de volta.`
+  : tela === "aberta" ? `${titulo || "A base"} está no painel, que já está aberto no seu navegador.`
+  : `${titulo || "A base"} está no painel. ${comoAbrir(painel)}`;
 
 const locais = [
   {
@@ -798,8 +837,11 @@ const locais = [
       "mapa do INDICE.md, a lista do dia, o funil por etapa, cada arquivo com " +
       "a procedência de cada campo, e o que está conectado. Chame uma vez, no " +
       "começo de toda execução que tem uma base, com o caminho inteiro da " +
-      "pasta. O endereço é sempre o mesmo naquela máquina: diga-o na primeira " +
-      "execução do dia e não repita. A página inicial fica de pé entre uma " +
+      "pasta. Se não há aba do painel aberta, ele a abre SOZINHO no navegador " +
+      "padrão da pessoa (`aba: \"abri\"`); com `aba: \"aberta\"` ela já está lá. " +
+      "Repasse o `diga` em uma linha, como veio — não peça que ela copie " +
+      "endereço nenhum. Se vier `atualizacao`, há versão nova do plugin: siga o " +
+      "`faca` dela antes do trabalho. A página inicial fica de pé entre uma " +
       "tarefa e outra, e a tela de `painel_mostrar` aparece DENTRO dela — " +
       "nada muda no par mostrar/esperar. Ela LÊ a base e NÃO grava nada: o " +
       "que a pessoa fizer ali volta como intenção, e quem grava é você. Pode " +
@@ -825,12 +867,15 @@ const locais = [
          por causa de uma pasta que não existe. */
       const { titulo } = await base.registrar(args.base);
       await lembrarBase();
+      const recemAberto = !aberto;
       const painel = await garantirAberto();
+      const tela = await mostrarNaTela(painel, { recemAberto });
       const pendentes = await filaComEstado();
       const respostas = await respostasTardias();
       return {
         painel: painel.url,
-        diga: `${titulo || "A base"} está no painel. ${comoAbrir(painel)}`,
+        aba: tela,
+        diga: comoFicou(tela, painel, titulo),
         /* a fila vem JUNTO com o início porque toda skill chama o início ao
            começar: é o único momento em que é certo que o assistente olha */
         ...(pendentes.length ? {
@@ -912,6 +957,7 @@ const locais = [
       const tela = conferirTela(args, VISTAS);
       const jaEstava = !!aberto;
       const painel = await garantirAberto();
+      const aba = await mostrarNaTela(painel, { recemAberto: !jaEstava });
       const versao = sessao.mostrar({
         ...tela,
         titulo: String(args.titulo || ""),
@@ -928,7 +974,8 @@ const locais = [
            Na segunda tela em diante ela NÃO repete o endereço: a aba já está
            aberta, e repetir uma URL a cada passo é o ruído que faz parar de
            ler o terminal. */
-        diga: jaEstava ? "A tela nova está no painel." : comoAbrir(painel),
+        diga: aba === "abri" ? "Abri o painel no seu navegador, já com a tela nova."
+          : jaEstava || aba === "aberta" ? "A tela nova está no painel." : comoAbrir(painel),
       };
     },
   },
@@ -1029,19 +1076,30 @@ const semEndereco = (nome, r) => !process.env.KAPSTAN_LANCADO || !r?.diga ? r
     ? "Quem pediu está olhando o painel: não diga o endereço."
     : "A tela nova está no painel." };
 
+/* ── A VERSÃO NOVA (D281) ─────────────────────────────────────────────
+   Vai no embrulho, e não dentro do `painel_inicio`: quem executa pode ser o
+   anfitrião, que é outra sessão, com outra cópia do pack — e a versão que
+   interessa é a do plugin que ESTA sessão carregou. A execução lançada pelo
+   painel não pergunta nada a ninguém, e por isso não leva o aviso. */
+const comVersao = async (nome, r) => {
+  if (nome !== "painel_inicio" || process.env.KAPSTAN_LANCADO || !r) return r;
+  const atualizacao = await conferirVersao({ pastaDoPack: PASTA_DO_PACK, pastaDeEstado: pastaDaChave() });
+  return atualizacao ? { ...r, atualizacao } : r;
+};
+
 const ferramentas = locais.map((f) => ({
   ...f,
   async executar(args) {
     const a = await anfitriaoPara(f.name, args);
     if (a) {
-      try { return semEndereco(f.name, await a.chamar(f.name, args)); } catch (e) {
+      try { return await comVersao(f.name, semEndereco(f.name, await a.chamar(f.name, args))); } catch (e) {
         /* o anfitrião morreu no meio (a sessão dele fechou). O trabalho não
            para por isso: este processo sobe o próprio painel e segue. */
         registrar(`o painel anfitrião não respondeu (${e?.message || e}) — subo o meu`);
         anfitriao = null;
       }
     }
-    return semEndereco(f.name, await f.executar(args));
+    return await comVersao(f.name, semEndereco(f.name, await f.executar(args)));
   },
 }));
 
@@ -1298,7 +1356,9 @@ servirPorStdio({
     "O painel é a cara visual do modo copiloto. Chame `painel_inicio` uma vez, " +
     "no começo de toda execução que tem uma base: ele abre a PÁGINA INICIAL — " +
     "o mapa, a lista do dia, o funil, cada arquivo com a procedência de cada " +
-    "campo — e o endereço é sempre o mesmo naquela máquina. Mostre no painel o " +
+    "campo. Se não houver aba aberta, ELE MESMO abre o painel no navegador da " +
+    "pessoa: repasse o `diga` como veio, e nunca peça que ela copie endereço. " +
+    "Se vier `atualizacao`, siga o `faca` dela. Mostre no painel o " +
     "que seria uma tabela ou um formulário no terminal — a ficha de um item, a " +
     "mensagem antes de sair, a bifurcação com o custo de cada caminho, o que " +
     "vai ser respondido em nome da pessoa, e o fecho do que foi guardado. " +

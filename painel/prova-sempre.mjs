@@ -32,7 +32,7 @@ const TEMP = await mkdtemp(join(tmpdir(), "kapstan-prova-sempre-"));
 const BASE = join(TEMP, "base");
 await cp(join(AQUI, "_prova-base"), BASE, { recursive: true });
 const PORTA = 4310;
-const ENV = { ...process.env, KAPSTAN_PAINEL_DIR: join(TEMP, "painel"), KAPSTAN_CONECTORES_DIR: join(TEMP, "cofre"),
+const ENV = { ...process.env, KAPSTAN_NAO_ABRIR: "1", KAPSTAN_PAINEL_DIR: join(TEMP, "painel"), KAPSTAN_CONECTORES_DIR: join(TEMP, "cofre"),
   KAPSTAN_INICIALIZAR_DIR: join(TEMP, "inicializar"), PAINEL_PORTA: String(PORTA), KAPSTAN_PRESENCA_MS: "1000" };
 
 const casos = [];

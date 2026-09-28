@@ -418,6 +418,10 @@ function regrasDaExecucao({ antes, depois, resposta, roteiro, entrada }) {
   if (iG === -1) falha("h · fecho", "a resposta não tem `## Guardei`");
   else if (iF !== -1 && iF < iG) falha("h · fecho", "`## Falta saber` veio antes de `## Guardei`");
   else passa("h · fecho", iF === -1 ? "`## Guardei` presente" : "`## Guardei` antes de `## Falta saber`");
+  const iP = resposta.indexOf("## Próximo passo");
+  if (iP === -1) falha("h · próximo passo", "a resposta não termina com `## Próximo passo`");
+  else if (iP < iG) falha("h · próximo passo", "`## Próximo passo` veio antes de `## Guardei`");
+  else passa("h · próximo passo", "o fecho termina num caminho");
 
   const moldura = ["┌", "└", "│"].filter((ch) => resposta.includes(ch));
   if (moldura.length) falha("h · moldura", `a resposta tem moldura de traços: ${moldura.join(" ")}`);

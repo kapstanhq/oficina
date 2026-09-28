@@ -189,41 +189,45 @@ Abre pelo veredito em UMA linha, e o veredito é a primeira coisa que se lê:
 
 ## Sem procedência — 2
 
-- contas/E-071-vetorbank.md · campo `preço` = 720.000, sem `←`
-  → confirme a origem ou marque `?` · /prospeccao:organizar-carteira
-- contatos/P-017-carla-menezes.md · campo `telefone`, sem `←`
-  → veio de onde? · /prospeccao:organizar-carteira
+- E-071 (VetorBank, Porto Alegre) · `preço` = 720.000, sem dizer de onde veio
+  → confirme a origem, ou deixe em aberto — é só dizer “organiza minha carteira”
+- P-017 (Carla Menezes) · o telefone, sem dizer de onde veio
+  → veio de onde? — é só dizer “organiza minha carteira”
 
 ## Vencido — 1
 
-- contas/E-071-vetorbank.md · `preço` apurado em 2026-06-02, há 99 dias
+- E-071 (VetorBank, Porto Alegre) · `preço` apurado em 2026-06-02, há 99 dias
   → pergunte de novo antes de usar em qualquer texto
 
 ## Órfãos — 3
 
-- `funil.md` cita E-071 (VetorBank, Porto Alegre) e o arquivo não existe
-- contatos/P-017-carla-menezes.md não está no `_indice.md` da pasta
-- `hoje.md` cita um id sem apelido, três vezes
+- o funil cita E-071 (VetorBank, Porto Alegre), e a ficha não existe
+- P-017 (Carla Menezes) tem ficha e não aparece na lista de contatos
+- a lista do dia cita um id sem apelido, três vezes
 
 ## Acima do teto — 1
 
-- contatos/P-017-carla-menezes.md · 186 linhas, teto 120
-  → o histórico vai para `_bruto/` · /prospeccao:organizar-carteira
+- P-017 (Carla Menezes) · a ficha tem 186 linhas, teto 120
+  → o histórico antigo vai para os originais — é só dizer “organiza minha carteira”
 
 ## Os `?` mais velhos — 5
 
-- contas/E-071-vetorbank.md · há 41 dias · o que falta está na linha `←`
+- E-071 (VetorBank, Porto Alegre) · há 41 dias · a ficha diz o que falta e onde perguntar
 - … (cinco, sempre; menos que cinco, todos)
 
 ## Não consegui ler — 1
 
-- `_bruto/2026-08-30-planilha.csv` — o arquivo abriu vazio
+- a planilha 2026-08-30-planilha.csv, nos originais — o arquivo abriu vazio
 
 ## Guardei
 - nada foi gravado — este laudo só lê
 
 ## Falta saber
-- o pack não declara prazo de validade para `setor`; medi como se não vencesse
+- não sei por quanto tempo o campo setor continua valendo; medi como se não vencesse
+
+## Próximo passo
+- Resolver as 3 coisas de hoje — o que está sem origem pode sair numa mensagem errada. É só dizer “organiza minha carteira”.
+- No painel, cada ficha citada aqui abre com um clique.
 ```
 
 `## Guardei` é obrigatório e não some nunca (§10). Aqui ele diz sempre a mesma

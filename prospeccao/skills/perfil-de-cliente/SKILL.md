@@ -153,27 +153,29 @@ Três coisas que a régua cobra aqui:
 
 ### Passo 5 · O que isto muda na carteira
 
-Fecha dizendo, em duas ou três linhas, o que o perfil acabou de habilitar — e
-com o comando de verdade, não o do exemplo:
+Fecha com o `## Próximo passo`: em duas ou três linhas, o que o perfil acabou
+de habilitar — cada uma com a frase que ele pode dizer, com o id e o nome de
+verdade, não os do exemplo. Nada de `/prospeccao:…` na tela: a frase dele já
+chama a skill certa.
 
 ```
-o que eu faço hoje?
-    /prospeccao:o-que-fazer-hoje lê a carteira inteira e monta a lista do dia,
-    na ordem do que faz perder a janela
+“o que eu faço hoje?”
+    monto a lista do dia com a carteira inteira, na ordem do que faz perder
+    a janela
 
-estuda a E-001 (VetorBank, Porto Alegre)
-    /prospeccao:estudar-conta lê o que é público e grava fato com procedência
-    — o que não achar vira ?
+“estuda a E-001 (VetorBank, Porto Alegre)”
+    leio o que é público sobre a empresa e guardo com a origem de cada coisa
+    — o que eu não achar fica em aberto
 
-escreve a abordagem para a P-001 (Carla Menezes)
-    /prospeccao:escrever-abordagem usa o que a carteira sabe e o gancho mais
-    recente, e confere o nao-perturbe.md antes
+“escreve para a P-001 (Carla Menezes)”
+    escrevo a primeira mensagem com o que a carteira sabe e a novidade mais
+    recente, e confiro antes se ela não pediu silêncio
 ```
 
 **Ela não reclassifica a carteira sozinha.** Contas que já estão lá e que o
 perfil novo desqualifica **não** são movidas por esta skill: ela conta quantas
-são, em uma linha, e diz que quem faz isso é `/prospeccao:organizar-carteira`,
-com ele olhando. Perfil novo que aposenta quinze contas em silêncio é a
+são, em uma linha, e diz que é só pedir “organiza a carteira” para tirá-las
+(`/prospeccao:organizar-carteira`), com ele olhando. Perfil novo que aposenta quinze contas em silêncio é a
 primeira vez que ele deixa de confiar no arquivo.
 
 ## 5 · O que perguntar, e como
@@ -202,11 +204,15 @@ use, e cite de onde veio.
 O perfil inteiro na tela, e então o fecho do contrato §10:
 
 ## Guardei
-- ~/carteira/perfil.md — criado, 5 critérios e 4 desqualificadores
+- o seu perfil de cliente: criado, com 5 critérios de quem serve e 4 de quem não serve
 
 ## Falta saber
 - se o porte certo é 80 ou 150 — três casos é pouco para separar
 - que cargo decide na indústria; nos dois casos financeiros foi o CFO
+
+## Próximo passo
+- Estudar a primeira conta contra o perfil novo — é o jeito de ver se os critérios separam de verdade. É só dizer “estuda a conta tal”, com o nome da empresa.
+- O perfil está no painel, para você reler com calma.
 
 ## 7 · Onde ela para
 

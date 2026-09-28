@@ -1,6 +1,8 @@
 # Sua carteira está montada
 
-Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
+Ela mora na pasta “carteira”, dentro da sua pasta de usuário (~/carteira/). É
+sua, é texto, e você abre em qualquer editor — mas não precisa: tudo aparece no
+painel.
 
 ## O que ficou pronto
 - a carteira, com os sete arquivos do padrão
@@ -11,13 +13,11 @@ Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
   funil, em “novo lead”
 
 ## Guardei
-- ~/carteira/INDICE.md — criado, com o seu nome e o modo
-- ~/carteira/hoje.md · funil.md — criados, vazios por enquanto
-- ~/carteira/imoveis/V-001-casa-3d-azenha.md — criado
-- ~/carteira/imoveis/_indice.md — uma linha
-- ~/carteira/clientes/C-001-joana-ribeiro.md — criado
-- ~/carteira/clientes/_indice.md — uma linha
-- ~/carteira/_bruto/2026-08-12-whatsapp-joana.md — a conversa, como veio
+- a sua carteira, com o seu nome e o modo
+- a lista do dia e o funil, criados — vazios por enquanto
+- V-001 (casa 3 dorm, Azenha): a ficha do imóvel, do link que você mandou
+- C-001 (Joana Ribeiro): a ficha dela, com a conversa como veio, e a linha
+  no funil
 
 ## Falta saber
 - IPTU e condomínio do V-001 (casa 3 dorm, Azenha) — o link não trazia
@@ -27,5 +27,10 @@ Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
 - ligar o Gmail e o Google Drive — anotei em “Pulado no começo”, e qualquer
   skill oferece de novo quando fizer falta
 
-## O que pedir agora
-<os três exemplos e a lista das dez>
+## Próximo passo
+- Responder a C-001 (Joana Ribeiro), que é lead de hoje — é só dizer “responde
+  a Joana”.
+- Escrever o anúncio do V-001 (casa 3 dorm, Azenha) — é só dizer “escreve o
+  anúncio do V-001”.
+- O painel está aberto no seu navegador: a Joana já aparece no funil, e a lista
+  do que você pode me pedir está na página inicial.

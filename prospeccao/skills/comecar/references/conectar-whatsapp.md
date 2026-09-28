@@ -74,6 +74,25 @@ Cada degrau é: **verifique · aja só se falhou · confirme**. Rodar a cadeia
 inteira de novo é seguro — cada degrau já feito passa direto. Nunca pule a
 confirmação: é ela que separa "instalei" de "funciona".
 
+**Quem faz cada degrau é VOCÊ, pelo terminal da sua ferramenta** (D281).
+Baixar e extrair, conferir o arquivo, tirar a trava do sistema (`Unblock-File`
+no PowerShell, `xattr` no Mac, `chmod` no Linux), subir o daemon, pô-lo no
+logon, registrar a ponte no programa e instalar a transcrição — tudo isso é
+comando, e comando você roda. **Nunca diga ao prospector "abra um terminal e
+digite"**: ele não tem de saber o que é terminal.
+O que é DELE, e só isso:
+
+```
+decidir         ouvir os avisos acima e dizer sim
+escanear        o QR, no celular — você abre o qr.png na tela dele
+autorizar       o aviso que o próprio sistema mostrar na tela (segurança,
+                administrador), quando mostrar
+reabrir         fechar e abrir o Claude Code, quando a ponte for registrada
+```
+
+Cada coisa dele você pede em uma frase, em palavras do dia a dia, e diz o que
+acontece depois.
+
 **Não precisa de Go, de git nem de compilador.** O caminho principal é o
 programa pronto, um arquivo por sistema. Compilar do código é a alternativa, no
 fim da cadeia, para quem prefere.
@@ -141,12 +160,15 @@ programa** — ou, dentro da pasta dele, `./whatsapp-reader` no Mac e no Linux e
 
 ```
 verificar   whatsapp-reader estado
-agir        abrir uma JANELA NOVA de terminal e rodar:  whatsapp-reader serve
+agir        subir `whatsapp-reader serve` VOCÊ, fora da sua sessão — no
+            Windows, `Start-Process` com a janela minimizada; no Mac e no
+            Linux, `nohup … &` —, porque o que nasce preso à sua sessão morre
+            com ela
 confirmar   whatsapp-reader estado diz "de pé"
 ```
 
-**Janela própria, e ela fica aberta.** O daemon é quem recebe as mensagens: se
-a janela fechar, o histórico congela no último momento em que ele estava vivo,
+**Processo próprio, e ele fica de pé.** O daemon é quem recebe as mensagens: se
+ele cair, o histórico congela no último momento em que ele estava vivo,
 e o que passou enquanto ele esteve fora **não volta**.
 
 Isto não é advertência de manual: **já aconteceu com quem escreveu a ferramenta.**
@@ -205,8 +227,8 @@ agendador cuida do processo; o pareamento continua sendo dele.
 
 ```
 verificar   whatsapp-reader estado diz "de pé e conectada"
-agir        o QR está na janela do degrau 4, e também em qr.png ao lado do
-            programa — use a imagem se o desenho no terminal sair quebrado
+agir        abra VOCÊ o qr.png que está ao lado do programa, na tela dele
+            (`start`, `open` ou `xdg-open`), e peça o escaneamento
 confirmar   a janela imprime "pareado" e começa a contar o histórico
 ```
 
@@ -225,7 +247,7 @@ número.** O que veio, `estado_da_ponte` diz.
 
 ```
 verificar   a lista de servidores do programa mostra a ponte conectada
-agir        no Claude Code:  claude mcp add -s user whatsapp -- <caminho> mcp
+agir        rode você, no Claude Code:  claude mcp add -s user whatsapp -- <caminho> mcp
 confirmar   a lista mostra "Connected"
 ```
 

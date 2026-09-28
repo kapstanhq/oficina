@@ -193,11 +193,15 @@ há 27 dias · sem ela o negócio não anda
 - P-017 (Carla Menezes) · já respondeu em 2026-09-05; tirei a pendência
 
 ## Guardei
-- ~/carteira/contatos/P-017-carla-menezes.md — a tentativa de hoje
-- ~/carteira/hoje.md — as pendências que saíram da fila
+- P-017 (Carla Menezes): a cobrança de hoje ficou anotada na ficha dela, para eu não cobrar de novo esta semana
+- a lista do dia já não mostra o que saiu da fila
 
 ## Falta saber
 - o prazo combinado para a resposta da proposta do E-083 (Móveis Bertoldo, Bento Gonçalves), enviada em 2026-08-13 — usei o padrão de 7 dias
+
+## Próximo passo
+- Mandar a cobrança de Carla ainda hoje — ela é a que mais trava. Depois de mandar, é só dizer “mandei”.
+- A fila do que você está esperando está no painel, aberto no seu navegador.
 ````
 
 O bloco da mensagem sai **sozinho, pronto para copiar, sem comentário dentro**

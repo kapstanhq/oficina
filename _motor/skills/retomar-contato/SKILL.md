@@ -540,8 +540,8 @@ No automático não se pergunta: escolhe e declara em `## Decidi sozinho`.
 
 ## 6 · O formato da saída
 
-O trabalho primeiro, os três blocos de fecho depois, nesta ordem e com estes
-títulos exatos.
+O trabalho primeiro, os blocos de fecho depois, nesta ordem e com estes
+títulos exatos — e o `## Próximo passo` por último.
 
 ### A lista
 
@@ -586,25 +586,23 @@ que sai é **este**, byte a byte, porque é ele que a prévia carimbou.
 
 ```markdown
 {retomar--saida-o-fecho}
+
+## Próximo passo
+- Mandar a primeira mensagem, para <quem, pelo nome> — é a mais quente: <a razão, em meia frase>. Quando mandar, é só dizer “mandei”.
+- Quem está parado, e há quantos dias, está no painel, aberto no seu navegador.
 ```
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**.
 
-Saiu pela ponte, o `## Guardei` diz isso na mesma linha — `— retomada enviada
-14:32, e a linha no histórico`. O que ficou só escrito continua como está: o
+Saiu pela ponte, o `## Guardei` diz isso na mesma linha — “a retomada saiu às
+14:32, e ficou anotada no histórico”. O que ficou só escrito continua como está: o
 arquivo guarda a tentativa, não o envio que não houve.
 
-[[se etapa-de:pessoa]]
-Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
-nomeia a pasta e o arquivo — `{pasta-pessoas}/{exemplo-pessoa-arquivo-2}, na pasta
-{base} do seu Drive — uma linha de retomada no histórico`.
-[[fim]]
-[[se etapa-de:item]]
-Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
-nomeia a pasta e o arquivo — `{pasta-itens}/{exemplo-item-arquivo}, na pasta
-{base} do seu Drive — uma linha de retomada no histórico`.
-[[fim]]
+O `## Guardei` diz, na palavra do {profissional}, quem ganhou a linha de retomada
+no histórico — pelo id e apelido, ou pelo nome —, e não o caminho do arquivo;
+no `local` e no `drive` a frase é a mesma. O caminho é da tela do fecho no
+painel, para quem quiser conferir.
 
 ---
 
@@ -733,7 +731,7 @@ Sete limites, e é melhor saber deles antes de mandar a mensagem.
 respondeu no WhatsApp e a conversa não foi colada, ela vai propor retomar quem
 já voltou — e uma retomada em cima de uma resposta ignorada é pior que
 nenhuma. O sinal é arquivo com muitos `?` e histórico curto; o conserto é colar
-a conversa e rodar `/{plugin}:organizar-{pasta-base}` antes. Na dúvida, ela
+a conversa e organizar a {base} (`/{plugin}:organizar-{pasta-base}`) antes. Na dúvida, ela
 pergunta uma vez, e é a pergunta que mais paga nesta skill. Com conector o
 passo 8.2 pega isso no último segundo — mas só de quem ia receber, e só na hora
 do envio: a lista continua sendo a do que está escrito.

@@ -159,14 +159,19 @@ Completei 3 dos 5 campos em branco de <id> (<apelido>).
 - <campo>: continua sem resposta — procurei em <fontes>
 
 ## Guardei
-- ~/carteira/<arquivo do imóvel> — os campos e o histórico
-- ~/carteira/_bruto/<arquivo> — a página que li
+- <id> (<apelido>): os campos que achei entraram na ficha, cada um com de onde veio
+- a página que li ficou guardada, para conferir depois
 
 ## Falta saber
-- <o campo que só o corretor ou a organização respondem, e a quem perguntar>
+- <o campo que só o corretor ou a organização respondem, dito como pergunta, e a quem perguntar>
+
+## Próximo passo
+- <o que os campos novos destravam — julgar, escrever, dar o próximo passo —, e a frase para pedir: “é só dizer ‘…’”>
+- A ficha atualizada está no painel.
 ````
 
-Se o painel está aberto, a página se atualiza sozinha: não diga o endereço.
+Se o painel está aberto, a página se atualiza sozinha: não diga o endereço, e
+não o peça — a última linha do `## Próximo passo` só diz que a ficha está lá.
 
 ## 6 · Onde ela para
 

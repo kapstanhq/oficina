@@ -133,7 +133,7 @@ Qualquer outro valor, linha ausente ou arquivo ilegível: **copiloto**.
 | o primeiro item | **oferece** na UI de perguntas | **executa**, se o insumo já estiver na busca (passo 6) |
 | data em prosa sem dia (“sábado de manhã”) | pergunta, se o item for do topo | resolve pelo dia mais próximo e declara; havendo dois igualmente prováveis, deixa `?` |
 | linha órfã do `hoje.md` velho | pergunta, se o item for do topo | carrega e declara |
-| fecho | `## Guardei` e `## Falta saber` | mais `## Decidi sozinho` |
+| fecho | `## Guardei`, `## Falta saber` e `## Próximo passo` | mais `## Decidi sozinho`, antes do `## Próximo passo` |
 
 Esta skill **não tem exceção ao automático** — a única do pack é
 `/vagas:candidatar`, e é por isso que o automático nunca a chama
@@ -482,8 +482,9 @@ declara.
 
 **Dia vazio** — nenhum item em nenhum degrau. Diga em uma linha, sem sermão:
 que não há nada vencendo, e que busca sem vaga nova há dias é assunto de
-lista, não dia livre — quem traz vaga é `/vagas:buscar-vagas`. Ofereça `/vagas:retomar-contato` ou
-`/vagas:buscar-vagas`, uma vez.
+lista, não dia livre — quem traz vaga é `/vagas:buscar-vagas`. Ofereça, uma vez, no
+`## Próximo passo`, `/vagas:retomar-contato` ou `/vagas:buscar-vagas` — pela
+frase que ele pode dizer para chamá-las, e não pelo comando.
 
 ---
 
@@ -493,8 +494,9 @@ O trabalho é a lista na tela — esta skill não produz bloco para colar, e que
 escreve a mensagem, e quem a manda quando ela sai, é a skill do item. Depois da
 lista vêm os blocos de fecho do contrato (seção 10), nesta ordem e com estes
 títulos exatos. **A pergunta do passo 6 é a última coisa**, depois do fecho:
-perguntar antes de dizer onde guardou faz ele responder sem saber o que já foi
-feito.
+perguntar antes de dizer o que guardou faz ele responder sem saber o que já foi
+feito. O `## Próximo passo` nomeia o primeiro item da lista, com a razão; a
+pergunta oferece fazê-lo agora.
 
 ### A lista
 
@@ -576,29 +578,33 @@ Depois da lista, uma linha e não mais que uma:
 
 ```
 Isto é o que está escrito na busca. Se você fez entrevista, mandou mensagem
-ou recebeu documento e não anotou, eu vou cobrar de novo amanhã — passe o que
-aconteceu para /vagas:organizar-busca e a lista de amanhã sai certa.
+ou recebeu documento e não anotou, eu vou cobrar de novo amanhã — é só me
+contar o que aconteceu e dizer “organiza minha busca”, e a lista de amanhã sai certa.
 ```
 
 ### O fecho
 
 ```markdown
 ## Guardei
-- ~/busca/hoje.md — reescrito, 8 caixas abertas e 1 do que você marcou nos últimos sete dias
+- a lista do dia, refeita: 8 coisas abertas, e 1 que você marcou como feita nos últimos sete dias
 
 ## Falta saber
-- se a V-020 (Atendente de SAC, Rota Delivery) tem alguém com nome do outro lado — o arquivo dela diz contato: ?
+- se a V-020 (Atendente de SAC, Rota Delivery) tem alguém com nome do outro lado — a ficha dela não diz quem recruta
 - de quem é a chamada das 16h na agenda — não achei vaga nem contato com esse nome na busca
-- o vagas/_indice.md diz 2 de setembro para a V-021 (Operadora de Chat, Trilho Logística) e o arquivo dela tem linha de 4; /vagas:organizar-busca acerta a vista
+- a lista de vagas diz 2 de setembro para a V-021 (Operadora de Chat, Trilho Logística), e a ficha dela tem novidade de 4 — é só dizer “organiza minha busca” que eu acerto
 
 ## Decidi sozinho
-- Respondi a P-004 (Lívia Matos) pelo /vagas:escrever-ao-contato, que era o primeiro item com mensagem e tinha a conversa em _bruto/ — a mensagem está acima e não saiu: o seu envio: diz pergunta sempre, e ela está esperando você. Para não fazer isso, me diga e eu só listo.
+- Escrevi a resposta para a P-004 (Lívia Matos), que era o primeiro item com mensagem e tinha a conversa guardada — a mensagem está acima e não saiu: você pediu para eu sempre perguntar antes de mandar, e ela está esperando você. Para não fazer isso, me diga e eu só listo.
 - Pus a V-020 (Atendente de SAC, Rota Delivery) abaixo de tudo o que tem data, como “achar com quem falar”, e não escrevi a ninguém por ela. Se você souber quem recruta lá, me diga e ela sobe.
+
+## Próximo passo
+- Começar pelo primeiro item: <o que fazer, com quem> — <a razão, em meia frase>. É só dizer “<a frase que chama a skill dele>”.
+- A lista do dia está no painel, aberto no seu navegador.
 ```
 
-O `## Guardei` diz o lugar do jeito que o candidato reconhece, e o jeito muda com
-o transporte: no `local`, `~/busca/hoje.md`; no `drive`, `hoje.md, na pasta
-busca do seu Drive`. O resto da linha é o mesmo.
+O `## Guardei` diz o que mudou do jeito que o candidato reconhece — “a lista
+do dia foi refeita” —, sem caminho de arquivo; no `drive`, a mesma frase diz
+que ela está na pasta busca do Drive dele. O resto da linha é o mesmo.
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**. A única exceção é a mensagem que saiu: ali não há

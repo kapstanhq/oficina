@@ -200,11 +200,15 @@ há 27 dias · sem ela a candidatura não anda
 - P-005 (Helena Prates) · já respondeu em 2026-09-05; tirei a pendência
 
 ## Guardei
-- ~/busca/contatos/P-005-helena-prates.md — a tentativa de hoje
-- ~/busca/hoje.md — as pendências que saíram da fila
+- P-005 (Helena Prates): a cobrança de hoje ficou anotada na ficha dela, para eu não cobrar de novo esta semana
+- a lista do dia já não mostra o que saiu da fila
 
 ## Falta saber
 - o prazo combinado para o retorno da candidatura da V-027 (Head de Produto, Aurora Saúde), enviada pelo site em 2026-09-02 — usei o padrão de 7 dias
+
+## Próximo passo
+- Mandar a cobrança de Helena ainda hoje — ela é a que mais trava. Depois de mandar, é só dizer “mandei”.
+- A fila do que você está esperando está no painel, aberto no seu navegador.
 ````
 
 O bloco da mensagem sai **sozinho, pronto para copiar, sem comentário dentro**

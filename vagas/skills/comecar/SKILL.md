@@ -235,7 +235,8 @@ conector. Dizer que criou não é mostrar criado.
 `# Busca de <nome>`, e feche gravando `atualizado:` com a data de hoje.
 
 O modo nasce `copiloto` — eu paro nas escolhas e pergunto. Diga isso em uma
-linha, e que trocar é mudar a palavra `modo:` no `INDICE.md`; não pergunte.
+linha, e que para trocar é só pedir (“passa para o automático”) — quem mexe
+no arquivo é você; não pergunte.
 
 ### Passo 2 · Como te encontram
 
@@ -264,15 +265,17 @@ cadeia própria, `references/conectar-whatsapp.md`, com o
 Feche primeiro, com a saída da seção 7. Então diga em uma linha o que vem —
 uma conversa sobre o que ele quer do próximo trabalho e o que já fez, uma pergunta por vez, que vira o perfil que diz que vaga procurar — e **passe a vez**: chame
 `/vagas:perfil-de-busca` pela ferramenta de skill do harness, se a
-sessão tiver uma; senão, peça que ele digite o comando. **Não faça a conversa
+sessão tiver uma; senão, diga que é só ele responder “vamos” e siga pela skill
+quando ele responder — nunca peça que ele digite o comando. **Não faça a conversa
 aqui**: ela tem as regras dela, e pode pausar e voltar sem perder o que ouviu.
 
 Os passos 4 e 5 também são de outras skills: `/vagas:buscar-vagas`
 traz as primeiras vagas pelo perfil, e `/vagas:triar-vagas` diz
 qual delas vale. A conversa termina apontando as duas.
 
-Ele já tem vagas em andamento, numa planilha ou em links? Uma linha: ponha em
-`_bruto/` e rode `/vagas:organizar-busca`, que transforma em ficha.
+Ele já tem vagas em andamento, numa planilha ou em links? Uma linha: é só ele
+dizer onde está a planilha, ou colar os links, que você os guarda em `_bruto/` e
+organiza com `/vagas:organizar-busca`, que transforma em ficha.
 
 ---
 
@@ -289,8 +292,15 @@ só para retomar um item e o teste não passa:
 - nada foi gravado — o teste do Google Drive não passou, e a linha só vira
   `sim` depois de uma chamada que voltou
 
+## Falta saber
+- por que o teste do Drive não passou — a chamada voltou sem resposta, e não sei se foi a autorização
+
 ## Ficou para depois
 - ligar o Google Drive — continua em “Pulado no começo”, com a data de lá
+
+## Próximo passo
+- Tentar o Google Drive de novo quando quiser — é só dizer “liga o Drive”.
+- O painel está aberto no seu navegador, com a busca como estava.
 ```
 
 `## Não gravei nada` e `## A busca está como estava` são títulos inventados, e
@@ -304,12 +314,12 @@ certa.
 Ela mora em ~/busca/. É sua, é texto, e abre em qualquer editor.
 
 ## O que ficou pronto
-- a busca, com os arquivos do padrão, no modo copiloto
-- o seu nome e como te encontram, em `## Quem sou`
+- a busca, com os arquivos do padrão, no modo copiloto — eu paro nas escolhas e pergunto
+- o seu nome e como te encontram, que vão no topo de tudo o que eu escrever
 
 ## Guardei
-- ~/busca/INDICE.md — criado, com o seu nome, os contatos e o modo
-- ~/busca/hoje.md, funil.md e os dois _indice.md — criados, vazios
+- a sua busca, com o seu nome, como te encontram e o modo
+- a lista do dia e o funil, criados — vazios, por enquanto
 
 ## Falta saber
 - o portfólio — você disse que ainda não tem, e a linha ficou em branco
@@ -317,21 +327,25 @@ Ela mora em ~/busca/. É sua, é texto, e abre em qualquer editor.
 ## Ficou para depois
 - agenda, e-mail, WhatsApp e login em site — a skill que precisar oferece
 
-## O que pedir agora
-/vagas:perfil-de-busca   a conversa sobre o que você procura, e o que já fez
+## Próximo passo
+- Agora, a conversa sobre o que você procura, e o que já fez — é dela que sai o que procurar e o que descartar. Eu já começo: é só responder.
+- O painel está aberto no seu navegador: é lá que a sua busca vai aparecer, vaga por vaga.
 ```
 
 No `drive`, o mesmo fecho troca o lugar: “Ela mora na pasta `busca` do
-seu Drive”, e cada linha do `## Guardei` nomeia a pasta e o arquivo. Ao falar
+seu Drive”, e o `## Guardei` diz o mesmo, na mesma palavra — sem caminho de
+arquivo. Ao falar
 com ele, data em prosa — “12 de agosto”; **nos arquivos, sempre `2026-08-12`**.
 Todo id aparece com o apelido junto, em toda linha. `## Decidi sozinho` não
 aparece: ela não decide nada sozinha (seção 5).
 
-**A lista de comandos, uma linha cada, e toda skill instalada nela.** Não a
-escreva de memória: onde há ferramenta de arquivo, um `Grep` pelo padrão
-`^description:` em `../*/SKILL.md` a partir da pasta desta, com duas linhas
-depois, dá o nome e a primeira frase de cada uma — escreva
-`/vagas:<nome>` e o que ela faz, encurtado. Sem ferramenta de arquivo, a
+**A lista do que ele pode pedir, uma linha cada, e toda skill instalada nela.**
+Com painel, ela já está na página inicial dele, e o `## Próximo passo` só diz
+isso; sem painel, ela vem antes do `## Guardei`. Não a escreva de memória: onde
+há ferramenta de arquivo, um `Grep` pelo padrão `^description:` em
+`../*/SKILL.md` a partir da pasta desta, com duas linhas depois, dá o nome e a
+primeira frase de cada uma — escreva a frase que ele pode dizer para pedir e o
+que ela faz, encurtado, com `/vagas:<nome>` entre parênteses no fim. Sem ferramenta de arquivo, a
 lista está em `references/contrato/11-0-onde-roda.md`, com o que não funciona
 no chat da web. Prometer skill que não existe é o primeiro erro que ele
 encontra sozinho.

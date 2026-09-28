@@ -70,21 +70,27 @@ export function criarConectores({
     return c;
   };
 
-  /* ── O `como_ligar` É A LINHA PRONTA ──────────────────────────────────
-     O caminho do servidor instalado é o do cache de plugins, que ninguém
-     sabe de cor e que o agente erraria ao adivinhar. Quem sabe é este
-     processo. E são até três linhas porque são três decisões — ligar, dar a
-     chave, dizer até quanto —, cada uma de quem digita. */
+  /* ── O `como_ligar` É O CAMINHO PRONTO ────────────────────────────────
+     São até três decisões — ligar, dar a chave, dizer até quanto —, e as três
+     são da PESSOA. Desde o D281 o caminho que se diz primeiro é o do painel
+     (Integrações), que é um clique e um campo: "digite isto num terminal" é
+     instrução técnica para quem procura emprego. A linha de comando fica
+     atrás, para quem não tem o painel — e o caminho do servidor instalado,
+     que ninguém sabe de cor, continua vindo deste processo. */
   function comoLigar(nome, c, { ligado, temChave, teto }) {
     const linhas = [];
+    const noPainel = `no painel, em Integrações → ${c.rotulo || nome}`;
     if (c.tipo === "mcp") linhas.push(c.guia);
-    if (nasceDesligado(c) && !ligado) linhas.push(`${comando} ligar ${nome}`);
+    if (nasceDesligado(c) && !ligado) {
+      linhas.push(`${noPainel}: o botão Ligar  (sem o painel: ${comando} ligar ${nome})`);
+    }
     if (c.chave && !temChave) {
-      linhas.push(`${comando} chave ${nome}     (num terminal seu, fora desta conversa: ` +
-        `a chave ${c.chave.nome} não passa por aqui)`);
+      linhas.push(`${noPainel}: colar a chave — ela fica guardada nesta máquina e não passa ` +
+        `pela conversa  (sem o painel, num terminal: ${comando} chave ${nome})`);
     }
     if (ehPago(c) && !(teto > 0)) {
-      linhas.push(`${comando} teto ${nome} <valor em ${c.custo.moeda} por mês>`);
+      linhas.push(`${noPainel}: escrever até quanto pode gastar por mês, em ${c.custo.moeda}  ` +
+        `(sem o painel: ${comando} teto ${nome} <valor>)`);
     }
     return linhas.join("\n");
   }
@@ -137,7 +143,8 @@ export function criarConectores({
     if (estimativa > resta) {
       throw new Error(`acima do teto · ${nome}: a chamada deve custar ${estimativa} ${e.c.custo.moeda} ` +
         `e sobram ${resta} de ${e.teto} neste mês. Não contorne por outra operação. ` +
-        `Para mudar o teto, a pessoa digita:\n${comando} teto ${nome} <valor>`);
+        `Para mudar o teto, a pessoa escreve o valor novo no painel, em Integrações ` +
+        `(sem o painel: ${comando} teto ${nome} <valor>)`);
     }
     return estimativa;
   }

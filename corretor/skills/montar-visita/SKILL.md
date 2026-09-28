@@ -74,8 +74,9 @@ horário de visita que costumo oferecer: é a janela padrão dele
 
 No `local`, toda chamada de ferramenta usa **caminho absoluto**; no `drive`,
 toda busca é presa à pasta pai, e a pasta que se abre tem o id guardado
-(CONTRATO §1). Ao falar com o corretor, escreva `~/carteira/…` no `local` e “a
-pasta `carteira` do seu Drive” no `drive`.
+(CONTRATO §1). Ao falar com o corretor, caminho não aparece: diga o que ficou guardado e onde ele vê (contrato §10). Só
+quando ele precisar achar um arquivo, `~/carteira/…` no `local`
+e “a pasta `carteira` do seu Drive” no `drive`.
 
 **Por que esta skill tem `Write` e `Edit`:** visita agendada é fato do cliente, e
 fato mora no arquivo dono. Ela grava em `clientes/<id>-<apelido>.md`, atualiza
@@ -320,7 +321,8 @@ Mais de quatro caminhos: escolha os três melhores e diga que há outros.
 
 E uma oferta, **uma vez, sem insistir**, só quando `Google Agenda: não`: dizer
 em uma linha que com a agenda ligada ela lê os buracos da semana sozinha e não
-oferece horário em cima de compromisso, e que `/corretor:comecar` liga. Se ele
+oferece horário em cima de compromisso, e que é só dizer “liga a minha agenda”
+(quem liga é o `/corretor:comecar`, sem ele digitar comando nenhum). Se ele
 não quiser, siga perguntando o horário sem tocar mais no assunto.
 
 ---
@@ -546,27 +548,26 @@ certo.
 
 ### E o `## Guardei`
 
-Escreveu, diz onde — caminho por caminho, com o que mudou em cada um:
+Escreveu, diz o quê — na palavra do corretor, com o que mudou e onde ele vê:
 
 ```markdown
 ## Guardei
-- ~/carteira/clientes/C-017-joana-ribeiro.md — etapa, a visita e o lembrete da véspera
-- ~/carteira/imoveis/V-071-casa-3d-azenha.md — uma linha em Mostrado a
-- ~/carteira/funil.md — a C-017 (Joana Ribeiro) foi para “visita agendada”
-- ~/carteira/hoje.md — não mexi: o arquivo é de 2026-08-15, e quem o refaz é /corretor:o-que-fazer-hoje
+- C-017 (Joana Ribeiro): passou para “visita agendada” no funil, com a visita e o lembrete da véspera na ficha dela
+- V-071 (casa 3 dorm, Azenha): ficou anotado que ele foi mostrado à Joana
+- a lista do dia não mudou: ela é de 2026-08-15, e a visita entra quando a lista de hoje for refeita
 
 ## Falta saber
 - se o marido da C-017 (Joana Ribeiro) vem no sábado — ela ia confirmar em 2026-08-16 e não confirmou
 - o condomínio do V-052 (apto 3 dorm, Cidade Baixa) — ela vai perguntar na visita
+
+## Próximo passo
+- Refazer a lista do dia, que está velha — é ela que te lembra da visita na véspera. É só dizer “o que eu faço hoje?”.
+- Confirmar com a Joana se o marido vem no sábado. É só dizer “escreve para a Joana”.
+- A visita já aparece no funil do painel, na etapa “visita agendada”.
 ```
 
-No `drive` o bloco é o mesmo, nomeando a pasta em vez do caminho:
-
-```markdown
-## Guardei
-- clientes/C-017-joana-ribeiro.md, na pasta carteira do seu Drive — etapa, a visita e o lembrete da véspera
-- imoveis/V-071-casa-3d-azenha.md, na pasta carteira do seu Drive — uma linha em Mostrado a
-```
+No `drive` o bloco é o mesmo: ele diz o que ficou guardado, e não onde o
+arquivo mora.
 
 ---
 

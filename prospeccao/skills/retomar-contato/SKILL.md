@@ -560,8 +560,8 @@ No automático não se pergunta: escolhe e declara em `## Decidi sozinho`.
 
 ## 6 · O formato da saída
 
-O trabalho primeiro, os três blocos de fecho depois, nesta ordem e com estes
-títulos exatos.
+O trabalho primeiro, os blocos de fecho depois, nesta ordem e com estes
+títulos exatos — e o `## Próximo passo` por último.
 
 ### A lista
 
@@ -633,30 +633,33 @@ que sai é **este**, byte a byte, porque é ele que a prévia carimbou.
 
 ```markdown
 ## Guardei
-- ~/carteira/contatos/P-024-paulo-tavares.md — uma linha em ## O que já mandei
-- ~/carteira/contatos/P-019-rui-baptista.md — uma linha em ## O que já mandei
-- ~/carteira/contatos/P-050-iara-bastos.md — uma linha em ## O que já mandei
-- ~/carteira/contatos/_indice.md — último contato do P-019 (Rui Baptista) corrigido
+- P-024 (Paulo Tavares), P-019 (Rui Baptista) e P-050 (Iara Bastos): o que eu escrevi ficou anotado na ficha de cada um, para a próxima não repetir o gancho
+- P-019 (Rui Baptista): a data do último contato, corrigida na lista de contatos
 
 ## Falta saber
 - se o P-019 (Rui Baptista) respondeu depois de 11 de agosto por fora da carteira
-- o que o P-041 (Otávio Prado) procura — o arquivo da conta dele não mudou desde maio
+- o que o P-041 (Otávio Prado) procura — a ficha da conta dele não mudou desde maio
 
 ## Decidi sozinho
-- Escrevi para os três mais quentes e deixei a P-031 (Sandra Lisboa) de fora — ela tem reunião agendada para quinta, e quem cobra a véspera é o hoje.md. Para incluir, me diga.
-- Usei a vaga do E-083 (Móveis Bertoldo, Bento Gonçalves) como está no arquivo, de 15 de agosto. Se ela já fechou, me diga e eu refaço a mensagem.
+- Escrevi para os três mais quentes e deixei a P-031 (Sandra Lisboa) de fora — ela tem reunião agendada para quinta, e quem lembra a véspera é a lista do dia. Para incluir, me diga.
+- Usei a vaga do E-083 (Móveis Bertoldo, Bento Gonçalves) como está na ficha, de 15 de agosto. Se ela já fechou, me diga e eu refaço a mensagem.
+
+## Próximo passo
+- Mandar a primeira mensagem, para <quem, pelo nome> — é a mais quente: <a razão, em meia frase>. Quando mandar, é só dizer “mandei”.
+- Quem está parado, e há quantos dias, está no painel, aberto no seu navegador.
 ```
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**.
 
-Saiu pela ponte, o `## Guardei` diz isso na mesma linha — `— retomada enviada
-14:32, e a linha no histórico`. O que ficou só escrito continua como está: o
+Saiu pela ponte, o `## Guardei` diz isso na mesma linha — “a retomada saiu às
+14:32, e ficou anotada no histórico”. O que ficou só escrito continua como está: o
 arquivo guarda a tentativa, não o envio que não houve.
 
-Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
-nomeia a pasta e o arquivo — `contatos/P-008-diego-furtado.md, na pasta
-carteira do seu Drive — uma linha de retomada no histórico`.
+O `## Guardei` diz, na palavra do prospector, quem ganhou a linha de retomada
+no histórico — pelo id e apelido, ou pelo nome —, e não o caminho do arquivo;
+no `local` e no `drive` a frase é a mesma. O caminho é da tela do fecho no
+painel, para quem quiser conferir.
 
 ---
 
@@ -754,7 +757,7 @@ Sete limites, e é melhor saber deles antes de mandar a mensagem.
 respondeu no WhatsApp e a conversa não foi colada, ela vai propor retomar quem
 já voltou — e uma retomada em cima de uma resposta ignorada é pior que
 nenhuma. O sinal é arquivo com muitos `?` e histórico curto; o conserto é colar
-a conversa e rodar `/prospeccao:organizar-carteira` antes. Na dúvida, ela
+a conversa e organizar a carteira (`/prospeccao:organizar-carteira`) antes. Na dúvida, ela
 pergunta uma vez, e é a pergunta que mais paga nesta skill. Com conector o
 passo 8.2 pega isso no último segundo — mas só de quem ia receber, e só na hora
 do envio: a lista continua sendo a do que está escrito.

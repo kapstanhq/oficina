@@ -98,9 +98,13 @@ Pedido de silêncio não tem retomada e não tem gancho novo. Se ela procurar
 você, aí é outra conversa, e a linha sai daqui com você me dizendo.
 
 ## Guardei
-- nada foi gravado — não houve mensagem, e escrever é o que vira linha em
-  `## O que já mandei`
+- nada foi gravado — não houve mensagem, e só o que é mandado fica anotado
+  na ficha dela
 ```
+
+E fecha, como toda saída, com o próximo passo — aqui, o que fazer com a conta
+em vez de escrever: “se quiser, eu procuro outra pessoa na mesma empresa, que
+não pediu silêncio — é só dizer ‘estuda a conta de novo’”.
 
 **O `## Guardei` é o mais importante desta saída.** Quem lê precisa saber que
 a carteira **não** mudou, e o título é este — `## Não gravei nada` é título
@@ -152,7 +156,8 @@ Procure nesta ordem e **pare no primeiro que existir**:
 
 **O gancho tem data, e a data envelhece.** Mais de 90 dias entre o fato e a
 mensagem: ela avisa antes de escrever — “a vaga é de maio, e maio já passou” —
-e oferece `/prospeccao:estudar-conta` para achar coisa nova. Notícia velha citada
+e oferece procurar coisa nova — é só dizer “estuda a conta de novo”
+(`/prospeccao:estudar-conta`). Notícia velha citada
 como novidade diz, com todas as letras, que ninguém olhou.
 
 **Nenhum gancho?** A saída não é uma mensagem: é **o que falta para haver
@@ -273,13 +278,14 @@ escrever — o texto na tela é a pergunta mais barata que existe.
 O bloco, sozinho, e o fecho do contrato §10:
 
 ## Guardei
-- ~/carteira/contatos/P-017-carla-menezes.md — uma linha em
-  `## O que já mandei`, e a etapa para `abordado`
-- ~/carteira/funil.md — a P-017 (Carla Menezes) mudou de etapa
-- ~/carteira/contatos/_indice.md — último contato
+- P-017 (Carla Menezes): a mensagem ficou anotada na ficha dela, e ela passou para “abordado” no funil
 
 ## Falta saber
 - se a P-017 (Carla Menezes) é mesmo quem decide, ou se ela leva para outra pessoa
+
+## Próximo passo
+- Mandar a mensagem acima para a Carla — o texto está pronto no bloco para copiar; com o conector ligado, é só dizer “manda”.
+- A Carla já aparece no painel, na etapa “abordado” do funil.
 
 ## 7 · Onde ela para
 

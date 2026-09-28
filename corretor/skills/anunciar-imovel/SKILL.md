@@ -63,8 +63,9 @@ A carteira é uma pasta no computador ou uma pasta no Google Drive, e é o
 absoluto (`C:\Users\<nome>\carteira\…` ou `/Users/<nome>/carteira/…`); no
 `drive` não há caminho — acha-se a pasta `carteira`, depois a pasta de dentro
 dela, e **a busca é sempre presa à pasta**, porque `_indice.md` existe duas
-vezes. Ao falar com o corretor, `~/carteira/…` no `local` e “a pasta `carteira`
-do seu Drive” no `drive`.
+vezes. Ao falar com o corretor, caminho não aparece: diga o que ficou guardado e onde ele vê (contrato §10). Só
+quando ele precisar achar um arquivo, `~/carteira/…` no `local` e “a
+pasta `carteira` do seu Drive” no `drive`.
 
 ### As ferramentas, e por que ela tem cada uma
 
@@ -343,9 +344,8 @@ a linha `atualizado:` e o número de `## Quanto tem`. Nada mais. No `drive`, ess
 arquivo e o `_indice.md` se leem inteiros antes de atualizar — atualizar lá
 reescreve tudo, e o que as outras nove skills escreveram some sem aviso.
 
-No `## Guardei`, diga onde cada um foi parar do jeito do transporte: no `local`,
-`~/carteira/imoveis/V-071-casa-3d-azenha.md — criado`; no `drive`,
-`imoveis/V-071-casa-3d-azenha.md, na pasta carteira do seu Drive — criado`.
+No `## Guardei`, diga o que ficou guardado na palavra do corretor, igual nos
+dois transportes: `- V-071 (casa 3 dorm, Azenha): entrou na sua carteira`.
 
 **O que ela não toca:** `funil.md` e `hoje.md`, que são vistas de cliente e do
 dia; `clientes/`, porque quem abre ficha `C-` de proprietário é
@@ -361,14 +361,17 @@ O fecho, depois dos dois blocos e nesta ordem (contrato §10):
 
 ```markdown
 ## Guardei
-- ~/carteira/imoveis/V-071-casa-3d-azenha.md — criado, com o link e o preço da página
-- ~/carteira/imoveis/_indice.md — uma linha nova
-- ~/carteira/_bruto/2026-08-12-ficha-8812.md — a ficha, como veio
-- ~/carteira/INDICE.md — imóveis à venda, 11 para 12
+- V-071 (casa 3 dorm, Azenha): entrou na sua carteira, com o link e o preço da página
+- a ficha do portal ficou guardada como veio, para conferir depois
+- a carteira passou de 11 para 12 imóveis à venda
 
 ## Falta saber
 - o IPTU do V-071 (casa 3 dorm, Azenha) — a página não traz, e é a segunda coisa que perguntam depois do preço
 - se o pátio pega sol da tarde — você viu na visita e eu não tenho isso escrito
+
+## Próximo passo
+- Me contar o IPTU e se o pátio pega sol da tarde, antes de publicar — são as duas perguntas que o primeiro lead vai fazer. É só dizer “o IPTU do V-071 é …”.
+- A ficha do V-071 já está no painel, com o que falta marcado.
 ```
 
 Sem carteira, o `## Guardei` vira uma linha só: `- nada foi gravado — você está

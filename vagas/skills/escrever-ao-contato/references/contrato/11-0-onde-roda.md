@@ -17,8 +17,9 @@ chat do Claude e chat do ChatGPT na web
 
 os conectores (opcional) — onde há linha de comando e `node`
   é o que dá ALCANCE a este pack. `conectores_estado` diz o que existe e o
-  que está ligado; quem liga é você, num terminal seu, e cada um avisa o
-  que custa no ato de ligar
+  que está ligado; quem decide ligar é você, no painel, em Integrações — e
+  o que for comando o assistente roda, sem você digitar nada. Cada um avisa
+  o que custa no ato de ligar
 
     fontes de vaga    gupy, solides, greenhouse, lever, ashby,
                       linkedin-vagas. São listagens PÚBLICAS, lidas sem

@@ -502,7 +502,7 @@ insistir**, e fora das três perguntas — é oferta, não pergunta.
 ## 6 · O formato da saída
 
 Esta skill **não tem bloco para colar**: o trabalho dela é o relatório. Os
-títulos abaixo são do relatório na tela; os três do fecho são do contrato, vêm
+títulos abaixo são do relatório na tela; os quatro do fecho são do contrato, vêm
 por último e nesta ordem exata. Seção sem conteúdo não aparece.
 
 ```markdown
@@ -520,7 +520,7 @@ para arquivo-morto/, podei 1 histórico e achei 3 coisas que não batem.
   Logística): segunda rodada dia 14, às 10h, em ## Combinado. A P-005 (Helena
   Prates) ganhou a linha no histórico dela, e só
 - 2026-09-07-busca.md → nada extraído. É o que as fontes devolveram, e quem lê
-  é /vagas:buscar-vagas
+  é a própria busca de vagas
 - 2026-09-12-email-desconhecido.md → nada extraído. Fala de uma vaga numa
   seguradora de Curitiba que não está na busca, e sem o link eu não crio vaga
 - 2026-09-14-planilha-candidaturas.csv → 12 fichas novas, de V-032 (PM de
@@ -560,43 +560,49 @@ para arquivo-morto/, podei 1 histórico e achei 3 coisas que não batem.
   e eu movo, com a data e o motivo.
 
 ## Guardei
-- ~/busca/contatos/P-003-bruno-sato.md — 3 campos novos
-- ~/busca/vagas/V-022-patio-varejo.md — etapa: em contato · desde 2026-09-09,
-  e uma linha no histórico
-- ~/busca/vagas/V-019-trilho-logistica.md — uma linha em ## Combinado
-- ~/busca/contatos/P-005-helena-prates.md — uma linha no histórico
-- ~/busca/vagas/V-029-farol-educacao.md — criado, quase tudo ?
-- ~/busca/contatos/P-001-caio-rezende.md — histórico condensado
-- ~/busca/vagas/ — 12 fichas criadas, V-032 a V-043
-- ~/busca/vagas/V-027-aurora-saude.md · V-031-cobre-energia.md — 1 campo cada
-- ~/busca/vagas/_indice.md — reescrito, 19 → 31 vivas, 1 aposentada nova
-- ~/busca/_bruto/2026-09-14-historico-caio.md — criado, com o que saiu de lá
-- ~/busca/arquivo-morto/vagas/V-017-porto-claro.md — movido de vagas/
-- ~/busca/contatos/_indice.md — reescrito, 5 contatos
-- ~/busca/funil.md — reescrito
-- ~/busca/INDICE.md — contagens
+- P-003 (Bruno Sato): o papel, o processo e o prazo que ele deu, na ficha dele
+- V-022 (Lead PM, Pátio Varejo): passou para “em contato”, desde 9 de setembro,
+  com a linha no histórico
+- V-019 (Gerente de Produto Sênior, Trilho Logística): a segunda rodada, dia 14
+  às 10h, no que foi combinado
+- P-005 (Helena Prates): a conversa, no histórico dela
+- V-029 (PM de Dados, Farol Educação): a ficha, criada — quase tudo em aberto
+- P-001 (Caio Rezende): o histórico antigo, resumido; o original inteiro está em
+  ~/busca/_bruto/2026-09-14-historico-caio.md
+- 12 vagas novas, de V-032 a V-043, e a V-027 (Head de Produto, Aurora Saúde) e
+  a V-031 (PM Sênior, Cobre Energia) com um dado novo cada
+- V-017 (PM de Pagamentos, Porto Claro): aposentada, inteira, em
+  ~/busca/arquivo-morto/vagas/V-017-porto-claro.md
+- o funil e as contagens, refeitos: 31 vagas vivas e 5 contatos
 
 ## Falta saber
 - o estudo de caso da V-022 (Lead PM, Pátio Varejo) — o P-003 (Bruno Sato)
   ficou de mandar até 11 de setembro
-- o regime não está na planilha — ficou ? em 12 fichas
+- o regime — a planilha não diz, e ficou em aberto nas 12 fichas
 - de onde veio a faixa da V-031 (PM Sênior, Cobre Energia)
 - o link da vaga da seguradora de Curitiba que aparece no e-mail de 12 de
   setembro
 
 ## Decidi sozinho
 - Aposentei a V-017 (PM de Pagamentos, Porto Claro): 48 dias sem movimento, e
-  o teto é 45. Para trazer de volta, me diga — o arquivo está em
-  arquivo-morto/vagas/.
+  o teto é 45. Para trazer de volta, me diga — ela está inteira, na gaveta das
+  arquivadas.
 - Criei a ficha da V-029 (PM de Dados, Farol Educação) em vez de tirar a linha
   do funil. Criar deixa rastro, tirar não. Se ela não é vaga sua, me diga e eu
   aposento.
+
+## Próximo passo
+- <o que ficou em “Espera você”, o primeiro, com a razão> — é só dizer “<a frase que decide>”.
+- O funil e as fichas que mudaram já aparecem no painel, aberto no seu navegador.
 ```
 
-Os caminhos do `## Guardei` são os do transporte: no `local`, `~/busca/…`,
-como acima; no `drive`, a pasta e o arquivo dentro dela —
-`contatos/P-005-helena-prates.md, na pasta busca do seu Drive`. A regra não
-muda: **escreveu, diz onde.**
+O `## Guardei` diz o que mudou na palavra do candidato — a vaga pelo id e
+apelido, o contato pelo nome, “o funil e as contagens foram refeitos” —, e não
+o caminho de cada arquivo: o caminho é da tela do fecho no painel, para quem
+quiser conferir. A exceção é o que ele pode querer abrir — o aposentado, que
+continua inteiro na gaveta, e o histórico antigo que foi para os originais —:
+esses dizem onde estão, no `local` ou na pasta busca do Drive dele. A regra não
+muda: **escreveu, diz o quê.**
 
 Ao falar com o candidato, data em prosa — “14 de agosto”. **Nos arquivos, sempre
 `2026-08-14`.** Todo id aparece com o apelido junto, inclusive dentro de tabela e

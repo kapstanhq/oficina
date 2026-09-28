@@ -5,11 +5,9 @@
   “salário que pedi” e “observações”
 
 ## Guardei
-- ~/busca/vagas/ — 14 fichas criadas, V-001 a V-014
-- ~/busca/vagas/_indice.md — 14 linhas
-- ~/busca/funil.md — 14 linhas, 5 em “nova” e 9 em “candidatada”
-- ~/busca/_bruto/2026-09-14-planilha-candidaturas.csv — a planilha, como veio
+- 14 fichas de vaga, de V-001 a V-014, e a planilha como veio
+- o funil, com as 14: 5 em “nova” e 9 em “candidatada”
 
 ## Falta saber
-- o regime não está na planilha — ficou ? em 14 fichas
+- o regime — a planilha não diz, e ficou em aberto nas 14 fichas
 - com quem você fala, nas 14: a planilha tem empresa e não tem pessoa

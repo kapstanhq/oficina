@@ -113,6 +113,8 @@ const DO_PAINEL = [
   "sempre.mjs",
   /* o molde do pack e o ajuste da base (D244) */
   "nucleo/molde.mjs",
+  /* a versão nova, que o assistente oferece atualizar (D281) */
+  "nucleo/versao.mjs",
 ];
 
 /* ── E A DECLARAÇÃO DO SERVIDOR, que é o que liga tudo ─────────────────
@@ -1867,7 +1869,8 @@ function frontmatterDe(corpo) {
   if (!m) return null;
   const campos = {};
   let chave = null, dobra = false;
-  /* CRLF: um checkout no Windows devolve o arquivo assim, e o `` que
+  /* CRLF: um checkout no Windows devolve o arquivo assim, e o `
+` que
      sobrava no fim de cada linha derrubava o dobramento YAML — a skill
      reprovava por `sem description` com a description inteira na tela. */
   for (const linha of m[1].split(/\r?\n/)) {
@@ -1894,7 +1897,7 @@ function frontmatterDe(corpo) {
  * O molde é o que todas têm em comum e o que um pack novo precisa ter para
  * o resto do contrato funcionar: os quatro campos, uma seção "Antes de tudo",
  * uma "O modo", uma "Onde ela para", e o fecho com `## Guardei` antes de
- * `## Falta saber` (contrato §10). Está escrito em `oficina/_motor/MOLDE.md`.
+ * `## Falta saber`, e `## Próximo passo` depois dos dois (contrato §10). Está escrito em `oficina/_motor/MOLDE.md`.
  */
 const TETO_SKILL = 45000, TETO_DESCRIPTION = 1024, TETO_COMPATIBILITY = 500;
 export async function conferirSkills() {
@@ -1932,6 +1935,14 @@ export async function conferirSkills() {
       const g = corpo.search(/^## Guardei\r?$/m), f = corpo.search(/^## Falta saber\r?$/m);
       if (g < 0 || f < 0) erros.push(`${onde}: o fecho precisa de \`## Guardei\` e \`## Falta saber\``);
       else if (f < g) erros.push(`${onde}: \`## Falta saber\` aparece antes de \`## Guardei\``);
+      /* o fecho termina num caminho, e não num relatório (D281): o exemplo de
+         cada skill é o que o modelo imita, e exemplo sem a seção é skill que
+         termina sem ela */
+      /* procurado DEPOIS do primeiro `## Falta saber`: uma skill pode trazer,
+         antes do fecho principal, o exemplo inteiro de uma recusa — com o
+         próprio `## Próximo passo` —, e esse não conta nem atrapalha */
+      const pp = f >= 0 ? corpo.slice(f).search(/^## Próximo passo\r?$/m) : -1;
+      if (f >= 0 && pp < 0) erros.push(`${onde}: o fecho precisa de \`## Próximo passo\` depois de \`## Falta saber\``);
 
       /* ── MARCA DE PÉ NUMA SKILL PRÓPRIA ────────────────────────────
          Skill do MOTOR é gerada e tem as marcas resolvidas; skill PRÓPRIA do

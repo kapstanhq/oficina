@@ -133,7 +133,7 @@ Qualquer outro valor, linha ausente ou arquivo ilegível: **copiloto**.
 | o primeiro item | **oferece** na UI de perguntas | **executa**, se o insumo já estiver na carteira (passo 6) |
 | data em prosa sem dia (“sábado de manhã”) | pergunta, se o item for do topo | resolve pelo dia mais próximo e declara; havendo dois igualmente prováveis, deixa `?` |
 | linha órfã do `hoje.md` velho | pergunta, se o item for do topo | carrega e declara |
-| fecho | `## Guardei` e `## Falta saber` | mais `## Decidi sozinho` |
+| fecho | `## Guardei`, `## Falta saber` e `## Próximo passo` | mais `## Decidi sozinho`, antes do `## Próximo passo` |
 
 Esta skill **não tem exceção ao automático** — a única do pack é
 `/prospeccao:estudar-conta`, e é por isso que o automático nunca a chama
@@ -434,8 +434,9 @@ declara.
 
 **Dia vazio** — nenhum item em nenhum degrau. Diga em uma linha, sem sermão:
 que não há nada vencendo, e que carteira sem conta nova há dias é assunto de
-lista, não dia livre. Ofereça `/prospeccao:retomar-contato` ou
-`/prospeccao:escrever-abordagem`, uma vez.
+lista, não dia livre. Ofereça, uma vez, no
+`## Próximo passo`, `/prospeccao:retomar-contato` ou `/prospeccao:escrever-abordagem` — pela
+frase que ele pode dizer para chamá-las, e não pelo comando.
 
 ---
 
@@ -445,8 +446,9 @@ O trabalho é a lista na tela — esta skill não produz bloco para colar, e que
 escreve a mensagem, e quem a manda quando ela sai, é a skill do item. Depois da
 lista vêm os blocos de fecho do contrato (seção 10), nesta ordem e com estes
 títulos exatos. **A pergunta do passo 6 é a última coisa**, depois do fecho:
-perguntar antes de dizer onde guardou faz ele responder sem saber o que já foi
-feito.
+perguntar antes de dizer o que guardou faz ele responder sem saber o que já foi
+feito. O `## Próximo passo` nomeia o primeiro item da lista, com a razão; a
+pergunta oferece fazê-lo agora.
 
 ### A lista
 
@@ -523,29 +525,33 @@ Depois da lista, uma linha e não mais que uma:
 
 ```
 Isto é o que está escrito na carteira. Se você fechou negócio, mandou mensagem
-ou recebeu documento e não anotou, eu vou cobrar de novo amanhã — passe o que
-aconteceu para /prospeccao:organizar-carteira e a lista de amanhã sai certa.
+ou recebeu documento e não anotou, eu vou cobrar de novo amanhã — é só me
+contar o que aconteceu e dizer “organiza minha carteira”, e a lista de amanhã sai certa.
 ```
 
 ### O fecho
 
 ```markdown
 ## Guardei
-- ~/carteira/hoje.md — reescrito, 6 caixas abertas e 2 do que você marcou nos últimos sete dias
+- a lista do dia, refeita: 6 coisas abertas, e 2 que você marcou como feitas nos últimos sete dias
 
 ## Falta saber
 - que dia é a “semana que vem” combinada com a P-031 (Sandra Lisboa)
 - de quem é a reunião das 11h na agenda — não achei contato com esse nome na carteira
-- o contatos/_indice.md diz 11 de agosto para o P-019 (Rui Baptista) e o arquivo dele tem linha de 16; /prospeccao:organizar-carteira acerta a vista
+- a lista de contatos diz 11 de agosto para o P-019 (Rui Baptista), e a ficha dele tem novidade de 16 — é só dizer “organiza minha carteira” que eu acerto
 
 ## Decidi sozinho
-- Respondi o P-024 (Paulo Tavares) pelo /prospeccao:escrever-abordagem, que era o primeiro item e tinha a conversa em _bruto/ — a mensagem está acima e não saiu: o seu envio: diz pergunta sempre, e ela está esperando você. Para não fazer isso, me diga e eu só listo.
+- Escrevi a resposta para o P-024 (Paulo Tavares), que era o primeiro item e tinha a conversa guardada — a mensagem está acima e não saiu: você pediu para eu sempre perguntar antes de mandar, e ela está esperando você. Para não fazer isso, me diga e eu só listo.
 - Li “semana que vem” como 26 de agosto, a segunda mais próxima. Se for outra, me diga e a cobrança sai da lista de hoje.
+
+## Próximo passo
+- Começar pelo primeiro item: <o que fazer, com quem> — <a razão, em meia frase>. É só dizer “<a frase que chama a skill dele>”.
+- A lista do dia está no painel, aberto no seu navegador.
 ```
 
-O `## Guardei` diz o lugar do jeito que o prospector reconhece, e o jeito muda com
-o transporte: no `local`, `~/carteira/hoje.md`; no `drive`, `hoje.md, na pasta
-carteira do seu Drive`. O resto da linha é o mesmo.
+O `## Guardei` diz o que mudou do jeito que o prospector reconhece — “a lista
+do dia foi refeita” —, sem caminho de arquivo; no `drive`, a mesma frase diz
+que ela está na pasta carteira do Drive dele. O resto da linha é o mesmo.
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**. A única exceção é a mensagem que saiu: ali não há

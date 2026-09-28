@@ -542,22 +542,27 @@ Contrato §7, sem atalho:
 Sem conversa à mão? Ele digita o básico — nome, telefone, o que procura — e o
 resto entra `?`. A resposta ao {jargao-minusculo} é de `/{plugin}:{skill-atender}`.
 
-### Passo 8 · O que pedir agora
+### Passo 8 · O próximo passo
 
-**Três coisas que ele pode digitar hoje**, com o id e o apelido de verdade:
+**Três coisas que ele pode pedir hoje**, com o id e o apelido de verdade. Elas
+vão no `## Próximo passo` do fecho, cada uma com a frase que ele pode dizer do
+jeito dele — o `/{plugin}:…` fica para quem pedir:
 
 ```
 {comecar--o-que-pedir-agora}
 ```
 
-E a lista inteira: veja a seção 7, “A lista de comandos”. Ele já tem material
-de antes — planilha, agenda de papel, conversas? Uma linha: ponha em `_bruto/`
-e rode `/{plugin}:organizar-{pasta-base}`, que transforma em ficha.
+E a lista inteira: veja a seção 7, “A lista do que ele pode pedir”. Ele já tem
+material de antes — planilha, agenda de papel, conversas? Uma linha: é só ele
+dizer onde está o arquivo, que você o copia para `_bruto/` e o organiza com
+`/{plugin}:organizar-{pasta-base}`, que transforma em ficha. Mover arquivo para
+pasta técnica não é tarefa dele.
 [[fim]]
 [[se comecar-roteiro:perfil]]
 
 O modo nasce `copiloto` — eu paro nas escolhas e pergunto. Diga isso em uma
-linha, e que trocar é mudar a palavra `modo:` no `INDICE.md`; não pergunte.
+linha, e que para trocar é só pedir (“passa para o automático”) — quem mexe
+no arquivo é você; não pergunte.
 
 ### Passo 2 · Como te encontram
 
@@ -583,15 +588,17 @@ cadeia própria, `references/conectar-whatsapp.md`, com o
 Feche primeiro, com a saída da seção 7. Então diga em uma linha o que vem —
 {comecar-a-conversa} — e **passe a vez**: chame
 `/{plugin}:{skill-da-conversa}` pela ferramenta de skill do harness, se a
-sessão tiver uma; senão, peça que ele digite o comando. **Não faça a conversa
+sessão tiver uma; senão, diga que é só ele responder “vamos” e siga pela skill
+quando ele responder — nunca peça que ele digite o comando. **Não faça a conversa
 aqui**: ela tem as regras dela, e pode pausar e voltar sem perder o que ouviu.
 
 Os passos 4 e 5 também são de outras skills: `/{plugin}:{skill-do-dia-vazio}`
 traz as primeiras {itens} pelo perfil, e `/{plugin}:{skill-de-julgar}` diz
 qual delas vale. A conversa termina apontando as duas.
 
-Ele já tem {itens} em andamento, numa planilha ou em links? Uma linha: ponha em
-`_bruto/` e rode `/{plugin}:organizar-{pasta-base}`, que transforma em ficha.
+Ele já tem {itens} em andamento, numa planilha ou em links? Uma linha: é só ele
+dizer onde está a planilha, ou colar os links, que você os guarda em `_bruto/` e
+organiza com `/{plugin}:organizar-{pasta-base}`, que transforma em ficha.
 [[fim]]
 
 ---
@@ -609,8 +616,15 @@ só para retomar um item e o teste não passa:
 - nada foi gravado — o teste do Google Drive não passou, e a linha só vira
   `sim` depois de uma chamada que voltou
 
+## Falta saber
+- por que o teste do Drive não passou — a chamada voltou sem resposta, e não sei se foi a autorização
+
 ## Ficou para depois
 - ligar o Google Drive — continua em “Pulado no começo”, com a data de lá
+
+## Próximo passo
+- Tentar o Google Drive de novo quando quiser — é só dizer “liga o Drive”.
+- O painel está aberto no seu navegador, com a {base} como estava.
 ```
 
 `## Não gravei nada` e `## A {base} está como estava` são títulos inventados, e
@@ -636,12 +650,12 @@ Veio da planilha? As linhas {do-item} trocam por estas, e o resto fica:
 Ela mora em ~/{pasta-base}/. É sua, é texto, e abre em qualquer editor.
 
 ## O que ficou pronto
-- a {base}, com os arquivos do padrão, no modo copiloto
-- o seu nome e como te encontram, em `## Quem sou`
+- a {base}, com os arquivos do padrão, no modo copiloto — eu paro nas escolhas e pergunto
+- o seu nome e como te encontram, que vão no topo de tudo o que eu escrever
 
 ## Guardei
-- ~/{pasta-base}/INDICE.md — criado, com o seu nome, os contatos e o modo
-- ~/{pasta-base}/hoje.md, funil.md e os dois _indice.md — criados, vazios
+- a sua {base}, com o seu nome, como te encontram e o modo
+- a lista do dia e o funil, criados — vazios, por enquanto
 
 ## Falta saber
 - o portfólio — você disse que ainda não tem, e a linha ficou em branco
@@ -649,22 +663,26 @@ Ela mora em ~/{pasta-base}/. É sua, é texto, e abre em qualquer editor.
 ## Ficou para depois
 - agenda, e-mail, WhatsApp e login em site — a skill que precisar oferece
 
-## O que pedir agora
-/{plugin}:{skill-da-conversa}   {comecar-a-conversa-curta}
+## Próximo passo
+- Agora, {comecar-a-conversa-curta} — é dela que sai o que procurar e o que descartar. Eu já começo: é só responder.
+- O painel está aberto no seu navegador: é lá que a sua {base} vai aparecer, {item} por {item}.
 ```
 [[fim]]
 
 No `drive`, o mesmo fecho troca o lugar: “Ela mora na pasta `{pasta-base}` do
-seu Drive”, e cada linha do `## Guardei` nomeia a pasta e o arquivo. Ao falar
+seu Drive”, e o `## Guardei` diz o mesmo, na mesma palavra — sem caminho de
+arquivo. Ao falar
 com ele, data em prosa — “12 de agosto”; **nos arquivos, sempre `2026-08-12`**.
 Todo id aparece com o apelido junto, em toda linha. `## Decidi sozinho` não
 aparece: ela não decide nada sozinha (seção 5).
 
-**A lista de comandos, uma linha cada, e toda skill instalada nela.** Não a
-escreva de memória: onde há ferramenta de arquivo, um `Grep` pelo padrão
-`^description:` em `../*/SKILL.md` a partir da pasta desta, com duas linhas
-depois, dá o nome e a primeira frase de cada uma — escreva
-`/{plugin}:<nome>` e o que ela faz, encurtado. Sem ferramenta de arquivo, a
+**A lista do que ele pode pedir, uma linha cada, e toda skill instalada nela.**
+Com painel, ela já está na página inicial dele, e o `## Próximo passo` só diz
+isso; sem painel, ela vem antes do `## Guardei`. Não a escreva de memória: onde
+há ferramenta de arquivo, um `Grep` pelo padrão `^description:` em
+`../*/SKILL.md` a partir da pasta desta, com duas linhas depois, dá o nome e a
+primeira frase de cada uma — escreva a frase que ele pode dizer para pedir e o
+que ela faz, encurtado, com `/{plugin}:<nome>` entre parênteses no fim. Sem ferramenta de arquivo, a
 lista está em `references/contrato/11-0-onde-roda.md`, com o que não funciona
 no chat da web. Prometer skill que não existe é o primeiro erro que ele
 encontra sozinho.

@@ -985,6 +985,56 @@ console.log(`${forte ? "✓" : "✗"} a chave tem 32+ caracteres de base64url ·
   conferir("trecho · fora do funil é `todas`", trechoDe({ ficha: false }, fases), TODAS);
 }
 
+/* ── A VERSÃO NOVA E A ABA QUE SE ABRE SOZINHA (D281) ─────────────────── */
+{
+  const { origemDoPack, maisNova, enderecoPublicado, conferirVersao } = await import("./nucleo/versao.mjs");
+  const { abrirNoNavegador } = await import("./nucleo/http.mjs");
+  const { writeFile: escrever, mkdir: criar } = await import("node:fs/promises");
+
+  conferir("versão · o caminho do cache diz marketplace e plugin",
+    JSON.stringify(origemDoPack("C:\\Users\\ana\\.claude\\plugins\\cache\\kapstan-oficina\\vagas\\0.3.3")),
+    JSON.stringify({ marketplace: "kapstan-oficina", plugin: "vagas" }));
+  conferir("versão · controle: a árvore-fonte não tem de onde atualizar",
+    origemDoPack("/home/ana/oficina/vagas"), null);
+  conferir("versão · 0.10.0 é mais nova que 0.9.9", maisNova("0.10.0", "0.9.9"), true);
+  conferir("versão · controle: a mesma não é mais nova", maisNova("0.3.3", "0.3.3"), false);
+  conferir("versão · o endereço publicado sai do `repository`",
+    enderecoPublicado("https://github.com/kapstanhq/oficina", "vagas"),
+    "https://raw.githubusercontent.com/kapstanhq/oficina/HEAD/vagas/.claude-plugin/plugin.json");
+
+  const pack = join(COFRE, "plugins", "cache", "mk", "vagas", "0.3.3");
+  await criar(join(pack, ".claude-plugin"), { recursive: true });
+  await escrever(join(pack, ".claude-plugin", "plugin.json"),
+    JSON.stringify({ name: "vagas", version: "0.3.3", repository: "https://github.com/dono/repo" }));
+  let chamadas = 0;
+  const buscar = async () => { chamadas++; return { ok: true, text: async () => JSON.stringify({ version: "0.4.0" }) }; };
+  const estado = join(COFRE, "estado-versao");
+  const dia = Date.parse("2026-09-28T12:00:00Z");
+  const a = await conferirVersao({ pastaDoPack: pack, pastaDeEstado: estado, buscar, agora: () => dia });
+  conferir("versão · avisa, com os dois comandos que o assistente roda",
+    `${a?.nova} · ${a?.comandos.join(" && ")}`,
+    "0.4.0 · claude plugin marketplace update mk && claude plugin update vagas@mk");
+  const b = await conferirVersao({ pastaDoPack: pack, pastaDeEstado: estado, buscar, agora: () => dia + 60_000 });
+  conferir("versão · avisa uma vez por dia, e não pergunta à rede de novo", `${b} · ${chamadas}`, "null · 1");
+  const c = await conferirVersao({ pastaDoPack: pack, pastaDeEstado: estado, buscar, agora: () => dia + 86_400_000 });
+  conferir("versão · no dia seguinte avisa de novo", `${c?.nova} · ${chamadas}`, "0.4.0 · 2");
+  const d = await conferirVersao({ pastaDoPack: pack, pastaDeEstado: join(COFRE, "sem-rede"),
+    buscar: async () => { throw new Error("sem rede"); }, agora: () => dia });
+  conferir("versão · rede fora é silêncio, não erro", d, null);
+
+  const pedidos = [];
+  const gerar = (cmd, args, op) => { pedidos.push({ cmd, args, op }); return { on() {}, unref() {} }; };
+  conferir("aba · abre o endereço inteiro no navegador padrão",
+    abrirNoNavegador("http://127.0.0.1:4180/#abc_-9", { plataforma: "win32", gerar }), true);
+  conferir("aba · no Windows, `start` com título vazio e a linha verbatim",
+    `${pedidos[0]?.cmd} ${pedidos[0]?.args.join(" ")} · ${pedidos[0]?.op.windowsVerbatimArguments}`,
+    'cmd /c start "" http://127.0.0.1:4180/#abc_-9 · true');
+  conferir("aba · controle: endereço que não é o do painel não abre",
+    abrirNoNavegador("http://127.0.0.1:4180/#a&calc", { plataforma: "win32", gerar }), false);
+  conferir("aba · controle: nem de outra máquina",
+    abrirNoNavegador("http://exemplo.example/", { plataforma: "linux", gerar }), false);
+}
+
 const mal = casos.filter((c) => !c).length;
 console.log(`\n${casos.length - mal} de ${casos.length} · ${url.replace(segredo, "…")}`);
 fechar();

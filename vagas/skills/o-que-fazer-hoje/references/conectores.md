@@ -61,7 +61,9 @@ mcp     quem chama é VOCÊ, com as ferramentas do próprio conector (as do
 
 Para o tipo `mcp`, o programa não enxerga as suas ferramentas: `estado` vem
 como `prove`, com o nome da ferramenta a chamar. Se ela não existe na sessão,
-o conector está desligado — e o `como_ligar` diz o que fazer.
+o conector está desligado — e o `como_ligar` diz o que fazer. No tipo `mcp`
+ele é um guia de configuração, e **o que nele é comando, você roda** (contrato
+§10): o candidato só decide, faz o login que for dele e reabre o programa.
 
 **O navegador pode trazer `sessoes`**: os sites em que o candidato já
 entrou pelo painel, com `estado` (`logada`, `vencida`, `sem-sessao`) e a
@@ -70,7 +72,7 @@ peça login. `sem-sessao` ou `vencida`: o site abre sem a conta; diga UMA
 vez que ele entra pela tela Integrações, em "Onde o assistente entra com a sua
 conta", e siga com o que se vê sem ela. Se o navegador abre sem login com a
 sessão `logada`, ele não está ligado ao arquivo: o `guia` do navegador diz
-como, com o caminho de `arquivo_das_sessoes`. Esse arquivo você nunca lê — é
+como, com o caminho de `arquivo_das_sessoes` — e quem faz é você. Esse arquivo você nunca lê — é
 a senha dele.
 
 ## Os três estados
@@ -78,7 +80,7 @@ a senha dele.
 ```
 ligado       pode usar
 desligado    existe, e o candidato ainda não ligou. Diga que existe, o que faria
-             com ele, e o comando de `como_ligar` — UMA vez, e siga sem ele
+             com ele, e onde se liga no painel — UMA vez, e siga sem ele
 sem-chave    ligado, mas falta a chave do serviço. Idem
 ```
 
@@ -86,9 +88,10 @@ sem-chave    ligado, mas falta a chave do serviço. Idem
 gestos DELE — e o lugar deles é a tela **Conectores** do painel, que é feita
 para quem nunca abriu um terminal: o aviso aparece, ele confirma, cola a chave
 num campo, escreve o teto, e aperta Testar. Se `painel_inicio` existe nesta
-sessão, é para lá que você manda: “abra o painel e, no menu, vá em Configurações › Integrações” — e diga o
-endereço, se ainda não disse hoje. Sem painel, o `como_ligar` traz a linha de
-comando pronta, e ela é o caminho de quem é técnico. Não existe ferramenta para isso, e a razão é a mesma do teto: o
+sessão, é para lá que você manda, em palavras: “no painel, que já está aberto,
+vá em Integrações”. Sem painel, o `como_ligar` traz também a linha de comando —
+mas ela só se diz a quem pedir: “digite isto num terminal” não é caminho para
+quem não é técnico. Não existe ferramenta para isso, e a razão é a mesma do teto: o
 agente que pudesse subir o próprio teto não teria teto. A chave do serviço
 nunca passa pela conversa.
 
@@ -132,9 +135,9 @@ peça o detalhe, se o conector tiver a operação, ou deixe `?`.
 |---|---|---|
 | as ferramentas não existem na sessão | o plugin não está instalado, ou não há `node` | siga com o que o candidato cola. É o caminho normal |
 | `conector desconhecido` | o nome está errado | os que existem são os do `conectores_estado` |
-| `desligado` · `sem-chave` | ninguém ligou | diga o `como_ligar` uma vez e siga sem ele |
+| `desligado` · `sem-chave` | ninguém ligou | diga uma vez, em palavras, onde se liga no painel, e siga sem ele |
 | `acima do teto` | a chamada passaria do que o candidato autorizou no mês | NÃO tente outra operação para contornar. Diga quanto falta e como ele muda o teto |
-| `sem teto` | conector pago sem teto escrito | é recusa por desenho: sem teto, não gasta. O `como_ligar` traz o comando |
+| `sem teto` | conector pago sem teto escrito | é recusa por desenho: sem teto, não gasta. O teto se escreve no painel, em Integrações — diga isso, e não o comando |
 | `orçamento vencido` · `orçamento de outra chamada` | passou de dez minutos, ou os parâmetros mudaram | orce de novo |
 | `devagar` | o ritmo do conector estourou | espere os segundos que ele disser. Não é erro |
 | `o serviço respondeu 4xx/5xx` | a fonte recusou ou caiu | diga, e siga com as outras fontes. Não repita em laço |

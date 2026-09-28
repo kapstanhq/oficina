@@ -193,11 +193,15 @@ há 27 dias · sem ela {o-que-a-pendencia-trava} não anda
 - {exemplo-pessoa} · já respondeu em 2026-09-05; tirei a pendência
 
 ## Guardei
-- ~/{pasta-base}/{pasta-pessoas}/{exemplo-pessoa-arquivo} — a tentativa de hoje
-- ~/{pasta-base}/hoje.md — as pendências que saíram da fila
+- {exemplo-pessoa}: a cobrança de hoje ficou anotada na ficha dela, para eu não cobrar de novo esta semana
+- a lista do dia já não mostra o que saiu da fila
 
 ## Falta saber
 - o prazo combinado para {exemplo-pendencia} — usei o padrão de 7 dias
+
+## Próximo passo
+- Mandar a cobrança de {exemplo-pessoa-nome} ainda hoje — ela é a que mais trava. Depois de mandar, é só dizer “mandei”.
+- A fila do que você está esperando está no painel, aberto no seu navegador.
 ````
 
 O bloco da mensagem sai **sozinho, pronto para copiar, sem comentário dentro**

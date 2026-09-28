@@ -94,8 +94,10 @@ Os servidores precisam do Node.js 20.19 ou mais novo: confira com
        /plugin install corretor@kapstan-oficina
    A URL inteira, e NÃO o atalho `kapstanhq/oficina`: o atalho clona por SSH
    por padrão e falha em quem não tem chave carregada no ssh-agent.
-   Para atualizar depois, o pedido é explícito — marketplace de terceiro não
-   atualiza sozinho: /plugin marketplace update kapstan-oficina
+   Para atualizar depois: marketplace de terceiro não atualiza sozinho, e o
+   próprio assistente avisa quando há versão nova e atualiza com o sim da
+   pessoa. À mão: /plugin marketplace update kapstan-oficina e depois
+   /plugin update corretor@kapstan-oficina
    Se você for o Codex, o atalho equivalente é o $skill-installer.
    Funcionando um dos dois, pule os passos abaixo.
 
@@ -591,7 +593,11 @@ Vale saber antes de instalar, e não depois.
 
 ## Atualizar
 
+Quando sai versão nova, o assistente avisa no começo de uma tarefa e atualiza
+se você disser sim — você só fecha e abre o Claude Code no fim. À mão:
+
 ```
+/plugin marketplace update kapstan-oficina
 /plugin update corretor@kapstan-oficina
 ```
 

@@ -192,11 +192,15 @@ quem      <e-mail por extenso>
 acesso    leitura · só quem tem este e-mail
 
 ## Guardei
-- ~/{pasta-base}/vistas/{exemplo-pessoa-arquivo} — refeita
-- ~/{pasta-base}/{pasta-pessoas}/{exemplo-pessoa-arquivo} — a data e para quem
+- a página de {exemplo-pessoa} foi refeita com o que está na {base} hoje
+- a ficha de {exemplo-pessoa} anota que a página foi compartilhada, quando e com quem
 
 ## Falta saber
-- o e-mail de {exemplo-pessoa} — sem ele a vista fica só no Drive dele
+- o e-mail de {exemplo-pessoa} — sem ele a página fica só no seu Drive
+
+## Próximo passo
+- Mandar o e-mail de {exemplo-pessoa-nome}, para a página chegar até ela — é só dizer “o e-mail dela é …”.
+- A ficha de {exemplo-pessoa-nome} está no painel, aberto no seu navegador.
 ````
 
 ## 7 · Onde ela para

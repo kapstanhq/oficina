@@ -531,26 +531,26 @@ Contrato §7, sem atalho:
 Sem conversa à mão? Ele digita o básico — nome, telefone, o que procura — e o
 resto entra `?`. A resposta ao lead é de `/corretor:responder-lead`.
 
-### Passo 8 · O que pedir agora
+### Passo 8 · O próximo passo
 
-**Três coisas que ele pode digitar hoje**, com o id e o apelido de verdade:
+**Três coisas que ele pode pedir hoje**, com o id e o apelido de verdade. Elas
+vão no `## Próximo passo` do fecho, cada uma com a frase que ele pode dizer do
+jeito dele — o `/corretor:…` fica para quem pedir:
 
 ```
-o que eu faço hoje?
-    /corretor:o-que-fazer-hoje lê a carteira inteira e monta a lista do dia,
-    na ordem do que faz perder negócio
-
-chegou um lead, colei a conversa aqui
-    /corretor:responder-lead escreve a resposta na sua voz e guarda o cliente
-
-escreve o anúncio do V-001 (casa 3 dorm, Azenha)
-    /corretor:anunciar-imovel devolve duas versões, uma para portal e uma
-    para WhatsApp
+- Saber o que fazer hoje — é só dizer “o que eu faço hoje?”, e eu monto a
+  lista do dia, na ordem do que faz perder negócio.
+- Responder um lead — é só colar a conversa e dizer “chegou um lead”, e eu
+  escrevo a resposta na sua voz e guardo o cliente.
+- Anunciar o V-001 (casa 3 dorm, Azenha) — é só dizer “escreve o anúncio do
+  V-001”, e eu devolvo uma versão para portal e uma para WhatsApp.
 ```
 
-E a lista inteira: veja a seção 7, “A lista de comandos”. Ele já tem material
-de antes — planilha, agenda de papel, conversas? Uma linha: ponha em `_bruto/`
-e rode `/corretor:organizar-carteira`, que transforma em ficha.
+E a lista inteira: veja a seção 7, “A lista do que ele pode pedir”. Ele já tem
+material de antes — planilha, agenda de papel, conversas? Uma linha: é só ele
+dizer onde está o arquivo, que você o copia para `_bruto/` e o organiza com
+`/corretor:organizar-carteira`, que transforma em ficha. Mover arquivo para
+pasta técnica não é tarefa dele.
 
 ---
 
@@ -567,8 +567,15 @@ só para retomar um item e o teste não passa:
 - nada foi gravado — o teste do Google Drive não passou, e a linha só vira
   `sim` depois de uma chamada que voltou
 
+## Falta saber
+- por que o teste do Drive não passou — a chamada voltou sem resposta, e não sei se foi a autorização
+
 ## Ficou para depois
 - ligar o Google Drive — continua em “Pulado no começo”, com a data de lá
+
+## Próximo passo
+- Tentar o Google Drive de novo quando quiser — é só dizer “liga o Drive”.
+- O painel está aberto no seu navegador, com a carteira como estava.
 ```
 
 `## Não gravei nada` e `## A carteira está como estava` são títulos inventados, e
@@ -579,7 +586,9 @@ certa.
 ```markdown
 # Sua carteira está montada
 
-Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
+Ela mora na pasta “carteira”, dentro da sua pasta de usuário (~/carteira/). É
+sua, é texto, e você abre em qualquer editor — mas não precisa: tudo aparece no
+painel.
 
 ## O que ficou pronto
 - a carteira, com os sete arquivos do padrão
@@ -590,13 +599,11 @@ Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
   funil, em “novo lead”
 
 ## Guardei
-- ~/carteira/INDICE.md — criado, com o seu nome e o modo
-- ~/carteira/hoje.md · funil.md — criados, vazios por enquanto
-- ~/carteira/imoveis/V-001-casa-3d-azenha.md — criado
-- ~/carteira/imoveis/_indice.md — uma linha
-- ~/carteira/clientes/C-001-joana-ribeiro.md — criado
-- ~/carteira/clientes/_indice.md — uma linha
-- ~/carteira/_bruto/2026-08-12-whatsapp-joana.md — a conversa, como veio
+- a sua carteira, com o seu nome e o modo
+- a lista do dia e o funil, criados — vazios por enquanto
+- V-001 (casa 3 dorm, Azenha): a ficha do imóvel, do link que você mandou
+- C-001 (Joana Ribeiro): a ficha dela, com a conversa como veio, e a linha
+  no funil
 
 ## Falta saber
 - IPTU e condomínio do V-001 (casa 3 dorm, Azenha) — o link não trazia
@@ -606,8 +613,13 @@ Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
 - ligar o Gmail e o Google Drive — anotei em “Pulado no começo”, e qualquer
   skill oferece de novo quando fizer falta
 
-## O que pedir agora
-<os três exemplos e a lista das dez>
+## Próximo passo
+- Responder a C-001 (Joana Ribeiro), que é lead de hoje — é só dizer “responde
+  a Joana”.
+- Escrever o anúncio do V-001 (casa 3 dorm, Azenha) — é só dizer “escreve o
+  anúncio do V-001”.
+- O painel está aberto no seu navegador: a Joana já aparece no funil, e a lista
+  do que você pode me pedir está na página inicial.
 ```
 
 Veio da planilha? As linhas do imóvel trocam por estas, e o resto fica:
@@ -619,26 +631,27 @@ Veio da planilha? As linhas do imóvel trocam por estas, e o resto fica:
   “corretor” e “data do anúncio”
 
 ## Guardei
-- ~/carteira/imoveis/ — 18 fichas criadas, V-001 a V-018
-- ~/carteira/imoveis/_indice.md — 18 linhas
-- ~/carteira/_bruto/2026-08-19-planilha-imoveis.csv — a planilha, como veio
+- 18 fichas de imóvel, de V-001 a V-018, e a planilha como veio
 
 ## Falta saber
-- o IPTU não está na planilha — ficou ? em 18 fichas
+- o IPTU — a planilha não diz, e ficou em aberto nas 18 fichas
 - o condomínio, nas 11 que são apartamento
 ```
 
 No `drive`, o mesmo fecho troca o lugar: “Ela mora na pasta `carteira` do
-seu Drive”, e cada linha do `## Guardei` nomeia a pasta e o arquivo. Ao falar
+seu Drive”, e o `## Guardei` diz o mesmo, na mesma palavra — sem caminho de
+arquivo. Ao falar
 com ele, data em prosa — “12 de agosto”; **nos arquivos, sempre `2026-08-12`**.
 Todo id aparece com o apelido junto, em toda linha. `## Decidi sozinho` não
 aparece: ela não decide nada sozinha (seção 5).
 
-**A lista de comandos, uma linha cada, e toda skill instalada nela.** Não a
-escreva de memória: onde há ferramenta de arquivo, um `Grep` pelo padrão
-`^description:` em `../*/SKILL.md` a partir da pasta desta, com duas linhas
-depois, dá o nome e a primeira frase de cada uma — escreva
-`/corretor:<nome>` e o que ela faz, encurtado. Sem ferramenta de arquivo, a
+**A lista do que ele pode pedir, uma linha cada, e toda skill instalada nela.**
+Com painel, ela já está na página inicial dele, e o `## Próximo passo` só diz
+isso; sem painel, ela vem antes do `## Guardei`. Não a escreva de memória: onde
+há ferramenta de arquivo, um `Grep` pelo padrão `^description:` em
+`../*/SKILL.md` a partir da pasta desta, com duas linhas depois, dá o nome e a
+primeira frase de cada uma — escreva a frase que ele pode dizer para pedir e o
+que ela faz, encurtado, com `/corretor:<nome>` entre parênteses no fim. Sem ferramenta de arquivo, a
 lista está em `references/contrato/11-0-onde-roda.md`, com o que não funciona
 no chat da web. Prometer skill que não existe é o primeiro erro que ele
 encontra sozinho.

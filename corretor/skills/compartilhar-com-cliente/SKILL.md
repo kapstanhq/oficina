@@ -201,11 +201,15 @@ quem      <e-mail por extenso>
 acesso    leitura · só quem tem este e-mail
 
 ## Guardei
-- ~/carteira/vistas/C-017-joana-ribeiro.md — refeita
-- ~/carteira/clientes/C-017-joana-ribeiro.md — a data e para quem
+- a página de C-017 (Joana Ribeiro) foi refeita com o que está na carteira hoje
+- a ficha de C-017 (Joana Ribeiro) anota que a página foi compartilhada, quando e com quem
 
 ## Falta saber
-- o e-mail de C-017 (Joana Ribeiro) — sem ele a vista fica só no Drive dele
+- o e-mail de C-017 (Joana Ribeiro) — sem ele a página fica só no seu Drive
+
+## Próximo passo
+- Mandar o e-mail de Joana, para a página chegar até ela — é só dizer “o e-mail dela é …”.
+- A ficha de Joana está no painel, aberto no seu navegador.
 ````
 
 ## 7 · Onde ela para

@@ -602,8 +602,8 @@ No automático não se pergunta: escolhe e declara em `## Decidi sozinho`.
 
 ## 6 · O formato da saída
 
-O trabalho primeiro, os três blocos de fecho depois, nesta ordem e com estes
-títulos exatos.
+O trabalho primeiro, os blocos de fecho depois, nesta ordem e com estes
+títulos exatos — e o `## Próximo passo` por último.
 
 ### A lista
 
@@ -690,32 +690,35 @@ que sai é **este**, byte a byte, porque é ele que a prévia carimbou.
 
 ```markdown
 ## Guardei
-- ~/busca/vagas/V-011-hospital-boa-vista.md — uma linha de retomada no histórico
-- ~/busca/vagas/V-016-aurora-saude.md — uma linha de retomada no histórico
-- ~/busca/vagas/V-013-rede-farma-sol.md — uma linha de retomada no histórico
-- ~/busca/vagas/_indice.md — atualizada da V-013 (Técnica de Enfermagem — sala de vacina, Rede Farma Sol) corrigida
-- ~/busca/hoje.md — uma caixa em ## Parado: V-004 (Técnica de Enfermagem Plantonista, Aurora Saúde), arquivar ou deixar parada
+- V-011 (Técnica de Enfermagem, Hospital Boa Vista), V-016 (Técnica de Enfermagem — Pronto-Atendimento, Aurora Saúde) e V-013 (Técnica de Enfermagem — sala de vacina, Rede Farma Sol): a retomada ficou anotada no histórico de cada uma, para a próxima não repetir o ângulo
+- V-013 (Técnica de Enfermagem — sala de vacina, Rede Farma Sol): a data da última novidade, corrigida na lista de vagas
+- a lista do dia ganhou uma decisão sua: a V-004 (Técnica de Enfermagem Plantonista, Aurora Saúde), arquivar ou deixar parada
 
 ## Falta saber
-- com quem falar na V-010 (Técnica de Enfermagem, Vértice Saúde) — candidatada há 12 dias, e o arquivo diz contato: ?
+- com quem falar na V-010 (Técnica de Enfermagem, Vértice Saúde) — candidatada há 12 dias, e a ficha não diz quem recruta
 - se o P-004 (Sérgio Alves) respondeu depois de 5 de setembro por fora da busca
 - quem coordena a sala de vacina da V-013 (Técnica de Enfermagem — sala de vacina, Rede Farma Sol) — o anúncio fala em “farmacêutica responsável” e não dá nome
 
 ## Decidi sozinho
-- Escrevi para as três mais quentes e deixei a V-030 (Técnica de Enfermagem — Clínica Médica, Vértice Saúde) de fora — a prova técnica é hoje, e quem cobra a véspera é o hoje.md. Para incluir, me diga.
-- Usei a abertura do pronto-atendimento de Olinda como está no arquivo da V-016 (Técnica de Enfermagem — Pronto-Atendimento, Aurora Saúde), de 10 de setembro. Se você não quiser citar a unidade nova deles, me diga e eu refaço a mensagem.
+- Escrevi para as três mais quentes e deixei a V-030 (Técnica de Enfermagem — Clínica Médica, Vértice Saúde) de fora — a prova técnica é hoje, e quem lembra a véspera é a lista do dia. Para incluir, me diga.
+- Usei a abertura do pronto-atendimento de Olinda como está na ficha da V-016 (Técnica de Enfermagem — Pronto-Atendimento, Aurora Saúde), de 10 de setembro. Se você não quiser citar a unidade nova deles, me diga e eu refaço a mensagem.
+
+## Próximo passo
+- Mandar a primeira mensagem, para <quem, pelo nome> — é a mais quente: <a razão, em meia frase>. Quando mandar, é só dizer “mandei”.
+- Quem está parado, e há quantos dias, está no painel, aberto no seu navegador.
 ```
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**.
 
-Saiu pela ponte, o `## Guardei` diz isso na mesma linha — `— retomada enviada
-14:32, e a linha no histórico`. O que ficou só escrito continua como está: o
+Saiu pela ponte, o `## Guardei` diz isso na mesma linha — “a retomada saiu às
+14:32, e ficou anotada no histórico”. O que ficou só escrito continua como está: o
 arquivo guarda a tentativa, não o envio que não houve.
 
-Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
-nomeia a pasta e o arquivo — `vagas/V-019-trilho-logistica.md, na pasta
-busca do seu Drive — uma linha de retomada no histórico`.
+O `## Guardei` diz, na palavra do candidato, quem ganhou a linha de retomada
+no histórico — pelo id e apelido, ou pelo nome —, e não o caminho do arquivo;
+no `local` e no `drive` a frase é a mesma. O caminho é da tela do fecho no
+painel, para quem quiser conferir.
 
 ---
 
@@ -811,7 +814,7 @@ Sete limites, e é melhor saber deles antes de mandar a mensagem.
 respondeu no WhatsApp e a conversa não foi colada, ela vai propor retomar quem
 já voltou — e uma retomada em cima de uma resposta ignorada é pior que
 nenhuma. O sinal é arquivo com muitos `?` e histórico curto; o conserto é colar
-a conversa e rodar `/vagas:organizar-busca` antes. Na dúvida, ela
+a conversa e organizar a busca (`/vagas:organizar-busca`) antes. Na dúvida, ela
 pergunta uma vez, e é a pergunta que mais paga nesta skill. Com conector o
 passo 8.2 pega isso no último segundo — mas só de quem ia receber, e só na hora
 do envio: a lista continua sendo a do que está escrito.

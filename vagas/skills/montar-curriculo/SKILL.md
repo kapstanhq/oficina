@@ -277,11 +277,16 @@ primeiro), grave e gere de novo — nunca mexa no PDF, que é derivado. O
 ela**, nunca de editor nenhum: é o modelo que garante a forma do passo 3.
 
 ```
-sem `documento_gerar`     o servidor de documentos do pack não subiu: `/mcp`
-na sessão                 mostra “documentos” — desconectado, “Reconnect”; sem
-                          Node na máquina ele não sobe. Diga isso em uma linha
+sem `documento_gerar`     o servidor de documentos do pack não subiu. Resolva
+na sessão                 VOCÊ: confira pelo terminal se há Node na máquina
+                          (`node --version`) e, se houver, diga ao candidato em
+                          palavras simples que fechar e abrir o Claude Code
+                          traz o PDF de volta. Sem Node, ofereça instalar —
+                          quem instala é você; ele só autoriza o aviso do
+                          sistema. Nunca peça que ele mexa em configuração
 `documento_modelos` diz   falta Chrome, Edge ou Chromium, que é o que imprime.
-navegador: não            Instalado um deles, é gerar de novo
+navegador: não            Ofereça instalar um deles você mesmo, pelo terminal,
+                          e gere de novo
 ```
 
 Nos dois casos o markdown está gravado e conferido, e o PDF vira uma linha em
@@ -396,17 +401,20 @@ As três pilhas do passo 2 (em currículo de vaga), o currículo inteiro, o que 
 conferência tirou, e o fecho do contrato §10:
 
 ## Guardei
-- ~/busca/curriculos/V-012-cv.md — criado, 84 linhas, derivado da trajetória de 2026-09-14
-- ~/busca/curriculos/V-012-cv.pdf — gerado pelo modelo `curriculo`, 2 páginas
-- ~/busca/cartas/V-012-carta.md — rascunho, 2.140 caracteres no corpo, e o PDF de 1 página
-- ~/busca/vagas/V-012-lumina-pagamentos.md — uma linha no `## Histórico`
-- ~/busca/vagas/_indice.md — `atualizada`
+- o currículo da V-012 (PM de IA, Lumina Pagamentos), feito só com o que está na sua trajetória
+- o PDF para anexar, em 2 páginas: ~/busca/curriculos/V-012-cv.pdf
+- a carta, ainda rascunho, com o PDF de 1 página: ~/busca/cartas/V-012-carta.pdf
+- a ficha da V-012 anota que o currículo ficou pronto
 
 ## Falta saber
 - a V-012 (PM de IA, Lumina Pagamentos) pede experiência com meios de pagamento
   internacionais, e a trajetória não tem — o currículo não diz
 - tirei “reduziu o custo de atendimento”: a trajetória diz que esse número não
   foi medido
+
+## Próximo passo
+- Candidatar-se à V-012 com este currículo, enquanto a vaga está aberta — é só dizer “me candidata na V-012”.
+- O currículo e a carta estão no painel, na ficha da V-012, para ler antes de mandar.
 
 E quando nada foi gravado, o `## Guardei` diz isso, com o motivo — `- nada foi
 gravado — você não aprovou o texto` ou `- nada foi gravado — você está sem

@@ -265,12 +265,17 @@ Período: os últimos 12 meses (padrão).
 - 2 estão no meio de um fato que entrou, e viraram `?`
 
 ## Guardei
-- ~/busca/_bruto/ — 12 arquivos, um por conversa
-- ~/busca/contatos/ — 8 criados, 4 atualizados
-- ~/busca/INDICE.md — a linha do que li e do que não li
+- as 12 conversas que li, como vieram, para conferir depois
+- 8 contatos entraram na sua busca e 4 foram atualizadas — cada ficha diz de que conversa veio
+- o registro do que li e do que não li, para a próxima importação não repetir
 
 ## Falta saber
 - o que o áudio de 12/08 dizia — está no meio do que foi combinado
+
+## Próximo passo
+- Me dizer quais dos 4 nomes que eu não soube separar são de trabalho — é só responder com os nomes.
+- Montar a lista do dia com quem entrou agora — é só dizer “o que eu faço hoje?”.
+- As fichas novas já estão no painel, aberto no seu navegador.
 ````
 
 ## 7 · Onde ela para

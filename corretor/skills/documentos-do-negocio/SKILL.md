@@ -84,10 +84,11 @@ WhatsApp: e envio:      se a cobrança pode SAIR daqui, e como — a seção 6.1
 
 A linha `carteira:` decide como esta skill lê e grava, e a tabela de
 equivalência do CONTRATO §1 dá o verbo de cada operação nos dois transportes. No
-`local`, toda chamada de ferramenta usa **caminho absoluto**, e ao falar com o
-corretor se escreve `~/carteira/…`; no `drive` não existe caminho — a busca é
-sempre presa à pasta, e ao falar com ele se diz “a pasta `carteira` do seu
-Drive”.
+`local`, toda chamada de ferramenta usa **caminho absoluto**; no `drive` não
+existe caminho — a busca é sempre presa à pasta. Ao falar com o corretor, caminho não aparece: diga o que ficou guardado e onde ele vê (contrato §10). Só
+quando ele precisar achar um arquivo
+— o documento do checklist, por exemplo —, `~/carteira/…` no `local` e “a pasta
+`carteira` do seu Drive” no `drive`.
 
 **Por que esta skill tem `Write` e `Edit`:** documento que falta é fato do
 negócio, e fato mora no arquivo dono. Ela escreve `pendências:` em
@@ -814,9 +815,9 @@ Quatro regras ao escrever no `hoje.md`:
 
 ```markdown
 ## Guardei
-- ~/carteira/imoveis/V-071-casa-3d-azenha.md — `pendências:` com os dois que faltam
-- ~/carteira/clientes/C-031-sr-almeida.md — `## Combinado` e `## Histórico`, o que pedi hoje
-- ~/carteira/hoje.md — duas caixas em `## Vence hoje`
+- V-071 (casa 3 dorm, Azenha): a ficha agora lista os dois documentos que faltam
+- C-031 (Sr. Almeida): ficou anotado o que pedi a ele hoje, e o que combinamos
+- a lista do dia ganhou duas coisas que vencem hoje
 
 ## Falta saber
 - se a construção do V-071 (casa 3 dorm, Azenha) está averbada na matrícula — só a certidão diz, e ela não chegou
@@ -826,12 +827,16 @@ Quatro regras ao escrever no `hoje.md`:
 ## Decidi sozinho
 - Montei como venda financiada porque a ficha da C-017 (Joana Ribeiro) diz “pagamento: financiamento, aprovação ainda não saiu”. Se ela passou para à vista, me diga e eu troco a lista.
 - Deixei o dossiê do banco genérico porque nenhum arquivo diz qual é o banco. Me diga o nome e eu ajusto o que muda.
+
+## Próximo passo
+- Perguntar à C-017 (Joana Ribeiro) qual banco vai financiar e o estado civil dela — as duas respostas mudam a lista de documentos. É só dizer “escreve para a Joana”.
+- A lista do que falta está na ficha do V-071 e na lista do dia, no painel.
 ```
 
-O exemplo está no `local`. No `drive`, o mesmo lugar se escreve com a pasta e o
-nome do arquivo — `imoveis/V-071-casa-3d-azenha.md, na pasta carteira do seu
-Drive` —, e vale igual para o ONDE das linhas `tem` do checklist. O corretor
-precisa saber onde a coisa foi parar, e o transporte é o dele.
+O exemplo está no `local`. No `drive` o fecho é o mesmo; o ONDE das linhas
+`tem` do checklist, esse sim, se escreve com a pasta e o nome do arquivo —
+`imoveis/V-071-casa-3d-azenha.md, na pasta carteira do seu Drive` —, porque é
+ali que o corretor vai buscar o documento.
 
 ---
 

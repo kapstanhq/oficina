@@ -151,12 +151,16 @@ Gravei 3 das 4 decisões que você marcou no painel.
 - <id> (<apelido>) — não gravei: mudou depois da marca, hoje está em “<etapa>”
 
 ## Guardei
-- ~/carteira/contatos/<arquivo> — a etapa e o histórico
-- ~/carteira/arquivo-morto/contatos/<arquivo> — aposentado
-- ~/carteira/funil.md, _indice.md e INDICE.md — as vistas e os contadores
+- <id> (<apelido>): a etapa nova e a data ficaram na ficha
+- <id> (<apelido>): saiu da lista de ativos, com o motivo — nada foi apagado, e volta quando você pedir
+- o funil e as contagens já mostram as mudanças
 
 ## Falta saber
-- <o que ela notou de torto e não era dela consertar>
+- <o que ela notou de torto e não era dela consertar, em palavras>
+
+## Próximo passo
+- <o que a mudança de etapa abre para um deles, e a frase para pedir: “é só dizer ‘…’”>
+- O painel já mostra o funil atualizado.
 ````
 
 Nada de bloco para colar: o trabalho desta skill é gravar o que já foi

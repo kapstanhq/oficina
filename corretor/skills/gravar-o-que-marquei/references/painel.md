@@ -62,8 +62,12 @@ painel_esperar    bloqueia até a pessoa agir, com teto em segundos
 Elas andam em par: mostrar sem esperar deixa uma tela que ninguém lê, e
 esperar sem mostrar trava por nada.
 
-**Diga o endereço em voz alta**, uma vez, quando abrir: quem está lendo o
-terminal não percebe que uma aba nasceu.
+**Quem abre a aba é o painel, não a pessoa** (D281). Sem aba aberta, o
+servidor abre o painel sozinho no navegador padrão dela; com aba aberta, a
+tela nova aparece lá. Repasse o `diga` em uma linha, como veio — ele já diz
+se abriu ou se já estava aberto —, e nunca peça que ela copie endereço: quem
+está lendo o terminal não percebe que uma aba nasceu, e não tem de saber o
+que é um endereço com `#`.
 
 ## A página inicial, e a terceira ferramenta
 
@@ -79,9 +83,18 @@ Ela **lê** a carteira e **não grava nada nela**: o que a pessoa faz ali volta
 como intenção, e quem grava continua sendo você.
 
 **Chame `painel_inicio` uma vez, no começo de toda execução que tem a carteira**,
-com o caminho que está na linha `carteira:` do `INDICE.md`. O endereço é
-sempre o mesmo naquela máquina — diga-o uma vez, na primeira execução do dia, e
-não repita. Sem `painel_inicio`, o painel é só de tarefa, como sempre foi.
+com o caminho que está na linha `carteira:` do `INDICE.md`. Ele abre a
+página inicial no navegador do corretor quando não há aba aberta, e volta
+com `aba: "abri"`, `"aberta"` ou `"nao"` — só no último caso o `diga` traz um
+endereço, e aí é porque o sistema não deixou abrir. Pode voltar também
+`atualizacao`: há versão nova do plugin, e o `faca` dela diz o que fazer —
+oferecer pela UI de perguntas e, com o sim, rodar você os comandos (contrato
+§10). Sem `painel_inicio`, o painel é só de tarefa, como sempre foi.
+
+**E diga que ele existe, no fim.** A última linha do `## Próximo passo` é o
+painel: o que ele mostra agora que não mostrava antes — a vaga nova no funil,
+a lista do dia refeita —, e que está aberto. É o que ensina o corretor a
+voltar lá sem você.
 
 A tela de tarefa (`painel_mostrar`) passa a aparecer DENTRO da casa, como "o
 agente está esperando você" — e some quando a pessoa responde. Nada muda no
@@ -179,7 +192,9 @@ Ao lado dos campos em destaque que estão sem resposta, o painel mostra
 ela chegar assim, faça o trabalho dela e pare — quem pediu está olhando a ficha.
 
 Quando a pessoa disser "vou revisar a pilha", não abra a pilha você mesmo:
-diga o endereço do painel seguido de `#/funil/<etapa>` e espere a fila.
+diga onde ela está no painel, em palavras — “no painel, em Funil, na etapa
+<etapa>” — e espere a fila. O endereço com `#/funil/<etapa>` é para quem pede
+o link, não para a frase de sempre.
 
 ## O arranjo do painel: o molde do pack, e o ajuste que você escreve
 
@@ -424,7 +439,8 @@ linha que o painel não foi usado.** Não repita a chamada.
 | `o painel não está aberto` | chamou `painel_esperar` sem ter mostrado nada | chame `painel_mostrar` antes |
 | `vista desconhecida` | o nome da vista está errado | as que existem são as sete acima |
 | `{ expirou: true }` | ninguém mexeu | siga em texto e diga isso em uma linha |
-| a pessoa diz que abriu e está em branco | o endereço foi copiado sem o que vem depois do `#` | mande o endereço inteiro de novo — aquela parte é a chave |
+| a pessoa diz que abriu e está em branco | o endereço foi copiado sem o que vem depois do `#` | chame `painel_inicio` de novo: sem aba viva, ele reabre com o endereço inteiro |
+| a pessoa diz que não viu abrir nada | o navegador abriu atrás de outra janela, ou o sistema não deixou | diga para procurar a aba nova no navegador; se não houver, chame `painel_inicio` de novo |
 | a pessoa diz que clicou e nada aconteceu | a tela mudou entre o clique e o envio | mostre de novo e peça para repetir |
 
 **Falhou e você não sabe por quê?** Diga o que aconteceu, faça o trabalho no

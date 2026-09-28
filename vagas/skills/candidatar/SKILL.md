@@ -257,7 +257,9 @@ vieram assim: mostrar é da skill, decidir é dele.
 
 **Sem navegador** — é o caminho de sempre, e não é o pior: peça que ele cole as
 perguntas do formulário, do jeito que estão na tela. Se o conector existe e
-está `desligado`, diga o `como_ligar` **uma vez** e siga sem ele.
+está `desligado`, ofereça **uma vez** configurar o navegador — quem configura é
+você, pelo guia do `como_ligar`, e o que fica com ele é reabrir o Claude Code —
+e siga sem ele nesta candidatura.
 
 **Candidatura por e-mail** — a vaga manda escrever para um endereço: não há
 formulário. As “perguntas” são o que o anúncio pede no corpo (pretensão,
@@ -732,26 +734,29 @@ e o apelido juntos, também num título: `## P-001 (Caio Rezende)`, nunca só o
 nome (contrato §2). Depois de o envio estar confirmado:
 
 ## Guardei
-- ~/busca/_bruto/2026-09-14-candidatura-V-012.md — as respostas, como saíram
-- ~/busca/vagas/V-012-lumina-pagamentos.md — `candidatada` desde hoje, e a
-  linha em `## Candidatura`
-- ~/busca/funil.md — a V-012 (PM de IA, Lumina Pagamentos) mudou de etapa
-- ~/busca/vagas/_indice.md e ~/busca/INDICE.md — data e contagens
+- V-012 (PM de IA, Lumina Pagamentos): candidatura registrada hoje, com as respostas do jeito que saíram — estão na ficha da vaga
+- o funil já mostra a V-012 entre as candidatadas
 
 ## Falta saber
 - com quem falar na Lumina Pagamentos — a vaga não nomeia ninguém
 - o contrato e a faixa da V-012 (PM de IA, Lumina Pagamentos): o formulário não
   perguntou, e o anúncio não diz
 
+## Próximo passo
+- Achar quem conduz a vaga na Lumina, para ter a quem escrever se a resposta demorar — é só dizer “completa a ficha da V-012”.
+- A candidatura está no painel, na ficha da V-012, com cada resposta que saiu.
+
 E enquanto o envio não se confirmou, o `## Guardei` diz exatamente isso —
 `- a candidatura NÃO foi registrada: você ainda não enviou`, ou `- a
 candidatura NÃO foi registrada: o botão foi apertado e a página não
-confirmou` —, seguido do que foi gravado de fato (a caixa no `hoje.md`, o
-`_bruto/` com `enviada: não`). Quem lê precisa saber que a etapa não mudou.
+confirmou` —, seguido do que foi gravado de fato, em palavras dele (o lembrete
+na lista do dia, as respostas guardadas como “não enviadas”). Quem lê precisa
+saber que a etapa não mudou. E o `## Próximo passo` diz o que falta: apertar
+enviar na página, e depois “Já me candidatei”, no painel, ou dizer “já enviei”.
 
 **E quando ela apertou**, o `## Guardei` diz quem apertou e quando ele
-aprovou: `- ~/busca/vagas/V-012-lumina-pagamentos.md — candidatada, enviada
-pela skill depois do seu sim de 14:32; a página confirmou`.
+aprovou: `- V-012 (PM de IA, Lumina Pagamentos): candidatada — enviei depois
+do seu sim das 14:32, e a página confirmou`.
 
 ## 7 · Onde ela para
 

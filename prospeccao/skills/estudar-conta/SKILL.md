@@ -204,14 +204,16 @@ Os três blocos do passo 5, a ficha inteira na tela **na primeira vez que a
 conta entra** (é quando ele vê o formato), e o fecho do contrato §10:
 
 ## Guardei
-- ~/carteira/contas/E-071-vetorbank.md — criada, 7 campos e 2 `?`
-- ~/carteira/contas/_indice.md — uma linha nova
-- ~/carteira/_bruto/2026-08-12-linkedin-carla.md — a página, como veio
-- ~/carteira/INDICE.md — contagens
+- E-071 (VetorBank, Porto Alegre): entrou na sua carteira, com 7 informações de onde vieram e 2 em aberto
+- a página do LinkedIn da Carla ficou guardada como veio, para conferir depois
 
 ## Falta saber
 - o e-mail da P-017 (Carla Menezes) — o LinkedIn não mostra
 - quem aprova orçamento de projeto no E-071 (VetorBank, Porto Alegre)
+
+## Próximo passo
+- Escrever a primeira mensagem para a Carla, com o gancho que achei na página da empresa. É só dizer “escreve para a Carla”.
+- A ficha do E-071 está no painel, com o que falta marcado.
 
 ## 7 · Onde ela para
 

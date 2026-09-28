@@ -75,10 +75,11 @@ não apurou sai como `?`, que é o que a próxima execução vai perguntar.
    cliente, não a resposta. Nada é gravado, e o fecho diz isso — o `## Guardei`
    vira uma linha só: `- nada foi gravado — você está sem carteira aqui`.
 
-No `local`, caminho de ferramenta é sempre **absoluto** e, ao falar com o
-corretor, escreve-se `~/carteira/…`. No `drive` não existe caminho: a busca é
-sempre presa à pasta, e ao corretor se diz “a pasta `carteira` do seu Drive”
-(contrato, seção 1).
+No `local`, caminho de ferramenta é sempre **absoluto**; no `drive` não existe
+caminho, e a busca é sempre presa à pasta (contrato, seção 1). Ao falar com o
+corretor, caminho não aparece: diga o que ficou guardado e onde ele vê (contrato §10). Só
+quando ele precisar achar um arquivo, `~/carteira/…` no `local` e “a pasta
+`carteira` do seu Drive” no `drive`.
 
 **Por que ela tem `Write` e `Edit`:** o lead só vale se sobreviver à semana. Ela
 grava o material colado em `_bruto/` e abre ou atualiza a ficha do cliente —
@@ -401,12 +402,9 @@ mandar, com a confirmação dela.
 
 ```markdown
 ## Guardei
-- ~/carteira/_bruto/2026-08-19-whatsapp-rafael.md — a conversa, como veio
-- ~/carteira/clientes/C-032-rafael-prado.md — criado, etapa novo lead
-- ~/carteira/clientes/_indice.md — uma linha nova
-- ~/carteira/funil.md — C-032 (Rafael Prado) em novo lead
-- ~/carteira/imoveis/V-071-casa-3d-azenha.md — uma linha em Mostrado a
-- ~/carteira/INDICE.md — clientes ativos, 21 para 22
+- C-032 (Rafael Prado): entrou na sua carteira como novo lead, com a conversa como veio
+- V-071 (casa 3 dorm, Azenha): ficou anotado que ele foi mostrado ao Rafael
+- a carteira passou de 21 para 22 clientes ativos
 
 ## Falta saber
 - telefone do C-032 (Rafael Prado) — a conversa exportada não traz o número, e é
@@ -416,11 +414,14 @@ mandar, com a confirmação dela.
   diga o que aparecia
 - A próxima pergunta, quando ele responder: se a compra é financiada. É o que
   muda o que dá para mostrar, e a faixa ele já disse.
+
+## Próximo passo
+- Mandar a mensagem acima ao Rafael hoje — ele escreveu hoje e está esperando. É só dizer “manda”.
+- O Rafael já aparece no funil do painel, em novo lead.
 ```
 
-Aqueles caminhos são a forma do `local`. No `drive` a mesma lista nomeia a pasta
-dentro da carteira — `clientes/C-032-rafael-prado.md, na pasta carteira do seu
-Drive — criado` —, porque lá não existe caminho.
+O fecho é o mesmo no `local` e no `drive`: ele diz o que ficou guardado, e não
+onde o arquivo mora.
 
 `## Decidi sozinho` só aparece em modo automático, e só se houve escolha — uma
 linha por escolha, no formato da seção 5 do contrato.

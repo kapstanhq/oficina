@@ -51,7 +51,10 @@ Vale para qualquer pack, e leva uns cinco minutos. É o caminho que testamos.
    morar —, salva conforme avança, e você pode parar no meio e voltar depois.
 
 A partir daí você pede em português: "o que eu faço hoje?", "busca vagas para
-mim". Para atualizar: `/plugin marketplace update kapstan-oficina`.
+mim". Para atualizar, não precisa fazer nada: quando sai versão nova, o
+próprio assistente avisa e atualiza se você disser sim — você só fecha e abre
+o Claude Code no fim. À mão, são dois comandos:
+`/plugin marketplace update kapstan-oficina` e `/plugin update vagas@kapstan-oficina`.
 
 <details>
 <summary>Por que a URL inteira, e não <code>kapstanhq/oficina</code></summary>

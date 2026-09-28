@@ -61,6 +61,7 @@
  * porta possa ler.
  */
 import { createServer } from "node:http";
+import { spawn } from "node:child_process";
 import { createHmac, randomBytes } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
@@ -470,4 +471,32 @@ export async function abrirPainel({ html, rotas = {}, aoRegistrar = () => {}, se
     curto: `http://127.0.0.1:${porta}/`,
     fechar: () => servidor.close(),
   };
+}
+
+/* ── ABRIR NO NAVEGADOR DA PESSOA (D281) ──────────────────────────────
+   "Abra este endereço" é uma instrução técnica: a pessoa tem de achar a
+   linha no terminal, copiar o endereço INTEIRO — com o que vem depois do
+   `#` — e colar numa aba. O servidor sabe o endereço, e o sistema sabe qual
+   é o navegador padrão: quem abre é ele.
+
+   O endereço é nosso e tem só `[A-Za-z0-9:/._#-]`, então passar pelo `start`
+   do Windows não abre porta para nada — e o `""` antes dele é o título da
+   janela, sem o qual o `start` tomaria o endereço por título. Falhar aqui
+   não é erro: quem chamou volta a dizer o endereço, como antes. */
+export function abrirNoNavegador(url, { plataforma = process.platform, gerar = spawn } = {}) {
+  if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+\/[A-Za-z0-9#._-]*$/.test(String(url))) return false;
+  /* no Windows a linha vai VERBATIM: o `cmd` não entende o escape de aspas
+     do Node, e o título vazio chegaria como `\"\"` */
+  const [cmd, args] = plataforma === "win32" ? ["cmd", ["/c", "start", '""', url]]
+    : plataforma === "darwin" ? ["open", [url]]
+    : ["xdg-open", [url]];
+  try {
+    const filho = gerar(cmd, args, { detached: true, stdio: "ignore", windowsHide: true,
+      windowsVerbatimArguments: plataforma === "win32" });
+    filho.on?.("error", () => {});
+    filho.unref?.();
+    return true;
+  } catch {
+    return false;
+  }
 }

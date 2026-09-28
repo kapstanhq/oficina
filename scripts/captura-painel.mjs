@@ -25,7 +25,7 @@ const PACK = join(RAIZ, "vagas");
 
 const servidor = spawn(process.execPath, [join(PACK, "painel", "servidor.mjs")], {
   stdio: ["pipe", "pipe", "ignore"],
-  env: { ...process.env, CLAUDE_PLUGIN_ROOT: PACK, KAPSTAN_PAINEL_DIR: join(TEMP, "painel"),
+  env: { ...process.env, KAPSTAN_NAO_ABRIR: "1", CLAUDE_PLUGIN_ROOT: PACK, KAPSTAN_PAINEL_DIR: join(TEMP, "painel"),
     KAPSTAN_CONECTORES_DIR: join(TEMP, "cofre"), PAINEL_PORTA: "4297" },
 });
 let buf = ""; let n = 0; const espera = new Map();

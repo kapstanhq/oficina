@@ -1563,3 +1563,44 @@ e o corte veio antes do funil e dos índices. A que terminou tinha levado 95.
 |---|---|
 | subir o teto de todas para 150 | só candidatar chega perto, e uma skill em laço gastaria quase o dobro antes de parar |
 | continuar também depois de "Parar", ou de erro | parar é de propósito, e o erro tende a se repetir gastando de novo |
+
+## D281 · O terminal fala a língua de quem procura emprego, e o que é comando é do assistente
+
+`data: 2026-09-28`
+
+Quem usa o pack não é técnico, e o terminal falava como se fosse: o fecho
+listava caminhos de arquivo (`~/busca/vagas/_indice.md — uma linha nova`), o
+painel pedia para copiar um endereço com `#`, o conector mandava digitar uma
+linha num terminal, o navegador pedia para configurar o Playwright, e ninguém
+ficava sabendo que havia versão nova.
+
+- **O painel abre sozinho.** O `painel_inicio` (e o `painel_mostrar`) abre o
+  endereço inteiro no navegador padrão quando não há aba viva — aba viva é um
+  longo poll de `/documento` pendurado ou que voltou há menos de 35 s; o
+  servidor recém-subido espera até 3 s por uma aba antiga reconectar. Não abre
+  na execução lançada pelo painel nem na prova (`KAPSTAN_NAO_ABRIR`). O `diga`
+  passa a dizer "abri" ou "já está aberto", e só traz endereço quando o sistema
+  não deixou abrir.
+- **A versão nova avisa, e o assistente atualiza.** O `painel_inicio` compara o
+  `plugin.json` instalado (só o que veio do marketplace, pelo caminho do cache)
+  com o do GitHub, a cada 12 h, e devolve `atualizacao` uma vez por dia. Com o
+  sim da pessoa, o assistente roda `claude plugin marketplace update` e
+  `claude plugin update`; ela só reabre o programa.
+- **O fecho ganha `## Próximo passo`, obrigatório e por último**: de uma a três
+  linhas com o que fazer, por que agora e a frase que a pessoa pode dizer, e a
+  última linha é o painel. O `## Guardei` diz o que ficou guardado na palavra
+  dela, sem caminho — a não ser o do arquivo que ela vai abrir ou anexar. A
+  régua do montador e a prova de execução cobram o título; os exemplos das
+  skills foram reescritos, porque o modelo imita o exemplo antes da regra.
+- **O que é comando, o assistente roda** (contrato §10): configurar o
+  navegador, subir a ponte do WhatsApp, atualizar o plugin. Continua da
+  pessoa o que é dela — decidir, senha, QR, chave e teto (no painel, em
+  Integrações), autorizar o aviso do sistema e reabrir o programa. O
+  `como_ligar` passa a dizer o caminho no painel primeiro, e a linha de
+  comando só para quem não o tem.
+
+| recusado | por que caiu |
+|---|---|
+| embutir o Playwright no `.mcp.json` do pack | todo início de sessão rodaria `npx` e baixaria o navegador, com ou sem uso; e os nomes das ferramentas mudariam debaixo das guardas do lançador |
+| o assistente ligar conector, guardar chave ou subir teto | é a razão do teto (D229): quem pode subir o próprio teto não tem teto |
+| atualizar sem perguntar | trocar o código que roda é decisão da pessoa, e a atualização só vale depois de reabrir |

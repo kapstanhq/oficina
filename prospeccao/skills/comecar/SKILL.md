@@ -531,27 +531,28 @@ Contrato §7, sem atalho:
 Sem conversa à mão? Ele digita o básico — nome, telefone, o que procura — e o
 resto entra `?`. A resposta ao prospect é de `/prospeccao:escrever-abordagem`.
 
-### Passo 8 · O que pedir agora
+### Passo 8 · O próximo passo
 
-**Três coisas que ele pode digitar hoje**, com o id e o apelido de verdade:
+**Três coisas que ele pode pedir hoje**, com o id e o apelido de verdade. Elas
+vão no `## Próximo passo` do fecho, cada uma com a frase que ele pode dizer do
+jeito dele — o `/prospeccao:…` fica para quem pedir:
 
 ```
-o que eu faço hoje?
-    /prospeccao:o-que-fazer-hoje lê a carteira inteira e monta a lista do dia,
-    na ordem do que faz perder a janela
-
-estuda a E-001 (VetorBank, Porto Alegre)
-    /prospeccao:estudar-conta lê o que é público e grava fato com procedência
-    — o que não achar vira ?
-
-escreve a abordagem para a P-001 (Carla Menezes)
-    /prospeccao:escrever-abordagem usa o que a carteira sabe e o gancho mais
-    recente, e confere o nao-perturbe.md antes
+- Saber o que fazer hoje — é só dizer “o que eu faço hoje?”, e eu monto a
+  lista do dia, na ordem do que faz perder a janela.
+- Estudar o E-001 (VetorBank, Porto Alegre) — é só dizer “estuda o VetorBank”,
+  e eu leio o que é público e guardo cada fato com a origem; o que não achar
+  fica em aberto.
+- Escrever para a P-001 (Carla Menezes) — é só dizer “escreve para a Carla”, e
+  eu uso o que a carteira sabe e o gancho mais recente, e confiro antes a lista
+  de quem não quer ser procurado.
 ```
 
-E a lista inteira: veja a seção 7, “A lista de comandos”. Ele já tem material
-de antes — planilha, agenda de papel, conversas? Uma linha: ponha em `_bruto/`
-e rode `/prospeccao:organizar-carteira`, que transforma em ficha.
+E a lista inteira: veja a seção 7, “A lista do que ele pode pedir”. Ele já tem
+material de antes — planilha, agenda de papel, conversas? Uma linha: é só ele
+dizer onde está o arquivo, que você o copia para `_bruto/` e o organiza com
+`/prospeccao:organizar-carteira`, que transforma em ficha. Mover arquivo para
+pasta técnica não é tarefa dele.
 
 ---
 
@@ -568,8 +569,15 @@ só para retomar um item e o teste não passa:
 - nada foi gravado — o teste do Google Drive não passou, e a linha só vira
   `sim` depois de uma chamada que voltou
 
+## Falta saber
+- por que o teste do Drive não passou — a chamada voltou sem resposta, e não sei se foi a autorização
+
 ## Ficou para depois
 - ligar o Google Drive — continua em “Pulado no começo”, com a data de lá
+
+## Próximo passo
+- Tentar o Google Drive de novo quando quiser — é só dizer “liga o Drive”.
+- O painel está aberto no seu navegador, com a carteira como estava.
 ```
 
 `## Não gravei nada` e `## A carteira está como estava` são títulos inventados, e
@@ -580,7 +588,9 @@ certa.
 ```markdown
 # Sua carteira está montada
 
-Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
+Ela mora na pasta “carteira”, dentro da sua pasta de usuário (~/carteira/). É
+sua, é texto, e você abre em qualquer editor — mas não precisa: tudo aparece no
+painel.
 
 ## O que ficou pronto
 - a carteira, com os nove arquivos do padrão
@@ -589,30 +599,33 @@ Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
 - E-001 (VetorBank, Porto Alegre), do site que você mandou
 - P-001 (Carla Menezes), da conversa que você colou — e ela já aparece no
   funil, em “a estudar”
-- nao-perturbe.md criado, vazio — e é ele que toda mensagem lê antes de sair
+- a lista de quem pediu para não ser procurado, criada vazia — e é ela que
+  toda mensagem lê antes de sair
 
 ## Guardei
-- ~/carteira/INDICE.md — criado, com o seu nome e o modo
-- ~/carteira/hoje.md · funil.md — criados, vazios por enquanto
-- ~/carteira/nao-perturbe.md — criado, vazio
-- ~/carteira/contas/E-001-vetorbank.md — criado
-- ~/carteira/contas/_indice.md — uma linha
-- ~/carteira/contatos/P-001-carla-menezes.md — criado
-- ~/carteira/contatos/_indice.md — uma linha
-- ~/carteira/_bruto/2026-08-12-linkedin-carla.md — a conversa, como veio
+- a sua carteira, com o seu nome e o modo
+- a lista do dia e o funil, criados — vazios por enquanto
+- a lista de quem não quer ser procurado, criada — vazia
+- E-001 (VetorBank, Porto Alegre): a ficha da conta, do site que você mandou
+- P-001 (Carla Menezes): a ficha dela, com a conversa como veio, e a linha
+  no funil
 
 ## Falta saber
 - o e-mail da P-001 (Carla Menezes) — o LinkedIn não mostra
 - o faturamento do E-001 (VetorBank, Porto Alegre) — não é público
 
 ## Ficou para depois
-- o perfil.md — sem ele eu não sei dizer se uma conta vale a pena, e
-  /prospeccao:perfil-de-cliente leva uns 10 minutos
+- o seu perfil de cliente — sem ele eu não sei dizer se uma conta vale a
+  pena, e a conversa leva uns 10 minutos
 - ligar o Gmail e o Google Drive — anotei em “Pulado no começo”, e qualquer
   skill oferece de novo quando fizer falta
 
-## O que pedir agora
-<os três exemplos e a lista das dez>
+## Próximo passo
+- Montar o seu perfil de cliente, agora — é ele que diz se o E-001 (VetorBank,
+  Porto Alegre) vale a abordagem. É só dizer “monta o meu perfil de cliente”.
+- Depois, estudar o E-001 — é só dizer “estuda o VetorBank”.
+- O painel está aberto no seu navegador: a Carla já aparece no funil, e a lista
+  do que você pode me pedir está na página inicial.
 ```
 
 Veio da planilha? As linhas da conta trocam por estas, e o resto fica:
@@ -624,26 +637,27 @@ Veio da planilha? As linhas da conta trocam por estas, e o resto fica:
   “data do último contato”
 
 ## Guardei
-- ~/carteira/contas/ — 18 fichas criadas, E-001 a E-018
-- ~/carteira/contas/_indice.md — 18 linhas
-- ~/carteira/_bruto/2026-08-19-planilha-contas.csv — a planilha, como veio
+- 18 fichas de conta, de E-001 a E-018, e a planilha como veio
 
 ## Falta saber
-- o setor não está na planilha — ficou ? em 18 fichas
+- o setor — a planilha não diz, e ficou em aberto nas 18 fichas
 - quem decide, nas 18: a planilha tem empresa e não tem pessoa
 ```
 
 No `drive`, o mesmo fecho troca o lugar: “Ela mora na pasta `carteira` do
-seu Drive”, e cada linha do `## Guardei` nomeia a pasta e o arquivo. Ao falar
+seu Drive”, e o `## Guardei` diz o mesmo, na mesma palavra — sem caminho de
+arquivo. Ao falar
 com ele, data em prosa — “12 de agosto”; **nos arquivos, sempre `2026-08-12`**.
 Todo id aparece com o apelido junto, em toda linha. `## Decidi sozinho` não
 aparece: ela não decide nada sozinha (seção 5).
 
-**A lista de comandos, uma linha cada, e toda skill instalada nela.** Não a
-escreva de memória: onde há ferramenta de arquivo, um `Grep` pelo padrão
-`^description:` em `../*/SKILL.md` a partir da pasta desta, com duas linhas
-depois, dá o nome e a primeira frase de cada uma — escreva
-`/prospeccao:<nome>` e o que ela faz, encurtado. Sem ferramenta de arquivo, a
+**A lista do que ele pode pedir, uma linha cada, e toda skill instalada nela.**
+Com painel, ela já está na página inicial dele, e o `## Próximo passo` só diz
+isso; sem painel, ela vem antes do `## Guardei`. Não a escreva de memória: onde
+há ferramenta de arquivo, um `Grep` pelo padrão `^description:` em
+`../*/SKILL.md` a partir da pasta desta, com duas linhas depois, dá o nome e a
+primeira frase de cada uma — escreva a frase que ele pode dizer para pedir e o
+que ela faz, encurtado, com `/prospeccao:<nome>` entre parênteses no fim. Sem ferramenta de arquivo, a
 lista está em `references/contrato/11-0-onde-roda.md`, com o que não funciona
 no chat da web. Prometer skill que não existe é o primeiro erro que ele
 encontra sozinho.

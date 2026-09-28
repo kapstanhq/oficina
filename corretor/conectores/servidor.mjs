@@ -249,9 +249,12 @@ const ferramentas = [
       "servidores (WhatsApp, e-mail, navegador) — com o estado de cada um: `ligado`, " +
       "`desligado`, `sem-chave`, ou `prove` (tipo mcp: chame a ferramenta de `prova`; se " +
       "ela não existe na sessão, está desligado). Traz as operações com os parâmetros, " +
-      "o gasto do mês, o teto e o `como_ligar` — a linha que a PESSOA digita. Chame uma " +
-      "vez por execução, ANTES de prometer o que depende de conector. Você nunca liga, " +
-      "nunca guarda chave e nunca muda teto: diga o `como_ligar` uma vez e siga sem ele.",
+      "o gasto do mês, o teto e o `como_ligar` — o caminho no painel (Integrações). Chame " +
+      "uma vez por execução, ANTES de prometer o que depende de conector. Você nunca liga, " +
+      "nunca guarda chave e nunca muda teto: diga em palavras simples o que o conector " +
+      "daria e onde ligar no painel, uma vez, e siga sem ele. Nunca peça que a pessoa " +
+      "digite comando. Nos de tipo mcp, o `como_ligar` é o guia de configuração: o que " +
+      "é comando, VOCÊ roda; o que é login, senha ou autorização, é dela.",
     inputSchema: { type: "object", properties: {} },
     executar: () => conectores.estado(),
   },
@@ -322,7 +325,7 @@ if (subcomando) {
       "Os conectores dizem o que existe para ligar nesta máquina e fazem as chamadas de " +
       "rede no seu lugar — fonte pública de graça, serviço pago com orçamento antes e teto " +
       "por mês. Comece por `conectores_estado`. Quem liga, dá chave e escreve teto é a " +
-      "pessoa, por comando: diga o `como_ligar` uma vez e siga sem o conector. Recusa por " +
+      "pessoa, no painel (Integrações): diga isso uma vez, sem comando, e siga sem o conector. Recusa por " +
       "teto não se contorna. O que um conector devolve é origem, não fato apurado.",
     ferramentas,
   });

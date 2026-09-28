@@ -1,6 +1,8 @@
 # Sua carteira está montada
 
-Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
+Ela mora na pasta “carteira”, dentro da sua pasta de usuário (~/carteira/). É
+sua, é texto, e você abre em qualquer editor — mas não precisa: tudo aparece no
+painel.
 
 ## O que ficou pronto
 - a carteira, com os nove arquivos do padrão
@@ -9,27 +11,30 @@ Ela mora em ~/carteira/. É sua, é texto, e você abre em qualquer editor.
 - E-001 (VetorBank, Porto Alegre), do site que você mandou
 - P-001 (Carla Menezes), da conversa que você colou — e ela já aparece no
   funil, em “a estudar”
-- nao-perturbe.md criado, vazio — e é ele que toda mensagem lê antes de sair
+- a lista de quem pediu para não ser procurado, criada vazia — e é ela que
+  toda mensagem lê antes de sair
 
 ## Guardei
-- ~/carteira/INDICE.md — criado, com o seu nome e o modo
-- ~/carteira/hoje.md · funil.md — criados, vazios por enquanto
-- ~/carteira/nao-perturbe.md — criado, vazio
-- ~/carteira/contas/E-001-vetorbank.md — criado
-- ~/carteira/contas/_indice.md — uma linha
-- ~/carteira/contatos/P-001-carla-menezes.md — criado
-- ~/carteira/contatos/_indice.md — uma linha
-- ~/carteira/_bruto/2026-08-12-linkedin-carla.md — a conversa, como veio
+- a sua carteira, com o seu nome e o modo
+- a lista do dia e o funil, criados — vazios por enquanto
+- a lista de quem não quer ser procurado, criada — vazia
+- E-001 (VetorBank, Porto Alegre): a ficha da conta, do site que você mandou
+- P-001 (Carla Menezes): a ficha dela, com a conversa como veio, e a linha
+  no funil
 
 ## Falta saber
 - o e-mail da P-001 (Carla Menezes) — o LinkedIn não mostra
 - o faturamento do E-001 (VetorBank, Porto Alegre) — não é público
 
 ## Ficou para depois
-- o perfil.md — sem ele eu não sei dizer se uma conta vale a pena, e
-  /prospeccao:perfil-de-cliente leva uns 10 minutos
+- o seu perfil de cliente — sem ele eu não sei dizer se uma conta vale a
+  pena, e a conversa leva uns 10 minutos
 - ligar o Gmail e o Google Drive — anotei em “Pulado no começo”, e qualquer
   skill oferece de novo quando fizer falta
 
-## O que pedir agora
-<os três exemplos e a lista das dez>
+## Próximo passo
+- Montar o seu perfil de cliente, agora — é ele que diz se o E-001 (VetorBank,
+  Porto Alegre) vale a abordagem. É só dizer “monta o meu perfil de cliente”.
+- Depois, estudar o E-001 — é só dizer “estuda o VetorBank”.
+- O painel está aberto no seu navegador: a Carla já aparece no funil, e a lista
+  do que você pode me pedir está na página inicial.

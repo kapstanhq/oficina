@@ -123,7 +123,7 @@ Qualquer outro valor, linha ausente ou arquivo ilegível: **copiloto**.
 | o primeiro item | **oferece** na UI de perguntas | **executa**, se o insumo já estiver na {base} (passo 6) |
 | data em prosa sem dia (“sábado de manhã”) | pergunta, se o item for do topo | resolve pelo dia mais próximo e declara; havendo dois igualmente prováveis, deixa `?` |
 | linha órfã do `hoje.md` velho | pergunta, se o item for do topo | carrega e declara |
-| fecho | `## Guardei` e `## Falta saber` | mais `## Decidi sozinho` |
+| fecho | `## Guardei`, `## Falta saber` e `## Próximo passo` | mais `## Decidi sozinho`, antes do `## Próximo passo` |
 
 Esta skill **não tem exceção ao automático** — a única do pack é
 `/{plugin}:{skill-conferir}`, e é por isso que o automático nunca a chama
@@ -430,8 +430,9 @@ skill do item e aqui seria a mesma pergunta duas vezes; nem gosto que
 declara.
 
 **Dia vazio** — nenhum item em nenhum degrau. Diga em uma linha, sem sermão:
-que não há nada vencendo, e que {captacao-do-oficio}. Ofereça `/{plugin}:retomar-contato` ou
-`/{plugin}:{skill-do-dia-vazio}`, uma vez.
+que não há nada vencendo, e que {captacao-do-oficio}. Ofereça, uma vez, no
+`## Próximo passo`, `/{plugin}:retomar-contato` ou `/{plugin}:{skill-do-dia-vazio}` — pela
+frase que ele pode dizer para chamá-las, e não pelo comando.
 
 ---
 
@@ -441,8 +442,9 @@ O trabalho é a lista na tela — esta skill não produz bloco para colar, e que
 escreve a mensagem, e quem a manda quando ela sai, é a skill do item. Depois da
 lista vêm os blocos de fecho do contrato (seção 10), nesta ordem e com estes
 títulos exatos. **A pergunta do passo 6 é a última coisa**, depois do fecho:
-perguntar antes de dizer onde guardou faz ele responder sem saber o que já foi
-feito.
+perguntar antes de dizer o que guardou faz ele responder sem saber o que já foi
+feito. O `## Próximo passo` nomeia o primeiro item da lista, com a razão; a
+pergunta oferece fazê-lo agora.
 
 ### A lista
 
@@ -485,19 +487,23 @@ Depois da lista, uma linha e não mais que uma:
 
 ```
 Isto é o que está escrito na {base}. Se você {exemplo-do-que-nao-se-anotou}, mandou mensagem
-ou recebeu documento e não anotou, eu vou cobrar de novo amanhã — passe o que
-aconteceu para /{plugin}:organizar-{pasta-base} e a lista de amanhã sai certa.
+ou recebeu documento e não anotou, eu vou cobrar de novo amanhã — é só me
+contar o que aconteceu e dizer “organiza minha {base}”, e a lista de amanhã sai certa.
 ```
 
 ### O fecho
 
 ```markdown
 {hoje--saida-o-fecho}
+
+## Próximo passo
+- Começar pelo primeiro item: <o que fazer, com quem> — <a razão, em meia frase>. É só dizer “<a frase que chama a skill dele>”.
+- A lista do dia está no painel, aberto no seu navegador.
 ```
 
-O `## Guardei` diz o lugar do jeito que o {profissional} reconhece, e o jeito muda com
-o transporte: no `local`, `~/{pasta-base}/hoje.md`; no `drive`, `hoje.md, na pasta
-{base} do seu Drive`. O resto da linha é o mesmo.
+O `## Guardei` diz o que mudou do jeito que o {profissional} reconhece — “a lista
+do dia foi refeita” —, sem caminho de arquivo; no `drive`, a mesma frase diz
+que ela está na pasta {base} do Drive dele. O resto da linha é o mesmo.
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**. A única exceção é a mensagem que saiu: ali não há

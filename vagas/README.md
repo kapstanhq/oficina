@@ -26,7 +26,10 @@ computador e roda programas nela, e esses chats não chegam lá.
    entrevista. Dali em diante, abra o Claude em qualquer pasta e peça em
    português — "busca vagas para mim", "o que eu faço hoje?".
 
-Para atualizar depois: `/plugin marketplace update kapstan-oficina`.
+Para atualizar depois, não precisa fazer nada: quando sai versão nova, o
+próprio assistente avisa e atualiza se você disser sim — você só fecha e abre o
+Claude Code no fim. À mão, são dois comandos:
+`/plugin marketplace update kapstan-oficina` e `/plugin update vagas@kapstan-oficina`.
 
 ## O que ele faz, e o que ele não faz
 

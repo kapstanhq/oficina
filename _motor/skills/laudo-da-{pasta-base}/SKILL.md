@@ -186,41 +186,45 @@ Abre pelo veredito em UMA linha, e o veredito é a primeira coisa que se lê:
 
 ## Sem procedência — 2
 
-- {pasta-itens}/{exemplo-item-arquivo} · campo {exemplo-campo-sem-procedencia}, sem `←`
-  → confirme a origem ou marque `?` · /{plugin}:organizar-{pasta-base}
-- {pasta-pessoas}/{exemplo-pessoa-arquivo} · campo `telefone`, sem `←`
-  → veio de onde? · /{plugin}:organizar-{pasta-base}
+- {exemplo-item} · {exemplo-campo-sem-procedencia}, sem dizer de onde veio
+  → confirme a origem, ou deixe em aberto — é só dizer “organiza minha {base}”
+- {exemplo-pessoa} · o telefone, sem dizer de onde veio
+  → veio de onde? — é só dizer “organiza minha {base}”
 
 ## Vencido — 1
 
-- {pasta-itens}/{exemplo-item-arquivo} · {exemplo-campo-vencido} apurado em 2026-06-02, há 99 dias
+- {exemplo-item} · {exemplo-campo-vencido} apurado em 2026-06-02, há 99 dias
   → pergunte de novo antes de usar em qualquer texto
 
 ## Órfãos — 3
 
-- `funil.md` cita {exemplo-item} e o arquivo não existe
-- {pasta-pessoas}/{exemplo-pessoa-arquivo} não está no `_indice.md` da pasta
-- `hoje.md` cita um id sem apelido, três vezes
+- o funil cita {exemplo-item}, e a ficha não existe
+- {exemplo-pessoa} tem ficha e não aparece na lista de {pessoas}
+- a lista do dia cita um id sem apelido, três vezes
 
 ## Acima do teto — 1
 
-- {pasta-pessoas}/{exemplo-pessoa-arquivo} · 186 linhas, teto 120
-  → o histórico vai para `_bruto/` · /{plugin}:organizar-{pasta-base}
+- {exemplo-pessoa} · a ficha tem 186 linhas, teto 120
+  → o histórico antigo vai para os originais — é só dizer “organiza minha {base}”
 
 ## Os `?` mais velhos — 5
 
-- {pasta-itens}/{exemplo-item-arquivo} · há 41 dias · o que falta está na linha `←`
+- {exemplo-item} · há 41 dias · a ficha diz o que falta e onde perguntar
 - … (cinco, sempre; menos que cinco, todos)
 
 ## Não consegui ler — 1
 
-- `_bruto/2026-08-30-planilha.csv` — o arquivo abriu vazio
+- a planilha 2026-08-30-planilha.csv, nos originais — o arquivo abriu vazio
 
 ## Guardei
 - nada foi gravado — este laudo só lê
 
 ## Falta saber
-- o pack não declara prazo de validade para `{campo-sem-validade}`; medi como se não vencesse
+- não sei por quanto tempo o campo {campo-sem-validade} continua valendo; medi como se não vencesse
+
+## Próximo passo
+- Resolver as 3 coisas de hoje — o que está sem origem pode sair numa mensagem errada. É só dizer “organiza minha {base}”.
+- No painel, cada ficha citada aqui abre com um clique.
 ```
 
 `## Guardei` é obrigatório e não some nunca (§10). Aqui ele diz sempre a mesma

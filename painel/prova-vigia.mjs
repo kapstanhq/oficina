@@ -26,7 +26,7 @@ const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const p = spawn(process.execPath, [join(AQUI, "nucleo", "vigia.mjs"), join(AQUI, "servidor.mjs")], {
   stdio: ["pipe", "pipe", "pipe"],
-  env: { ...process.env, KAPSTAN_PAINEL_DIR: join(TEMP, "painel"),
+  env: { ...process.env, KAPSTAN_NAO_ABRIR: "1", KAPSTAN_PAINEL_DIR: join(TEMP, "painel"),
     KAPSTAN_CONECTORES_DIR: join(TEMP, "cofre"), PAINEL_PORTA: "4290" },
 });
 let registro = "";

@@ -124,7 +124,8 @@ a citá-lo sempre com id e apelido — `V-071 (casa 3 dorm, Azenha)`.
 **O imóvel não está na carteira?** Leia a matrícula assim mesmo, grave o bruto e
 entregue a ficha — ela é o trabalho. Mas **não crie o arquivo do imóvel a partir
 da matrícula**: matrícula não tem preço, não tem link e não tem foto, e imóvel
-pela metade some da vista. Diga que ele entra pelo `/corretor:anunciar-imovel`.
+pela metade some da vista. Diga que ele entra quando o corretor pedir o anúncio
+— é só dizer “anuncia esse imóvel”, com o link (é o `/corretor:anunciar-imovel`).
 
 ### Passo 2 · Gravar o bruto, antes de ler
 
@@ -461,19 +462,21 @@ O fecho, com os títulos exatos do contrato:
 
 ```markdown
 ## Guardei
-- ~/carteira/_bruto/2026-08-14-matricula-44812.md — o caminho do PDF e a certidão como veio
-- ~/carteira/imoveis/V-071-casa-3d-azenha.md — Documentos com o número, o cartório e três pendências; uma linha no Histórico
-- ~/carteira/imoveis/_indice.md — a data da linha do V-071 (casa 3 dorm, Azenha)
+- V-071 (casa 3 dorm, Azenha): a ficha ganhou o número da matrícula, o cartório e três pendências, com a data de hoje no histórico
+- a certidão ficou guardada como veio, junto com onde está o PDF
 
 ## Falta saber
 - o que dizem o Av-5 e o R-6 do V-071 (casa 3 dorm, Azenha) — o carimbo cobriu o texto
 - se a alienação fiduciária do R-7 foi quitada, e se a baixa foi averbada — pedir a C-031 (Sr. Almeida)
 - quem é Maria Helena de Almeida no seu cadastro — ela assina a venda junto
+
+## Próximo passo
+- Pedir ao C-031 (Sr. Almeida) o comprovante da baixa da alienação — sem ela a venda não fecha. É só dizer “cobra o Sr. Almeida”.
+- As três pendências estão na ficha do V-071, no painel.
 ```
 
-Esse `## Guardei` é o do `local`. No `drive`, as mesmas três linhas nomeiam a
-pasta dentro da carteira: `- _bruto/2026-08-14-matricula-44812.md, na pasta
-carteira do seu Drive — onde está o PDF e a certidão como veio`.
+Esse `## Guardei` é o do `local`. No `drive` ele é o mesmo, e a linha da
+certidão diz que ela ficou na pasta carteira do seu Drive.
 
 ---
 

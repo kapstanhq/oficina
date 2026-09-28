@@ -345,15 +345,14 @@ Grave `~/busca/trajetoria.md` e `~/busca/perfil.md` pelos gabaritos, e
 `o que eu faço:` do `INDICE.md` vazio? Escreva a frase dele, de uma linha — é
 o que abre toda mensagem. Preenchida, não se toca.
 
-Fecha com o que vem, na ordem, com o comando de verdade:
+Fecha com o que vem, na ordem, no `## Próximo passo` — cada um com a frase que
+ele pode dizer, e não com o comando:
 
 ```
-busca vaga para mim
-    /vagas:buscar-vagas percorre o `## Onde olhar`, descarta o que o
-    `## Descarto` manda e guarda o resto como `nova`
-qual delas vale?
-    /vagas:triar-vagas julga cada uma contra o perfil, com o que pesa a favor
-    e contra
+buscar vagas    “busca vaga para mim” — eu olho onde você disse para olhar,
+                tiro o que você não quer e guardo o resto
+julgar          “quais dessas valem?” — cada vaga contra o seu perfil, com o
+                que pesa a favor e o que pesa contra
 ```
 
 **Ela não reclassifica a busca sozinha.** Vagas que o perfil novo descartaria
@@ -391,20 +390,26 @@ veio.
 Os dois arquivos inteiros na tela, e então o fecho do contrato §10. **A resposta
 que termina numa pergunta também fecha** — é o caso mais comum desta skill: a
 pergunta vem primeiro, e depois `## Guardei` (o que já foi gravado, ou `- nada
-ainda: só gravo o que você confirmar`) e `## Falta saber` (os assuntos que
-faltam). Sem o fecho, quem volta amanhã não sabe o que ficou guardado.
+ainda: só gravo o que você confirmar`), `## Falta saber` (os assuntos que
+faltam) e `## Próximo passo` (responder a pergunta de cima — ou dizer “depois a
+gente continua”, que ela volta outro dia do mesmo ponto). Sem o fecho, quem
+volta amanhã não sabe o que ficou guardado.
 
 
 ## Guardei
-- ~/busca/_bruto/2026-09-14-conversa-perfil.md — a conversa, como você disse
-- ~/busca/_bruto/2026-09-14-perfil-exportado.md — o PDF do LinkedIn, como veio
-- ~/busca/trajetoria.md — criada, 4 experiências e uma pausa, 3 linhas em `## O que NÃO se diz`
-- ~/busca/perfil.md — criado, 2 direções em ordem, 4 cortes, 5 linhas em `## Onde olhar`
+- a nossa conversa, do jeito que você disse, e o PDF do LinkedIn, como veio
+- a sua trajetória: 4 experiências e uma pausa, e 3 coisas que não se dizem em currículo nenhum
+- o seu perfil de busca: 2 direções em ordem, 4 coisas que você descarta e 5 lugares onde olhar
 
 ## Falta saber
 - de onde vem o número de pacientes por plantão — sem isso ele não entra em currículo
-- se aceita temporário — está em `## O que eu não sei ainda`
-- por onde o Hospital Boa Vista publica vaga: ficou "à mão", toda semana
+- se você aceita vaga temporária — ficou anotado como pergunta em aberto no seu perfil
+- por onde o Hospital Boa Vista publica vaga: esse eu olho só com você, toda semana
+
+## Próximo passo
+- Buscar as primeiras vagas com esse perfil — é só dizer “busca vaga para mim”.
+- Depois, julgar o que chegar — é só dizer “quais dessas valem?”.
+- O seu perfil e a sua trajetória estão no painel, na página inicial, para conferir.
 
 ## 7 · Onde ela para
 

@@ -200,41 +200,45 @@ Abre pelo veredito em UMA linha, e o veredito é a primeira coisa que se lê:
 
 ## Sem procedência — 2
 
-- vagas/V-019-trilho-logistica.md · campo `faixa` = R$ 14 a 16 mil, sem `←`
-  → confirme a origem ou marque `?` · /vagas:organizar-busca
-- contatos/P-005-helena-prates.md · campo `telefone`, sem `←`
-  → veio de onde? · /vagas:organizar-busca
+- V-019 (Gerente de Produto Sênior, Trilho Logística) · `faixa` = R$ 14 a 16 mil, sem dizer de onde veio
+  → confirme a origem, ou deixe em aberto — é só dizer “organiza minha busca”
+- P-005 (Helena Prates) · o telefone, sem dizer de onde veio
+  → veio de onde? — é só dizer “organiza minha busca”
 
 ## Vencido — 1
 
-- vagas/V-019-trilho-logistica.md · `estado` apurado em 2026-06-02, há 99 dias
+- V-019 (Gerente de Produto Sênior, Trilho Logística) · `estado` apurado em 2026-06-02, há 99 dias
   → pergunte de novo antes de usar em qualquer texto
 
 ## Órfãos — 3
 
-- `funil.md` cita V-019 (Gerente de Produto Sênior, Trilho Logística) e o arquivo não existe
-- contatos/P-005-helena-prates.md não está no `_indice.md` da pasta
-- `hoje.md` cita um id sem apelido, três vezes
+- o funil cita V-019 (Gerente de Produto Sênior, Trilho Logística), e a ficha não existe
+- P-005 (Helena Prates) tem ficha e não aparece na lista de contatos
+- a lista do dia cita um id sem apelido, três vezes
 
 ## Acima do teto — 1
 
-- contatos/P-005-helena-prates.md · 186 linhas, teto 120
-  → o histórico vai para `_bruto/` · /vagas:organizar-busca
+- P-005 (Helena Prates) · a ficha tem 186 linhas, teto 120
+  → o histórico antigo vai para os originais — é só dizer “organiza minha busca”
 
 ## Os `?` mais velhos — 5
 
-- vagas/V-019-trilho-logistica.md · há 41 dias · o que falta está na linha `←`
+- V-019 (Gerente de Produto Sênior, Trilho Logística) · há 41 dias · a ficha diz o que falta e onde perguntar
 - … (cinco, sempre; menos que cinco, todos)
 
 ## Não consegui ler — 1
 
-- `_bruto/2026-08-30-planilha.csv` — o arquivo abriu vazio
+- a planilha 2026-08-30-planilha.csv, nos originais — o arquivo abriu vazio
 
 ## Guardei
 - nada foi gravado — este laudo só lê
 
 ## Falta saber
-- o pack não declara prazo de validade para `cargo`; medi como se não vencesse
+- não sei por quanto tempo o campo cargo continua valendo; medi como se não vencesse
+
+## Próximo passo
+- Resolver as 3 coisas de hoje — o que está sem origem pode sair numa mensagem errada. É só dizer “organiza minha busca”.
+- No painel, cada ficha citada aqui abre com um clique.
 ```
 
 `## Guardei` é obrigatório e não some nunca (§10). Aqui ele diz sempre a mesma

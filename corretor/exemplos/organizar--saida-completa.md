@@ -8,8 +8,8 @@ para arquivo-morto/, podei 1 histórico e achei 3 coisas que não batem.
   R$ 550.000 e o que ela não aceita
 - 2026-08-17-email-almeida.md → C-031 (Sr. Almeida): manda até sexta o IPTU
   do V-071 (casa 3 dorm, Azenha)
-- 2026-08-18-matricula-44812.md → nada extraído. É matrícula, e quem lê é
-  /corretor:conferir-matricula
+- 2026-08-18-matricula-44812.md → nada extraído. É matrícula, e a leitura é
+  outra conversa — é só dizer “confere essa matrícula”
 - 2026-08-14-whatsapp-desconhecido.md → nada extraído. Fala de um apartamento na
   Cidade Baixa que não está na carteira, e sem link eu não crio imóvel
 - 2026-08-19-planilha-imoveis.csv → 18 fichas novas, de V-072 (casa 2 dorm,
@@ -44,26 +44,25 @@ para arquivo-morto/, podei 1 histórico e achei 3 coisas que não batem.
   faço isso sozinha nem no automático. Me diga e eu movo, com a data e o motivo.
 
 ## Guardei
-- ~/carteira/clientes/C-017-joana-ribeiro.md — 3 campos novos
-- ~/carteira/clientes/C-024-paulo-menezes.md — criado, quase tudo ?
-- ~/carteira/clientes/C-019-rita-camargo.md — histórico condensado
-- ~/carteira/imoveis/ — 18 fichas criadas, V-072 a V-089
-- ~/carteira/imoveis/V-071-casa-3d-azenha.md · A-014-apto-2d-menino-deus.md — 1 campo cada
-- ~/carteira/imoveis/_indice.md — reescrito, 15 → 33 vivos
-- ~/carteira/_bruto/2026-08-19-historico-rita.md — criado, com o que saiu de lá
-- ~/carteira/arquivo-morto/clientes/C-002-leo-antunes.md — movido de clientes/
-- ~/carteira/clientes/_indice.md — reescrito, 21 → 21 ativos, 1 aposentado novo
-- ~/carteira/funil.md — reescrito
-- ~/carteira/INDICE.md — contagens
+- C-017 (Joana Ribeiro): telefone, faixa até R$ 550.000 e o que ela não aceita,
+  na ficha dela
+- C-024 (Paulo Menezes): a ficha, criada — quase tudo em aberto
+- C-019 (Rita Camargo): o histórico antigo, resumido; o original inteiro está em
+  ~/carteira/_bruto/2026-08-19-historico-rita.md
+- 18 imóveis novos, de V-072 a V-089, e o V-071 (casa 3 dorm, Azenha) e o A-014
+  (apto 2 dorm, Menino Deus) com um dado novo cada
+- C-002 (Léo Antunes): aposentado, inteiro, em
+  ~/carteira/arquivo-morto/clientes/C-002-leo-antunes.md
+- o funil e as contagens, refeitos: 33 imóveis vivos e 21 clientes ativos
 
 ## Falta saber
 - IPTU do V-071 (casa 3 dorm, Azenha) — o C-031 (Sr. Almeida) manda até sexta
-- o IPTU não está na planilha — ficou ? em 18 fichas
+- o IPTU — a planilha não diz, e ficou em aberto nas 18 fichas
 - de onde veio a área do A-014 (apto 2 dorm, Menino Deus)
 - o link do apartamento da Cidade Baixa que aparece na conversa de 14 de agosto
 
 ## Decidi sozinho
 - Aposentei o C-002 (Léo Antunes): 139 dias sem responder, e o teto é 120. Para
-  trazer de volta, me diga — o arquivo está em arquivo-morto/clientes/.
+  trazer de volta, me diga — ele está inteiro, na gaveta dos arquivados.
 - Criei a ficha do C-024 (Paulo Menezes) em vez de tirar a linha do funil.
   Criar deixa rastro, tirar não. Se ele não é cliente, me diga e eu aposento.

@@ -556,8 +556,8 @@ No automático não se pergunta: escolhe e declara em `## Decidi sozinho`.
 
 ## 6 · O formato da saída
 
-O trabalho primeiro, os três blocos de fecho depois, nesta ordem e com estes
-títulos exatos.
+O trabalho primeiro, os blocos de fecho depois, nesta ordem e com estes
+títulos exatos — e o `## Próximo passo` por último.
 
 ### A lista
 
@@ -628,30 +628,33 @@ que sai é **este**, byte a byte, porque é ele que a prévia carimbou.
 
 ```markdown
 ## Guardei
-- ~/carteira/clientes/C-008-familia-duarte.md — uma linha de retomada no histórico
-- ~/carteira/clientes/C-017-joana-ribeiro.md — uma linha de retomada no histórico
-- ~/carteira/clientes/C-019-rita-camargo.md — uma linha de retomada no histórico
-- ~/carteira/clientes/_indice.md — último contato da C-017 (Joana Ribeiro) corrigido
+- C-008 (Família Duarte), C-017 (Joana Ribeiro) e C-019 (Rita Camargo): a retomada ficou anotada no histórico de cada um, para a próxima não repetir o ângulo
+- C-017 (Joana Ribeiro): a data do último contato, corrigida na lista de clientes
 
 ## Falta saber
 - se a C-017 (Joana Ribeiro) respondeu depois de 15 de agosto por fora da carteira
-- o que o C-024 (Paulo Menezes) procura — o arquivo dele não tem faixa nem bairros
+- o que o C-024 (Paulo Menezes) procura — a ficha dele não tem faixa nem bairros
 
 ## Decidi sozinho
-- Escrevi para os três mais quentes e deixei o C-031 (Sr. Almeida) de fora — ele é proprietário, e cobrar documento é de /corretor:documentos-do-negocio. Para incluir, me diga.
-- Usei o preço do V-083 (apto 2 dorm, Menino Deus) como está no arquivo, de 18 de agosto. Se mudou, me diga o valor e eu refaço a mensagem.
+- Escrevi para os três mais quentes e deixei o C-031 (Sr. Almeida) de fora — ele é proprietário, e cobrar documento é outra conversa — é só dizer “cobra o IPTU do Sr. Almeida”. Para incluir aqui, me diga.
+- Usei o preço do V-083 (apto 2 dorm, Menino Deus) como está na ficha, de 18 de agosto. Se mudou, me diga o valor e eu refaço a mensagem.
+
+## Próximo passo
+- Mandar a primeira mensagem, para <quem, pelo nome> — é a mais quente: <a razão, em meia frase>. Quando mandar, é só dizer “mandei”.
+- Quem está parado, e há quantos dias, está no painel, aberto no seu navegador.
 ```
 
 `## Decidi sozinho` só existe em modo automático, e cada linha traz **o que fiz
 — por que — como desfazer**.
 
-Saiu pela ponte, o `## Guardei` diz isso na mesma linha — `— retomada enviada
-14:32, e a linha no histórico`. O que ficou só escrito continua como está: o
+Saiu pela ponte, o `## Guardei` diz isso na mesma linha — “a retomada saiu às
+14:32, e ficou anotada no histórico”. O que ficou só escrito continua como está: o
 arquivo guarda a tentativa, não o envio que não houve.
 
-Os caminhos do `## Guardei` acima são os do `local`. No `drive`, a mesma lista
-nomeia a pasta e o arquivo — `clientes/C-008-familia-duarte.md, na pasta
-carteira do seu Drive — uma linha de retomada no histórico`.
+O `## Guardei` diz, na palavra do corretor, quem ganhou a linha de retomada
+no histórico — pelo id e apelido, ou pelo nome —, e não o caminho do arquivo;
+no `local` e no `drive` a frase é a mesma. O caminho é da tela do fecho no
+painel, para quem quiser conferir.
 
 ---
 
@@ -749,7 +752,7 @@ Sete limites, e é melhor saber deles antes de mandar a mensagem.
 respondeu no WhatsApp e a conversa não foi colada, ela vai propor retomar quem
 já voltou — e uma retomada em cima de uma resposta ignorada é pior que
 nenhuma. O sinal é arquivo com muitos `?` e histórico curto; o conserto é colar
-a conversa e rodar `/corretor:organizar-carteira` antes. Na dúvida, ela
+a conversa e organizar a carteira (`/corretor:organizar-carteira`) antes. Na dúvida, ela
 pergunta uma vez, e é a pergunta que mais paga nesta skill. Com conector o
 passo 8.2 pega isso no último segundo — mas só de quem ia receber, e só na hora
 do envio: a lista continua sendo a do que está escrito.

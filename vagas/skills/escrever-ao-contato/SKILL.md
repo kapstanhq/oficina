@@ -128,8 +128,13 @@ Pedido de silêncio não tem exceção para “só confirmar”. A V-025 (Group 
 Malha Telecom) continua andando pelo portal, que é por onde ele pediu.
 
 ## Guardei
-- nada foi gravado — não houve mensagem, e escrever é o que vira linha em
-  `## O que já mandei`
+- nada foi gravado — não houve mensagem, então não há o que anotar na ficha
+  do Ivo
+
+## Próximo passo
+- Se a V-025 precisar de alguma coisa, é pelo portal da Malha — posso te
+  ajudar a escrever a mensagem de lá, é só dizer “escreve pelo portal”.
+- A ficha do Ivo, com o pedido dele, está no painel.
 ```
 
 **O `## Guardei` é o mais importante desta saída**: quem lê precisa saber que a
@@ -149,7 +154,9 @@ a referência    `papel: referência`. Passo 5
 
 quem sumiu      ele escreveu, ela não respondeu, e passaram sete dias. NÃO é
                 aqui: é `/vagas:retomar-contato`, que tem cadência, teto de
-                retomadas e o que dizer de novo. Diga isso e pare
+                retomadas e o que dizer de novo. Diga isso em palavras —
+                “para quem sumiu é outra conversa: é só dizer ‘quem
+                sumiu?’” — e pare
 ```
 
 **Vaga `fechou`, ou no `arquivo-morto/`:** não escreve primeira mensagem. Diz o
@@ -339,8 +346,9 @@ Grave **antes** de oferecer mandar, e grave o que é verdade:
 
 **A conversa em si ela não guarda.** O que o contato escreveu, e o candidato
 colou aqui, serve para responder — quem leva conversa para `_bruto/` e tira os
-fatos dela é `/vagas:importar-a-conversa`. Diga isso em `## Falta saber`, com o
-comando, quando a mensagem colada trouxer fato novo (prazo, faixa, processo).
+fatos dela é `/vagas:importar-a-conversa`. Diga isso em `## Falta saber`, e o
+pedido no `## Próximo passo` com a frase que ele pode dizer (“guarda essa
+conversa”), quando a mensagem colada trouxer fato novo (prazo, faixa, processo).
 
 O bloco sai sozinho, em cerca de código, pronto para copiar, sem comentário
 dentro. E as três saídas do §6:
@@ -411,17 +419,19 @@ O bloco, sozinho; a procedência, fora dele; as três saídas; e o fecho do
 contrato §10:
 
 ## Guardei
-- ~/busca/contatos/P-003-bruno-sato.md — uma linha em `## O que já mandei`
-- ~/busca/vagas/V-022-patio-varejo.md — uma linha no `## Histórico`, e a etapa
-  para `em contato`
-- ~/busca/funil.md — a V-022 (Lead PM, Pátio Varejo) mudou de etapa
-- ~/busca/contatos/_indice.md — último contato
+- P-003 (Bruno Sato): anotei na ficha dele a mensagem de hoje
+- V-022 (Lead PM, Pátio Varejo): passou para “em contato”, e a conversa entrou no histórico da vaga
+- o funil já mostra a V-022 na etapa nova
 
 ## Falta saber
 - a faixa da V-022 (Lead PM, Pátio Varejo) — a mensagem devolveu a pergunta ao
   P-003 (Bruno Sato)
-- ele citou o prazo do estudo de caso na mensagem que você colou: para guardar,
-  `/vagas:importar-a-conversa`
+- o prazo do estudo de caso, que ele citou na mensagem que você colou, ainda não
+  está guardado
+
+## Próximo passo
+- Guardar o prazo do estudo de caso, antes que ele se perca na conversa — é só dizer “guarda essa conversa”.
+- A V-022 está no painel, em Funil, na etapa em contato.
 
 ## 7 · Onde ela para
 

@@ -369,17 +369,20 @@ por vaga, e o fecho do contrato §10. No automático, `## Decidi sozinho` vem ao
 fim, com **o que fiz — por que — como desfazer**.
 
 ## Guardei
-- ~/busca/_bruto/2026-09-14-anuncio-cobre-energia.md — o anúncio, como veio
-- ~/busca/_bruto/2026-09-14-glassdoor-cobre-energia.md — o que a Cobre paga a PM, no Glassdoor
-- ~/busca/vagas/V-031-cobre-energia.md — três seções escritas; `salva`, encaixe alto
-- ~/busca/vagas/V-034-aurora-saude.md — três seções escritas; ficou em `nova`, sem marca
-- ~/busca/arquivo-morto/vagas/V-033-norte-seguros.md — aposentada: não vale, o cargo está fora da lista
-- ~/busca/vagas/_indice.md · ~/busca/funil.md · ~/busca/INDICE.md — linhas e contagens
+- V-031 (PM Sênior, Cobre Energia): salva, com encaixe alto — o que ela pede, o que pesa a favor e contra estão na ficha, com o anúncio e o que a Cobre paga a PM no Glassdoor
+- V-034 (Head de Produto, Aurora Saúde): a leitura está na ficha, e ela continua entre as novas, sem marca
+- V-033 (Product Owner, Norte Seguros): saiu da busca — você disse que não vale, o cargo está fora da sua lista
+- o funil e a contagem da busca já mostram as mudanças
 
 ## Falta saber
 - o contrato e a faixa da V-031 (PM Sênior, Cobre Energia) — a vaga não diz; é a primeira pergunta da conversa
 - a V-034 (Head de Produto, Aurora Saúde) ficou sem marca: a leitura está pronta, e ela volta na próxima triagem
-- ficaram 7 vagas em `nova` que não li nesta rodada
+- ficaram 7 vagas novas que não li nesta rodada
+
+## Próximo passo
+- Montar o currículo da V-031 (PM Sênior, Cobre Energia), a única salva hoje — é só dizer “monta o currículo da V-031”.
+- Julgar as 7 que ficaram — é só dizer “tria as outras”.
+- A V-031 está no painel, em Funil, na etapa salva.
 
 ## 7 · Onde ela para
 
@@ -388,12 +391,13 @@ nem "para limpar a pilha". E não marca por ele o que ficou sem marca.
 
 **Ela não muda o perfil.** Se a triagem mostrar que um critério está errado —
 ele disse `salva` a três vagas que o perfil punha no fim da lista —, ela diz isso
-em uma linha, em `## Falta saber`, e manda para `/vagas:perfil-de-busca`.
+em uma linha, em `## Falta saber`, e o `## Próximo passo` diz a frase que abre
+esse ajuste (“atualiza o meu perfil”).
 Mudar a régua no meio de medir é como se perde a régua.
 
 **Ela não escreve currículo, carta nem resposta de formulário.** `salva` abre o
-caminho para `/vagas:montar-curriculo` e `/vagas:candidatar`; ela diz os dois
-comandos no fim, e para.
+caminho para `/vagas:montar-curriculo` e `/vagas:candidatar`; ela os oferece no
+`## Próximo passo`, com a frase que ele pode dizer, e para.
 
 **Ela não busca vaga nova**, e não guarda a que ele colou: isso é de
 `/vagas:buscar-vagas`.

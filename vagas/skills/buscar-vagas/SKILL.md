@@ -105,12 +105,13 @@ na sessão                     colado — passo 1b — e não mencione conector
 
 existem, e os de vaga         use os ligados. Os desligados que aparecem em
 estão ligados (ou parte)      `## Onde olhar`: diga UMA vez que existem, o que
-                              trariam, e o comando de `como_ligar`. Siga sem
+                              trariam, e onde se liga no painel. Siga sem
 
 todos desligados              idem, e passo 1b
 ```
 
-**Quem liga é o candidato, num terminal dele.** O conector que tem aviso —
+**Quem liga é o candidato, no painel, em Integrações** — um clique, e nunca um
+comando digitado. O conector que tem aviso —
 `linkedin-vagas` tem — mostra o aviso no ato de ligar; não o repita a cada
 busca.
 
@@ -119,8 +120,10 @@ busca.
 `## Onde olhar` tem a linha `linkedin (logado):`. Falta uma das duas:
 
 ```
-tem a linha, navegador         diga o `como_ligar` do `navegador` UMA vez, e
-desligado ou ausente           siga pelas fontes públicas
+tem a linha, navegador         ofereça configurar o navegador — quem configura
+desligado ou ausente           é você, pelo guia do `como_ligar`, e o que fica
+                               com ele é reabrir o programa. Enquanto isso,
+                               siga pelas fontes públicas
 tem o navegador, não tem       **não use a conta dele.** Diga UMA vez que
 a linha                        existe — que logado aparecem as vagas
                                recomendadas e as de candidatura simplificada,
@@ -478,16 +481,21 @@ A lista do que entrou, a linha dos números, o que saiu do ar, e o fecho do
 contrato §10:
 
 ## Guardei
-- ~/busca/_bruto/2026-09-14-busca.md — os 62 resultados, com o veredito de cada um
-- ~/busca/vagas/V-031-cobre-energia.md — criada, em `nova`, 8 campos e 3 `?`
-- ~/busca/vagas/V-012-lumina-pagamentos.md — `também em:` ganhou o link do linkedin-vagas
-- ~/busca/vagas/V-015-vetra.md — `estado: fechou`; estava em `salva`
-- ~/busca/vagas/_indice.md · ~/busca/funil.md · ~/busca/INDICE.md — linhas e contagens
+- os 62 resultados desta busca, cada um com o motivo de ter entrado ou saído — dá para conferir qualquer um
+- V-031 (PM Sênior, Cobre Energia): entrou na sua busca como vaga nova, com 3 coisas que o anúncio não diz
+- V-012 (PM de IA, Lumina Pagamentos): achei a mesma vaga no LinkedIn, e o link ficou na ficha dela
+- V-015 (PM de Plataforma, Vetra): marquei que saiu do ar — ela estava entre as salvas
+- o funil e a contagem da busca já mostram as novidades
 
 ## Falta saber
-- a V-015 (PM de Plataforma, Vetra) saiu do ar em `salva`: é caso de aposentar, com /vagas:organizar-busca
-- trilhologistica.example/carreiras é "à mão", e a última olhada foi há nove dias
+- a V-015 (PM de Plataforma, Vetra) saiu do ar depois que você a salvou: vale tirá-la da busca
+- a página de carreiras da Trilho Logística eu não consigo olhar sozinho, e a última olhada foi há nove dias
 - o ashby não respondeu nesta busca — não repeti
+
+## Próximo passo
+- Julgar a V-031 (PM Sênior, Cobre Energia) e as outras vagas novas, antes que a pilha cresça — é só dizer “tria as vagas”.
+- Tirar a V-015 (PM de Plataforma, Vetra), que saiu do ar — é só dizer “arquiva o que fechou”.
+- As vagas novas estão no painel, em Funil, na etapa nova.
 
 ## 7 · Onde ela para
 

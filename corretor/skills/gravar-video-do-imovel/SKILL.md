@@ -368,8 +368,8 @@ O fecho, com os títulos exatos e nesta ordem (CONTRATO §10):
 
 ```markdown
 ## Guardei
-- nada. Esta skill só lê a carteira — as linhas acima entram quando você rodar
-  /corretor:organizar-carteira, ou colando você mesmo.
+- nada foi gravado — esta skill só lê a carteira; o que você me contou entra
+  quando eu organizar a carteira
 
 ## Falta saber
 - o horário em que a sala do V-071 (casa 3 dorm, Azenha) pega luz
@@ -377,6 +377,10 @@ O fecho, com os títulos exatos e nesta ordem (CONTRATO §10):
 
 ## Decidi sozinho
 - <só em modo automático · o que fiz — por que — como desfazer>
+
+## Próximo passo
+- Guardar na carteira o que você me contou hoje sobre o V-071 — senão amanhã eu não sei. É só dizer “organiza a carteira”.
+- A ficha do V-071 está no painel, com o que falta saber marcado.
 ```
 
 ---

@@ -43,10 +43,14 @@ Sem `INDICE.md`, diga em uma linha que a pasta não está montada e mande para
 <<preencher: o que ela devolve na conversa, antes do fecho>>
 
 ## Guardei
-- <<preencher: o arquivo gravado e o que mudou nele — ou “nada foi gravado”, e por quê>>
+- <<preencher: o que ficou guardado, na palavra de quem lê — o item pelo id e apelido, e onde ele vê; sem caminho de arquivo — ou “nada foi gravado”, e por quê>>
 
 ## Falta saber
-- <<preencher: o que ficou em “?” e quem responde>>
+- <<preencher: o que ficou em “?”, dito como pergunta de gente, e quem responde>>
+
+## Próximo passo
+- <<preencher: o que fazer agora, por que agora, e a frase que a pessoa pode dizer para pedir>>
+- <<preencher: onde ver no painel>>
 
 ## 7 · Onde ela para
 

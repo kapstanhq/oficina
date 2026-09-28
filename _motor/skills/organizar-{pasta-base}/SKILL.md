@@ -494,17 +494,24 @@ insistir**, e fora das três perguntas — é oferta, não pergunta.
 ## 6 · O formato da saída
 
 Esta skill **não tem bloco para colar**: o trabalho dela é o relatório. Os
-títulos abaixo são do relatório na tela; os três do fecho são do contrato, vêm
+títulos abaixo são do relatório na tela; os quatro do fecho são do contrato, vêm
 por último e nesta ordem exata. Seção sem conteúdo não aparece.
 
 ```markdown
 {organizar--saida-completa}
+
+## Próximo passo
+- <o que ficou em “Espera você”, o primeiro, com a razão> — é só dizer “<a frase que decide>”.
+- O funil e as fichas que mudaram já aparecem no painel, aberto no seu navegador.
 ```
 
-Os caminhos do `## Guardei` são os do transporte: no `local`, `~/{pasta-base}/…`,
-como acima; no `drive`, a pasta e o arquivo dentro dela —
-`{pasta-pessoas}/{exemplo-pessoa-arquivo}, na pasta {base} do seu Drive`. A regra não
-muda: **escreveu, diz onde.**
+O `## Guardei` diz o que mudou na palavra do {profissional} — {o-item} pelo id e
+apelido, {o-pessoa} pelo nome, “o funil e as contagens foram refeitos” —, e não
+o caminho de cada arquivo: o caminho é da tela do fecho no painel, para quem
+quiser conferir. A exceção é o que ele pode querer abrir — o aposentado, que
+continua inteiro na gaveta, e o histórico antigo que foi para os originais —:
+esses dizem onde estão, no `local` ou na pasta {base} do Drive dele. A regra não
+muda: **escreveu, diz o quê.**
 
 Ao falar com o {profissional}, data em prosa — “14 de agosto”. **Nos arquivos, sempre
 `2026-08-14`.** Todo id aparece com o apelido junto, inclusive dentro de tabela e

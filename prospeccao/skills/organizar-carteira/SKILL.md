@@ -481,7 +481,7 @@ insistir**, e fora das três perguntas — é oferta, não pergunta.
 ## 6 · O formato da saída
 
 Esta skill **não tem bloco para colar**: o trabalho dela é o relatório. Os
-títulos abaixo são do relatório na tela; os três do fecho são do contrato, vêm
+títulos abaixo são do relatório na tela; os quatro do fecho são do contrato, vêm
 por último e nesta ordem exata. Seção sem conteúdo não aparece.
 
 ```markdown
@@ -496,7 +496,7 @@ para arquivo-morto/, podei 1 histórico e achei 3 coisas que não batem.
 - 2026-08-17-email-bertoldo.md → P-031 (Sandra Lisboa): leva a proposta ao
   jurídico do E-083 (Móveis Bertoldo, Bento Gonçalves) até sexta
 - 2026-08-18-site-vetorbank.md → nada extraído. É a página inteira do site, e
-  quem lê é /prospeccao:estudar-conta
+  a leitura é outra conversa — é só dizer “estuda o VetorBank”
 - 2026-08-14-email-desconhecido.md → nada extraído. Fala de uma transportadora
   em Canoas que não está na carteira, e sem o site eu não crio conta
 - 2026-08-19-planilha-contas.csv → 18 fichas novas, de E-072 (Ferragens Kunz,
@@ -533,36 +533,42 @@ para arquivo-morto/, podei 1 histórico e achei 3 coisas que não batem.
   motivo.
 
 ## Guardei
-- ~/carteira/contatos/P-017-carla-menezes.md — 3 campos novos
-- ~/carteira/contatos/P-024-paulo-tavares.md — criado, quase tudo ?
-- ~/carteira/contatos/P-019-rui-baptista.md — histórico condensado
-- ~/carteira/contas/ — 18 fichas criadas, E-072 a E-089
-- ~/carteira/contas/E-071-vetorbank.md · E-083-moveis-bertoldo.md — 1 campo cada
-- ~/carteira/contas/_indice.md — reescrito, 15 → 33 vivas
-- ~/carteira/_bruto/2026-08-19-historico-rui.md — criado, com o que saiu de lá
-- ~/carteira/arquivo-morto/contatos/P-041-otavio-prado.md — movido de contatos/
-- ~/carteira/contatos/_indice.md — reescrito, 21 → 21 ativos, 1 aposentado novo
-- ~/carteira/funil.md — reescrito
-- ~/carteira/INDICE.md — contagens
+- P-017 (Carla Menezes): o cargo, a dor do fechamento e de onde ela veio, na
+  ficha dela
+- P-024 (Paulo Tavares): a ficha, criada — quase tudo em aberto
+- P-019 (Rui Baptista): o histórico antigo, resumido; o original inteiro está em
+  ~/carteira/_bruto/2026-08-19-historico-rui.md
+- 18 contas novas, de E-072 a E-089, e o E-071 (VetorBank, Porto Alegre) e o
+  E-083 (Móveis Bertoldo, Bento Gonçalves) com um dado novo cada
+- P-041 (Otávio Prado): aposentado, inteiro, em
+  ~/carteira/arquivo-morto/contatos/P-041-otavio-prado.md
+- o funil e as contagens, refeitos: 33 contas vivas e 21 contatos ativos
 
 ## Falta saber
 - o retorno do jurídico do E-083 (Móveis Bertoldo, Bento Gonçalves) — a P-031
   (Sandra Lisboa) leva até sexta
-- o setor não está na planilha — ficou ? em 18 fichas
+- o setor — a planilha não diz, e ficou em aberto nas 18 fichas
 - de onde veio o faturamento do E-052 (Clínica Sanare, Curitiba)
 - o site da transportadora de Canoas que aparece no e-mail de 14 de agosto
 
 ## Decidi sozinho
 - Aposentei o P-041 (Otávio Prado): 109 dias sem responder, e o teto é 90. Para
-  trazer de volta, me diga — o arquivo está em arquivo-morto/contatos/.
+  trazer de volta, me diga — ele está inteiro, na gaveta dos arquivados.
 - Criei a ficha do P-024 (Paulo Tavares) em vez de tirar a linha do funil.
   Criar deixa rastro, tirar não. Se ele não é contato, me diga e eu aposento.
+
+## Próximo passo
+- <o que ficou em “Espera você”, o primeiro, com a razão> — é só dizer “<a frase que decide>”.
+- O funil e as fichas que mudaram já aparecem no painel, aberto no seu navegador.
 ```
 
-Os caminhos do `## Guardei` são os do transporte: no `local`, `~/carteira/…`,
-como acima; no `drive`, a pasta e o arquivo dentro dela —
-`contatos/P-017-carla-menezes.md, na pasta carteira do seu Drive`. A regra não
-muda: **escreveu, diz onde.**
+O `## Guardei` diz o que mudou na palavra do prospector — a conta pelo id e
+apelido, o contato pelo nome, “o funil e as contagens foram refeitos” —, e não
+o caminho de cada arquivo: o caminho é da tela do fecho no painel, para quem
+quiser conferir. A exceção é o que ele pode querer abrir — o aposentado, que
+continua inteiro na gaveta, e o histórico antigo que foi para os originais —:
+esses dizem onde estão, no `local` ou na pasta carteira do Drive dele. A regra não
+muda: **escreveu, diz o quê.**
 
 Ao falar com o prospector, data em prosa — “14 de agosto”. **Nos arquivos, sempre
 `2026-08-14`.** Todo id aparece com o apelido junto, inclusive dentro de tabela e
