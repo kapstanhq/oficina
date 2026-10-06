@@ -1725,3 +1725,50 @@ mim?": 73 das 74 têm `salário relatado`, que não estava no `destaque`.
 | escolher a skill de analisar pela ordem do `proximo` | a primeira skill da etapa nem sempre é a que lê, e mudar a ordem mudaria o aviso em silêncio |
 | tirar a resposta tardia da fila depois de um tempo | o defeito era ninguém tratá-la; sumir com ela é perder o que a pessoa respondeu |
 | esconder o bloco "Agora" com a lista vencida | o funil continua sabendo o que espera um passo; o que venceu é só a ordem do dia |
+
+## D284 · A Gupy volta a responder, o limite da Apify é por busca, a recusa não gasta ritmo, e a InHire entra
+
+`data: 2026-10-06`
+
+Quatro coisas vistas no uso real, num dia só:
+
+- **A Gupy dava 404 em toda busca** — "Product Manager", com modo remoto,
+  com "Porto Alegre". Não era o nome: o host público,
+  `employability-portal.gupy.io`, responde 404 do nginx até na raiz. O
+  portal passou a buscar pela rota dele mesmo, `portal.gupy.io/api/job-search/jobs`,
+  que aceita a mesma consulta e devolve o mesmo formato. O catálogo troca o
+  endereço da `buscar` e da `detalhe`; o `isRemoteWork` não vem mais, e
+  `remoto` sai do `workplaceType`. Medido: "Product Manager" 41 vagas, 13
+  remotas; "analista" em Porto Alegre 175. O `total_na_fonte` só é o total
+  com `limit` até 10 — acima disso ela diz 100.
+- **A Apify devolveu 10 vagas para doze termos com limite 10** (US$ 0,0106).
+  O `limite` ia ao `rows` do ator, que vale POR BUSCA (termo × local), e
+  também ao `maxItems` da corrida e ao corte do conjunto de dados, que valem
+  para o TOTAL. A operação declara agora `buscas` (os parâmetros que se
+  multiplicam) e `teto_total` (200); um lugar só, `itensDaChamada`, dá o
+  número ao orçamento e ao adaptador — doze termos com limite 10 orçam e
+  pedem até 120. O ator passou a cobrar por evento em 15/09 (US$ 0,0015 por
+  vaga no plano gratuito): o `porItem` sobe de 0,0005 para 0,002.
+- **`devagar` não gasta cota.** Seis chamadas paralelas ao `linkedin-vagas`
+  voltaram `devagar` e a espera pareceu crescer. A janela já não contava a
+  recusa — os 50 s eram o resto do minuto das seis que passaram —, mas
+  contava a chamada que morria DEPOIS do ritmo e ANTES da rede: id que não é
+  número, modo desconhecido, endereço que não se monta. Ela agora devolve a
+  vaga: o miolo conta se o `fetch` foi usado, e só gasta cota quem chegou à
+  fonte. A `prova.mjs` cobra as duas coisas, com o controle de que três
+  chamadas de verdade enchem o minuto.
+- **A InHire entra**, por empresa como o Greenhouse: o ATS de várias
+  startups brasileiras. A API pública diz de quem é o quadro pelo cabeçalho
+  `X-Tenant`, e o catálogo ganha `cabecalhos` por operação, com `<param>` no
+  valor — o nome é do catálogo e não pode ser o da chave, do host ou do
+  cookie; o valor com quebra de linha é recusado antes da rede. O link da
+  vaga tem a empresa no host, e o `molde` passa a ler `<param>` além de
+  `{campo}`. A lista não traz data nem descrição: as duas vêm no `detalhe`.
+  Medido com trinca (2 vagas) e monest (7); o nome é em minúsculas
+  ("Trinca" dá 404), e o `formato` recusa o resto.
+
+| recusado | por que caiu |
+|---|---|
+| corrigir só a descrição da Apify, dizendo que o limite é o total | o ator cobra e busca por termo; com o total, doze termos e limite 10 dariam menos de uma vaga por cargo |
+| dar à Gupy um erro de "API fora do ar" | a API está no ar, em outro endereço; o erro mandaria abrir vaga por vaga no navegador sem precisar |
+| a InHire buscar o detalhe de cada vaga da lista para ter a data | uma chamada por vaga contra um quadro de terceiro, no ritmo de dez por minuto; a skill abre o detalhe do que for julgar |

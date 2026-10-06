@@ -64,13 +64,14 @@ const titulo = (t) => console.log(`\n── ${t}`);
 
 /* ═══ OS DOIS SERVIDORES FALSOS ═══════════════════════════════════════ */
 
-/* as fontes de vaga do pack, com o formato medido em 24/09/2026. A Gupy só
-   acha a cidade escrita como a vaga a cadastrou; a Sólides devolve `take`
-   itens e manda o `redirectLink` quebrado, como a de verdade */
+/* as fontes de vaga do pack, com o formato medido em 24/09/2026 (a Gupy
+   remedida em 06/10, sem o `isRemoteWork`). A Gupy só acha a cidade escrita
+   como a vaga a cadastrou; a Sólides devolve `take` itens e manda o
+   `redirectLink` quebrado, como a de verdade */
 function gupyFalsa(url, json) {
   if (url.searchParams.get("city") === "Sao Paulo") return json(200, { data: [], pagination: { total: 0 } });
   const vaga = (id, type, workplaceType) => ({ id, name: "Técnico de Enfermagem", careerPageName: "Vértice Saúde",
-    city: "Recife", state: "Pernambuco", isRemoteWork: false, jobUrl: `https://vertice.gupy.example/job/${id}`,
+    city: "Recife", state: "Pernambuco", jobUrl: `https://vertice.gupy.example/job/${id}`,
     publishedDate: "2026-09-20T12:00:00.000Z", applicationDeadline: "2026-10-01", description: "<p>Plantão 12x36</p>",
     type, workplaceType, disabilities: true });
   return json(200, { data: [vaga(1, "vacancy_type_effective", "on-site"), vaga(2, "vacancy_type_talent_pool", "hybrid")],
@@ -91,6 +92,32 @@ function solidesFalsa(url, json) {
     ...(i === 1 ? { publishers: { rhgestor: { redirectUrl: "https://patio.rhgestor.example/vagas/detalhes/K1" } } } : {}),
   }));
   return json(200, { totalPages: 3, currentPage: 1, count: 57, data });
+}
+/* a InHire, medida em 06/10/2026: a empresa vem no cabeçalho X-Tenant, sem
+   ele é 400, com um nome que não existe é 404; a lista não traz descrição
+   nem data, e o detalhe é o mesmo endereço com o id no fim */
+const INHIRE = {
+  "vertice-saude": { tenantName: "Vértice Saúde", vagas: [
+    { jobId: "0a1b2c3d-0000-4000-8000-000000000001", displayName: "Técnica de Enfermagem — UTI ",
+      status: "published", workplaceType: "On-site", location: "Recife, PE, BR", careerPageId: "default",
+      description: "<p>Escala 12x36, plant&atilde;o noturno.</p>", publishedAt: "2026-09-30T13:00:00.000Z",
+      contractType: ["CLT"] },
+    { jobId: "0a1b2c3d-0000-4000-8000-000000000002", displayName: "Analista de Produto",
+      status: "published", workplaceType: "Remote", location: "BR", careerPageId: "default",
+      description: "<p>Remoto.</p>", publishedAt: "2026-10-01T13:00:00.000Z", contractType: ["PJ", "CLT"] },
+  ] },
+};
+function inhireFalsa(url, tenant, json) {
+  if (!tenant) return json(400, { message: "Missing required request parameters: [X-Tenant]" });
+  const t = INHIRE[tenant];
+  if (!t) return json(404, { message: "Tenant not found" });
+  const enxuta = ({ jobId, displayName, status, workplaceType, location, careerPageId }) =>
+    ({ jobId, displayName, status, workplaceType, location, careerPageId });
+  if (url.pathname === "/job-posts/public/pages") {
+    return json(200, { tenantName: t.tenantName, about: "<p>sobre</p>", jobsPage: t.vagas.map(enxuta) });
+  }
+  const v = t.vagas.find((x) => url.pathname === `/job-posts/public/pages/${x.jobId}`);
+  return v ? json(200, { tenantName: t.tenantName, ...v }) : json(404, { message: "Job page not found" });
 }
 const JOBPOSTING = { "@context": "https://schema.org", "@graph": [
   { "@type": "Organization", name: "Vagas Exemplo" },
@@ -118,8 +145,10 @@ function paginaDeVaga(url, res) {
 const recebidos = [];
 const fonte = createServer((req, res) => {
   const url = new URL(req.url, "http://x");
-  recebidos.push({ metodo: req.method, caminho: url.pathname, consulta: url.search,
-    autorizacao: req.headers.authorization || "" });
+  const recebido = { metodo: req.method, caminho: url.pathname, consulta: url.search,
+    autorizacao: req.headers.authorization || "", tenant: req.headers["x-tenant"] || "", corpo: "" };
+  recebidos.push(recebido);
+  req.on("data", (d) => { recebido.corpo += d; });
   const json = (status, corpo) => {
     res.writeHead(status, { "Content-Type": "application/json" });
     res.end(JSON.stringify(corpo));
@@ -141,12 +170,14 @@ const fonte = createServer((req, res) => {
   if (url.pathname === "/pago") return json(200, { itens: [{ id: "a" }] });
   if ((m = url.pathname.match(/^\/v2\/acts\/([^/]+)\/runs$/)) && req.method === "POST") {
     const falha = decodeURIComponent(m[1]).startsWith("falha~");
-    return json(201, { data: { id: falha ? "r-falha" : "r-boa",
+    /* responde depois de ler a entrada inteira: a prova confere o que o ator recebeu */
+    return req.on("end", () => json(201, { data: { id: falha ? "r-falha" : "r-boa",
       status: falha ? "FAILED" : "SUCCEEDED",
-      usageTotalUsd: falha ? 0.02 : 0.123, defaultDatasetId: "d1" } });
+      usageTotalUsd: falha ? 0.02 : 0.123, defaultDatasetId: "d1" } }));
   }
   if (url.pathname === "/v2/datasets/d1/items") return json(200, [{ titulo: "item da corrida" }]);
-  if (url.pathname === "/api/v1/jobs") return gupyFalsa(url, json);
+  if (url.pathname === "/api/job-search/jobs") return gupyFalsa(url, json);
+  if (url.pathname.startsWith("/job-posts/public/pages")) return inhireFalsa(url, req.headers["x-tenant"], json);
   if (url.pathname === "/api/vacancies") return solidesFalsa(url, json);
   if (url.pathname.startsWith("/vaga/")) return paginaDeVaga(url, res);
   return json(404, { erro: "rota desconhecida" });
@@ -179,7 +210,10 @@ const catalogo = {
   },
   lenta: {
     tipo: "http", oque: "a de ritmo curto", custo: { modelo: "gratis" }, ritmo: { porMinuto: 3 },
-    operacoes: { buscar: { url: `${BASE}/pago`, parametros: {}, lista: "itens", campos: { id: "id" } } },
+    operacoes: {
+      buscar: { url: `${BASE}/pago`, parametros: {}, lista: "itens", campos: { id: "id" } },
+      porNome: { url: `${BASE}/v1/<nome>`, parametros: { nome: {} }, lista: "itens", campos: { id: "id" } },
+    },
   },
   estimada: {
     tipo: "http", oque: "paga, sem o serviço dizer quanto",
@@ -208,7 +242,7 @@ titulo("o catálogo");
 conferir("o da prova é válido", conferirCatalogo(catalogo).length, 0);
 {
   const real = await carregarCatalogo([join(AQUI, "catalogo.json"), DO_PACK]);
-  conferir("controle · base + vagas fundem sem erro, com doze conectores", Object.keys(real).length, 12);
+  conferir("controle · base + vagas fundem sem erro, com treze conectores", Object.keys(real).length, 13);
   conferir("nome repetido entre camadas é erro",
     comeca(await recusa(carregarCatalogo([join(AQUI, "catalogo.json"), join(AQUI, "catalogo.json")])), "catálogo"),
     "catálogo");
@@ -218,6 +252,14 @@ conferir("o da prova é válido", conferirCatalogo(catalogo).length, 0);
   conferir("parâmetro usado e não declarado é acusado ao subir",
     conferirCatalogo({ x: { tipo: "http", oque: "x", custo: { modelo: "gratis" },
       operacoes: { a: { url: "https://a.test/<quem>" } } } }).length, 1);
+  const comCabecalho = (cabecalhos, extra = {}) => conferirCatalogo({ x: { tipo: "http", oque: "x",
+    custo: { modelo: "gratis" }, operacoes: { a: { url: "https://a.test/", cabecalhos,
+      parametros: { empresa: {} }, ...extra } } } });
+  conferir("controle · cabeçalho declarado com parâmetro declarado passa", comCabecalho({ "X-Tenant": "<empresa>" }).length, 0);
+  conferir("cabeçalho com parâmetro não declarado é acusado ao subir", comCabecalho({ "X-Tenant": "<quem>" }).length, 1);
+  conferir("o cabeçalho da chave não se declara por operação", comCabecalho({ Authorization: "<empresa>" }).length, 1);
+  conferir("`buscas` que cita parâmetro não declarado é acusado",
+    comCabecalho({ "X-Tenant": "<empresa>" }, { buscas: ["termos"] }).length, 1);
 }
 
 /* ═══ 2 · O AGENTE NÃO ESCOLHE O HOST ═════════════════════════════════ */
@@ -295,7 +337,7 @@ const doPack = await carregarCatalogo([join(AQUI, "catalogo.json"), DO_PACK]);
 const paraOFalso = (c) => ({ ...c, ritmo: { porMinuto: 100 }, operacoes: Object.fromEntries(
   Object.entries(c.operacoes).map(([n, op]) => [n, { ...op, url: op.url.replace(/^https:\/\/[^/]+/, BASE) }])) });
 const conVagas = criarConectores({
-  catalogo: { gupy: paraOFalso(doPack.gupy), solides: paraOFalso(doPack.solides) },
+  catalogo: { gupy: paraOFalso(doPack.gupy), solides: paraOFalso(doPack.solides), inhire: paraOFalso(doPack.inhire) },
   comando: 'node "servidor.mjs"', agora: () => relogio, raizDosAdaptadores: pathToFileURL(AQUI + "/"),
 });
 const consulta = () => Object.fromEntries(new URLSearchParams(recebidos.at(-1).consulta));
@@ -305,6 +347,8 @@ titulo("gupy: cidade, estado, contrato e regime");
   const r = await conVagas.chamar({ conector: "gupy", operacao: "buscar",
     parametros: { termo: "técnico de enfermagem", cidade: "São Paulo", estado: "sp", contrato: "Estágio", modo: "híbrido", limite: 80 } });
   const q = consulta();
+  conferir("a busca vai à rota do portal, e não ao host que saiu do ar (D284)",
+    recebidos.at(-1).caminho, "/api/job-search/jobs");
   conferir("a cidade chega com acento, como foi escrita", q.city, "São Paulo");
   conferir("o estado pela sigla, e em minúscula, chega por extenso", q.state, "São Paulo");
   conferir("`estágio` vira o tipo da Gupy", q.type, "vacancy_type_internship");
@@ -314,6 +358,7 @@ titulo("gupy: cidade, estado, contrato e regime");
     (await conVagas.chamar({ conector: "gupy", operacao: "buscar", parametros: { termo: "x", estado: "bahia" } })) && consulta().state, "Bahia");
   conferir("o tipo volta na palavra do contrato", r.itens[0].contrato, "CLT");
   conferir("  e o regime também", r.itens[0].regime, "presencial");
+  conferir("remoto sai do `workplaceType` — o `isRemoteWork` não vem mais", `${r.itens[0].remoto} ${r.itens[1].remoto}`, "false false");
   conferir("banco de talentos não vira contrato, e é dito", `${r.itens[1].contrato} ${r.itens[1].banco_de_talentos}`, "null true");
   conferir("as inscrições até: AAAA-MM-DD", r.itens[0].inscricoes_ate, "2026-10-01");
   conferir("os oito campos vêm primeiro, na mesma ordem",
@@ -364,6 +409,42 @@ titulo("sólides: o link certo e 20 por página");
     (await conVagas.chamar({ conector: "solides", operacao: "buscar", parametros: { termo: "x", local: "pe", limite: 2 } })).itens.length, 2);
   const vazia = await conVagas.chamar({ conector: "solides", operacao: "buscar", parametros: { termo: "x", local: "Sao Paulo - SP" } });
   conferir("zero com local traz o aviso da grafia", /Cidade - UF/.test(vazia.aviso || ""), true);
+}
+
+titulo("inhire: a empresa no cabeçalho");
+{
+  const r = await conVagas.chamar({ conector: "inhire", operacao: "buscar",
+    parametros: { empresa: "vertice-saude", termo: "enfermagem" } });
+  conferir("a empresa vai no cabeçalho X-Tenant", recebidos.at(-1).tenant, "vertice-saude");
+  conferir("  e não no endereço", recebidos.at(-1).caminho, "/job-posts/public/pages");
+  conferir("`termo` filtra pelo título", `${r.itens.length} de ${r.total}`, "1 de 2");
+  conferir("os oito campos vêm primeiro, na mesma ordem",
+    Object.keys(r.itens[0]).slice(0, 8).join(), "id,titulo,empresa,local,remoto,link,publicada,descricao");
+  conferir("o link é a página da vaga, com a empresa no host",
+    r.itens[0].link, "https://vertice-saude.inhire.app/vagas/0a1b2c3d-0000-4000-8000-000000000001");
+  conferir("a lista não traz data nem descrição: null, e não inventada",
+    `${r.itens[0].publicada} ${r.itens[0].descricao}`, "null null");
+  conferir("`On-site` vira presencial", `${r.itens[0].regime} ${r.itens[0].remoto}`, "presencial false");
+
+  const d = await conVagas.chamar({ conector: "inhire", operacao: "detalhe",
+    parametros: { empresa: "vertice-saude", id: "0a1b2c3d-0000-4000-8000-000000000002" } });
+  const v = d.itens[0];
+  conferir("o detalhe traz a data, AAAA-MM-DD", v.publicada, "2026-10-01");
+  conferir("  a descrição como texto", v.descricao, "Remoto.");
+  conferir("  o nome da empresa como ela escreve, e os contratos", `${v.empresa} · ${v.contrato}`, "Vértice Saúde · PJ · CLT");
+  conferir("  e o cabeçalho foi junto", recebidos.at(-1).tenant, "vertice-saude");
+
+  const antes = recebidos.length;
+  conferir("nome em maiúscula é recusado antes da rede (a fonte daria 404)",
+    comeca(await recusa(conVagas.chamar({ conector: "inhire", operacao: "buscar", parametros: { empresa: "Vertice" } })),
+      "parâmetro recusado"), "parâmetro recusado");
+  conferir("quebra de linha no nome não abre outro cabeçalho: recusada",
+    comeca(await recusa(conVagas.chamar({ conector: "inhire", operacao: "buscar",
+      parametros: { empresa: "vertice\r\nX-Outro: 1" } })), "parâmetro recusado"), "parâmetro recusado");
+  conferir("  e nenhuma das duas tocou a rede", recebidos.length, antes);
+  conferir("empresa que não existe: o 404 aponta o cabeçalho",
+    await recusa(conVagas.chamar({ conector: "inhire", operacao: "buscar", parametros: { empresa: "outra" } })),
+    "o serviço respondeu 404 — confira o nome que entra no endereço e no cabeçalho X-Tenant");
 }
 
 /* ═══ 3c · LER A VAGA DE UM LINK COLADO ═══════════════════════════════
@@ -465,6 +546,38 @@ titulo("o ritmo");
   conferir("  e ela NÃO tocou a rede", recebidos.length, antes);
   relogio += 61_000;
   conferir("um minuto depois, passa de novo", await chamar(), "PASSOU");
+
+  /* ── A RECUSA NÃO GASTA COTA (D284) ───────────────────────────────────
+     Em 06/10 seis chamadas paralelas ao linkedin-vagas voltaram `devagar` e a
+     espera pareceu crescer. A cota é para poupar a FONTE: a recusa não a
+     toca, e a chamada que morre antes da rede devolve a vaga. Se a recusa
+     contasse, a chamada dos 60,5 s sairia `devagar`. */
+  relogio += 61_000;
+  const t0 = relogio;
+  conferir("controle · três passam e enchem o minuto",
+    [await chamar(), await chamar(), await chamar()].join(), "PASSOU,PASSOU,PASSOU");
+  relogio = t0 + 30_000;
+  const seis = await Promise.all(Array.from({ length: 6 }, () => chamar()));
+  conferir("seis em paralelo no meio do minuto: as seis são `devagar`",
+    seis.every((r) => comeca(r, "devagar") === "devagar"), true);
+  conferir("  e todas mandam esperar os mesmos 30 s — nenhuma empurra a outra",
+    [...new Set(seis.map((r) => r.match(/Espere (\d+) s/)?.[1]))].join(), "30");
+  relogio = t0 + 30_500;
+  conferir("  e a seguinte também espera 30 s, não mais", (await chamar()).match(/Espere (\d+) s/)?.[1], "30");
+  relogio = t0 + 60_500;
+  conferir("um minuto depois das três, passam três: as sete recusas não entraram na conta",
+    [await chamar(), await chamar(), await chamar()].join(), "PASSOU,PASSOU,PASSOU");
+  conferir("  e a quarta é `devagar`, porque essas três contam", comeca(await chamar(), "devagar"), "devagar");
+
+  relogio += 61_000;
+  const recusada = () => recusa(con.chamar({ conector: "lenta", operacao: "porNome", parametros: { nome: ".." } }));
+  const antesDaRede = recebidos.length;
+  conferir("três que morrem antes da rede (endereço que não se monta)",
+    [await recusada(), await recusada(), await recusada()].every((r) => comeca(r, "parâmetro recusado") === "parâmetro recusado"), true);
+  conferir("  não tocaram a fonte", recebidos.length, antesDaRede);
+  conferir("  e não gastaram a cota: as três seguintes passam",
+    [await chamar(), await chamar(), await chamar()].join(), "PASSOU,PASSOU,PASSOU");
+  conferir("controle · a quarta, que é a de verdade, é `devagar`", comeca(await chamar(), "devagar"), "devagar");
 }
 
 /* ═══ 5 · O GASTO ═════════════════════════════════════════════════════ */
@@ -540,6 +653,31 @@ titulo("o gasto");
   const daApify = ext.por_conector.find((x) => x.conector === "apify-falsa");
   conferir("o extrato soma sucesso e falha", `${daApify.gasto} em ${daApify.chamadas}, ${daApify.falhas} falha`, "0.143 em 2, 1 falha");
   conferir("  e lista só as que custaram", ext.pagas.length, 3);
+
+  /* ── A OPERAÇÃO PRONTA DO PACK: `limite` É POR BUSCA (D284) ──────────
+     Em 06/10, doze termos com limite 10 devolveram DEZ vagas: o mesmo
+     número ia ao `rows` do ator (por busca) e ao teto da corrida (total). */
+  const conPack = criarConectores({
+    catalogo: { "apify-pack": { ...doPack.apify, base: BASE } },
+    comando: 'node "servidor.mjs"', agora: () => relogio, raizDosAdaptadores: pathToFileURL(AQUI + "/"),
+  });
+  await cofre.ligar("apify-pack", true);
+  await cofre.guardarChave("apify-pack", "segredo-da-prova");
+  await cofre.escreverTeto("apify-pack", 5);
+  const pv = { termos: "analista, gerente, coordenador", locais: "Recife, Olinda", limite: 10 };
+  const ov = await conPack.orcar({ conector: "apify-pack", operacao: "vagas-linkedin", parametros: pv });
+  conferir("três termos em dois locais com limite 10: o orçamento conta até 60 vagas", ov.itens_no_maximo, 60);
+  conferir("  e a estimativa é a base mais 60 vezes o por-item", ov.estimativa, 0.17);
+  await conPack.chamar({ conector: "apify-pack", operacao: "vagas-linkedin", parametros: pv, orcamento: ov.orcamento });
+  const corrida = recebidos.at(-2);
+  const entrada = JSON.parse(corrida.corpo || "{}");
+  conferir("o teto da corrida é o total, e não o limite", new URLSearchParams(corrida.consulta).get("maxItems"), "60");
+  conferir("  o ator recebe o limite POR BUSCA", entrada.rows, 10);
+  conferir("  com os três termos e os dois locais", `${entrada.titles?.length} ${entrada.locations?.length}`, "3 2");
+  conferir("  e o conjunto de dados é lido até o total", new URLSearchParams(recebidos.at(-1).consulta).get("limit"), "60");
+  const muitos = { termos: Array.from({ length: 12 }, (_, i) => `t${i}`).join(","), limite: 100 };
+  conferir("doze termos com limite 100 param no teto total de 200",
+    (await conPack.orcar({ conector: "apify-pack", operacao: "vagas-linkedin", parametros: muitos })).itens_no_maximo, 200);
 
   conferir("tipo mcp não se chama por aqui",
     comeca(await recusa(con.chamar({ conector: "conversa", operacao: "x" })), "conversa é do tipo mcp"), "conversa é do tipo mcp");
@@ -749,6 +887,8 @@ if (COM_REDE) {
   const CAMPOS = "id,titulo,empresa,local,remoto,link,publicada,descricao";
   for (const [conector, parametros] of [
     ["gupy", { termo: "product manager", modo: "remote", limite: 3 }],
+    /* a de 06/10 que voltava 404 em toda chamada (D284) */
+    ["gupy", { termo: "Product Manager", modo: "remoto", limite: 3 }],
     /* as duas de 24/09, com o perfil de quem não é de tecnologia: cidade com
        acento, estado pela sigla, contrato na palavra do contrato */
     ["gupy", { termo: "técnico de enfermagem", cidade: "Recife", contrato: "CLT", limite: 3 }],
@@ -774,6 +914,31 @@ if (COM_REDE) {
       }
     } catch (e) {
       conferir(`${conector} · respondeu`, e.message, "itens");
+    }
+  }
+  try {
+    const d = await vivo.chamar({ conector: "gupy", operacao: "detalhe", parametros: { termo: "analista", cidade: "Porto Alegre", limite: 1 } });
+    conferir("gupy · o detalhe traz o anúncio inteiro", (d.itens[0]?.descricao || "").length > 200, true);
+    console.log(`    ${d.itens[0].titulo} — ${d.itens[0].empresa} · ${d.itens[0].local}\n      ${d.itens[0].descricao.slice(0, 160).replace(/\n/g, " ")}…`);
+  } catch (e) {
+    conferir("gupy · o detalhe respondeu", e.message, "descrição");
+  }
+  /* a InHire é por empresa, e a lista não traz data: a prova é buscar nas
+     duas medidas em 06/10 e abrir o detalhe da primeira vaga (D284) */
+  for (const empresa of ["trinca", "monest"]) {
+    try {
+      const r = await vivo.chamar({ conector: "inhire", operacao: "buscar", parametros: { empresa, limite: 3 } });
+      conferir(`inhire · ${empresa} respondeu com itens (${r.itens.length} de ${r.total})`, r.itens.length > 0, true);
+      conferir(`inhire · ${empresa} · os oito campos primeiro, com os mesmos nomes`,
+        Object.keys(r.itens[0]).slice(0, 8).join(), CAMPOS);
+      for (const it of r.itens) console.log(`    ${it.titulo.trim()} — ${it.empresa} · ${it.local} · ${it.regime}\n      ${it.link}`);
+      const d = await vivo.chamar({ conector: "inhire", operacao: "detalhe", parametros: { empresa, id: r.itens[0].id } });
+      const v = d.itens[0];
+      conferir(`inhire · ${empresa} · o detalhe traz a data AAAA-MM-DD e a descrição`,
+        /^\d{4}-\d{2}-\d{2}$/.test(v.publicada || "") && (v.descricao || "").length > 100, true);
+      console.log(`    detalhe: ${v.publicada} · ${v.titulo.trim()} — ${v.empresa} · ${v.contrato}\n      ${v.descricao.slice(0, 160).replace(/\n/g, " ")}…`);
+    } catch (e) {
+      conferir(`inhire · ${empresa} respondeu`, e.message, "itens");
     }
   }
   try {

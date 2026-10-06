@@ -231,6 +231,7 @@ linkedin-vagas    `buscar` com cada termo; `local` em inglês, como a fonte
 greenhouse        `buscar` com `empresa`, e `termo` com os cargos do perfil
 ashby · lever     separados por vírgula — essas fontes não têm busca própria,
                   e sem `termo` volta o quadro inteiro da empresa
+inhire            idem, com `empresa` em minúsculas (acme, em acme.inhire.app)
 linkedin          NÃO é chamada de conector: é o navegador, pelo roteiro de
 (logado)          `references/linkedin.md`. Com a linha no perfil, vem ANTES
                   das outras: uma URL de busca por termo, e a lista de

@@ -1916,7 +1916,7 @@ os conectores (opcional) — onde há linha de comando e `node`
   o que for comando o assistente roda, sem você digitar nada. Cada um avisa
   o que custa no ato de ligar
 
-    fontes de vaga    gupy, solides, greenhouse, lever, ashby,
+    fontes de vaga    gupy, solides, greenhouse, lever, ashby, inhire,
                       linkedin-vagas. São listagens PÚBLICAS, lidas sem
                       entrar na sua conta de lugar nenhum — é por isso que
                       buscar não arrisca nada

@@ -15,7 +15,9 @@
  *   ── só aqui a rede é tocada ──
  *   o serviço respondeu …     a fonte recusou; o custo que houver É anotado
  *
- * Tudo acima da linha custa zero e não conta no ritmo. O teto é conferido
+ * Tudo acima da linha custa zero e não conta no ritmo — nem a própria recusa
+ * por `devagar`, nem a chamada que morre abaixo dela sem ter tocado a rede
+ * (D284: a cota existe para poupar a fonte, e só gasta quem chegou a ela). O teto é conferido
  * DUAS vezes — no `orcar`, para o agente saber cedo, e no `chamar`, porque
  * entre um e outro podem ter passado dez minutos e outra chamada.
  *
@@ -30,7 +32,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { lerLigados, lerChaves, lerTetos } from "./cofre.mjs";
 import { anotar, lerLivro, gastoDoMes, mesDe, arredondar } from "./livro.mjs";
 import { nasceDesligado, ehPago } from "./catalogo.mjs";
-import { conferirParametros, chamarHttp } from "./chamada.mjs";
+import { conferirParametros, chamarHttp, itensDaChamada } from "./chamada.mjs";
 import { criarRitmo } from "./ritmo.mjs";
 import { estadoDasSessoes, lerSessoes, arquivoDasSessoes } from "./sessoes.mjs";
 
@@ -117,10 +119,12 @@ export function criarConectores({
   }
 
   const estimar = (c, op, parametros) => {
-    /* a operação pronta sabe o preço do ator DELA; a genérica fica com o do conector */
+    /* a operação pronta sabe o preço do ator DELA; a genérica fica com o do conector.
+       Os itens são os que a corrida PODE devolver — `limite` vezes as buscas,
+       quando a operação diz que cada termo é uma busca (D284) —, e são os
+       mesmos que o adaptador manda ao serviço como teto da corrida */
     const porItem = Number(op?.custo?.porItem ?? c.custo.porItem) || 0;
-    const itens = Number(parametros?.limite) || Number(op.limite) || 0;
-    return arredondar(Number(c.custo.estimativa) + porItem * itens);
+    return arredondar(Number(c.custo.estimativa) + porItem * itensDaChamada(op, parametros).total);
   };
 
   /** as três recusas que valem para `orcar` e para `chamar` */
@@ -195,6 +199,8 @@ export function criarConectores({
         hash: hashDe(conector, operacao, parametros), expira: agora() + VALIDADE_DO_ORCAMENTO });
       return {
         orcamento, estimativa, moeda: e.c.custo.moeda,
+        ...(op && Number(op.custo?.porItem ?? e.c.custo.porItem) > 0
+          ? { itens_no_maximo: itensDaChamada(op, parametros).total } : {}),
         resta: arredondar(e.teto - e.gasto), teto_do_mes: e.teto,
         vale_por: "10 minutos, para UMA chamada com estes mesmos parâmetros",
       };
@@ -229,7 +235,8 @@ export function criarConectores({
         conferirPermissao(conector, e, op, parametros);
       }
 
-      const espera = ritmo.pedir(conector, e.c.ritmo?.porMinuto);
+      const marca = agora();
+      const espera = ritmo.pedir(conector, e.c.ritmo?.porMinuto, marca);
       if (espera) {
         throw new Error(`devagar · ${conector} aceita ${e.c.ritmo.porMinuto} chamadas por minuto. ` +
           `Espere ${espera} s. Não é erro`);
@@ -240,6 +247,10 @@ export function criarConectores({
         custo: 0, moeda: e.c.custo?.moeda || null, medido: true, ok: false,
         parametros: JSON.stringify(parametros).slice(0, 200),
       };
+      /* o `fetch` contado: a chamada que falhar sem tê-lo usado não chegou à
+         fonte, e devolve a vaga no ritmo (D284) */
+      let tocouARede = false;
+      const buscarContado = (...args) => { tocouARede = true; return buscar(...args); };
       try {
         let saida;
         if (e.c.adaptador) {
@@ -250,13 +261,13 @@ export function criarConectores({
             throw new Error(`catálogo: o adaptador de ${conector} não tem a operação ${operacao}`);
           }
           saida = await fazer({
-            conector: e.c, op, parametros, chave: e.chave, buscar, resolver,
+            conector: e.c, op, parametros, chave: e.chave, buscar: buscarContado, resolver,
             /* o cinto do adaptador pago: quanto AINDA cabe, para ele repassar
                ao serviço como limite da própria corrida */
             resta: e.pago ? arredondar(e.teto - e.gasto) : null,
           });
         } else {
-          saida = await chamarHttp({ conector: e.c, op, parametros, chave: e.chave, buscar });
+          saida = await chamarHttp({ conector: e.c, op, parametros, chave: e.chave, buscar: buscarContado });
         }
         const { custo: medido, medido: foiMedido, ...resto } = saida;
         if (e.pago) {
@@ -282,6 +293,7 @@ export function criarConectores({
           linha.custo = arredondar(Number(erro.custo));
           linha.medido = true;
         }
+        if (!tocouARede) ritmo.devolver(conector, marca);
         linha.erro = String(erro?.message || erro).slice(0, 200);
         await anotar(linha).catch((x) => aoRegistrar("o livro não gravou:", x?.message));
         throw erro;

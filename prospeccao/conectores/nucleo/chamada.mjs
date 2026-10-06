@@ -9,6 +9,11 @@
  * X" seria um `fetch()` genérico com o IP da pessoa: bastaria
  * `empresa = "x/../../outra-rota"` ou `empresa = "@outro-host"`.
  *
+ * Há um terceiro lugar, desde o D284: o CABEÇALHO que a operação declara em
+ * `cabecalhos` — a InHire diz de que empresa é o quadro por `X-Tenant`, e não
+ * pelo endereço. O nome do cabeçalho é do catálogo; o valor é do agente, e
+ * nele não passa quebra de linha nem o que não é texto simples.
+ *
  * A codificação fecha quase tudo (`/`, `?`, `#` e `@` viram `%xx`), e sobram
  * dois casos que ela NÃO pega: `.` e `..` não têm o que codificar, e o
  * analisador de URL os resolve DEPOIS — `boards/../x` vira `x` no mesmo
@@ -183,6 +188,56 @@ export function montarUrl(op, parametros = {}) {
   return url;
 }
 
+/**
+ * Os cabeçalhos que a operação declara, com os parâmetros no lugar.
+ *
+ * `"X-Tenant": "<empresa>"` é o caso que existe (a InHire, D284). O nome é do
+ * catálogo e é conferido ao subir; o valor vem do agente, e um valor com
+ * quebra de linha abriria um cabeçalho que ninguém declarou — por isso só
+ * passa o que é texto de uma linha, sem acento fora do Latin-1, que é o que o
+ * `fetch` aceita sem jogar erro no meio da chamada.
+ */
+export function montarCabecalhos(op, parametros = {}) {
+  const saida = {};
+  for (const [nome, molde] of Object.entries(op.cabecalhos || {})) {
+    let falta = null;
+    const valor = String(molde).replace(RE_PARAM, (m, p, padrao) => {
+      const v = parametros[p] ?? padrao;
+      if (v === undefined || v === null || String(v).trim() === "") { falta = p; return ""; }
+      return String(v).trim();
+    });
+    if (falta) throw new Error(`falta o parâmetro ${falta}, que entra no cabeçalho ${nome}`);
+    if (/[\u0000-\u001f\u007f]|[^\u0000-\u00ff]/.test(valor)) {
+      throw new Error(`parâmetro recusado: o valor do cabeçalho ${nome} tem caractere que não cabe nele`);
+    }
+    saida[nome] = valor;
+  }
+  return saida;
+}
+
+/**
+ * Quantos itens uma chamada PODE devolver — o número que o orçamento cobra e
+ * o que o adaptador manda ao serviço como teto da corrida. É um lugar só para
+ * os dois não divergirem (D284).
+ *
+ * `limite` é por BUSCA. A operação que faz uma busca por termo declara em
+ * `buscas` os parâmetros que se multiplicam (`["termos", "locais"]`: doze
+ * termos em dois locais são 24 buscas), e `teto_total` corta o produto.
+ * Sem `buscas`, é uma busca só, e o total é o próprio `limite`.
+ */
+export function itensDaChamada(op = {}, parametros = {}) {
+  const teto = Number(op?.limite) || 0;
+  const pedido = Number(parametros?.limite) || teto || 25;
+  const porBusca = teto ? Math.min(pedido, teto) : pedido;
+  let buscas = 1;
+  for (const p of op?.buscas || []) {
+    const n = String(parametros?.[p] ?? "").split(",").map((x) => x.trim()).filter(Boolean).length;
+    buscas *= Math.max(1, n);
+  }
+  const maximo = Number(op?.teto_total) || Infinity;
+  return { porBusca, buscas, total: Math.min(porBusca * buscas, maximo) };
+}
+
 /** onde a chave do serviço viaja — `como` é texto do catálogo */
 export function aplicarChave(url, cabecalhos, conector, chave) {
   const como = conector.chave?.como || "";
@@ -209,9 +264,12 @@ export function aplicarChave(url, cabecalhos, conector, chave) {
  *                                  endereço montado do ITEM (`{id}` lê o campo
  *                                  dele, codificado), só quando cada `se`
  *                                  casar. É o link da Sólides: o que ela manda
- *                                  vem quebrado (medido em 24/09)
+ *                                  vem quebrado (medido em 24/09). `<nome>` no
+ *                                  molde lê o PARÂMETRO, codificado: é o link
+ *                                  da InHire, que tem a empresa no host e não
+ *                                  a repete no item (D284)
  */
-export function regraDeCampo(bruto, regra) {
+export function regraDeCampo(bruto, regra, parametros = {}) {
   if (regra.primeiro || regra.molde) {
     for (const c of regra.primeiro || []) {
       const v = ler(bruto, c);
@@ -222,10 +280,10 @@ export function regraDeCampo(bruto, regra) {
       if (!new RegExp(re).test(String(ler(bruto, c) ?? ""))) return null;
     }
     let falta = false;
-    const url = regra.molde.replace(/\{([\w.-]+)\}/g, (m, c) => {
-      const v = ler(bruto, c);
+    const url = regra.molde.replace(/\{([\w.-]+)\}|<([\w-]+)>/g, (m, c, p) => {
+      const v = c ? ler(bruto, c) : parametros[p];
       if (v === undefined || v === null || String(v) === "") falta = true;
-      return encodeURIComponent(String(v ?? ""));
+      return encodeURIComponent(String(v ?? "").trim());
     });
     return falta ? null : url;
   }
@@ -279,7 +337,7 @@ export function projetar(op, corpo, parametros = {}) {
     const item = {};
     for (const [nosso, regra] of Object.entries(campos)) {
       if (regra && typeof regra === "object") {
-        item[nosso] = regraDeCampo(bruto, regra);
+        item[nosso] = regraDeCampo(bruto, regra, parametros);
       } else {
         const eco = String(regra).match(/^<([\w-]+)>$/);
         item[nosso] = eco ? (parametros[eco[1]] ?? null) : (ler(bruto, regra) ?? null);
@@ -326,7 +384,8 @@ export function projetar(op, corpo, parametros = {}) {
 export async function chamarHttp({ conector, op, parametros: pedidos, chave, buscar = fetch }) {
   const parametros = traduzirParametros(op, pedidos);
   const url = montarUrl(op, parametros);
-  const cabecalhos = { "User-Agent": "Mozilla/5.0 (conectores)", Accept: "application/json" };
+  const cabecalhos = { "User-Agent": "Mozilla/5.0 (conectores)", Accept: "application/json",
+    ...montarCabecalhos(op, parametros) };
   aplicarChave(url, cabecalhos, conector, chave);
 
   let resposta;
@@ -340,8 +399,9 @@ export async function chamarHttp({ conector, op, parametros: pedidos, chave, bus
     throw new Error(`o serviço não respondeu (${e?.name || "erro"}: ${e?.message || e})`);
   }
   if (!resposta.ok) {
-    throw new Error(`o serviço respondeu ${resposta.status}` +
-      (resposta.status === 404 ? " — confira o nome que entra no endereço" : ""));
+    throw new Error(`o serviço respondeu ${resposta.status}` + (resposta.status !== 404 ? ""
+      : op.cabecalhos ? ` — confira o nome que entra no endereço e no cabeçalho ${Object.keys(op.cabecalhos).join(", ")}`
+        : " — confira o nome que entra no endereço"));
   }
   let corpo;
   try { corpo = await resposta.json(); } catch {

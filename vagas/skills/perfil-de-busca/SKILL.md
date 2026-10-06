@@ -276,6 +276,7 @@ apify             os mesmos termos, pela listagem paga: `—` até ele dizer que
 linkedin (logado) os mesmos termos, DENTRO da conta dele: `—` até ele dizer que quer
 greenhouse        o nome de cada empresa como aparece no endereço do quadro
 ashby · lever     idem
+inhire            idem — o nome que vem antes de .inhire.app
 à mão             a empresa que nenhuma fonte alcança, com o endereço da
                   página de carreira e de quanto em quanto tempo olhar
 ```

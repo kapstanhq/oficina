@@ -14,14 +14,19 @@
  * A recusa NÃO dorme e tenta de novo por conta própria: uma ferramenta que
  * segura a resposta por cinquenta segundos parece travada, e o agente tem
  * coisa melhor a fazer nesse tempo. Ela diz quantos segundos faltam.
+ *
+ * ── SÓ CONTA O QUE TOCOU A FONTE (D284) ────────────────────────────────
+ * A cota é para não atropelar a FONTE, então só gasta cota a chamada que
+ * chegou a ela. A recusa por `devagar` nunca entra na janela; e a chamada
+ * que passou daqui mas morreu antes da rede — parâmetro que o adaptador
+ * recusou, endereço que não se montou — devolve a vaga com `devolver`.
  */
 export function criarRitmo({ agora = () => Date.now() } = {}) {
   const janelas = new Map();
   return {
-    /** 0 se pode chamar (e a chamada já conta), ou os segundos a esperar */
-    pedir(nome, porMinuto) {
+    /** 0 se pode chamar (e a chamada já conta, com a marca `t`), ou os segundos a esperar */
+    pedir(nome, porMinuto, t = agora()) {
       if (!porMinuto) return 0;
-      const t = agora();
       const vivas = (janelas.get(nome) || []).filter((x) => t - x < 60_000);
       if (vivas.length >= porMinuto) {
         janelas.set(nome, vivas);
@@ -30,6 +35,12 @@ export function criarRitmo({ agora = () => Date.now() } = {}) {
       vivas.push(t);
       janelas.set(nome, vivas);
       return 0;
+    },
+    /** a chamada de marca `t` não chegou à fonte: a vaga dela volta */
+    devolver(nome, t) {
+      const vivas = janelas.get(nome) || [];
+      const i = vivas.lastIndexOf(t);
+      if (i >= 0) vivas.splice(i, 1);
     },
   };
 }

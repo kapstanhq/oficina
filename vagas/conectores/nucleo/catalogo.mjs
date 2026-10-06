@@ -24,6 +24,7 @@ import { readFile } from "node:fs/promises";
 const TIPOS = ["http", "mcp"];
 const MODELOS = ["gratis", "medido", "estimado"];
 const ACRESCIMOS = { "operacoes+": "operacoes", "sessoes+": "sessoes" };
+const CABECALHOS_RESERVADOS = ["host", "cookie", "authorization", "content-length", "user-agent"];
 
 export async function carregarCatalogo(arquivos) {
   const catalogo = {};
@@ -177,6 +178,29 @@ export function conferirCatalogo(catalogo) {
         }
         if (def.maximo !== undefined && !(Number(def.maximo) > 0)) e(`${op}: \`${p}.maximo\` precisa ser maior que zero`);
       }
+      /* `buscas` e `teto_total` (D284): a operação em que cada termo é uma
+         busca diz quais parâmetros se multiplicam, e até quanto o produto vai.
+         Sem isso o orçamento cobraria UMA busca e a corrida faria doze */
+      if (d.buscas !== undefined) {
+        if (!Array.isArray(d.buscas) || !d.buscas.length) e(`${op}: \`buscas\` é uma lista de parâmetros`);
+        else for (const p of d.buscas) {
+          if (!(p in (d.parametros || {}))) e(`${op}: \`buscas\` cita ${p}, que não está em \`parametros\``);
+        }
+      }
+      if (d.teto_total !== undefined && !(Number(d.teto_total) > 0)) e(`${op}: \`teto_total\` precisa ser maior que zero`);
+      /* o cabeçalho que a operação declara (D284): o NOME é daqui, e não pode
+         ser um dos que outra regra já cuida — o host, o cookie, a chave */
+      if (d.cabecalhos !== undefined) {
+        if (!d.cabecalhos || typeof d.cabecalhos !== "object" || Array.isArray(d.cabecalhos)) {
+          e(`${op}: \`cabecalhos\` é uma tabela nome → valor`);
+        } else {
+          for (const [nome, valor] of Object.entries(d.cabecalhos)) {
+            if (!/^[A-Za-z0-9-]+$/.test(nome)) e(`${op}: cabeçalho “${nome}” não é nome de cabeçalho`);
+            else if (CABECALHOS_RESERVADOS.includes(nome.toLowerCase())) e(`${op}: o cabeçalho ${nome} não se declara aqui`);
+            if (typeof valor !== "string" || !valor.trim()) e(`${op}: o cabeçalho ${nome} precisa de um valor`);
+          }
+        }
+      }
       for (const [campo, regra] of Object.entries(d.campos || {})) {
         if (!regra || typeof regra !== "object") continue;
         if (!regra.de && !regra.primeiro && !regra.molde) {
@@ -191,7 +215,7 @@ export function conferirCatalogo(catalogo) {
       } catch { e(`${op}: \`url\` não é endereço`); }
       /* parâmetro usado e não declarado passaria pela recusa de "parâmetro
          desconhecido" e a operação nunca poderia ser chamada */
-      const usados = [...JSON.stringify([d.url, d.consulta || {}, d.campos || {}])
+      const usados = [...JSON.stringify([d.url, d.consulta || {}, d.campos || {}, d.cabecalhos || {}])
         .matchAll(/<([\w-]+)(?:\|[^>]*)?>/g)].map((m) => m[1]);
       for (const p of new Set(usados)) {
         if (!(p in (d.parametros || {}))) e(`${op}: usa <${p}> e não o declara em \`parametros\``);

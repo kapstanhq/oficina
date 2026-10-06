@@ -24,7 +24,7 @@
  * fechar alguns segundos DEPOIS de a corrida terminar. O número gravado é o
  * da última leitura, e pode ficar abaixo do que a fatura dirá.
  */
-import { projetar } from "../nucleo/chamada.mjs";
+import { projetar, itensDaChamada } from "../nucleo/chamada.mjs";
 
 const BASE = "https://api.apify.com";
 const TERMINAIS = new Set(["SUCCEEDED", "FAILED", "ABORTED", "TIMED-OUT"]);
@@ -90,11 +90,17 @@ export default {
     if (!/^[\w.-]+~[\w.-]+$/.test(ator)) {
       throw new Error("parâmetro recusado: `ator` tem a forma usuario~nome-do-ator");
     }
-    const limite = Math.min(Number(parametros.limite) || Number(op?.limite) || 25, Number(op?.limite) || 100);
+    /* ── `limite` É POR BUSCA, E O TETO DA CORRIDA É O PRODUTO (D284) ────
+       Até 06/10 o mesmo número ia à entrada do ator (`rows`, que ele aplica
+       a CADA termo × local) e ao `maxItems` da corrida e ao corte do
+       conjunto de dados (que valem para o TOTAL): doze termos com limite 10
+       devolveram dez vagas, e não cento e vinte. O total sai de
+       `itensDaChamada`, o mesmo que o orçamento cobra. */
+    const { porBusca: limite, total } = itensDaChamada(op, parametros);
 
     const inicio = new URL(`/v2/acts/${encodeURIComponent(ator)}/runs`, base);
     inicio.searchParams.set("waitForFinish", "60");
-    inicio.searchParams.set("maxItems", String(limite));
+    inicio.searchParams.set("maxItems", String(total));
     /* o segundo cinto: o que AINDA cabe no teto vai como limite da própria
        corrida. O primeiro cinto é a recusa pela estimativa, antes daqui. */
     if (Number(resta) > 0) inicio.searchParams.set("maxTotalChargeUsd", String(resta));
@@ -129,7 +135,7 @@ export default {
 
     const dados = new URL(`/v2/datasets/${encodeURIComponent(corrida.defaultDatasetId)}/items`, base);
     dados.searchParams.set("clean", "true");
-    dados.searchParams.set("limit", String(limite));
+    dados.searchParams.set("limit", String(total));
     let itens;
     try { itens = await pedir(buscar, dados, chave); } catch (e) { throw falhar(e.message); }
 
@@ -137,8 +143,8 @@ export default {
        catálogo os itens passam como vieram, e o `corta` do catálogo é o que
        impede uma descrição de vinte mil caracteres por item */
     const saida = op?.campos
-      ? projetar({ ...op, lista: "" }, itens, parametros)
-      : { itens: Array.isArray(itens) ? itens.slice(0, limite) : [], total: Array.isArray(itens) ? itens.length : 0 };
+      ? projetar({ ...op, lista: "", limite: total }, itens, { ...parametros, limite: total })
+      : { itens: Array.isArray(itens) ? itens.slice(0, total) : [], total: Array.isArray(itens) ? itens.length : 0 };
     return { ...saida, corrida: corrida.id, custo, medido: true };
   },
 };

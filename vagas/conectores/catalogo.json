@@ -121,7 +121,7 @@
         "oque": "vagas do LinkedIn pela Apify, com filtros e o anúncio inteiro — é a listagem pública, lida sem conta nenhuma. Custa por vaga devolvida",
         "ator": "bebity~linkedin-jobs-scraper",
         "custo": {
-          "porItem": 0.0005
+          "porItem": 0.002
         },
         "parametros": {
           "termos": {
@@ -141,7 +141,7 @@
             "oque": "true para só as de candidatura simplificada"
           },
           "limite": {
-            "oque": "quantas vagas POR BUSCA (termo × local), até 100 — é o que decide o custo"
+            "oque": "quantas vagas POR BUSCA (termo × local), até 100. A corrida traz até esse número vezes as buscas — doze termos com limite 10 são até 120 vagas —, nunca mais de 200 no total; o orçamento conta assim, e é o que decide o custo"
           }
         },
         "entrada": {
@@ -184,11 +184,17 @@
         "corta": {
           "descricao": 8000
         },
-        "limite": 100
+        "limite": 100,
+        "buscas": [
+          "termos",
+          "locais"
+        ],
+        "teto_total": 200
       }
     }
   },
   "gupy": {
+    "_": "Medida em 06/10/2026 (D284): o host público de antes, employability-portal.gupy.io, responde 404 do nginx até na raiz — o portal passou a buscar pela rota dele mesmo, portal.gupy.io/api/job-search/jobs, que aceita a mesma consulta e devolve o mesmo formato. O que mudou no item: `isRemoteWork` não vem mais, e remoto sai do `workplaceType`. `pagination.total` só é o total da fonte com `limit` até 10; acima disso ele para em 100. A cidade sem acento não zera mais (São Paulo 2363, Sao Paulo 14), e continua achando bem menos.",
     "rotulo": "Gupy",
     "para_voce": "Vagas publicadas nos portais Gupy, a maior fonte brasileira. É público e gratuito.",
     "tipo": "http",
@@ -203,7 +209,7 @@
       "buscar": {
         "oque": "busca pelo título, em todas as empresas; `banco_de_talentos: true` não é vaga aberta, é cadastro",
         "metodo": "GET",
-        "url": "https://employability-portal.gupy.io/api/v1/jobs",
+        "url": "https://portal.gupy.io/api/job-search/jobs",
         "consulta": {
           "jobName": "<termo>",
           "city": "<cidade>",
@@ -292,7 +298,10 @@
           "titulo": "name",
           "empresa": "careerPageName",
           "local": "city",
-          "remoto": "isRemoteWork",
+          "remoto": {
+            "de": "workplaceType",
+            "contem": "remote"
+          },
           "link": "jobUrl",
           "publicada": "publishedDate",
           "descricao": "description",
@@ -346,7 +355,7 @@
       "detalhe": {
         "oque": "o anúncio INTEIRO de uma vaga que a busca já achou — passe o título exato em `termo` (e a cidade, se houver homônimas). Até três por chamada",
         "metodo": "GET",
-        "url": "https://employability-portal.gupy.io/api/v1/jobs",
+        "url": "https://portal.gupy.io/api/job-search/jobs",
         "consulta": {
           "jobName": "<termo>",
           "city": "<cidade>",
@@ -434,7 +443,10 @@
           "titulo": "name",
           "empresa": "careerPageName",
           "local": "city",
-          "remoto": "isRemoteWork",
+          "remoto": {
+            "de": "workplaceType",
+            "contem": "remote"
+          },
           "link": "jobUrl",
           "publicada": "publishedDate",
           "descricao": "description",
@@ -1004,6 +1016,128 @@
       }
     }
   },
+  "inhire": {
+    "_": "Medida em 06/10/2026 (D284) com trinca e monest. A API é a que a página de vagas da própria empresa usa, e diz de quem é o quadro pelo cabeçalho X-Tenant — sem ele, 400; com um nome que não existe, 404 “Tenant not found”; o nome é em minúsculas (“Trinca” dá 404). A lista não traz descrição nem data: as duas vêm no `detalhe`, que é o mesmo endereço com o id no fim. O link /vagas/<id> abre a vaga sem o trecho do título no fim.",
+    "rotulo": "InHire",
+    "para_voce": "O quadro de vagas de empresas que usam InHire — muitas startups brasileiras. É público e gratuito.",
+    "tipo": "http",
+    "oque": "o quadro de vagas de UMA empresa que usa InHire (o endereço da página de vagas traz o nome dela: <empresa>.inhire.app)",
+    "custo": {
+      "modelo": "gratis"
+    },
+    "ritmo": {
+      "porMinuto": 10
+    },
+    "operacoes": {
+      "buscar": {
+        "oque": "todas as vagas abertas da empresa, filtradas pelo título se vier `termo` — sem descrição nem data, que vêm no `detalhe`",
+        "metodo": "GET",
+        "url": "https://api.inhire.app/job-posts/public/pages",
+        "cabecalhos": {
+          "X-Tenant": "<empresa>"
+        },
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece no endereço da página de vagas dela, em minúsculas (acme, em acme.inhire.app)",
+            "obrigatorio": true,
+            "formato": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "termo": {
+            "oque": "filtra pelo título; alternativas separadas por vírgula"
+          },
+          "limite": {
+            "oque": "quantas no máximo, até 50"
+          }
+        },
+        "lista": "jobsPage",
+        "campos": {
+          "id": "jobId",
+          "titulo": "displayName",
+          "empresa": "<empresa>",
+          "local": "location",
+          "remoto": {
+            "de": "workplaceType",
+            "contem": "remote"
+          },
+          "link": {
+            "molde": "https://<empresa>.inhire.app/vagas/{jobId}"
+          },
+          "publicada": "publishedAt",
+          "descricao": "description",
+          "regime": {
+            "de": "workplaceType",
+            "mapa": {
+              "Remote": "remoto",
+              "Hybrid": "híbrido",
+              "On-site": "presencial"
+            }
+          }
+        },
+        "filtra": [
+          "titulo"
+        ],
+        "limite": 50
+      },
+      "detalhe": {
+        "oque": "o anúncio INTEIRO de uma vaga, com a data de publicação e o contrato, pelo `id` que a busca devolveu",
+        "metodo": "GET",
+        "url": "https://api.inhire.app/job-posts/public/pages/<id>",
+        "cabecalhos": {
+          "X-Tenant": "<empresa>"
+        },
+        "parametros": {
+          "empresa": {
+            "oque": "o nome da empresa como aparece no endereço da página de vagas dela, em minúsculas (acme, em acme.inhire.app)",
+            "obrigatorio": true,
+            "formato": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "id": {
+            "oque": "o id da vaga, como veio na busca",
+            "obrigatorio": true,
+            "formato": "^[0-9a-f-]+$"
+          }
+        },
+        "campos": {
+          "id": "jobId",
+          "titulo": "displayName",
+          "empresa": "tenantName",
+          "local": "location",
+          "remoto": {
+            "de": "workplaceType",
+            "contem": "remote"
+          },
+          "link": {
+            "molde": "https://<empresa>.inhire.app/vagas/{jobId}"
+          },
+          "publicada": "publishedAt",
+          "descricao": "description",
+          "regime": {
+            "de": "workplaceType",
+            "mapa": {
+              "Remote": "remoto",
+              "Hybrid": "híbrido",
+              "On-site": "presencial"
+            }
+          },
+          "contrato": {
+            "de": "contractType",
+            "junta": " · "
+          }
+        },
+        "html": [
+          "descricao"
+        ],
+        "datas": [
+          "publicada"
+        ],
+        "corta": {
+          "descricao": 8000
+        },
+        "limite": 1,
+        "um": true
+      }
+    }
+  },
   "linkedin-vagas": {
     "rotulo": "LinkedIn — vagas públicas",
     "para_voce": "A lista de vagas do LinkedIn que qualquer visitante vê, sem entrar na sua conta. É gratuito.",
@@ -1048,7 +1182,8 @@
         "parametros": {
           "id": {
             "oque": "o id da vaga",
-            "obrigatorio": true
+            "obrigatorio": true,
+            "formato": "^[0-9]+$"
           }
         },
         "corta": {
