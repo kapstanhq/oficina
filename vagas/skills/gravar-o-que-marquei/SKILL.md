@@ -107,6 +107,13 @@ com a procedência `← candidato, no painel, AAAA-MM-DD`, e o `## Histórico`
 ganha a linha da passagem, no formato da seção do arquivo. O valor antigo não se
 apaga (Regra 2).
 
+**A proposta que esperava por ele vira dele.** Campo do cabeçalho que está em
+`?  ← … propõe <valor>; falta você julgar` — a leitura propôs, e a decisão era
+dele — passa a `<valor>  ← candidato, no painel, AAAA-MM-DD` quando ele
+move a vaga para a frente: passar adiante é aceitar a leitura que estava na
+tela. Sem proposta, o campo fica como está, e o fecho diz em uma linha que a vaga
+avançou sem leitura — é o pedido de rodar a leitura.
+
 `para` que o `funil.md` não tem **não se grava**: nenhuma skill cria etapa
 (seção 4.3). Diga em uma linha e deixe a decisão na fila.
 

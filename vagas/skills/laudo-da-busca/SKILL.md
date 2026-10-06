@@ -86,7 +86,7 @@ consertando — oferecer é uma frase, não uma escrita.
 
 Não há `## Decidi sozinho` neste laudo em nenhum modo: ela não decide nada.
 
-## 4 · As cinco perguntas, nesta ordem
+## 4 · As seis perguntas, nesta ordem
 
 A ordem é de **consequência**, e não de pasta: o que faz o candidato dizer
 uma coisa errada hoje vem antes do que deixa a busca feia.
@@ -176,6 +176,22 @@ Um `?` que espera há mais tempo que o 45 dias não é mais uma
 pergunta em aberto: é uma decisão de não perguntar. Ele aparece no laudo com
 essa palavra, para o candidato decidir se ainda quer a resposta.
 
+### 4.6 · Que campo o formato tem e a ficha não
+
+Regra nova cria campo, e o campo não chega sozinho às fichas antigas: a ficha
+gravada antes dele não tem a linha — nem valor, nem `?` —, e nenhuma skill
+volta a ela. Em 2026-10-06, uma linha criada pela leitura chegou depois de 33
+fichas já lidas, e as 33 ficaram sem ela para sempre: ninguém sabia que
+faltava, porque linha ausente não aparece como `?`.
+
+Compare o cabeçalho de cada ficha de `vagas/` com o do formato em
+`references/contrato/04-4-arquivo-de-vaga.md`, e liste **o campo e quantas
+fichas, por etapa** quando a ficha tem uma: `<campo> · falta em 33 — 20 em
+<etapa>, 13 em <etapa>`. Por etapa, porque o campo que a leitura escreve só falta em quem já passou
+por ela: na nova, a ficha ainda não lida não é achado. O conserto
+é de `/vagas:organizar-busca`, que acrescenta a linha `?` e manda
+para quem a preenche.
+
 ## 5 · O que perguntar, e como
 
 **Nada.** Esta é a única skill do pack que não pergunta em nenhum momento, e é
@@ -226,6 +242,11 @@ Abre pelo veredito em UMA linha, e o veredito é a primeira coisa que se lê:
 - V-019 (Gerente de Produto Sênior, Trilho Logística) · há 41 dias · a ficha diz o que falta e onde perguntar
 - … (cinco, sempre; menos que cinco, todos)
 
+## Campo que a ficha não tem — 1
+
+- um campo do formato falta em 12 fichas — 9 numa etapa, 3 na seguinte
+  → a linha entra em `?`, e quem preenche é chamado — é só dizer “organiza minha busca”
+
 ## Não consegui ler — 1
 
 - a planilha 2026-08-30-planilha.csv, nos originais — o arquivo abriu vazio
@@ -250,7 +271,8 @@ dele. Não é a lista dos `?` da busca — essa é a seção 4.5, e ela é o
 trabalho, não a confissão.
 
 **Zero achados é um resultado, e ele se escreve:** `**A busca está limpa:
-nada sem procedência, nada vencido, nada órfão, nada acima do teto.**` Um laudo
+nada sem procedência, nada vencido, nada órfão, nada acima do teto, nenhum
+campo faltando.**` Um laudo
 que some quando está tudo certo ensina o candidato a não rodá-lo.
 
 ## 7 · Onde ela para
@@ -270,6 +292,6 @@ achado, não trabalho — varrer a busca abrindo trinta páginas transforma uma
 régua de dez segundos numa execução de meia hora, que é exatamente o que faz
 ninguém rodá-la.
 
-**Ela não mede o que o contrato não declara.** Se um pack quiser uma sexta
+**Ela não mede o que o contrato não declara.** Se um pack quiser uma sétima
 pergunta, ela entra em `_motor/skills/laudo-da-busca/SKILL.md` e passa a
 valer para todos os packs — nunca escrita à mão dentro de um.

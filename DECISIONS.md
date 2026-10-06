@@ -1604,3 +1604,60 @@ ficava sabendo que havia versão nova.
 | embutir o Playwright no `.mcp.json` do pack | todo início de sessão rodaria `npx` e baixaria o navegador, com ou sem uso; e os nomes das ferramentas mudariam debaixo das guardas do lançador |
 | o assistente ligar conector, guardar chave ou subir teto | é a razão do teto (D229): quem pode subir o próprio teto não tem teto |
 | atualizar sem perguntar | trocar o código que roda é decisão da pessoa, e a atualização só vale depois de reabrir |
+
+## D282 · A vaga entra lida: o logado primeiro, o texto acima do selo, e o campo novo chega à ficha antiga
+
+`data: 2026-10-06`
+
+Uma busca de 06/10 mostrou seis defeitos de uma vez. Gravou 27 vagas com o
+regime do cartão — o `filtro: remoto` da listagem pública ou o selo "Remoto"
+do logado — sem abrir o anúncio; ao reler, 19 caíram pelo `## Descarto`
+(presencial ou híbrido fora da cidade, inglês fluente ou C1), e havia selo
+"Remoto" com texto que pedia morar em São Paulo ou ir ao escritório uma vez
+por semana. Rodou pela listagem pública com a linha `linkedin (logado):` no
+perfil e o navegador provado. Doze vagas ficaram com `jornada: ?` e "Tempo
+integral" no anúncio salvo. O salário relatado (passo 2b da triagem) chegou
+depois de 33 vagas lidas, e as 33 ficaram sem a linha. A vaga salva antes da
+leitura ficou com `encaixe: ?  ← propõe`, esperando um julgamento que ele já
+tinha feito. E uma citação saiu "há 3 dia".
+
+- **Nenhuma vaga entra `nova` sem o anúncio lido inteiro** (buscar-vagas,
+  passo 5): o `detalhe` do conector, o navegador logado quando há a linha —
+  um por vez, no ritmo do roteiro — ou o link pela web. O anúncio vai para
+  `_bruto/AAAA-MM-DD-anuncio-<fonte>-<empresa>-<id>.md` antes de virar campo,
+  e os cortes de regime e de idioma se aplicam ao TEXTO. Só o que não abriu
+  entra com `?` e o motivo. O lugar na pilha é de vaga lida: a que cai ao ler
+  não ocupa um dos N do teto.
+- **Com a linha e o navegador provado, o logado é a primeira fonte** nos
+  termos do perfil: a linha é autorização escrita, não opção. A listagem
+  pública e a apify complementam o termo que o logado não cobriu, e "não use
+  dois no mesmo termo" continua. O roteiro diz como ler o cartão fora da
+  tela, que vem só com o id: clicar no próximo da lista, um por vez, dentro
+  da página de resultados, até 3 páginas e ~40 cartões por busca, o teto que já valia — andar a lista
+  não é rolar a página até o fim.
+- **A tabela de rótulos mora na seção 4.4**: "Tempo integral"/"Full time" é
+  `jornada: tempo integral, sem horas nem horário`; "Contratação CLT" é
+  `contrato: CLT`; "PJ"/"contractor" é `contrato: PJ`; o selo de regime é
+  indício que o texto confirma ou desmente; o formulário que pergunta o nível
+  de inglês sem o anúncio exigir é `idioma: não pede nível no anúncio; o
+  formulário pergunta o nível`. A busca, a triagem e a completar-ficha leem
+  por ela. Na mesma seção, a data relativa vira absoluta com a citação no
+  plural da tela — "há 1 dia", "há 3 dias".
+- **O campo novo chega à ficha antiga.** O laudo ganha a sexta pergunta —
+  campo que o formato tem e a ficha não, contado por etapa, sem acusar a
+  ficha ainda não lida da etapa inicial —; a organizar acrescenta a linha
+  `?  ← a ficha é anterior ao campo; quem preenche é /…:completar-ficha` e
+  manda para lá, que já tratava "o campo que o 04-4 tem e o arquivo não".
+- **A decisão que ele já tomou não espera de novo.** A triagem de um id só
+  (o botão "Analisar esta vaga") numa vaga já `salva` grava o encaixe
+  proposto como dele, `← candidato, no painel`, como o passo 6. E a
+  gravar-o-que-marquei faz o mesmo com qualquer campo em `?  ← … propõe
+  <valor>` quando ele move o item adiante; sem proposta, o fecho diz que
+  avançou sem leitura.
+
+| recusado | por que caiu |
+|---|---|
+| confiar no selo do logado, que é mais preciso que o filtro público | 19 de 27 caíram ao ler o texto, e parte delas tinha o selo |
+| ler o anúncio só na triagem, como antes | a vaga errada ocupa lugar no teto da pilha e chega ao painel como se coubesse |
+| preencher o salário relatado das 33 na própria organizar | ela não abre link (§8); quem lê fonte de fora é a completar-ficha |
+| deixar o logado como opcional mesmo com a linha | a linha é a autorização escrita dele; ignorá-la tira as recomendadas, que é o motivo de ela existir |

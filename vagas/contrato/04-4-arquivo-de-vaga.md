@@ -67,6 +67,42 @@ nível se lê contra o `## Idiomas` da trajetória, e o que a vaga pede acima de
 vai para `## O que pesa contra`, dito assim. `?` é o anúncio que não fala do
 assunto — e não é o mesmo que `não pede`.
 
+**O rótulo do site vira campo por esta tabela**, e não por leitura de cabeça.
+Em 2026-10-06, doze vagas ficaram com `jornada: ?` e "Tempo integral" no
+anúncio salvo: o rótulo estava lá, e ninguém disse em que campo ele mora.
+
+```
+"Tempo integral" · "Full time" ·      jornada: tempo integral, sem horas nem
+"Full-time"                           horário — o rótulo não diz 44h nem 8h–17h
+"Meio período" · "Part-time"          jornada: meio período
+"Contratação CLT" · "Full-time CLT    contrato: CLT
+employment" · "Efetivo CLT"
+"PJ" · "Pessoa Jurídica" ·            contrato: PJ
+"contractor"
+"Remoto" · "Híbrido" · "Presencial",  INDÍCIO, não regime: o texto confirma ou
+o selo do cartão ou do cabeçalho      desmente. O texto cala: `regime: ?  ← o
+                                      selo diz "Remoto"; o texto não fala de
+                                      regime`. O texto desmente ("morar em São
+                                      Paulo", "1x por semana no escritório"):
+                                      vale o texto
+o formulário pergunta o nível de      idioma: não pede nível no anúncio; o
+inglês, e o anúncio não o exige       formulário pergunta o nível
+```
+
+"Tempo integral" não é contrato: é jornada, e `contrato:` continua `?` até o
+anúncio dizer o vínculo. O selo de regime é o que a empresa cadastrou, às
+vezes errado — das 27 vagas gravadas pelo selo ou pelo filtro em 2026-10-06,
+19 caíram no `## Descarto` ao reler o texto. Quem usa a tabela é quem lê o anúncio: `/vagas:buscar-vagas`,
+`/vagas:triar-vagas` e `/vagas:completar-ficha`.
+
+**Data relativa vira data absoluta, com a citação no plural certo.** "Há 3
+dias" lido em 2026-10-06 é `publicada: 2026-10-03 — "há 3 dias" em
+2026-10-06`; "há 2 semanas" é `por volta de` (14 dias antes), porque a semana
+não diz o dia; "há N horas" é a data de hoje, ou a de ontem se N passa da
+hora de agora. A citação vai como a tela escreve — `1 dia`, `3 dias`, `1
+semana`, `2 semanas`, `1 hora`, `5 horas` —, e nunca `3 dia`: número e
+palavra concordam.
+
 `inscrições até:` é a data em que a vaga deixa de aceitar candidatura, quando o
 anúncio a traz — e é o único prazo deste arquivo que sobe sozinho para o
 `hoje.md`. `?` é o comum.

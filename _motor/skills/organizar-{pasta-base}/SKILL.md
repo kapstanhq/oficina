@@ -435,6 +435,7 @@ dois arquivos passam a disputar o mesmo nome.
 | item no `_indice.md` sem arquivo, ou arquivo sem linha | reescreve o `_indice.md` a partir dos arquivos |
 | aposentado ainda na tabela viva, no funil ou no `hoje.md` | tira das três — ele já tem a linha em `## Arquivo morto` |
 | campo `?` que uma conversa em `_bruto/` já respondeu | grava o valor com `← _bruto/<arquivo>` e diz no relatório |
+| campo que o `{secao-arquivo-item}` mostra e a ficha não tem — ela é anterior ao campo | acrescenta a linha no lugar em que o contrato a mostra, `?  ← a ficha é anterior ao campo; quem preenche é /{plugin}:completar-ficha, AAAA-MM-DD`, e manda para lá no `## Próximo passo`, com os ids. Não preenche de cabeça; na {etapa-inicial}, a ficha ainda não lida fica como está |
 | campo preenchido **sem** procedência | não inventa origem. Vai para `## Não bate`, e para `## Falta saber` se for campo que sai na mensagem ({campos-que-saem-na-mensagem}) |
 | `estado:` ou `etapa:` fora das listas fechadas | não corrige por conta própria: pergunta qual dos valores válidos é |
 | dois {pasta-pessoas} que parecem a mesma pessoa | mostra os dois e para. **Ela não funde ficha** |

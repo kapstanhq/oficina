@@ -1,9 +1,11 @@
 # O LinkedIn logado — o roteiro do site
 
-Isto é o caminho OPCIONAL de quem ligou o conector `navegador`. O padrão
-continua sendo a listagem PÚBLICA (o conector `linkedin-vagas`), que responde
-sem conta nenhuma e não arrisca nada — e quem nunca chegar até aqui não perde
-nenhuma skill do pack.
+Isto é o caminho de quem ligou o conector `navegador` E escreveu a linha
+`linkedin (logado):` no perfil. Com as duas, ele é a PRIMEIRA fonte nos termos
+do perfil — a linha é autorização escrita, e não opção —, e a listagem PÚBLICA
+(o conector `linkedin-vagas`) e a apify complementam o que ele não cobriu. Sem
+a linha, a pública é o caminho, sem conta nenhuma e sem risco — e quem nunca
+chegar até aqui não perde nenhuma skill do pack.
 
 **Só siga com o conector `navegador` ligado e provado** (`browser_snapshot`
 responde). Sem ele, este arquivo não existe para a execução: não o mencione.
@@ -63,8 +65,8 @@ usar a conta dele pela primeira vez.
    buscar, ou para nada — e nada continua funcionando
 ```
 
-Ele hesitou: **pare e não insista.** A listagem pública é o padrão, e o
-trabalho sai igual.
+Ele hesitou: **pare e não insista.** Sem a linha, a listagem pública faz o
+trabalho, e quem tira ou escreve a linha é `/vagas:perfil-de-busca`.
 
 ---
 
@@ -111,12 +113,14 @@ uma ação por vez         nunca duas abas agindo ao mesmo tempo, nunca uma
 espere entre navegações  browser_wait_for, alguns segundos, a cada troca de
                          página. Ler três páginas em três segundos é a
                          assinatura de um programa
-3 páginas de resultado   por busca, no máximo — e ~40 cartões lidos. O que
-                         não coube fica para a próxima execução
+3 páginas de resultado   por busca, no máximo — e ~40 cartões lidos no
+                         total. O que não coube fica para a próxima execução
 o teto de candidaturas   o do `INDICE.md`, `quantas candidaturas por dia:`.
 por dia                  Ele vale aqui inteiro, e nada o ultrapassa
 nada de rolar em laço    a página carrega mais ao rolar; rolar até o fim é
-                         raspagem, e é exatamente o que os termos nomeiam
+                         raspagem, e é exatamente o que os termos nomeiam.
+                         Andar a lista de UMA página cartão a cartão, lendo
+                         cada um, não é laço: é o que gente faz
 uma vaga por vez         o detalhe de UMA vaga aberto de cada vez, lido, e
                          só então a seguinte
 ```
@@ -174,7 +178,9 @@ listitem            o cartão
   heading nível 4   a empresa, com link para /company/<apelido>
   generic           a cidade
   time              "Há 4 dias" — data relativa; converta com a data de hoje
-                    e escreva a procedência com a data ABSOLUTA
+                    e escreva a data ABSOLUTA, citando o texto com o plural
+                    certo ("há 1 dia", "há 3 dias" — nunca "há 3 dia"). A
+                    regra está na seção 4.4 do contrato
 ```
 
 **O id da vaga é o número no fim do caminho** de `/jobs/view/`:
@@ -195,8 +201,33 @@ inteiro no snapshot. A página pública já traz o texto completo; logado, traz
 também "Há 4 dias · 119 candidaturas", que é sinal útil e entra como campo com
 procedência.
 
-Uma por vez, com espera entre elas. Quarenta cartões lidos não são quarenta
-detalhes abertos: abra o detalhe das que sobrevivem ao `## Descarto`.
+Uma por vez, com espera entre elas. **Toda vaga que vai entrar na busca tem o
+anúncio lido antes** — o cartão não traz os requisitos, e o selo de regime
+engana: o corte se aplica ao texto. O anúncio lido vai para
+`_bruto/AAAA-MM-DD-anuncio-linkedin-<empresa>-<id>.md`. O cartão repetido, ou
+que já cai no `## Descarto` pelo que ele mesmo diz (o cargo é júnior, e o
+perfil corta júnior), não precisa do detalhe.
+
+### Andar a lista de uma página, cartão a cartão
+
+Na busca logada, a lista fica à esquerda e o anúncio à direita. Dos ~25
+cartões de uma página, só os que estão à vista vêm com título e empresa; os
+outros vêm só com o id. **Não é vaga vazia, e não se rola a página até o
+fim.** O caminho:
+
+```
+1  browser_snapshot, e a lista de `listitem` com o id de cada cartão
+2  browser_click no PRÓXIMO cartão da lista, pelo ref do snapshot — o site
+   rola a lista até ele, pinta o cartão e abre o anúncio ao lado
+3  browser_wait_for, e browser_snapshot: leia o cartão e o anúncio inteiro
+   ("… mais" abre o resto)
+4  só então o seguinte. Acabou a página: `start=25`, e o mesmo, até 3 páginas ou ~40 cartões
+```
+
+Cartão que não pinta nem com o clique: abra pelo id
+(`https://www.linkedin.com/jobs/view/<id>/`), uma vez, com espera. O clique
+que pinta o cartão e abre o anúncio ao lado NÃO foi conferido passo a passo:
+se a tela fizer outra coisa, o snapshot manda.
 
 **Conferido logado em 2026-09-23**, em 105 cartões e 40 vagas relidas:
 
@@ -204,10 +235,12 @@ detalhes abertos: abra o detalhe das que sobrevivem ao `## Descarto`.
 a lista só pinta o que      dos 25 cartões de uma página, os que estão fora da
 está à vista                tela vêm só com o id, sem título nem empresa. Não
                             é vaga vazia: abra o detalhe pelo id
-o regime tem linha própria  logo abaixo de "Há N dias · N candidaturas" vem
-                            "Remoto", "Híbrido" ou "Presencial". É ISTO que o
-                            cartão público não mostra, e é daqui que sai
-                            `regime:` — com a cidade do cabeçalho ao lado
+o regime tem um selo        logo abaixo de "Há N dias · N candidaturas" vem
+                            "Remoto", "Híbrido" ou "Presencial". É INDÍCIO, e
+                            não `regime:`: em 2026-10-06, cartões com o selo
+                            "Remoto" pediam no texto morar em São Paulo ou ir
+                            ao escritório 1x por semana. Vale o texto; ele
+                            calado, `regime: ?` com o selo na procedência
 dois avisos diferentes      "Não aceita mais candidaturas" é `estado: fechou`;
                             "Não aceita candidaturas agora" é pausa — fica
                             `estado: aberta`, e a pausa vai numa linha do

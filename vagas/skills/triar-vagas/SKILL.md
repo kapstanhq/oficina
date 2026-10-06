@@ -114,6 +114,13 @@ pilha é ela: passos 2 a 4 sobre essa vaga, e grave as três seções e o
 e o painel já está com a vaga na frente. O `## Guardei` diz o que a leitura
 achou em uma linha, começando pelo regime.
 
+**A vaga já está em `salva`, ou adiante?** Ele a salvou antes da leitura, e
+salvar já foi a decisão: o encaixe proposto vira dele, como no passo 6 —
+`encaixe: <o proposto>  ← candidato, no painel, <hoje>` —, e não fica
+`?  ← a triagem propõe`, esperando um julgamento que ele já fez. Proposta
+`baixo` numa vaga que ele salvou: grave igual, e diga em uma linha o peso
+mais forte — é a deixa para ele desfazer.
+
 **1b · O anúncio colado, sem busca.** Ele colou uma vaga — e o perfil, ou os
 critérios de cabeça — e perguntou se vale? Faça os passos 2 a 4 **na tela**, e
 não grave nada: o `## Guardei` diz `- nada foi gravado — você está sem busca
@@ -146,6 +153,15 @@ linha e peça o texto do anúncio — sem abrir por web nem por navegador, que o
 termo vale igual. `encaminhado` aponta o conector que lê aquele site; `não
 traz o bloco`, peça o texto. Sem conectores, a ferramenta de web abre o
 link, menos o desses quatro sites. Colado como texto, segue como sempre.
+
+**O rótulo do site vira campo pela tabela da seção 4.4**
+(`references/contrato/04-4-arquivo-de-vaga.md`): "Tempo integral" é `jornada:
+tempo integral, sem horas nem horário`, e não `?`; "Contratação CLT" é
+`contrato: CLT`; o selo "Remoto" é indício que o texto confirma ou desmente; e
+o formulário que pergunta o nível de inglês sem o anúncio exigir é `idioma:
+não pede nível no anúncio; o formulário pergunta o nível`. Campo em `?` com o
+rótulo no anúncio salvo é campo que se preenche agora. Data relativa ("há 3
+dias") vira absoluta, pela mesma seção.
 
 **O anúncio que ela abriu vai para `_bruto/` antes de virar linha** —
 `AAAA-MM-DD-anuncio-<empresa>.md`, com o cabeçalho de três linhas

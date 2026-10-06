@@ -95,7 +95,9 @@ que decidem se o registro serve; os de data e contato vêm depois.
 
 Conta também o campo que o `04-4-arquivo-de-imovel.md` tem e o arquivo não: registro
 gravado antes de o campo existir não tem a linha, e ela entra agora, no lugar
-em que o contrato a mostra.
+em que o contrato a mostra. A linha `?  ← <motivo>` que
+`/corretor:organizar-carteira` acrescentou para isso é um `?` como os
+outros: é aqui que ela se resolve.
 
 ### Passo 2 · As fontes, da mais barata para a mais cara
 
@@ -126,6 +128,11 @@ Pare de procurar um campo quando ele for achado. Pare a skill quando as cinco
 fontes forem tentadas — não há sexta. **A exceção é o campo para o qual o
 `04-4-arquivo-de-imovel.md` escreve um caminho próprio**: esse segue o caminho de
 lá, e não esta ordem — é o contrato do ofício que sabe onde aquele dado mora.
+
+**O rótulo vira campo pela tabela do contrato.** Quando o
+`04-4-arquivo-de-imovel.md` traz a tabela de rótulos — a palavra que o site escreve
+e o campo em que ela mora —, a origem se lê por ela, e não de cabeça: o `?`
+com o rótulo já na origem guardada se preenche na fonte 1, sem procurar fora.
 
 ### Passo 3 · A página lida vai para `_bruto/` antes de virar campo
 

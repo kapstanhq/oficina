@@ -8,7 +8,7 @@ description: >-
   resultado — o que saiu continua conferível. Para antes de buscar se a pilha
   por julgar bateu no teto, e confere se as vagas vivas continuam no ar. Sem
   conector, trabalha com o anúncio colado; com o navegador ligado e a linha
-  `linkedin (logado):` no perfil, busca também dentro da conta dele — e sem
+  `linkedin (logado):` no perfil, busca primeiro dentro da conta dele — e sem
   essa linha não entra em conta nenhuma. Use quando o candidato disser
   "busca vaga para mim", "tem vaga nova?", "roda a busca", "achei essa
   vaga, guarda", "essa vaga ainda está aberta?", "quanto gastei com a
@@ -132,23 +132,33 @@ a linha                        existe — que logado aparecem as vagas
                                `/vagas:perfil-de-busca`. E siga sem
 ```
 
+**Tem as duas: o logado é a PRIMEIRA fonte, nos termos do perfil.** A linha é
+autorização escrita, e não sugestão: quem a escreveu quer as recomendadas e o
+que só aparece logado. Em 2026-10-06 a busca rodou pela listagem pública com a
+linha no perfil e o navegador provado, e o logado nem abriu. Pular o logado
+com a linha escrita é erro, e não economia.
+
 **São TRÊS caminhos até uma vaga do LinkedIn, e eles não custam o mesmo:**
 
 ```
-linkedin-vagas        a listagem PÚBLICA, de graça, sem conta nenhuma. É o
-                      padrão e é o caminho SEM RISCO
-apify · vagas-        a mesma listagem pública, PAGA, com o anúncio inteiro
-linkedin              e mais filtro. Sem risco de conta, com risco de custo:
-                      orçamento antes, como toda chamada paga
 linkedin (logado)     age DENTRO da conta dele. Traz o que só existe logado —
-                      as recomendadas, o filtro de candidatura simplificada —
-                      e os termos do site proíbem automação ali: baixo com o
-                      ritmo do roteiro, nunca zero
+                      as recomendadas, o filtro de candidatura simplificada — e
+                      o anúncio inteiro ao lado do cartão. Com a linha no
+                      perfil, roda PRIMEIRO. Os termos do site proíbem
+                      automação ali: risco baixo com o ritmo do roteiro, nunca
+                      zero
+linkedin-vagas        a listagem PÚBLICA, de graça, sem conta nenhuma. É o
+                      caminho de quem não tem a linha, e o COMPLEMENTO de quem
+                      tem: o termo que o logado não rodou
+apify · vagas-        a mesma listagem pública, PAGA, com o anúncio inteiro e
+linkedin              mais filtro. Sem risco de conta, com risco de custo:
+                      orçamento antes, como toda chamada paga. Complementa, igual
 ```
 
 **Não use dois no mesmo termo.** É a mesma vaga chegando por duas portas, e o
 passo 4 gasta o dobro para desfazer o que não precisava ter entrado duas
-vezes.
+vezes. O complemento é o termo que o logado NÃO cobriu — parou num aviso,
+bateu nas 3 páginas, ou a linha do perfil não o pede —, e o bruto diz qual.
 
 **1b · O anúncio colado.** Ele colou um texto ou um link? É uma busca de um
 resultado só, e segue pelos passos 4 a 7 igual. O texto vai para
@@ -191,6 +201,11 @@ perto do teto (faltam N)          busque, e grave no máximo N. O que passar
                                   reencontra
 ```
 
+**O lugar na pilha é de vaga LIDA.** O anúncio se lê (passo 5) antes de a vaga
+ocupar um dos N lugares: a que cai no `## Descarto` ao ler não gasta lugar, e
+a seguinte é lida. Lê-se na ordem dos resultados até N entrarem ou a lista
+acabar; o que sobrou sem leitura é `ficou de fora: teto`, sem anúncio aberto.
+
 Não é defeito, e não se pede desculpa: pilha de cem por julgar é pilha que
 ninguém julga, e a busca que a alimenta só piora o dia dele. O passo 6 — as
 vagas que saíram do ar — **roda mesmo com a busca parada**: ele não traz nada.
@@ -217,8 +232,9 @@ greenhouse        `buscar` com `empresa`, e `termo` com os cargos do perfil
 ashby · lever     separados por vírgula — essas fontes não têm busca própria,
                   e sem `termo` volta o quadro inteiro da empresa
 linkedin          NÃO é chamada de conector: é o navegador, pelo roteiro de
-(logado)          `references/linkedin.md`. Uma URL de busca por termo, e a
-                  lista de recomendadas — abaixo
+(logado)          `references/linkedin.md`. Com a linha no perfil, vem ANTES
+                  das outras: uma URL de busca por termo, e a lista de
+                  recomendadas — abaixo
 à mão             NÃO é chamada. Vira linha em `## Falta saber`, com o
                   endereço — e, se ele colar o que achou lá, é o passo 1b
 ```
@@ -232,7 +248,8 @@ o que traria — quem acrescenta a linha é `/vagas:perfil-de-busca`.
 O que elas devolvem além dos oito campos já vem na palavra do contrato, e
 entra com `← <conector>, <hoje>`: `regime`, `contrato`, `jornada` (a Sólides
 manda o turno como a empresa escreveu), `faixa_de`/`faixa_ate` (null é "a
-empresa não mostra": `faixa: ?`) e `inscricoes_ate`. Três casos:
+empresa não mostra": `faixa: ?`) e `inscricoes_ate`. O `regime` que a fonte
+devolve é cadastro da empresa: passa pelo texto no passo 5. Três casos:
 
 ```
 `aviso: nada voltou — confira…`   a fonte leu o lugar de um jeito só (quase
@@ -247,9 +264,15 @@ empresa não mostra": `faixa: ?`) e `inscricoes_ate`. Três casos:
 inteiro, e três coisas dele não se negociam por pressa: **confira que ele está
 logado antes de tudo** (o feed no snapshot, não a parede de cadastro); **uma
 ação por vez, com `browser_wait_for` entre as navegações**; e o teto de **3
-páginas de resultado e ~40 cartões por busca**. Leia os cartões pelo snapshot
-de acessibilidade — papel e nome —, nunca por classe CSS: as classes mudam
-toda semana e o seletor quebra em silêncio, com a busca voltando vazia.
+páginas de resultado e ~40 cartões lidos por busca**. Leia os cartões pelo
+snapshot de acessibilidade — papel e nome —, nunca por classe CSS: as classes
+mudam toda semana e o seletor quebra em silêncio, com a busca voltando vazia.
+
+**O cartão fora da tela vem só com o id**, e não é vaga vazia. Leia-o como o
+roteiro manda: clique no cartão seguinte da lista, um por vez, dentro da
+página de resultados — o site rola a lista até ele, pinta o cartão e abre o
+anúncio ao lado. Espere, leia cartão e anúncio, e só então o próximo. Não
+role a página até o fim, e não abra aba nova por cartão.
 
 O que a linha do perfil pedir depois dos dois-pontos vira os parâmetros da URL
 (`linkedin (logado): pelos termos de busca, só remoto, e as recomendadas`), e
@@ -332,10 +355,34 @@ Parece a mesma e não dá para ter certeza — o cargo mudou de "PM Sênior" par
 Candidatar-se duas vezes à mesma vaga por portas diferentes é o erro que o
 recrutador vê.
 
-### Passo 5 · O que o `## Descarto` tira — e só ele
+### Passo 5 · Ler o anúncio inteiro, e o que o `## Descarto` tira — e só ele
 
-Para cada resultado que sobrou, leia o anúncio contra **cada linha** de
-`## Descarto`. A regra é literal: **só sai o que se LÊ.**
+**Nenhuma vaga entra `nova` sem o anúncio lido INTEIRO.** Em 2026-10-06 a
+busca gravou 27 vagas com o regime do cartão — o `filtro: remoto` da listagem
+pública, ou o selo "Remoto" do cartão logado — sem abrir o anúncio; ao reler,
+19 caíram pelo `## Descarto`: presencial ou híbrido fora da cidade, inglês
+fluente ou C1. Havia selo "Remoto" com texto que pedia morar em São Paulo, ou
+ir ao escritório uma vez por semana. Cartão e selo são o que a empresa
+cadastrou; o corte se aplica ao que ela ESCREVEU.
+
+```
+de onde se lê       o `detalhe` do conector, se ele tem a operação; o
+                    navegador logado, quando há a linha `linkedin (logado):`
+                    — um anúncio por vez, no ritmo do roteiro; senão o link,
+                    pela ferramenta de web
+para onde vai       `_bruto/AAAA-MM-DD-anuncio-<fonte>-<empresa>-<id>.md`,
+                    com o cabeçalho de três linhas e o texto como veio, ANTES
+                    de virar campo. O campo lido leva `← _bruto/<arquivo>`
+como vira campo     pela tabela de rótulos da seção 4.4
+                    (`references/contrato/04-4-arquivo-de-vaga.md`): "Tempo
+                    integral" é jornada, o selo é indício
+não deu para ler    entra, com o campo `?` e o motivo —
+                    `regime: ?  ← o anúncio não abriu, 2026-10-06; o selo diz
+                    "Remoto"`. Só isso entra sem leitura
+```
+
+Depois, o texto contra **cada linha** de `## Descarto`. A regra é literal:
+**só sai o que se LÊ.**
 
 ```
 "Presencial em São Paulo"            está escrito. Sai, com a linha do perfil
@@ -345,22 +392,20 @@ Para cada resultado que sobrou, leia o anúncio contra **cada linha** de
 "Inglês será um diferencial"         NÃO é exigência. Entra, e quem pesa é a
                                      triagem
 o anúncio não diz o regime           não se lê. ENTRA, com `regime: ?`
-o conector devolve `filtro: remoto`  NÃO é regime: é o que a busca PEDIU, e a
-                                     fonte devolve o que a empresa cadastrou —
-                                     errado, às vezes. `regime: ?  ← <fonte>: a
-                                     busca pediu remoto; o cartão não diz`. Só
-                                     `remoto: true` (lido do anúncio) vira
-                                     `regime: remoto`. No bruto, `filtro remoto`
+`filtro: remoto`, ou o selo          NÃO é regime: é o que a busca PEDIU, ou o
+"Remoto" do cartão                   que a empresa cadastrou. Vale o texto;
+                                     ele calado, `regime: ?  ← o selo diz
+                                     "Remoto"; o texto não fala de regime`
+"Remoto" no selo, e "morar em        sai: o texto desmente o selo, e o
+São Paulo" ou "1x por semana no      `## Descarto` corta o que o texto diz
+escritório" no texto
 ```
 
 **Descrição cortada não decide corte de idioma nem de regime.** O conector
 manda o começo do anúncio, e `cortado: true` diz que havia mais — a exigência
-de idioma mora no fim, em "requisitos". Antes de descartar OU de deixar entrar
-por um desses dois cortes, leia o resto: `detalhe`, se o conector tiver a
-operação; senão o link, se houver ferramenta de web. Não deu para ler? Entra,
-com o campo `?` e a procedência dizendo o que faltou —
-`idioma: ?  ← gupy cortou o anúncio, 2026-09-14`. O que veio truncado não se
-completa de cabeça.
+de idioma mora no fim, em "requisitos"; no logado, o botão "… mais" abre o
+resto. O que veio truncado não se completa de cabeça: leia o resto, ou entra
+com `idioma: ?  ← gupy cortou o anúncio, 2026-09-14`.
 
 **Ela não aplica o que não está em `## Descarto`.** Faixa abaixo do piso,
 empresa de que ele não gosta, "parece desorganizada": nada disso é corte de
@@ -409,8 +454,9 @@ sobre: busca pelos termos do perfil de 2026-09-14
 - PM Pleno — Vetra · remoto · 2026-09-13 · https://… · descartada: júnior, pleno, estágio
 
 ## linkedin (logado) · "PM de IA" · 2 páginas · 38 cartões
-- PM de IA — Lumina Pagamentos · filtro remoto · 2026-09-13 · https://www.linkedin.com/jobs/view/4000000001 · repetida de V-012
-- Product Manager, Agentes — Norte Dados · filtro remoto · 2026-09-12 · https://www.linkedin.com/jobs/view/4000000002 · entrou V-032
+- PM de IA — Lumina Pagamentos · selo remoto · 2026-09-13 · https://www.linkedin.com/jobs/view/4000000001 · repetida de V-012
+- Product Manager, Agentes — Norte Dados · remoto, lido no anúncio · 2026-09-12 · https://www.linkedin.com/jobs/view/4000000002 · entrou V-032
+- PM de Dados — Vetra · selo remoto; o anúncio pede 1x por semana em São Paulo · 2026-09-12 · https://www.linkedin.com/jobs/view/4000000003 · descartada: presencial fora de Florianópolis
 
 ## greenhouse · acme · 0 resultados
 - nada para os termos.
@@ -429,8 +475,9 @@ material já está salvo.
 
 - id sequencial — o maior já usado mais um, **contando o arquivo morto**
 - apelido `<cargo curto>, <empresa>`; no nome do arquivo, só a empresa
-- todo campo com `← <conector>, <hoje>`; o que o anúncio não diz é `?`, com o
-  que resolve ao lado — `contrato: ?  ← a vaga não diz`
+- todo campo com `← <conector>, <hoje>`, ou `← _bruto/<o anúncio lido>` o que
+  saiu do texto; o que o anúncio não diz é `?`, com o que resolve ao lado —
+  `contrato: ?  ← a vaga não diz`
 - `etapa: nova · desde <hoje>` · `estado: aberta` · `contato: ?` ·
   `encaixe: ?`
 - `## O que a vaga pede`, `## O que pesa a favor` e `## O que pesa contra` nascem
@@ -516,8 +563,8 @@ como repetida.
 captcha e não faz verificação em duas etapas: a janela deslogada é motivo de
 PARAR e pedir que ele entre, nunca de contornar. E ela **não usa a conta dele
 sem a linha no perfil** — a autorização é escrita, e "mas o navegador está
-ligado" não é autorização. As listagens públicas continuam sendo o padrão, e é
-por isso que buscar por elas não arrisca nada.
+ligado" não é autorização. Sem a linha, as listagens públicas são o caminho, e
+buscar por elas não arrisca nada; com ela, o logado vem primeiro.
 
 **Ela não se candidata a nada.** Dentro do LinkedIn logado ela lê: cartão,
 anúncio, lista de recomendadas. Não clica em "Candidatar-se", não abre o modal
