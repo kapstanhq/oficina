@@ -420,6 +420,16 @@ export async function acoesDoPack(pack, raiz = OFICINA) {
   if (completar && !String(sobre[completar] || "").split(/\s+/).includes("item")) {
     throw new Error(`${pack}/painel.json: completar · “${completar}” precisa de \`sobre\` com item`);
   }
+  /* `analisar` (D283): a skill que LÊ um item e escreve as seções do
+     `resumo`. Item com o resumo todo vazio é item que ninguém leu: antes de
+     passá-lo de etapa, o painel avisa e a oferece ao lado de "mesmo assim" */
+  const analisar = declarado.analisar ? String(declarado.analisar) : "";
+  if (analisar && !String(sobre[analisar] || "").split(/\s+/).includes("item")) {
+    throw new Error(`${pack}/painel.json: analisar · “${analisar}” precisa de \`sobre\` com item`);
+  }
+  if (analisar && !resumo.length) {
+    throw new Error(`${pack}/painel.json: analisar · precisa de \`resumo\` — é por ele que o painel sabe se o item foi lido`);
+  }
   /* `inicio` (D244): a ordem dos blocos da página inicial — o molde; a base
      pode reordenar pelo painel.json dela */
   const inicio = listaCurta("inicio", BLOCOS_DO_INICIO.length, 20);
@@ -576,6 +586,9 @@ export async function acoesDoPack(pack, raiz = OFICINA) {
   }
   const comandoDe = (s) => s === "marcar" || s === "descartar" ? s
     : todas.find((a) => a.comando.endsWith(":" + s))?.comando;
+  if (analisar && !comandoDe(analisar)) {
+    throw new Error(`${pack}/painel.json: analisar · “${analisar}” não está nas tabelas do README — o painel não teria o botão`);
+  }
   const proximoResolvido = {};
   for (const [etapa, lista] of Object.entries(proximo)) {
     const faz = (s) => (typeof s === "string" ? s : s.faz);
@@ -602,6 +615,7 @@ export async function acoesDoPack(pack, raiz = OFICINA) {
     ...(inicio.length ? { inicio } : {}),
     ...(fim ? { fim } : {}),
     ...(completar ? { completar: comandoDe(completar) } : {}),
+    ...(analisar ? { analisar: comandoDe(analisar) } : {}),
     ...(Object.keys(documentos).length ? { documentos } : {}),
     ...(Object.keys(ordens).length ? { ordens } : {}),
     ...(Object.keys(fases).length ? { fases } : {}),

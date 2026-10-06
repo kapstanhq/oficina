@@ -146,6 +146,15 @@ perde**: fica guardado no painel, e chega a você por três caminhos —
 - `painel_inicio` e `painel_fila`, em `respostas`, com o título da tela e o
   `faca_respostas`; `painel_fila { respostas_lidas: [<em>, …] }` as tira
 
+**Quem abre o painel trata as respostas pendentes antes do próprio trabalho**,
+mesmo que não tenha sido a skill que mostrou a tela — quem mostrou já foi
+embora, e foi assim que uma ficou esperando da tarde ao dia seguinte (D283).
+Grave o que a resposta decide no arquivo da vaga, pelas regras de sempre
+(o campo com a procedência `← candidato, no painel, AAAA-MM-DD`, a linha do
+histórico, as vistas), confirme com `respostas_lidas`, e só então siga. A
+resposta que pede um trabalho, e não um fato — julgar, escrever —, fica: diga
+em uma linha qual skill a faz.
+
 **Declare o `gesto` nas `decisoes`** de toda `lista` que julga vagas:
 `etapa:<nome da etapa>` na chave que sobe de etapa, `descartar` na que
 aposenta. Marca que chega atrasada com gesto vira entrada da fila de decisões
@@ -190,6 +199,14 @@ caminho de sempre — `painel_inicio` ou `painel_fila`. O descarte pode vir com
 Ao lado dos campos em destaque que estão sem resposta, o painel mostra
 **Completar informações**: chama `/vagas:completar-ficha` com o id. Quando
 ela chegar assim, faça o trabalho dela e pare — quem pediu está olhando a ficha.
+
+Campo em `?` cuja procedência diz `propõe <valor>` — `encaixe: ?  ← a leitura
+propõe médio; falta você julgar` — o painel mostra como **proposto**: o valor,
+marcado como ainda não julgado, e não como "não diz" (D283). Escreva a proposta
+sempre assim, com `propõe` e o valor logo depois. E o vaga com as seções
+do `resumo` todas vazias, ao subir de etapa, ganha um aviso com **Analisar
+antes** (a skill `analisar` do pack) ao lado de **mesmo assim**: a marca que
+chegar foi escolha da pessoa, e se grava como qualquer outra.
 
 Quando a pessoa disser "vou revisar a pilha", não abra a pilha você mesmo:
 diga onde ela está no painel, em palavras — “no painel, em Funil, na etapa

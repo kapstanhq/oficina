@@ -42,6 +42,7 @@
  */
 import { readFile, readdir, realpath, stat } from "node:fs/promises";
 import { extname, isAbsolute, resolve, sep } from "node:path";
+import { propostaDa } from "./molde.mjs";
 
 /* A base é TEXTO. Três extensões, e nenhuma delas é binária — o painel não
    serve imagem nem baixa anexo, e abrir essa porta seria abrir uma rota de
@@ -434,6 +435,11 @@ export function criarBase({ aoRegistrar = () => {} } = {}) {
             caminho: `${nome}/${n}`,
             titulo: forma.titulo,
             campos: Object.fromEntries(forma.campos.map((c) => [c.rotulo, c.valor])),
+            /* o campo em `?` cuja origem traz a proposta da leitura (D283): a
+               procedência fica de fora, e é nela que a proposta mora */
+            propostos: Object.fromEntries(forma.campos
+              .filter((c) => !String(c.valor || "").trim() || String(c.valor).trim().startsWith("?"))
+              .map((c) => [c.rotulo, propostaDa(c.de)]).filter(([, v]) => v)),
             ultimo: historico.at(-1)?.texto || "",
             /* as linhas do histórico, curtas: é o que as condições do fluxo
                leem ("já foi completado?", D257) sem abrir o arquivo */

@@ -30,6 +30,7 @@
  */
 
 import { TEXTOS_PADRAO } from "./textos.js";
+import { propostaDa } from "../nucleo/molde.mjs";
 
 export const paraInicio = "#/";
 export const paraTarefa = "#/tarefa";
@@ -341,16 +342,28 @@ export const notaQueDiz = (nota) => /\s/.test(String(nota || "").trim()) ? Strin
    pack, casados sem acento e sem caixa. O painel não sabe o que são. */
 const semAcentoNem = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 
-/** `?` é "não diz"; campo que o arquivo não tem é "não consta" — os dois em âmbar */
+/** `?` é "não diz"; campo que o arquivo não tem é "não consta" — os dois em âmbar.
+    O `?` cuja origem traz "propõe X" é a proposta da leitura (D283): vale X,
+    `proposto`, e não conta como sem resposta — falta julgar, e não ler */
 export function chavesDoArquivo(arquivo, destaque = []) {
   if (!destaque.length || !arquivo?.campos?.length) return [];
   return destaque.map((rotulo) => {
     const c = arquivo.campos.find((x) => semAcentoNem(x.rotulo) === semAcentoNem(rotulo));
     const v = String(c?.valor ?? "").trim();
-    const semResposta = !c || v === "" || /^\?/.test(v);
-    return { rotulo, valor: !c ? "não consta" : semResposta ? "não diz" : v, semResposta, de: c?.de || c?.nota || "" };
+    const vazio = !c || v === "" || /^\?/.test(v);
+    const proposta = vazio && c ? propostaDa(c.de || c.nota) : "";
+    return { rotulo, valor: !c ? "não consta" : proposta || (vazio ? "não diz" : v),
+      semResposta: vazio && !proposta, proposto: !!proposta, de: c?.de || c?.nota || "" };
   });
 }
+
+/* ── LIDO OU NÃO (D283) ───────────────────────────────────────────────
+   As seções do `resumo` são o que a leitura do item escreve. Todas vazias
+   (ou só com "nada ainda") é item que ninguém leu, e avançá-lo de etapa
+   pede um aviso antes. `secoes` é o mapa título → linhas com conteúdo que
+   `/base/fichas` devolve. Sem `resumo` declarado, não há como saber. */
+export const semLeitura = (secoes, resumo = []) => !!secoes && resumo.length > 0
+  && !resumo.some((t) => Object.entries(secoes).some(([k, l]) => semAcentoNem(k) === semAcentoNem(t) && (l || []).length));
 
 /** o primeiro campo cujo valor é um endereço: é a fonte, e abre no navegador */
 export function linkDoArquivo(arquivo) {
@@ -540,6 +553,11 @@ const NUMERO = /(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?/;
  */
 export function chaveDeOrdem(valor, escala = null) {
   if (typeof valor === "number") return [0, valor];
+  /* o proposto vem junto do valor firme, logo depois dele na escala (D283) */
+  if (valor && typeof valor === "object" && "proposto" in valor) {
+    const k = chaveDeOrdem(valor.proposto, escala);
+    return k[0] === 0 && escala?.length ? [0, k[1] + 0.5] : k;
+  }
   if (semResposta(valor)) return [1, 0];
   const v = String(valor);
   if (escala?.length) {
@@ -588,8 +606,9 @@ export function comFicha(item, { fichas = null, destaque = [], documentos = null
   const docs = deles.filter((c) => /\.md$/i.test(c) && c.split("/")[0] in documentosDoPack)
     .map((c) => ({ caminho: c, rotulo: nomeDeGente(c.split("/")[0]).replace(/s$/, ""),
       pdf: deles.includes(c.replace(/\.md$/i, ".pdf")) }));
-  return { ...item, campos, docs, ficha: Boolean(f), historico: f?.historico || [],
-    faltam: f ? destaque.filter((d) => semResposta(campos[d])) : [],
+  const propostos = f?.propostos || {};
+  return { ...item, campos, propostos, docs, ficha: Boolean(f), historico: f?.historico || [],
+    faltam: f ? destaque.filter((d) => semResposta(campos[d]) && !propostos[d]) : [],
     ultimo: f?.ultimo || "", em: f?.em || 0, etapaIndice: etapas.indexOf(item.etapa) };
 }
 
@@ -602,8 +621,15 @@ export function pegarDoItem(it, chave) {
     case "faltam": return it.ficha ? it.faltam.length : "?";
     case "ultimo": return it.ultimo || "?";
     case "atualizada": return it.em || "?";
-    default: return it.campos?.[chave];
+    default: return valorDoCampo(it, chave);
   }
+}
+
+/** o valor de um campo do item, e a proposta da leitura quando ele é `?`
+    (D283): `{ proposto }` — a ordem o põe logo depois do mesmo valor firme */
+export function valorDoCampo(it, chave) {
+  const v = it?.campos?.[chave];
+  return semResposta(v) && it?.propostos?.[chave] ? { proposto: it.propostos[chave] } : v;
 }
 
 export const ordenacoesDe = (destaque = []) => [

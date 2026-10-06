@@ -137,9 +137,13 @@ o arquivo do contato já é o dono do fato.
 depois de a skill que as mostrou parar de esperar. As marcas com gesto **já
 estão na fila** (`na_fila`) e você as gravou nos passos anteriores. O que sobrou
 — um texto, um formulário, uma chave sem gesto — é resposta à tela em
-`titulo`, e não é seu: diga em uma linha o que chegou e para qual skill, e
-deixe a resposta lá. Confirme com `respostas_lidas` **só** as respostas em que
-tudo o que havia era marca com gesto.
+`titulo`, e é sua também: quem mostrou a tela já foi embora (D283). O que ela
+DECIDE sobre um contato — um campo, uma data, uma escolha — grave no arquivo
+dele pelas regras de sempre, com a procedência `← prospector, no painel,
+AAAA-MM-DD` e a linha do `## Histórico`. O que ela PEDE — julgar, escrever —
+não é desta skill: diga em uma linha o que chegou e qual skill o faz, e deixe a
+resposta lá. Confirme com `respostas_lidas` as respostas que ficaram inteiras
+gravadas.
 
 ### Passo 6 · Confirmar ao painel
 

@@ -97,3 +97,16 @@ export function ajustarPelaBase(acoes, dela) {
   }
   return saida;
 }
+
+/* ── O VALOR PROPOSTO (D283) ──────────────────────────────────────────
+   A skill que lê o item deixa o campo em `?` e escreve a proposta na
+   procedência — `encaixe: ?  ← a triagem propõe médio; falta você julgar`. O
+   `?` continua dizendo que a pessoa não julgou; a proposta é o que a leitura
+   achou, e a tela a mostra como valor provisório, e não como dado que falta.
+   Mora aqui porque a página e o servidor a leem, e a página não leva Node.
+   Não sabe de ofício: vale para qualquer campo cuja origem diga "propõe X". */
+export function propostaDa(origem) {
+  const m = String(origem || "").match(/(?:^|[\s(])prop(?:õe|oe)\s+(.+?)\s*(?:[;,.(—]|\s-\s|$)/iu);
+  const v = m ? m[1].trim().replace(/^["“”']|["“”']$/g, "") : "";
+  return v && v.length <= 40 && !v.startsWith("?") ? v : "";
+}

@@ -11,7 +11,7 @@
    * No telefone a tabela vira cartões: a mesma linha, com o rótulo de cada
    * célula escrito ao lado do valor.
    */
-  import { valorCurto, semResposta } from "../rota.js";
+  import { valorCurto, semResposta, valorDoCampo } from "../rota.js";
 
   let { itens = [], colunas = [], ordem = { chave: "", desc: false }, ordenar = () => {},
     abrir = () => {}, hrefDe = () => "", filtros = [], filtro = "", filtrar = () => {},
@@ -84,8 +84,13 @@
                   {:else if c.tipo === "etapa"}
                     <span class="p-tabela-etapa">{it.etiqueta || it.etapa || ""}</span>
                   {:else if c.tipo === "campo"}
-                    {@const v = it.campos?.[c.chave]}
-                    <span data-vazio={semResposta(v) ? "" : undefined} title={v || "sem resposta"}>{valorCurto(v) || "—"}</span>
+                    {@const v = valorDoCampo(it, c.chave)}
+                    {#if v && typeof v === "object"}
+                      <!-- a proposta da leitura (D283): o valor, marcado como ainda não julgado -->
+                      <span class="p-proposto" title={`proposto pela leitura; falta você julgar — ${it.campos?.[c.chave] || "?"}`}>{valorCurto(v.proposto)} <small>· proposto</small></span>
+                    {:else}
+                      <span data-vazio={semResposta(v) ? "" : undefined} title={v || "sem resposta"}>{valorCurto(v) || "—"}</span>
+                    {/if}
                   {:else if c.tipo === "documentos"}
                     {#if it.docs?.length}
                       {#each it.docs as d (d.caminho)}<span class="p-tabela-doc" title={d.caminho + (d.pdf ? " — com PDF" : " — sem PDF")}>{d.rotulo}</span>{/each}

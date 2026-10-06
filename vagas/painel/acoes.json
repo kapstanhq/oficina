@@ -92,6 +92,7 @@
     "contrato",
     "jornada",
     "faixa",
+    "salário relatado",
     "idioma",
     "encaixe"
   ],
@@ -120,6 +121,7 @@
     "motivo": "aceitei"
   },
   "completar": "/vagas:completar-ficha",
+  "analisar": "/vagas:triar-vagas",
   "documentos": {
     "curriculos": "curriculo",
     "cartas": "carta"

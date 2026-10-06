@@ -59,6 +59,17 @@ try {
   await recusaRodadas("menos de 10", { fazer: 5 }, "de 10 a 300");
   await recusaRodadas("número escrito como texto", { fazer: "150" }, "de 10 a 300");
   await recusaRodadas("skill que o pack não tem", { outra: 150 }, "não é uma skill deste pack");
+
+  /* ── A SKILL QUE LÊ O ITEM (D283) ─────────────────────────────────────── */
+  conferir("analisar · recusa skill que não está nas tabelas do README",
+    Boolean((await montar({ analisar: "fazer", sobre: { fazer: "item" }, resumo: ["O que pesa"] })).erro?.includes("não está nas tabelas do README")), true);
+  await writeFile(join(TEMP, "p", "README.md"), "# p\n\n| Pedido | O que faz |\n|---|---|\n| `/p:fazer` | lê o item |\n", "utf8");
+  conferir("analisar · o certo passa e vai ao acoes.json, pelo comando",
+    (await montar({ analisar: "fazer", sobre: { fazer: "item" }, resumo: ["O que pesa"] })).acoes?.analisar, "/p:fazer");
+  conferir("analisar · recusa skill que não age sobre um item",
+    Boolean((await montar({ analisar: "fazer", sobre: { fazer: "nada" }, resumo: ["O que pesa"] })).erro?.includes("analisar · “fazer” precisa de `sobre` com item")), true);
+  conferir("analisar · recusa pack sem `resumo`: sem ele não há como saber se o item foi lido",
+    Boolean((await montar({ analisar: "fazer", sobre: { fazer: "item" } })).erro?.includes("analisar · precisa de `resumo`")), true);
 } finally {
   await rm(TEMP, { recursive: true, force: true }).catch(() => {});
 }

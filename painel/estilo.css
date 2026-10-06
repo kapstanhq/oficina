@@ -613,6 +613,7 @@ textarea.p-campo{resize:vertical}
 .p-fila-velha, .p-fila-motivo{grid-column:1 / -1}
 .p-fila-velha{color:var(--accent);line-height:1.5}
 .p-fila-velhas{font-size:var(--t-espec);color:var(--accent)}
+.p-fila-espera{display:block;font-size:12px;color:color-mix(in srgb, var(--creme) 72%, transparent)}
 .p-fila-motivo, .p-decidir-motivo{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
 .p-fila-motivo span, .p-decidir-motivo span{font-size:12.5px;white-space:nowrap}
 .p-fila-motivo input, .p-decidir-motivo input{
@@ -673,6 +674,13 @@ header .p-etapas{gap:4px}
 }
 .p-aviso-dia{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1) var(--s2);
   padding:var(--s1) var(--s2);border-radius:var(--r-entrada);background:var(--lift);font-size:var(--t-espec);color:var(--soft)}
+/* D283: vencida há mais de um dia, o aviso é o assunto do bloco, e não nota */
+.p-aviso-dia[data-vencida]{justify-content:space-between;gap:var(--s2) var(--s3);padding:var(--s2) var(--s3);
+  border:1px solid color-mix(in srgb, var(--accent) 55%, transparent);border-radius:var(--r-objeto);
+  font-size:var(--t-interface);color:var(--ink)}
+.p-aviso-dia-texto{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 260px}
+.p-aviso-dia-texto b{font-weight:var(--peso-objeto);color:var(--accent-forte)}
+.p-aviso-dia-texto span{font-size:var(--t-espec);color:var(--soft)}
 .p-feitos summary,.p-dobra > summary{cursor:pointer;list-style:none}
 .p-feitos summary::-webkit-details-marker,.p-dobra > summary::-webkit-details-marker{display:none}
 .p-feitos summary{font-size:var(--t-espec);color:var(--mute)}
@@ -1192,6 +1200,15 @@ header .p-etapas{gap:4px}
 .p-pag-fato[data-falta]{background:var(--lift);border-style:dashed;border-color:color-mix(in srgb, var(--accent) 55%, transparent)}
 .p-pag-fato[data-falta] dd b{color:var(--accent-forte);font-weight:var(--peso-interface)}
 .p-pag-detalhe{font-size:12.5px;line-height:1.45;color:var(--soft)}
+/* D283: o valor que a leitura propôs e a pessoa não julgou — se lê, mas não
+   como fato: borda tracejada sem âmbar (não falta), e o selo "proposto" */
+.p-pag-fato[data-proposto]{border-style:dashed;border-color:var(--fio-forte)}
+.p-pag-fato[data-proposto] dd b{font-weight:var(--peso-interface)}
+.p-chave[data-proposto]{border-style:dashed}
+.p-proposto-selo{display:inline-block;margin-left:6px;padding:0 7px;border:1px dashed currentColor;border-radius:999px;
+  font-size:11px;line-height:1.5;font-weight:var(--peso-corpo);letter-spacing:.02em;color:var(--soft);vertical-align:1px}
+.p-proposto{color:var(--soft)}
+.p-proposto small{font-size:11.5px;color:var(--mute)}
 .p-pag-fato[data-falta] .p-pag-detalhe{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .p-pag-mais{align-self:flex-start;padding:0;background:none;border:0;font:inherit;font-size:12.5px;color:var(--soft);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
 .p-pag-mais:hover{color:var(--ink)}

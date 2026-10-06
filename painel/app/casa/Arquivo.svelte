@@ -241,9 +241,9 @@
   {#if chaves.length}
     <dl class="p-chaves" aria-label="o que se lê antes de tudo">
       {#each chaves as c (c.rotulo)}
-        <div class="p-chave" class:p-chave-falta={c.semResposta} title={c.de ? "← " + c.de : undefined}>
+        <div class="p-chave" class:p-chave-falta={c.semResposta} data-proposto={c.proposto ? "" : undefined} title={c.de ? "← " + c.de : undefined}>
           <dt>{c.rotulo}</dt>
-          <dd>{c.valor}</dd>
+          <dd>{c.valor}{#if c.proposto}<small class="p-proposto-selo">proposto</small>{/if}</dd>
         </div>
       {/each}
     </dl>

@@ -39,7 +39,7 @@
   import * as ponte from "./ponte.js";
   import { textos, aplicarTextos } from "./textos.svelte.js";
   import { lerRota, indicePorId, documentosPorId, idsDaLinha, agruparMenu, nomeDeGente, paraInicio, paraTarefa,
-    paraPasta, paraArquivo, paraConectores, paraSobre, paraFunil, TODAS, proximoDaLinha, ocupadosDe, partirId } from "./rota.js";
+    paraPasta, paraArquivo, paraConectores, paraSobre, paraFunil, TODAS, proximoDaLinha, ocupadosDe, partirId, semLeitura } from "./rota.js";
   import { setContext } from "svelte";
   import Tarefa from "./Tarefa.svelte";
   import Inicio from "./casa/Inicio.svelte";
@@ -152,7 +152,33 @@
       }
     } catch (e) { recusaDaFila = String(e?.message || e); }
   }
-  const decidir = (pedido) => escreverNaFila(pedido, marcarNaFila);
+  /* ── O ITEM QUE NINGUÉM LEU (D283) ────────────────────────────────────
+     Seis vagas subiram para "salva" sem nunca terem sido lidas: o "Salvar"
+     não sabia. Passar de etapa um item com as seções do `resumo` vazias
+     agora pergunta antes — "Analisar antes" chama a skill que lê (o
+     `analisar` do pack), "mesmo assim" marca. O aviso vale em todo lugar
+     que marca, porque todos passam por aqui. Desmarcar não pergunta, e o
+     painel continua sem gravar nada: muda só o que ele oferece. */
+  let naoLido = $state(null);
+  const itemSemLeitura = (id) => semLeitura(fichas?.get(indice.get(id) || "")?.secoes, resumo);
+  function decidir(pedido) {
+    const jaMarcada = decisoes.some((d) => d.item === pedido?.item && d.gesto === pedido?.gesto && (d.para || "") === (pedido?.para || ""));
+    if (pedido?.gesto === "etapa" && !pedido.mesmoAssim && !jaMarcada && itemSemLeitura(pedido.item)) {
+      naoLido = pedido;
+      return Promise.resolve();
+    }
+    const { mesmoAssim, ...limpo } = pedido || {};
+    return escreverNaFila(limpo, marcarNaFila);
+  }
+  const mesmoAssim = () => { const p = naoLido; naoLido = null; if (p) decidir({ ...p, mesmoAssim: true }); };
+  async function analisarAntes() {
+    const p = naoLido;
+    naoLido = null;
+    if (!p || !analisar) return;
+    if (podeChamar) return chamar(analisar, p.item);
+    try { await navigator.clipboard.writeText(`${analisar} ${p.item}`); recusaDaFila = `Copiei “${analisar} ${p.item}”: cole no Claude.`; }
+    catch { recusaDaFila = `Peça no Claude: ${analisar} ${p.item}`; }
+  }
   const anotar = (pedido) => escreverNaFila(pedido, anotarNaFila);
   const dispensar = (em) => escreverNaFila(em, tirarResposta);
 
@@ -172,6 +198,8 @@
   let motivos = $state([]);
   /* a skill que procura o que falta num item (D245) */
   let completar = $state("");
+  /* a skill que lê um item e escreve o resumo (D283) */
+  let analisar = $state("");
   /* pasta da base → modelo de documento (D270): a prévia em PDF */
   let documentosDoPack = $state({});
   /* ── A TABELA E A ORDEM (D274) ─────────────────────────────────────────
@@ -348,6 +376,7 @@
         motivos = lidas?.motivos || [];
         molde.fim = lidas?.fim || null;
         completar = lidas?.completar || "";
+        analisar = lidas?.analisar || "";
         documentosDoPack = lidas?.documentos || {};
         ordens = lidas?.ordens || {};
         fases = lidas?.fases || {};
@@ -719,6 +748,22 @@
             <div><b>O painel foi atualizado</b>
               <span>Há uma versão nova desta tela. Atualize quando terminar o que está fazendo.</span></div>
             <button type="button" class="c-acao c-acao-cheia" onclick={() => location.reload()}>Atualizar</button>
+          </div>
+        {/if}
+
+        {#if naoLido}
+          {@const nome = naoLido.nome || nomeDoItem(naoLido.item) || naoLido.item}
+          <div class="p-confirma" role="dialog" aria-modal="true" aria-label="item ainda não analisado">
+            <div class="c-caixa c-caixa-ambar p-confirma-caixa">
+              <p class="c-chamada" style="margin:0">Ainda sem análise: {nome}</p>
+              <p class="c-corpo">Ninguém leu este item ainda — {resumo.map((t) => `“${t}”`).join(", ")}: tudo vazio.
+                Passar para “{naoLido.para}” agora é decidir só pelo título.</p>
+              <div class="p-acoes">
+                {#if analisar}<button type="button" class="c-acao c-acao-cheia" onclick={analisarAntes}>Analisar antes</button>{/if}
+                <button type="button" class="c-acao" class:c-acao-cheia={!analisar} onclick={mesmoAssim}>{rotulos[naoLido.para] || `Mover para “${naoLido.para}”`} mesmo assim</button>
+                <button type="button" class="c-acao" onclick={() => { naoLido = null; }}>Agora não</button>
+              </div>
+            </div>
           </div>
         {/if}
 

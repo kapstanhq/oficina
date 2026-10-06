@@ -141,8 +141,9 @@
   })));
   /* o que o cartão diz da ficha: os campos do destaque que têm resposta, curtos */
   /* a escala do pack ("alto", "intermediário") sozinha não diz de quê: leva o nome do campo */
-  const fatosDe = (c) => destaque.filter((d) => !semResposta(c.campos?.[d]))
-    .map((d) => (ordens[d] ? `${d} ${valorCurto(c.campos[d], 26)}` : valorCurto(c.campos[d], 26)));
+  const fatosDe = (c) => destaque.filter((d) => !semResposta(c.campos?.[d]) || (d !== escala && c.propostos?.[d]))
+    .map((d) => (semResposta(c.campos?.[d]) ? `${d} proposto: ${valorCurto(c.propostos[d], 26)}`
+      : ordens[d] ? `${d} ${valorCurto(c.campos[d], 26)}` : valorCurto(c.campos[d], 26)));
 
 
   /* ── AGORA ────────────────────────────────────────────────────────────
@@ -166,7 +167,8 @@
       out.push({ c, nota });
     };
     /* a primeira etapa é a pilha, com bloco próprio: não se repete aqui */
-    for (const l of doDia) if (!l.feito && l.ids[0] && cartaoDe.get(l.ids[0])?.etapa !== etapas[0]?.rotulo) por(l.ids[0], l.nota);
+    /* a lista vencida (D283) não aponta nada: o que vem dela já não é de hoje */
+    if (!diaVencido) for (const l of doDia) if (!l.feito && l.ids[0] && cartaoDe.get(l.ids[0])?.etapa !== etapas[0]?.rotulo) por(l.ids[0], l.nota);
     for (const e of etapas.slice(1).reverse()) {
       /* dentro da etapa, a fase mais adiantada primeiro, e então a escala */
       const cs = ordemDosItens.chave ? e.cartoes
@@ -175,7 +177,7 @@
     }
     return out;
   });
-  const feitos = $derived(doDia.filter((l) => l.feito));
+  const feitos = $derived(diaVencido ? [] : doDia.filter((l) => l.feito));
   /* ── A RÉGUA É O PIPELINE (D266): as etapas e as fases lidas da ficha ── */
   const regua = $derived(trechosDoFunil(rotulosDasEtapas, fases).map((t) => ({ ...t,
     quantos: (etapas.find((e) => e.rotulo === t.etapa)?.cartoes || []).filter((c) => noTrecho(c, t, fases)).length })));
@@ -189,6 +191,12 @@
   const hojeISO = () => new Date().toLocaleDateString("sv-SE");
   const dataDoDia = $derived((String(dia?.titulo || "").match(/\d{4}-\d{2}-\d{2}/) || [""])[0]);
   const diaVelho = $derived(Boolean(dataDoDia) && dataDoDia < hojeISO());
+  /* ── A LISTA VENCIDA (D283) ───────────────────────────────────────────
+     De ontem, ela ainda serve e o aviso é discreto. Com mais de um dia, o
+     que ela aponta já não é o de hoje: o bloco diz em destaque, oferece
+     refazê-la como ação principal, e a lista do "agora" sai só do funil */
+  const diasDoDia = $derived(dataDoDia ? Math.round((Date.parse(hojeISO()) - Date.parse(dataDoDia)) / 864e5) : 0);
+  const diaVencido = $derived(diasDoDia > 1);
   const refazerODia = $derived(acoes.flatMap((g) => g.acoes || [])
     .find((a) => /(^|:)o-que-fazer-hoje$/.test(a.comando)) || null);
 
@@ -202,6 +210,8 @@
   const valorNaEscala = (c) => {
     if (!escala) return "";
     if (!semResposta(c.campos?.[escala])) return String(c.campos[escala]).toLowerCase();
+    /* a proposta escrita na origem do campo (D283) vale antes da do funil */
+    if (c.propostos?.[escala]) return String(c.propostos[escala]).toLowerCase();
     const re = new RegExp(`${escala}[^·;]*?\\b(${ordens[escala].join("|")})\\b`, "iu");
     for (const t of [c.cauda, ...[...(c.historico || [])].reverse()]) {
       const m = String(t || "").match(re);
@@ -366,7 +376,20 @@
       <span class="c-nota">{agora.length} {agora.length === 1 ? "item espera" : "itens esperam"} um passo seu</span>
       {#if dia}<a class="p-cabeca-link" href={paraArquivo("hoje.md")}>lista do dia</a>{/if}
     </div>
-    {#if diaVelho}
+    {#if diaVencido}
+      <div class="p-aviso-dia" data-vencida="">
+        <div class="p-aviso-dia-texto">
+          <b>A lista do dia é de {dataDoDia.split("-").reverse().join("/")} — {diasDoDia} dias atrás.</b>
+          <span>Ela não vale para hoje. Enquanto não houver a de hoje, o que está abaixo vem do funil, e não dela.</span>
+        </div>
+        {#if refazerODia && podeChamar}
+          <button type="button" class="c-acao c-acao-cheia" onclick={() => chamar(refazerODia.comando)}>Refazer a de hoje</button>
+        {:else if refazerODia}
+          <button type="button" class="c-acao c-acao-cheia" onclick={() => copiar(refazerODia.comando)}
+          >{copiado === refazerODia.comando ? "Copiado — cole no Claude" : "Refazer a de hoje ⧉"}</button>
+        {/if}
+      </div>
+    {:else if diaVelho}
       <div class="p-aviso-dia">
         <span>A lista do dia é de {dataDoDia.split("-").reverse().join("/")}: o que vem dela pode já ter mudado.</span>
         {#if refazerODia && podeChamar}

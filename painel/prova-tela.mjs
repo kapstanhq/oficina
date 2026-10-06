@@ -431,6 +431,84 @@ await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify(ACOES));
 await pagina.reload({ waitUntil: "domcontentloaded" });
 await ir("#/");
 
+/* ── D283: o valor proposto, o item que ninguém leu e a lista vencida ─── */
+await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify({ ...ACOES, analisar: "/x:sobre-item",
+  ordens: { nota: ["alto", "médio", "baixo"] },
+  grupos: [{ ...ACOES.grupos[0], acoes: [...ACOES.grupos[0].acoes,
+    { comando: "/x:o-que-fazer-hoje", nome: "O que fazer hoje", oque: "A lista do dia", sobre: ["nada"] }] }] }));
+const X2 = join(BASE, "itens", "X-002-segundo-exemplo.md");
+const x2antes = await readFile(X2, "utf8");
+await writeFile(X2, x2antes.replace("nota: ?", "nota: ?  ← a leitura propõe médio; falta você julgar")
+  .replace("- a descrição veio cortada  ← _bruto/2026-09-19-origem.md", "- nada ainda."));
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/arquivo/" + encodeURIComponent("itens/X-002-segundo-exemplo.md"), ".p-pag-fatos");
+const semEspaco = (t) => String(t || "").replace(/\s+/g, " ").trim();
+conferir("proposto · o `?` com “propõe” mostra o valor, marcado como proposto",
+  semEspaco(await pagina.locator(".p-pag-fato[data-proposto] dd b").textContent()), "médioproposto");
+conferir("proposto · com a nota de que falta julgar",
+  (await pagina.locator(".p-pag-fato[data-proposto] .p-pag-detalhe").textContent()).trim(), "a leitura propôs; falta você julgar");
+conferir("proposto · e “não diz” fica para o `?` sem leitura nenhuma",
+  (await pagina.locator(".p-pag-fato[data-falta] dd b").allTextContents()).join("|"), "não diz|não consta");
+conferir("proposto · o título conta o que falta e o que está proposto, à parte",
+  (await pagina.locator('[aria-label="o que decide se cabe"] h2 span').textContent()).trim(), "2 sem resposta · 1 proposto, falta você julgar");
+await capturar("1300-proposto");
+/* o item que ninguém leu: o resumo inteiro vazio, e o gesto de subir pergunta */
+await pagina.locator(".p-pag-outros .c-chip", { hasText: "Começar" }).click();
+await pagina.waitForSelector('[aria-label="item ainda não analisado"]', { timeout: 5000 });
+conferir("sem leitura · subir de etapa avisa, e não marca",
+  `${(await pagina.locator('[aria-label="item ainda não analisado"] .c-chamada').textContent()).trim()} · ${(await fila()).decisoes.length}`,
+  "Ainda sem análise: segundo exemplo · 0");
+conferir("sem leitura · oferece analisar antes, ao lado de mesmo assim",
+  (await pagina.locator('[aria-label="item ainda não analisado"] button').allTextContents()).map((t) => t.trim()).join(" | "),
+  "Analisar antes | Começar mesmo assim | Agora não");
+await capturar("1300-sem-leitura");
+await pagina.getByRole("button", { name: "Analisar antes" }).click();
+await pagina.waitForSelector(".p-confirma .c-chamada:has-text('X-002')", { timeout: 5000 });
+conferir("sem leitura · “Analisar antes” chama a skill do pack com o id, e só pergunta",
+  (await pagina.locator(".p-confirma .c-chamada").textContent()).includes("Sobre um item · X-002"), true);
+await pagina.getByRole("button", { name: "Agora não" }).click();
+await pagina.locator(".p-pag-outros .c-chip", { hasText: "Começar" }).click();
+await pagina.getByRole("button", { name: "Começar mesmo assim" }).click();
+await pagina.waitForSelector(".p-fila", { timeout: 5000 });
+conferir("sem leitura · “mesmo assim” marca, como qualquer marca",
+  (await fila()).decisoes.map((d) => `${d.item} → ${d.para}`).join(","), "X-002 → em andamento");
+await pagina.locator(".p-pag-outros .c-chip", { hasText: "Começar" }).click();
+await pagina.waitForSelector(".p-fila", { state: "detached", timeout: 3000 }).catch(() => {});
+conferir("sem leitura · e desmarcar não pergunta", `${(await fila()).decisoes.length} · ${await tem('[aria-label="item ainda não analisado"]')}`, "0 · false");
+/* a tabela: o proposto na coluna, e ordenado junto do valor, e não no fim */
+await ir("#/funil/todas", ".p-tabela");
+conferir("proposto · a célula da tabela mostra o valor proposto",
+  semEspaco(await pagina.locator(".p-tabela tbody tr", { hasText: "segundo exemplo" }).locator(".p-proposto").textContent()), "médio · proposto");
+await pagina.locator(".p-tabela th button", { hasText: "Nota" }).click();
+await dormir(200);
+conferir("proposto · ordena pela escala, com o proposto no lugar do valor", await nomesDaTabela(), "primeiro exemplo|segundo exemplo");
+await pagina.locator(".p-tabela th button", { hasText: "Nota" }).click();
+await dormir(200);
+conferir("proposto · e invertida também — o `?` sem proposta iria para o fim", await nomesDaTabela(), "segundo exemplo|primeiro exemplo");
+await pagina.evaluate(() => { try { localStorage.removeItem("kapstan.painel.ordem"); } catch { /* sem armazenamento */ } });
+/* a lista do dia de 19/09 venceu: o aviso é o assunto, e refazer é a ação principal */
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/", '[aria-label="agora"]');
+conferir("dia · a lista vencida diz em destaque de quando é",
+  (await pagina.locator(".p-aviso-dia[data-vencida] b").textContent()).includes("19/09/2026 — "), true);
+conferir("dia · e “Refazer a de hoje” é a ação principal",
+  (await pagina.locator(".p-aviso-dia[data-vencida] .c-acao-cheia").textContent()).trim(), "Refazer a de hoje");
+conferir("dia · o que a lista velha deu por feito não aparece como de agora", await tem(".p-feitos"), false);
+await capturar("1300-dia-vencido");
+const HOJE_MD = join(BASE, "hoje.md");
+const hojeAntes = await readFile(HOJE_MD, "utf8");
+const ontem = new Date(Date.now() - 864e5).toLocaleDateString("sv-SE");
+await writeFile(HOJE_MD, hojeAntes.replace("# Hoje — 2026-09-19", `# Hoje — ${ontem}`));
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/", '[aria-label="agora"]');
+conferir("dia · a de ontem ainda serve: o aviso continua discreto",
+  `${await tem(".p-aviso-dia")} · ${await tem(".p-aviso-dia[data-vencida]")} · ${await tem(".p-feitos")}`, "true · false · true");
+await writeFile(HOJE_MD, hojeAntes);
+await writeFile(X2, x2antes);
+await writeFile(join(PACK, "painel", "acoes.json"), JSON.stringify(ACOES));
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/");
+
 /* ── O BOTÃO QUE CHAMA O ASSISTENTE PEDE CONFIRMAÇÃO — e a prova desiste ─ */
 await pagina.locator("summary", { hasText: "Pedir outra coisa" }).click();
 await pagina.getByRole("button", { name: "Fazer agora" }).first().click();
@@ -495,6 +573,18 @@ conferir("tardia · a marca com gesto virou decisão da fila",
   guardado.decisoes?.find((d) => d.item === "X-002")?.para, "em andamento");
 conferir("tardia · e a resposta ficou guardada com o título da tela",
   guardado.respostas?.[0]?.titulo + " · " + (guardado.respostas?.[0]?.na_fila || []).join(","), "Triagem tardia · X-002");
+/* D283: quem abre o painel trata a resposta, e a tela diz há quanto tempo ela espera */
+conferir("tardia · o `faca_respostas` manda tratar antes do próprio trabalho, seja quem for",
+  ((await chamar("painel_fila", {})).faca_respostas || "").includes("TRATE ANTES do seu próprio trabalho, mesmo que não tenha sido você"), true);
+await pagina.reload({ waitUntil: "domcontentloaded" });
+await ir("#/", ".p-fila");
+conferir("tardia · a barra diz a tela e há quanto tempo a resposta espera",
+  (await pagina.locator(".p-fila-velhas", { hasText: "Triagem tardia" }).textContent()).trim(), "“Triagem tardia” agora há pouco");
+await pagina.locator(".p-fila-conta").click();
+conferir("tardia · e a linha dela também",
+  (await pagina.locator(".p-fila-espera").first().textContent()).trim().startsWith("esperando agora há pouco"), true);
+await pagina.locator(".p-fila-conta").click();
+await ir("#/tarefa", "text=Triagem tardia");
 await capturar("1300-tardia");
 await chamar("painel_mostrar", TRIAGEM);                      // o agente reabre a mesma pilha
 const tardia = await chamar("painel_esperar", { segundos: 5 });

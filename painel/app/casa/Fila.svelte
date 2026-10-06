@@ -37,6 +37,29 @@
 
   const velhas = $derived(decisoes.filter((d) => d.envelheceu).length);
 
+  /* ── HÁ QUANTO TEMPO A RESPOSTA ESPERA (D283) ─────────────────────────
+     Uma resposta ficou da tarde até o dia seguinte sem ninguém ver que
+     esperava. A barra diz a mais antiga, e cada linha diz a sua. O relógio
+     anda de minuto em minuto, sem pedir nada ao servidor. */
+  let agora = $state(Date.now());
+  $effect(() => {
+    if (!respostas.length) return;
+    const t = setInterval(() => { agora = Date.now(); }, 60_000);
+    return () => clearInterval(t);
+  });
+  function haQuanto(em) {
+    const ms = agora - Date.parse(em);
+    if (!Number.isFinite(ms)) return "";
+    const min = Math.max(0, Math.round(ms / 60_000));
+    if (min < 1) return "agora há pouco";
+    if (min < 60) return `há ${min} min`;
+    const h = Math.round(min / 60);
+    if (h < 24) return `há ${h} h`;
+    const d = Math.round(h / 24);
+    return d === 1 ? "há 1 dia" : `há ${d} dias`;
+  }
+  const maisAntiga = $derived(respostas.reduce((a, r) => (!a || String(r.em) < String(a.em) ? r : a), null));
+
   let aberta = $state(false);
   let recado = $state("");
   let copiado = $state(false);
@@ -78,7 +101,8 @@
       <ul class="p-fila-lista">
         {#each respostas as r (r.em)}
           <li>
-            <span><b>Resposta à tela “{r.titulo || "sem título"}”</b></span>
+            <span><b>Resposta à tela “{r.titulo || "sem título"}”</b>
+              <span class="p-fila-espera">esperando {haQuanto(r.em)} — o assistente trata ao começar o próximo pedido</span></span>
             <span class="p-fila-gesto">{r.na_fila?.length ? `${r.na_fila.length} na fila` : "guardada"}</span>
             <button type="button" class="c-chip" onclick={() => dispensar(r.em)}>Dispensar</button>
           </li>
@@ -114,6 +138,9 @@
         {conta} esperando o assistente
         <span aria-hidden="true">{aberta ? "▾" : "▴"}</span>
       </button>
+      {#if maisAntiga && !aberta}
+        <span class="p-fila-velhas">“{maisAntiga.titulo || "sem título"}” {haQuanto(maisAntiga.em)}</span>
+      {/if}
       {#if velhas && !aberta}
         <span class="p-fila-velhas">{velhas === 1 ? "1 mudou" : `${velhas} mudaram`} desde que você marcou</span>
       {/if}

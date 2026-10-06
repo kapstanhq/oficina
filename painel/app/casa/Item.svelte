@@ -63,6 +63,7 @@
   const molde = getContext("molde");
   const fim = $derived(molde?.fim || null);
   const passos = $derived(passosDoItem({ id, andamento, acoes, proximos, rotulos, tipo, ficha, ocupados, fim }));
+  const propostos = $derived(chaves.filter((c) => c.proposto).length);
   const destaque = $derived(passos.destaque || passos.lista.find((p) => p.tipo !== "descartar") || null);
   const outros = $derived(passos.lista.filter((p) => p !== destaque));
   const notaDoAgente = $derived(notaQueDiz(passos.doAgente?.nota));
@@ -181,14 +182,22 @@
   <!-- ── CABE PARA MIM? ───────────────────────────────────────────────── -->
   {#if chaves.length}
     <section class="p-pag-bloco" aria-label="o que decide se cabe">
-      <h2 class="p-pag-h2">Cabe para mim?{#if faltam.length}<span>{faltam.length} sem resposta</span>{/if}</h2>
+      <h2 class="p-pag-h2">Cabe para mim?{#if faltam.length || propostos}<span>{[faltam.length && `${faltam.length} sem resposta`,
+        propostos && `${propostos} ${propostos === 1 ? "proposto" : "propostos"}, falta você julgar`].filter(Boolean).join(" · ")}</span>{/if}</h2>
       <dl class="p-pag-fatos">
         {#each chaves as c (c.rotulo)}
           {@const detalhe = detalheDe(c)}
-          <div class="p-pag-fato" data-falta={c.semResposta ? "" : undefined}>
+          <div class="p-pag-fato" data-falta={c.semResposta ? "" : undefined} data-proposto={c.proposto ? "" : undefined}>
             <dt>{c.rotulo}</dt>
             <dd>
+              {#if c.proposto}
+                <!-- a proposta da leitura (D283): o valor vale para ler, e o
+                     selo diz que ninguém o julgou ainda -->
+                <b title={c.de ? "← " + c.de : undefined}>{valorCurto(c.valor, 60)}<small class="p-proposto-selo">proposto</small></b>
+                <span class="p-pag-detalhe">a leitura propôs; falta você julgar</span>
+              {:else}
               <b title={c.semResposta ? undefined : String(campo(c.rotulo.toLowerCase())?.valor || "")}>{c.semResposta ? c.valor : valorCurto(campo(c.rotulo.toLowerCase())?.valor || c.valor, 60)}</b>
+              {/if}
               {#if detalhe}
                 <button type="button" class="p-pag-mais" aria-expanded={!!abertas[c.rotulo]}
                   onclick={() => { abertas[c.rotulo] = !abertas[c.rotulo]; }}>{abertas[c.rotulo] ? "menos" : "detalhes"}</button>

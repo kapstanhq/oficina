@@ -337,10 +337,16 @@ function guardarTardia(intencao) {
   return true;
 }
 const respostasTardias = async () => { await gravandoTardia; return base.ligada ? fila.lerRespostas(base.raiz) : []; };
-const FACA_DAS_RESPOSTAS = "A pessoa respondeu tela(s) do painel enquanto ninguém esperava (`respostas`). " +
-  "As marcas com gesto já estão na fila. O que sobrou é resposta à tela nomeada em `titulo`: " +
-  "se você é a skill que a mostrou, trate como a resposta; senão, diga em uma linha o que chegou. " +
-  "Chame `painel_fila` com `respostas_lidas: [<em>, …]` para tirá-las.";
+/* D283: "se você é a skill que a mostrou" deixava a resposta para quem já
+   tinha ido embora — uma ficou na fila de 17h45 até o dia seguinte. Quem
+   abre o painel trata, seja qual for a skill. */
+const FACA_DAS_RESPOSTAS = "A pessoa respondeu tela(s) do painel enquanto ninguém esperava (`respostas`, " +
+  "cada uma com o `titulo` da tela e o `em`). As marcas com gesto já estão na fila. O resto, TRATE ANTES " +
+  "do seu próprio trabalho, mesmo que não tenha sido você quem mostrou a tela: grave o que a resposta " +
+  "decide no arquivo do item, pelas regras de sempre (o campo com a procedência " +
+  "`← <quem>, no painel, AAAA-MM-DD`, a linha do histórico, as vistas), e só então siga. Gravou, chame " +
+  "`painel_fila` com `respostas_lidas: [<em>, …]`. Resposta que pede um trabalho, e não um fato " +
+  "(julgar, escrever), fica: diga em uma linha qual skill a faz.";
 
 /* ── OCUPADO FORA DO STDIO (D234) ─────────────────────────────────────
    O assistente que o botão lançou e a chamada de um hóspede correm por HTTP,
@@ -841,7 +847,9 @@ const locais = [
       "padrão da pessoa (`aba: \"abri\"`); com `aba: \"aberta\"` ela já está lá. " +
       "Repasse o `diga` em uma linha, como veio — não peça que ela copie " +
       "endereço nenhum. Se vier `atualizacao`, há versão nova do plugin: siga o " +
-      "`faca` dela antes do trabalho. A página inicial fica de pé entre uma " +
+      "`faca` dela antes do trabalho. Se vierem `respostas` — telas que a pessoa " +
+      "respondeu quando ninguém esperava —, TRATE-AS antes do seu trabalho, como " +
+      "manda o `faca_respostas`. A página inicial fica de pé entre uma " +
       "tarefa e outra, e a tela de `painel_mostrar` aparece DENTRO dela — " +
       "nada muda no par mostrar/esperar. Ela LÊ a base e NÃO grava nada: o " +
       "que a pessoa fizer ali volta como intenção, e quem grava é você. Pode " +
@@ -906,7 +914,9 @@ const locais = [
       "`painel_inicio` já devolve a fila quando há; use esta para reler, e " +
       "sempre para confirmar. Devolve também `respostas`: telas que a pessoa " +
       "respondeu quando ninguém esperava — as marcas com gesto já viraram fila; " +
-      "o resto é resposta à tela em `titulo`. `respostas_lidas: [<em>, …]` as tira.",
+      "o resto é resposta à tela em `titulo`, e quem abriu o painel a TRATA antes " +
+      "do próprio trabalho: grava o que ela decide no arquivo do item, pelas regras " +
+      "de sempre, e só então segue. `respostas_lidas: [<em>, …]` as tira.",
     inputSchema: {
       type: "object",
       properties: {

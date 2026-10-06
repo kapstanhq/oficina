@@ -21,7 +21,7 @@
   import Tabela from "./Tabela.svelte";
   import { partirLinha, idsDaLinha, partirId, passosDoItem, caudaParaLer, ehLinhaVazia,
     paraFunil, TODAS, nomeDoArquivo, comFicha, pegarDoItem, ordenar as emOrdem, ordenacoesDe,
-    sentidoPadrao, semResposta, fichaDoItem, valorCurto, faseDe, trechosDoFunil, noTrecho, ehFim, gestoDoPasso, trechoDe } from "../rota.js";
+    sentidoPadrao, semResposta, valorDoCampo, fichaDoItem, valorCurto, faseDe, trechosDoFunil, noTrecho, ehFim, gestoDoPasso, trechoDe } from "../rota.js";
 
   let { etapa = TODAS, id = "", funil = null, indice, documentos = null, andamento = null,
     decisoes = [], decidir = async () => {}, anotar = () => {}, acoes = [], proximos = {},
@@ -74,7 +74,8 @@
   /* o que se lê passando o mouse na linha do leitor: quem é, a etapa, os
      campos do destaque que têm resposta e o último passo */
   const dicaDe = (it) => [`${it.id ? it.id + " · " : ""}${it.titulo}`, it.etiqueta || it.etapa || "",
-    ...destaque.filter((d) => !semResposta(it.campos?.[d])).map((d) => `${d}: ${valorCurto(it.campos[d], 60)}`),
+    ...destaque.map((d) => [d, valorDoCampo(it, d)]).filter(([, v]) => !semResposta(v) || v?.proposto)
+      .map(([d, v]) => (v?.proposto ? `${d}: ${valorCurto(v.proposto, 60)} (proposto)` : `${d}: ${valorCurto(v, 60)}`)),
     it.ultimo ? "último passo: " + it.ultimo : ""].filter(Boolean).join("\n");
   const itens = $derived(listaDe(etapa).map((it) => ({ ...it, dica: dicaDe(it) })));
   /* o endereço que abre um item fora do filtro dele — a etapa do arquivo,
@@ -100,7 +101,7 @@
     /* coluna em que NENHUM item tem resposta é só "?" de cima a baixo, e toma
        a largura que falta às outras — medido: a 1300 px, com as seis do
        destaque, o encaixe ficava fora da tela */
-    ...destaque.filter((d) => itens.some((it) => !semResposta(it.campos?.[d])))
+    ...destaque.filter((d) => itens.some((it) => !semResposta(it.campos?.[d]) || it.propostos?.[d]))
       .map((d) => ({ chave: d, rotulo: d[0].toUpperCase() + d.slice(1), tipo: "campo" })),
     ...(Object.keys(documentosDoPack).length ? [{ chave: "documentos", rotulo: "Documentos", tipo: "documentos" }] : []),
     { chave: "faltam", rotulo: "Falta", tipo: "faltam" },

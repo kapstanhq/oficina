@@ -1661,3 +1661,67 @@ tinha feito. E uma citação saiu "há 3 dia".
 | ler o anúncio só na triagem, como antes | a vaga errada ocupa lugar no teto da pilha e chega ao painel como se coubesse |
 | preencher o salário relatado das 33 na própria organizar | ela não abre link (§8); quem lê fonte de fora é a completar-ficha |
 | deixar o logado como opcional mesmo com a linha | a linha é a autorização escrita dele; ignorá-la tira as recomendadas, que é o motivo de ela existir |
+
+---
+
+## D283 · O proposto se lê como proposta, o item que ninguém leu avisa antes de subir, a resposta tardia tem dono, e a lista vencida diz que venceu
+
+`data: 2026-10-06`
+
+Quatro defeitos vistos num dia de uso real, numa busca de 74 vagas:
+
+1. **A proposta da triagem lia como dado faltando.** 50 das 74 vagas têm
+   `encaixe: ?  ← a triagem propõe médio; falta você julgar`, e o "Cabe para
+   mim?" mostrava "ENCAIXE · não diz" — igual a campo vazio. A tabela punha
+   as 50 no fim, misturadas com as que nunca foram lidas.
+2. **Seis vagas subiram para "salva" sem nunca terem sido lidas**: "O que pesa
+   a favor", "O que pesa contra" e "O que a vaga pede" só com "nada ainda", e o
+   "Salvar" não sabia.
+3. **Uma resposta à tela "V-117 …: quando foi publicada?" ficou na fila desde
+   as 17h45.** O `painel_inicio` e o `painel_fila` a devolviam, mas o
+   `faca_respostas` dizia "se você é a skill que a mostrou, trate" — e quem
+   mostrou já tinha ido embora. As skills seguintes só a citaram.
+4. **A lista do dia era de 24/09, doze dias antes**, e o início mostrava os
+   itens dela como de agora, com um aviso discreto ao lado.
+
+E o campo que a triagem preenche em toda vaga precisa estar no "Cabe para
+mim?": 73 das 74 têm `salário relatado`, que não estava no `destaque`.
+
+- **O proposto é valor provisório.** Campo em `?` cuja procedência diz
+  `propõe <valor>` vale o valor, com o selo "proposto" e a nota "a leitura
+  propôs; falta você julgar", em borda tracejada sem âmbar; "não diz" fica
+  para o `?` sem leitura nenhuma. Vale para qualquer campo de qualquer pack
+  (`propostaDa`, em `painel/nucleo/molde.mjs`, que a página e o servidor
+  leem). O `/base/fichas` devolve `propostos`; a tabela mostra
+  "médio · proposto"; a ordem (`ordens`) põe o proposto logo depois do mesmo
+  valor firme, nos dois sentidos. O proposto não conta em "sem resposta" nem
+  na condição `faltam`: falta julgar, e não ler. `sem:<campo>` continua
+  olhando o `?`, que é o que a pessoa ainda não decidiu.
+- **O item que ninguém leu avisa antes de subir.** Nova chave do
+  `painel.json`, `analisar`: a skill que lê um item e escreve as seções do
+  `resumo` (no de vagas, `triar-vagas`). O montador a cobra com `sobre` de
+  item, com `resumo` declarado e na tabela do README. Marcar a etapa seguinte
+  de um item com o `resumo` todo vazio abre um aviso com **Analisar antes**,
+  **<rótulo> mesmo assim** e **Agora não** — em todo lugar que marca, porque
+  todos passam pelo `decidir` da casca. Desmarcar não pergunta. O painel
+  continua sem gravar: muda só o que oferece.
+- **Quem abre o painel trata as respostas pendentes antes do próprio
+  trabalho.** O `faca_respostas` e as descrições do `painel_inicio` e do
+  `painel_fila` dizem: grave o que a resposta decide no arquivo do item, pelas
+  regras de sempre, confirme com `respostas_lidas`, e só então siga; a que
+  pede um trabalho (julgar, escrever) fica, e a skill diz qual a faz. A
+  referência `painel.md` e o passo 5b do `gravar-o-que-marquei` dizem o mesmo.
+  Na tela, a barra da fila diz o título da resposta mais antiga e há quanto
+  tempo ela espera, e cada linha diz a sua.
+- **A lista vencida diz que venceu.** De ontem, o aviso continua discreto. Com
+  mais de um dia, o bloco abre com "A lista do dia é de 24/09/2026 — 12 dias
+  atrás", **Refazer a de hoje** é o botão principal, e o "Agora" sai só do
+  funil — nem os itens nem o "feito" da lista velha aparecem como de hoje.
+
+| recusado | por que caiu |
+|---|---|
+| o painel gravar `encaixe` com o valor proposto | dois escritores no mesmo markdown; e o `?` é justamente o que diz que a pessoa não julgou |
+| bloquear o "Salvar" do item não lido | a decisão é da pessoa — quem leu o anúncio fora do painel tem o direito de salvar; o aviso basta |
+| escolher a skill de analisar pela ordem do `proximo` | a primeira skill da etapa nem sempre é a que lê, e mudar a ordem mudaria o aviso em silêncio |
+| tirar a resposta tardia da fila depois de um tempo | o defeito era ninguém tratá-la; sumir com ela é perder o que a pessoa respondeu |
+| esconder o bloco "Agora" com a lista vencida | o funil continua sabendo o que espera um passo; o que venceu é só a ordem do dia |
