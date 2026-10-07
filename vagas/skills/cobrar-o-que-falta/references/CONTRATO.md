@@ -828,6 +828,12 @@ Quem o procura é `/vagas:triar-vagas` (a vaga que ela lê) e
 `/vagas:completar-ficha` (a vaga que o candidato pediu), e o caminho é este:
 
 ```
+0  a autorização      só com a linha `glassdoor:` do perfil diferente de `—`.
+                       Sem ela, o site não se abre — nem logado, nem sem
+                       sessão: `?  ← o perfil não autoriza o Glassdoor,
+                       <data>`. Com ela, o ritmo é o do roteiro do site:
+                       uma página por vez, ~10 empresas por execução, só
+                       ler, e captcha ou verificação é PARAR
 1  o _bruto/           `AAAA-MM-DD-glassdoor-<empresa>.md` de até 30 dias serve
                        a toda vaga da mesma empresa — não se relê a página
 2  o navegador         o Glassdoor barra a ferramenta de web (403) e abre no
@@ -1062,6 +1068,7 @@ solides: pelos termos de busca, em "Recife - PE"
 linkedin-vagas: pelos termos de busca, em Recife
 apify: —
 linkedin (logado): —
+glassdoor: —
 greenhouse: —
 ashby: —
 lever: —
@@ -1089,6 +1096,12 @@ de verdade e o anúncio inteiro. `linkedin (logado)` entra na SUA conta pelo
 navegador: é o único que vê as vagas recomendadas para você, e o único que
 arrisca alguma coisa. Linha com `—` é caminho que você não quer, e nenhuma
 skill o usa por conta própria.
+
+**`glassdoor:` é a mesma escolha, para o salário relatado.** A triagem lê no
+Glassdoor o que funcionários contaram que a empresa paga — e os termos do
+site proíbem acesso automatizado, com ou sem login. Com a linha, o navegador
+lê, no ritmo de `references/glassdoor.md`; com `—`, o `salário relatado:`
+fica `?`, e você pode colar o que viu por conta própria.
 
 **`## Onde olhar` é o que faz a busca ser sua, e não a de todo mundo.** Os
 agregadores mostram o que todos veem; a página de carreira da empresa que você

@@ -30,6 +30,7 @@ gupy: pelos termos de busca
 linkedin-vagas: pelos termos de busca, só remoto
 apify: —
 linkedin (logado): —
+glassdoor: pelo navegador, com a minha conta — o salário relatado na triagem  ← candidato, 2026-09-07
 greenhouse: lumina, patiovarejo
 ashby: cobre
 lever: —

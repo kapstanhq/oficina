@@ -132,6 +132,12 @@ Quem o procura é `/vagas:triar-vagas` (a vaga que ela lê) e
 `/vagas:completar-ficha` (a vaga que o candidato pediu), e o caminho é este:
 
 ```
+0  a autorização      só com a linha `glassdoor:` do perfil diferente de `—`.
+                       Sem ela, o site não se abre — nem logado, nem sem
+                       sessão: `?  ← o perfil não autoriza o Glassdoor,
+                       <data>`. Com ela, o ritmo é o do roteiro do site:
+                       uma página por vez, ~10 empresas por execução, só
+                       ler, e captcha ou verificação é PARAR
 1  o _bruto/           `AAAA-MM-DD-glassdoor-<empresa>.md` de até 30 dias serve
                        a toda vaga da mesma empresa — não se relê a página
 2  o navegador         o Glassdoor barra a ferramenta de web (403) e abre no

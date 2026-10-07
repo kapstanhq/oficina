@@ -37,6 +37,7 @@ solides: pelos termos de busca, em "Recife - PE"
 linkedin-vagas: pelos termos de busca, em Recife
 apify: —
 linkedin (logado): —
+glassdoor: —
 greenhouse: —
 ashby: —
 lever: —
@@ -64,6 +65,12 @@ de verdade e o anúncio inteiro. `linkedin (logado)` entra na SUA conta pelo
 navegador: é o único que vê as vagas recomendadas para você, e o único que
 arrisca alguma coisa. Linha com `—` é caminho que você não quer, e nenhuma
 skill o usa por conta própria.
+
+**`glassdoor:` é a mesma escolha, para o salário relatado.** A triagem lê no
+Glassdoor o que funcionários contaram que a empresa paga — e os termos do
+site proíbem acesso automatizado, com ou sem login. Com a linha, o navegador
+lê, no ritmo de `references/glassdoor.md`; com `—`, o `salário relatado:`
+fica `?`, e você pode colar o que viu por conta própria.
 
 **`## Onde olhar` é o que faz a busca ser sua, e não a de todo mundo.** Os
 agregadores mostram o que todos veem; a página de carreira da empresa que você

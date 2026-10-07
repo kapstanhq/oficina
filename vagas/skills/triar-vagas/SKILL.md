@@ -179,7 +179,9 @@ contaram ao Glassdoor para o cargo mais perto do dela —, pelo caminho da seç�
 4.4 (`references/contrato/04-4-arquivo-de-vaga.md`): o `_bruto/` de até 30
 dias primeiro, depois o navegador, a página da empresa e a do cargo. **Uma
 leitura por empresa por rodada**: duas vagas da Rota Delivery usam a mesma
-página.
+página. **O navegador só abre o Glassdoor com a linha `glassdoor:` do perfil**
+— os termos do site proíbem acesso automatizado; sem a linha, `?` com a
+razão. O ritmo e o que fazer num captcha estão em `references/glassdoor.md`.
 Vaga sem a linha no cabeçalho ganha a linha, abaixo de `faixa:`.
 
 Ele é fato com fonte, e entra no Passo 3 como qualquer outro: abaixo do piso

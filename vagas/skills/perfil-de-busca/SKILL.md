@@ -274,6 +274,7 @@ solides           pelos termos, com "Cidade - UF" — forte em vaga operacional
 linkedin-vagas    pelos termos de busca — e o regime, se ele só aceita remoto
 apify             os mesmos termos, pela listagem paga: `—` até ele dizer que quer
 linkedin (logado) os mesmos termos, DENTRO da conta dele: `—` até ele dizer que quer
+glassdoor         o salário relatado, pelo navegador: `—` até ele dizer que quer
 greenhouse        o nome de cada empresa como aparece no endereço do quadro
 ashby · lever     idem
 inhire            idem — o nome que vem antes de .inhire.app
@@ -285,7 +286,9 @@ inhire            idem — o nome que vem antes de .inhire.app
 diferença uma vez — público e grátis · público e pago, centavos por cem vagas ·
 logado, que vê as recomendadas e age dentro da conta dele — e escreva só o que
 ele escolher. Ligar o navegador não liga a linha `linkedin (logado)`: ligar é
-poder, escrever a linha é querer (`04-9-o-perfil.md`). O login, quando ele
+poder, escrever a linha é querer (`04-9-o-perfil.md`). A linha `glassdoor:`
+segue a mesma regra: antes de escrevê-la, as três frases de
+`references/glassdoor.md`, uma vez. O login, quando ele
 quiser, e como desfazê-lo: `references/conectores.md`.
 
 Pergunte **as empresas onde ele gostaria de trabalhar**, e por onde cada uma

@@ -1772,3 +1772,35 @@ Quatro coisas vistas no uso real, num dia só:
 | corrigir só a descrição da Apify, dizendo que o limite é o total | o ator cobra e busca por termo; com o total, doze termos e limite 10 dariam menos de uma vaga por cargo |
 | dar à Gupy um erro de "API fora do ar" | a API está no ar, em outro endereço; o erro mandaria abrir vaga por vaga no navegador sem precisar |
 | a InHire buscar o detalhe de cada vaga da lista para ter a data | uma chamada por vaga contra um quadro de terceiro, no ritmo de dez por minuto; a skill abre o detalhe do que for julgar |
+
+## D285 · O Glassdoor pede autorização escrita, como o LinkedIn logado, e lê no ritmo de gente
+
+`data: 2026-10-06`
+
+A triagem lê no Glassdoor o que funcionários contaram que a empresa paga, e o
+`salário relatado:` saiu de lá em 22 das 52 vagas de uma busca real num só dia
+— pelo navegador, com a conta da pessoa. Os termos do Glassdoor proíbem acesso
+automatizado, com ou sem login, e o pack tratava o site só com o aviso
+genérico do conector `navegador`. O LinkedIn logado, com o mesmo risco, já
+tinha aviso próprio, ritmo e linha no perfil (D282). Com o código aberto,
+quem instala precisa decidir isso de olhos abertos, e não descobrir depois.
+
+- **A linha `glassdoor:` no `## Onde olhar`**, que nasce `—`. Sem ela, nenhuma
+  skill abre o site — nem logado, nem sem sessão — e o `salário relatado:`
+  fica `?  ← o perfil não autoriza o Glassdoor`. Ligar o navegador não liga a
+  linha: ligar é poder, escrever a linha é querer (a regra do LinkedIn, 04-9).
+- **O roteiro `vagas/referencias/glassdoor.md`**: as três frases que a pessoa
+  ouve uma vez, quando a `perfil-de-busca` pergunta (os termos proíbem; com
+  ritmo o risco é baixo, não zero; sem a linha, ela pode colar o que viu); o
+  ritmo — uma página por vez, uma leitura por empresa, ~10 empresas por
+  execução, só ler, nada que grave na conta —; e PARAR em captcha ou
+  verificação, sem tentar de novo na mesma execução.
+- **O caminho da seção 4.4 ganha o passo 0**, a autorização, e a triagem diz
+  a regra no passo 2b. A fixture `vagas`, que já cita o Glassdoor nas fichas,
+  ganha a linha; a `vagas-b`, que não cita, fica com `—`.
+
+| recusado | por que caiu |
+|---|---|
+| tirar o Glassdoor do pack | o salário relatado é o único número de remuneração que a vaga não publica e que a triagem pesa contra o piso; a pessoa que quer pode tê-lo, sabendo o risco |
+| ler só sem login | os termos proíbem o acesso automatizado do mesmo jeito, e sem sessão a página da empresa mostra só dez cargos |
+| a autorização ser a sessão logada no painel | entrar no site é para ler a conta à mão também; a linha no perfil é a decisão escrita de deixar o assistente ler |

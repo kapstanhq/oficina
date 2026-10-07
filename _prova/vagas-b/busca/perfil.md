@@ -29,6 +29,7 @@ gupy: pelos termos de busca
 linkedin-vagas: pelos termos de busca, em Recife
 apify: —
 linkedin (logado): —
+glassdoor: —
 greenhouse: —
 ashby: —
 lever: —
